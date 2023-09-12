@@ -10,8 +10,8 @@
 \newcommand*{\origrightarrow}{}
 \let\oldarrow\textrightarrow
 \renewcommand*{\textrightarrow}{\fontfamily{cmr}\selectfont\origrightarrow}
-\loadglsentries[main]{glossary}
 
+% \loadglsentries[main]{glossary}
 \input{abbreviations}
 
 \begin{document}
@@ -67,12 +67,14 @@ to this timestamped version.
 % argument is your BibTeX string definitions and bibliography database(s)
 \bibliography{dissertation}
 
-%% \chapter*{Glossary}
+% \glsaddall
+% \printglossary[title={Glossary}]
+% \addcontentsline{toc}{chapter}{Glossary}
+% \setheader{Glossary}
 
-\glsaddall
-\printglossary[type=\acronymtype,title={Glossary}]
-\addcontentsline{toc}{chapter}{Glossary}
-\setheader{Glossary}
+\printabbreviations[title={Abbreviations}]
+\addcontentsline{toc}{chapter}{Abbreviations}
+\setheader{Abbreviations}
 
 \include{cv/cv}
 \include{publications/publications}

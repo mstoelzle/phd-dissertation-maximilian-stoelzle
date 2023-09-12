@@ -8,6 +8,7 @@ document can be compiled with
 
   xelatex dissertation
   bibtex chapter-1/chapter-1
+  makeglossaries dissertation
   xelatex dissertation
   xelatex dissertation
 

@@ -226,6 +226,8 @@
 \RequirePackage[export]{adjustbox}
 
 \RequirePackage[nomain,acronym,nonumberlist,style=list]{glossaries} % nomain, if you define glossaries in a file, and you use \include{INP-00-glossary}
+% https://tex.stackexchange.com/questions/441939/glossaries-acronyms-how-to-display-only-the-first-appearance-of-an-acronym-amo
+\usepackage[abbreviations]{glossaries-extra}
 
 %% Stop importing packages
 
