@@ -7,7 +7,7 @@ style, you need to use XeLaTeX, as it supports TrueType and OpenType fonts. The
 document can be compiled with
 
   xelatex dissertation
-  bibtex chapter-1/chapter-1
+  bibtex dissertation
   makeglossaries dissertation
   xelatex dissertation
   xelatex dissertation
