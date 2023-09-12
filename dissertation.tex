@@ -2,6 +2,17 @@
 %\documentclass[print]{dissertation}
 %\documentclass[print,draft]{dissertation}
 
+% add custom packages here
+\usepackage{siunitx}
+% math
+\let\endproof\relax
+\let\openbox\relax
+\let\proof\relax
+\usepackage{amsthm}
+% figures
+\usepackage{epsfig} % for postscript graphics files
+\usepackage{svg}
+
 \hyphenation{TestRoots WatchDog proj-ect proj-ects Ec-lipse two-fold clie-nts Mo-cki-to wide-spread}
 \newcommand{\sparkline}[1]{$\vcenter{\hbox{\includegraphics[scale=0.04]{#1}}}$}
 
@@ -10,6 +21,20 @@
 \newcommand*{\origrightarrow}{}
 \let\oldarrow\textrightarrow
 \renewcommand*{\textrightarrow}{\fontfamily{cmr}\selectfont\origrightarrow}
+
+% math proof
+\theoremstyle{plain}
+\newtheorem{theo}{Theorem}
+\newtheorem{Remark}{Remark}
+\newtheorem{Lemma}{Lemma}
+\newtheorem{Proposition}{Proposition}
+\newtheorem{Definition}{Definition}
+\newtheorem{Corollary}{Corollary}
+\newtheorem{exmp}{Example}%[section]
+
+% THEOREMS
+\DeclareMathOperator*{\argmin}{\arg\!\min}
+\DeclareMathOperator*{\argmax}{\arg\!\max}
 
 % \loadglsentries[main]{glossary}
 \input{abbreviations}
@@ -46,6 +71,7 @@
 \thumbtrue
 
 \include{introduction/introduction}
+% \include{backstepping/backstepping}
 \include{conclusion/conclusion}
 
 %% Use letters for the chapter numbers of the appendices.
