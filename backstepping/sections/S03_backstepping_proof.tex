@@ -1,12 +1,12 @@
-\section{Backstepping Control of Piston-Driven Pneumatically-Actuated Soft Robots}\label{sec:backstepping_proof}
+\section{Backstepping Control of Piston-Driven\\ Pneumatically-Actuated Soft Robots}\label{sec:backstepping:backstepping_proof}
 
-This section discusses the main contribution of this paper, a backstepping-based approach to generalize controllers $\Gamma(q,\dot{q})$ designed in the directly actuated case, to systems that can be modeled through \eqref{eq:complete_dyn}.
+This section discusses the main contribution of this paper, a backstepping-based approach to generalize controllers $\Gamma(q,\dot{q})$ designed in the directly actuated case, to systems that can be modeled through \eqref{eq:backstepping:complete_dyn}.
 We suppose that we have access to $\Gamma(q, \dot{q})$ controlling the piston position $\mu_\mathrm{p}$. Next, we perform backstepping twice to the controllers of the piston velocity $\dot{\mu}_\mathrm{p}$ and the piston actuation force $f_\mathrm{p}$ and prove the stability of each controller with Lyapunov arguments.
 The derived model-based control approach assumes that all model parameters are known, and all states are measurable (namely the configuration $q$, its time derivative $\dot{q}$, the piston position $\mu_\mathrm{p}$ and the piston velocity $\dot{\mu}_\mathrm{p}$), and that there are no disturbances or model uncertainties. 
 We first introduce a Lemma, which will be instrumental to the proof of the main theorem. It allows to relate an offset in the actuation-space to a change in acceleration in configuration-space that is proportional to the offset.
 %
 \begin{Lemma}\label{lemma:f_g_S}%{\color{red} I have the feeling that words are missing here}
-The input field defined in \eqref{eq:gf} verifies
+The input field defined in \eqref{eq:backstepping:gf} verifies
 %
 \begin{equation*}\small
     g(q,\mu_{\mathrm{p},\mathrm{a}}) - g(q,\mu_{\mathrm{p},\mathrm{b}}) \!=\!  -B^{-1}\!(q)S(q,\mu_{\mathrm{p},\mathrm{a}},\mu_{\mathrm{p},\mathrm{b}})(\mu_{\mathrm{p},\mathrm{a}} \!- \mu_{\mathrm{p},\mathrm{b}}),    
@@ -21,7 +21,7 @@ $\forall \mu_{\mathrm{p},\mathrm{a}},\mu_{\mathrm{p},\mathrm{b}} \in \mathbb{R}^
 \end{Lemma}
 %
 \begin{proof}
-	We express the left term of the equality using \eqref{eq:gf}
+	We express the left term of the equality using \eqref{eq:backstepping:gf}
 	%
 	\begin{equation*}\small%\footnotesize
 	\begin{split}
@@ -30,7 +30,7 @@ $\forall \mu_{\mathrm{p},\mathrm{a}},\mu_{\mathrm{p},\mathrm{b}} \in \mathbb{R}^
 	\end{split}
 	\end{equation*}
 	%
-	where we recognize the term $B^{-1}(q)$ appearing in the Lemma. The term between brackets can be adjusted by using \eqref{eq:GPq}
+	where we recognize the term $B^{-1}(q)$ appearing in the Lemma. The term between brackets can be adjusted by using \eqref{eq:backstepping:GPq}
 	%
 	\begin{equation}\small
 	\begin{split}
@@ -43,16 +43,16 @@ $\forall \mu_{\mathrm{p},\mathrm{a}},\mu_{\mathrm{p},\mathrm{b}} \in \mathbb{R}^
 	The Lemma follows by simple factorization of the latter term.
 \end{proof}
 
-Thus, even if the robot side of the dynamics \eqref{eq:complete_dyn} is not affine in control when taking $\mu_\mathrm{p}$ as input, still Lemma \ref{lemma:f_g_S} provides some structure that we leverage in the next theorem.
+Thus, even if the robot side of the dynamics \eqref{eq:backstepping:complete_dyn} is not affine in control when taking $\mu_\mathrm{p}$ as input, still Lemma \ref{lemma:f_g_S} provides some structure that we leverage in the next theorem.
 
 \begin{theo}
 	Suppose that a $\Gamma(q,\dot{q})$ exists s.t. the reduced system
 	%
-	\begin{equation}\small\label{eq:reduced_sys}
+	\begin{equation}\small\label{eq:backstepping:reduced_sys}
 		\ddot{q} = f(q,\dot{q}) + g(q,\Gamma(q,\dot{q}))
 	\end{equation}
 	%
-	converges to a desired trajectory $\bar{q}(t)$, $\forall (q(0),\dot{q}(0)) \in \mathbb{R}^{2 n_{\mathrm{q}}}$. Suppose that the convergence is proven by Lyapunov arguments through the function $H(q,\dot{q})$. Then the closed loop of the full system \eqref{eq:complete_dyn} and the controller
+	converges to a desired trajectory $\bar{q}(t)$, $\forall (q(0),\dot{q}(0)) \in \mathbb{R}^{2 n_{\mathrm{q}}}$. Suppose that the convergence is proven by Lyapunov arguments through the function $H(q,\dot{q})$. Then the closed loop of the full system \eqref{eq:backstepping:complete_dyn} and the controller
 	%
 %	\begin{equation}\small\small
 %		\begin{split}
@@ -64,7 +64,7 @@ Thus, even if the robot side of the dynamics \eqref{eq:complete_dyn} is not affi
 %			&- M^{\mathrm{T}}(q,l,\Gamma)B^{-\mathrm{T}}(q)\partial_{\dot{q}} H^{\mathrm{T}}
 %		\end{split}
 %	\end{equation}
-	\begin{equation}\small\label{eq:pi_psi}
+	\begin{equation}\small\label{eq:backstepping:pi_psi}
 		\begin{split}
 			f_\mathrm{p} &= \Psi = G_{\mathrm{P}}^{\mu_\mathrm{p}} + D_\mathrm{p} \Pi + M_\mathrm{p} \dot{\Pi} - K_2 (\dot{\mu}_\mathrm{p} - \Pi) - (\mu_\mathrm{p} - \Gamma),\\
 			\Pi &= \dot{\Gamma} - K_1 (\mu_\mathrm{p} - \Gamma) 
@@ -76,9 +76,9 @@ Thus, even if the robot side of the dynamics \eqref{eq:complete_dyn} is not affi
 \end{theo}
 \begin{proof}
 	
-	We first consider the problem of deriving a controller under the assumption that the velocity of the piston $v_\mathrm{p}$ is set by a controller. This serves as a first step toward the general solution of the problem. System \eqref{eq:complete_dyn} is thus reduced into
+	We first consider the problem of deriving a controller under the assumption that the velocity of the piston $v_\mathrm{p}$ is set by a controller. This serves as a first step toward the general solution of the problem. System \eqref{eq:backstepping:complete_dyn} is thus reduced into
 	%
-	\begin{equation}\small\label{eq:intermediate}\small
+	\begin{equation}\small\label{eq:backstepping:intermediate}\small
 	\begin{split}
 	B(q)\ddot{q} \! + \! C(q,\dot{q})\dot{q} \! + \! G(q) \! + \! K(q) \! + \! D(q,\dot{q}) \! + \! G_{\mathrm{P}}^{\mathrm{q}}(q,\mu_\mathrm{p}) &= 0, \\
 	\dot{\mu}_\mathrm{p} &= v_\mathrm{p}. 
@@ -132,7 +132,7 @@ Thus, even if the robot side of the dynamics \eqref{eq:complete_dyn} is not affi
 	\end{split}
 	\end{equation}
 	%
-	Consider now that $H$ is a Lyapunov function for \eqref{eq:reduced_sys} under the control action $\Gamma$. This assures that
+	Consider now that $H$ is a Lyapunov function for \eqref{eq:backstepping:reduced_sys} under the control action $\Gamma$. This assures that
 	%
 	\begin{equation}\small
 		0 > \dot{H} = \partial_{q} H \dot{q} + \partial_{\dot{q}} H (f(q,\dot{q}) + g(q,\Gamma(q,\dot{q}))).
@@ -140,9 +140,9 @@ Thus, even if the robot side of the dynamics \eqref{eq:complete_dyn} is not affi
 	%
 	Note that we are considering here the case of strict sign definiteness of $\dot{H}$. However, the same results can be achieved in the case of semi\--definiteness.
 	%
-	We can now conclude that $\dot{W} < 0$, thus proving that the controller $\Pi$ stabilizes \eqref{eq:intermediate}. This conclude the first step of the proof.
+	We can now conclude that $\dot{W} < 0$, thus proving that the controller $\Pi$ stabilizes \eqref{eq:backstepping:intermediate}. This conclude the first step of the proof.
 	
-	We now reiterate this sequence of operations, to generalize the controller $\Pi$ to work on the actual system \eqref{eq:complete_dyn}.
+	We now reiterate this sequence of operations, to generalize the controller $\Pi$ to work on the actual system \eqref{eq:backstepping:complete_dyn}.
 	%
 	The complete Lyapunov candidate that we propose is
 	%
@@ -162,7 +162,7 @@ Thus, even if the robot side of the dynamics \eqref{eq:complete_dyn} is not affi
 	%
 	We therefore propose the controller
 	%
-	\begin{equation}\small\label{eq:final_controller_1}
+	\begin{equation}\small\label{eq:backstepping:final_controller_1}
 	%\begin{split}
 	    \Psi(q, \dot{q}, \mu_\mathrm{p}, \dot{\mu}_\mathrm{p}) = G_{\mathrm{P}}^{\mu_\mathrm{p}} + D_\mathrm{p} \Pi + M_\mathrm{p} \dot{\Pi} - K_2 (\dot{\mu}_\mathrm{p} - \Pi) 
 	    - \partial_{\mu_\mathrm{p}} W^{\mathrm{T}}\!,
@@ -181,7 +181,7 @@ Thus, even if the robot side of the dynamics \eqref{eq:complete_dyn} is not affi
 	    \end{split}
 	\end{equation}
 	%
-	where we exploit that $W$ is a Lyapunov function for the previous system when $\dot{\mu}_\mathrm{p} \equiv \Pi$. This assures the asymptotic stability of the closed loop system, when \eqref{eq:final_controller_1} is used. The Theorem follows considering that $\partial_{\mu_\mathrm{p}} W^{\mathrm{T}} = (\mu_\mathrm{p} - \Gamma)$.
+	where we exploit that $W$ is a Lyapunov function for the previous system when $\dot{\mu}_\mathrm{p} \equiv \Pi$. This assures the asymptotic stability of the closed loop system, when \eqref{eq:backstepping:final_controller_1} is used. The Theorem follows considering that $\partial_{\mu_\mathrm{p}} W^{\mathrm{T}} = (\mu_\mathrm{p} - \Gamma)$.
 	
 %	The Theorem follows considering that
 %	%

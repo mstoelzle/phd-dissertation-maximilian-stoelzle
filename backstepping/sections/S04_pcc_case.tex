@@ -2,12 +2,12 @@
 %
 This section provides an example of application of the proposed model augmentation and model-based control strategy for the setpoint regulation of a pneumatically actuated planar soft robot, modeled through \gls{PCC} approximation with acting gravity forces. 
 
-\subsection{Model}\label{sub:pcc_model}
+\subsection{Model}\label{sub:backstepping:pcc_model}
 \textbf{Background - PCC dynamic model:}
 We consider a planar soft robotic arm consisting of three segments analogue to \cite{della2020model} modelled using the \gls{PCC}~\cite{jones2006kinematics} assumption, but the formulation can be easily extended to the 3D case while neglecting the torsional deformations. Alternatively, a strain-based parameterization could be employed~\cite{boyer2020dynamics}. 
 % The \gls{PCC}~\cite{jones2006kinematics} assumption stitches together segments each with constant curvature.
 We assume a weight distribution of $m_i = \int_{0}^{l_i} \rho_i(s') ds'$ along the center line of the segment $i$. Gravity is acting along the vector $g \in \mathbb{R}^2$. We consider the following equations of motions with diagonal matrices $K$ and $D$:
-\begin{equation}\small\label{eq:dynamics_pcc_case}\small
+\begin{equation}\small\label{eq:backstepping:dynamics_pcc_case}\small
 \begin{split}
 	B(q)\ddot{q} + C(q,\dot{q}) \, \dot{q} + G(q) + K \, q + D \, \dot{q} + G_{\mathrm{P}}^{\mathrm{q}}(q,\mu_\mathrm{p}) &= 0, \\
 	M_\mathrm{p} \, \ddot{\mu}_\mathrm{p} + D_\mathrm{p} \, \dot{\mu}_\mathrm{p} + G_{\mathrm{P}}^{\mu_\mathrm{p}}(q,\mu_\mathrm{p}) &= f_\mathrm{p}. \; 
@@ -15,8 +15,8 @@ We assume a weight distribution of $m_i = \int_{0}^{l_i} \rho_i(s') ds'$ along t
 \end{equation}
 
 \textbf{Fluid Volume in Chamber:}
-A model of the fluid volume in the chambers as a function of the configuration of the segment is required to evaluate the conservative forces by the fluid as specified in \eqref{eq:GPq} and \eqref{eq:GPmu}. In this section, we derive a simple analytical model based on \gls{CC} kinematics.
-It is assumed that the volume of the chamber is only dependent on the curvature of the segment as we model the segment length $l_{0,i}$ to stay constant and the chambers to be inextensible in radial direction of the curvature. We visualize the model and its parameters in Figure~\ref{fig:pcc_case_overview}. Thus, the volume of chamber $j$ part of segment $i$ is defined as:
+A model of the fluid volume in the chambers as a function of the configuration of the segment is required to evaluate the conservative forces by the fluid as specified in \eqref{eq:backstepping:GPq} and \eqref{eq:backstepping:GPmu}. In this section, we derive a simple analytical model based on \gls{CC} kinematics.
+It is assumed that the volume of the chamber is only dependent on the curvature of the segment as we model the segment length $l_{0,i}$ to stay constant and the chambers to be inextensible in radial direction of the curvature. We visualize the model and its parameters in Figure~\ref{fig:backstepping:pcc_case_overview}. Thus, the volume of chamber $j$ part of segment $i$ is defined as:
 \begin{equation}\small
     V_{\mathrm{C},j}(q_i) = \int_{d_{\mathrm{C},\mathrm{a},j}}^{d_{\mathrm{C},\mathrm{b},j}} b_\mathrm{C} \, l_i(d_\mathrm{C}') \, \mathrm{d}d_\mathrm{C}',
 \end{equation}
@@ -53,9 +53,9 @@ The partial derivative $\partial_{q} V_{\mathrm{C}}$ is determined as
 \subsection{Set point control}
 % \begin{figure*}[ht]
 %   \centering
-%   \subfloat[Configuration $q$]{\includegraphics[width=0.33\textwidth]{figures/time_series_plot_configuration_v4.eps}\label{fig:time_series_plot_configuration}}
-%   \subfloat[Piston position $\mu_\mathrm{p}$]{\includegraphics[width=0.33\textwidth]{figures/time_series_plot_piston_position_v4.eps}\label{fig:time_series_plot_piston_position}}
-%   \subfloat[Actuation force $f_\mathrm{p}$]{\includegraphics[width=0.33\textwidth]{figures/time_series_plot_actuation_force_v4.eps}\label{fig:time_series_plot_actuation_force}}\\
+%   \subfloat[Configuration $q$]{\includegraphics[width=0.33\textwidth]{figures/time_series_plot_configuration_v4.eps}\label{fig:backstepping:time_series_plot_configuration}}
+%   \subfloat[Piston position $\mu_\mathrm{p}$]{\includegraphics[width=0.33\textwidth]{figures/time_series_plot_piston_position_v4.eps}\label{fig:backstepping:time_series_plot_piston_position}}
+%   \subfloat[Actuation force $f_\mathrm{p}$]{\includegraphics[width=0.33\textwidth]{figures/time_series_plot_actuation_force_v4.eps}\label{fig:backstepping:time_series_plot_actuation_force}}\\
 %   \caption{Simulation of posture regulation under \gls{PCC} approximation comparing the performance of the nonlinear backstepping controller (dashed lines) with a PID baseline controller (dotted lines). The set-point reference configuration is shown with solid lines.}
 % \end{figure*}
 \begin{figure*}[ht]
@@ -75,14 +75,14 @@ The partial derivative $\partial_{q} V_{\mathrm{C}}$ is determined as
   \subfloat[Actuation force $f_\mathrm{p}$]{\includegraphics[width=0.33\textwidth, trim={0.75cm 0cm 0.75cm 0cm}]{backstepping/figures/time_series_plot_actuation_force_backstepping_v2.eps}}\\
   \caption{Simulation of posture regulation under \gls{PCC} approximation comparing the performance of an end-to-end PID baseline controller (1st row), with a coupling-aware PID controller (2nd row) and the nonlinear backstepping controller (3rd row). The set-point reference configuration is shown with solid lines.}
   \vspace{-0.5cm}
-  \label{fig:time_series_plots}
+  \label{fig:backstepping:time_series_plots}
 \end{figure*}
 
 \textbf{Configuration-space control:}
 %
 Consider the following regulator of desired configuration $\Bar{q} \in \mathbb{R}^{n_\mathrm{q}}$, 
 %
-\begin{equation}\small\label{eq:high_level_regulation}
+\begin{equation}\small\label{eq:backstepping:high_level_regulation}
     \Bar{\tau}(q, \Bar{q}) = K \Bar{q} + G(q),
 \end{equation}
 %
@@ -135,17 +135,17 @@ $\Delta \Bar{G}_{\mathrm{P},\mathrm{L}}^{\Bar{q}} =  \Delta \Bar{G}_{\mathrm{P},
 %      0.5 \, \Bar{\tau}(q, \Bar{q}),
 % \end{equation}
 results for the chosen set point controller $\Bar{\tau}$ and a diagonal elastic matrix $K$ with elements $k_i$ in:
-\begin{equation}\small\label{eq:dist_G_p_q_planar_pcc}
+\begin{equation}\small\label{eq:backstepping:dist_G_p_q_planar_pcc}
     \Bar{G}_{\mathrm{P},j}^{\Bar{q}}(q, \Bar{q}_i) 
     % = \pm G_{\mathrm{P},\mathrm{t}0,i}^{q} - 0.5 \Bar{\tau}_i 
     = \pm G_{\mathrm{P},\mathrm{t}0,i}^{q} - 0.5 \left ( k_i \Bar{q}_i + G_i(q) \right ).
 \end{equation}
-\eqref{eq:GPq} is inversed to compute the desired piston position $\Bar{\mu}_{\mathrm{p}} = \Gamma(q, \Bar{q})$:
-\begin{equation}\small\label{eq:gamma}
+\eqref{eq:backstepping:GPq} is inversed to compute the desired piston position $\Bar{\mu}_{\mathrm{p}} = \Gamma(q, \Bar{q})$:
+\begin{equation}\small\label{eq:backstepping:gamma}
     \Gamma_j(q, \Bar{q}) = \frac{1}{A_{\mathrm{p},j}} \left ( \frac{\alpha_{\mathrm{air},j} \, \partial_{q_i} V_{\mathrm{C},j}}{p_\mathrm{atm} \, \partial_{q_i} V_{\mathrm{C},j} - \Bar{G}_{\mathrm{P},j}^{\Bar{q}}(q, \Bar{q})} - V_{\mathrm{C},j}(q) \right ).
 \end{equation}
 \textbf{Backstepping:}
-The system is now in the form of \eqref{eq:reduced_sys}, so Theorem~1 can be invoked and a specialized version of \eqref{eq:pi_psi} can be derived for the \gls{PCC}-case and our chosen set-point controller of \eqref{eq:high_level_regulation}. The partial derivative of the Lyapunov function of the soft system controller evaluates to $ \partial_{\dot{q}} H(q, \dot{q}) = \dot{q}^\mathrm{T} B(q)$, which allows to re-formulate \eqref{eq:pi_psi} into:
+The system is now in the form of \eqref{eq:backstepping:reduced_sys}, so Theorem~1 can be invoked and a specialized version of \eqref{eq:backstepping:pi_psi} can be derived for the \gls{PCC}-case and our chosen set-point controller of \eqref{eq:backstepping:high_level_regulation}. The partial derivative of the Lyapunov function of the soft system controller evaluates to $ \partial_{\dot{q}} H(q, \dot{q}) = \dot{q}^\mathrm{T} B(q)$, which allows to re-formulate \eqref{eq:backstepping:pi_psi} into:
 \begin{equation}\small
 \begin{split}
     \Pi &= \dot{\Gamma} - K_1 (\mu_p - \Gamma) + S^\mathrm{T} \dot{q},\\
@@ -159,8 +159,8 @@ The system is now in the form of \eqref{eq:reduced_sys}, so Theorem~1 can be inv
 %     \dot{\Gamma}_j = \frac{1}{A_{\mathrm{p},j}} \left ( \frac{\alpha_{\mathrm{air},j} \partial_{q_i} V_{\mathrm{C},j} \partial_{q} \Bar{G}_{\mathrm{P},j}^{\Bar{q}}}{\left ( p_\mathrm{atm} \partial_{q_i} V_{\mathrm{C},j} - \Bar{G}_{\mathrm{P},j}^{\Bar{q}} (q, \Bar{q}) \right )^2} - \partial_{q} V_{\mathrm{C},j} \right ) \dot{q}.
 % \end{equation}
 % For the proposed set point controller, we can subsequently also determine the partial derivative of the commanded force $\partial_q \Bar{G}_{\mathrm{P},j}^{\Bar{q}}(q, \Bar{q}) = - 0.5 \, \partial_q G_i(q)$.
-% The partial derivative of the Lyapunov function of the soft system controller evaluates to $ \partial_{\dot{q}} H(q, \dot{q}) = \dot{q}^\mathrm{T} B(q)$, which allows us to re-formulate \eqref{eq:pi_psi}:
-% \begin{equation}\small\label{eq:pi_pcc_set_point}
+% The partial derivative of the Lyapunov function of the soft system controller evaluates to $ \partial_{\dot{q}} H(q, \dot{q}) = \dot{q}^\mathrm{T} B(q)$, which allows us to re-formulate \eqref{eq:backstepping:pi_psi}:
+% \begin{equation}\small\label{eq:backstepping:pi_pcc_set_point}
 %     \Pi(q, \Bar{q}, \dot{q}, \mu_\mathrm{p}) = \dot{\Gamma} - K_1 (\mu_p - \Gamma) + S^\mathrm{T} \dot{q}.
 % \end{equation}
 % \textbf{Backstepping to piston force:}

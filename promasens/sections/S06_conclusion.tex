@@ -1,0 +1,10 @@
+\section{Conclusion}\label{sec:promasens:conclusion}
+
+This work proposed a sensing strategy for soft-bodied robots that relies on multiple magnetic sensors embedded directly in the robot. Thanks to a novel kinematics-aware neural architecture, we can simultaneously use information coming from all the sensors to reliably reconstruct the full robot shape. 
+The decoupling of the kinematics from the learned sensor measurement predictor allows modifications to the placement of the sensors without requiring a re-training of the neural network.
+The proposed method is agnostic to the used kinematic state parametrization, which we verified in simulations using either PCC or affine curvature models.
+% The method was extensively tested with experiments on a soft segment.
+Extensive experiments with a soft segment showed that a model can be trained on one trajectory type and then be used for inference on a variety of other trajectories in the same workspace.
+In future work, we will validate the proposed proprioception methodology to execute closed-loop control. % on a multi-segment robot. 
+We also invite future research studying the optimal placement of sensors in continuum soft robots, where the optimization procedure might take advantage of the gradients provided by our algorithm.
+% Additionally, we would like to validate the proprioception methodology, which we have developed for the general case of $n_\mathrm{b}$ segments, experimentally on a multi-segment robot. 

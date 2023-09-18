@@ -1,0 +1,41 @@
+\chapter{Learning Proprioception for Continuum Soft Robots with Multiple Magnetic Sensors}
+\label{chp:promasens}
+
+\begin{abstract}
+    Sensing the shape of continuum soft robots without obstructing their movements and modifying their natural softness requires innovative solutions. This letter proposes to use magnetic sensors fully integrated into the robot to achieve proprioception. Magnetic sensors are compact, sensitive, and easy to integrate into a soft robot. We also propose a neural architecture to make sense of the highly nonlinear relationship between the perceived intensity of the magnetic field and the shape of the robot. By injecting a priori knowledge from the kinematic model, we obtain an effective yet data-efficient learning strategy. We first demonstrate in simulation the value of this kinematic prior by investigating the proprioception behavior when varying the sensor configuration, which does not require us to re-train the neural network. We validate our approach in experiments involving one soft segment containing a cylindrical magnet and three magnetoresistive sensors. During the experiments, we achieve mean relative errors of 4.5\%.
+\end{abstract}
+
+\blfootnote{This chapter is partly based on \faFileTextO~\emph{M. Beller. Toward an
+    Empirical Theory of Feedback-Driven Development, ICSE'18 (Student Research Competition)}~\cite{BellerSRC2018}.
+}
+
+
+%% Start the actual chapter on a new page.
+\newpage
+
+\input{promasens/sections/S01_introduction}
+
+\input{promasens/sections/S02_methodology}
+
+\input{promasens/sections/S03_pcc_simulations}
+
+\input{promasens/sections/S04_ac_simulations}
+
+\input{promasens/sections/S05_experiments}
+
+\input{promasens/sections/S06_conclusion}
+
+\section*{Author Contributions}
+T.B., M.K.H, M.S., and D.v.d.T contributed equally to this work. 
+C.d.S., and R.B. conceived and led the project. 
+M.S. invented the proprioception algorithm and implemented all simulations. 
+T.B., M.K.H, J.N., and D.v.d.T designed the strategy to integrate sensors and magnets into the robot.
+T.B., M.K.H, J.N., and D.v.d.T developed the PCB and sensing electronics. 
+T.B., M.K.H, and D.v.d.T fabricated the soft robot.
+T.B., M.K.H, J.N., and D.v.d.T implemented the experimental data processing pipeline.
+T.B., M.K.H, M.S., and D.v.d.T conducted experiments.
+T.B., M.K.H, M.S., and D.v.d.T tuned the learning strategy and developed suitable trajectories.
+T.B., M.K.H, M.S., and D.v.d.T wrote the manuscript. C.d.S., and R.B. revised the manuscript.
+
+\section*{Acknowledgements}
+We would like to thank Ehsan Heseini, Jasper Insinger and Tom Salden from Delft University of Technology, NL for their guidance in designing the PCB.
