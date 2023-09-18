@@ -10,8 +10,9 @@
 \let\proof\relax
 \usepackage{amsthm}
 % figures
-\usepackage{epsfig} % for postscript graphics files
 \usepackage{svg}
+\DeclareGraphicsExtensions{.eps}
+\usepackage{epstopdf}
 
 \hyphenation{TestRoots WatchDog proj-ect proj-ects Ec-lipse two-fold clie-nts Mo-cki-to wide-spread}
 \newcommand{\sparkline}[1]{$\vcenter{\hbox{\includegraphics[scale=0.04]{#1}}}$}
@@ -71,7 +72,7 @@
 \thumbtrue
 
 \include{introduction/introduction}
-% \include{backstepping/backstepping}
+\include{backstepping/backstepping}
 \include{conclusion/conclusion}
 
 %% Use letters for the chapter numbers of the appendices.
