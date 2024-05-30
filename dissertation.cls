@@ -32,7 +32,7 @@
     \RequirePackage[xetex]{geometry}
     \RequirePackage[xetex]{graphicx}
     %\usepackage[bookmarks=false,hidelinks]{hyperref}
-    \RequirePackage[xetex,bookmarks=false,hidelinks]{hyperref}
+    \RequirePackage[xetex,bookmarks=false,hidelinks,backref=page]{hyperref}
     \RequirePackage{fontspec}
     \RequirePackage{xltxtra}
     \defaultfontfeatures{Ligatures=TeX}
@@ -40,11 +40,11 @@
     \ifpdf
         \RequirePackage[pdftex]{geometry}
         \RequirePackage[pdftex]{graphicx}
-        \RequirePackage[pdftex,bookmarks=false,hidelinks]{hyperref}
+        \RequirePackage[pdftex,bookmarks=false,hidelinks,backref=page]{hyperref}
     \else
         \RequirePackage[dvips]{geometry}
         \RequirePackage[dvips]{graphicx}
-        \RequirePackage[hypertex,bookmarks=false,hidelinks]{hyperref}
+        \RequirePackage[hypertex,bookmarks=false,hidelinks,backref=page]{hyperref}
         \fi
     \RequirePackage[utf8]{inputenc}
 \fi
@@ -56,7 +56,7 @@
 \RequirePackage[noindentafter]{titlesec}
 \RequirePackage{titletoc}
 %\RequirePackage[nottoc]{tocbibind}
-\RequirePackage[usenames,dvipsnames,svgnames,table,xcdraw]{xcolor}
+\RequirePackage[dvipsnames,svgnames,table,xcdraw]{xcolor}
 %\RequirePackage[table]{xcolor}
 \RequirePackage{tikz}
 
