@@ -165,7 +165,7 @@
 
 % *** GRAPHICS RELATED PACKAGES ***
 %
-\RequirePackage{subfig}
+% \RequirePackage{subfig}
 %% Make figures appear in the same section (to avoid a bunch of figures at the end of a section)
 \RequirePackage[section]{placeins}
 % declare the path(s) where your graphic files are
