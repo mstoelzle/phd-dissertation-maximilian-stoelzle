@@ -1,0 +1,173 @@
+\section{Proposed Architecture: Shape Estimation with Kinematics-Aware SLAM}
+\label{sec:srslam:pose_estimation}
+
+In this work we propose to use \gls{SLAM} for proprioception of continuum soft robots. Common kinematic parametrizations for soft robots such as \gls{PCC}~\cite{webster2010design} or \gls{PCS}~\cite{renda2018discrete} model the soft arm to consist of multiple segments with independent kinematic state variables. 
+In the following, we assume that the robot's model consists of $n_{\mathrm{S}}$ segments, and that a monocular camera is attached to each segment. We rely on a \gls{PCC} kinematic formulation. However, the proposed results can be directly generalized to the PCS case.
+%
+%We expect that there exists a constant coordinate transformation between the camera and one point along the center-line of the soft segment.
+%
+Our goal is to reconstruct the full shape (i.e., a configuration $q_i$ for each segment) of the soft robot from the stream of images recorded by the cameras.
+
+Fig. \ref{fig:srslam:method_overview} shows an overview of the proposed architecture.
+%
+%Monocular \gls{SLAM} algorithms are able to estimate the pose of each camera as the robot arm follows a trajectory.
+We use \gls{SLAM} algorithms such as monocular ORB-SLAM~\cite{mur2017orb} to estimate the pose of cameras attached to the soft robotic arm.  The pose estimation consists of 3D translation and rotations describing the relative camera movement from initial calibration to the current state ($\hat{t}_0^{\mathrm{c}_i},\hat{R}_0^{\mathrm{c}_i}$ in the figure). Then, the kinematic model is simultaneously used to refine the outputs of the SLAM and transform it to the desired estimation of the configurations ($\hat{q}_1,\hat{q}_3,\hat{q}_3$ in the figure). Starting from the base segment, and progressively iterating up until reaching the tip of the robot, we express translation and rotations in local coordinates, and we optimize the estimated configurations segment-by-segment starting at the proximal end by projecting the pose estimate into the 3D \gls{PCC} kinematics.
+% This approach leverages known characteristics of the continuum soft robot and reduces the pose estimation error.
+
+In the following subsections, we provide more details on the various components of this architecture.
+
+\subsection{Background: Monocular ORB-SLAM}
+We choose monocular ORB-SLAM~\cite{mur2017orb} for pose estimation of the camera locations. Although this technological solution has never been applied to soft robots, the algorithm itself is well established and its applications to mobile robotics widespread. As such, we  briefly describe here only the major steps of the algorithm.%, based on the pipeline in \ref{fig:srslam:algorithmpipeline}. 
+ \begin{enumerate}
+     \item \textbf{Map Initialization}: ORB-SLAM initializes a map of 3D points based on two video frames. The 3D points and relative camera pose are computed using triangulation of 2D ORB feature correspondences.
+     \item \textbf{Tracking}: Once the map is initialized, the camera pose is estimated for each new frame by matching features in the current frame to features in the last key frame. The estimated camera pose is refined by tracking the local map.
+     \item \textbf{Local Mapping}: If the current frame is identified as a key frame, it is used to create new 3D map points. At this stage, \gls{BA} is used to minimize re-projection errors by adjusting the camera pose and 3D points.
+     \item \textbf{Loop Closure}: Loops are detected for each key frame by comparing it against all previous ones. % key frames using the bag-of-features approach~\cite{o2011introduction}. 
+     %Any time a loop closure is detected, the pose graph is optimized to refine the camera poses of all the key frames.
+     This information is used to optimize the poses.
+ \end{enumerate}
+An important aspect of \gls{SLAM} algorithms are key frames, which are a subset of video frames that contain cues for localization and tracking. Two consecutive key frames usually involve sufficient visual change. % In the end the algorithm returns the camera poses for each key frame.
+
+\subsection{Projection into PCC-Kinematics}
+Once the \gls{SLAM} algorithm provides us with the estimated camera poses, we want to interpret and correct them such as that they are coherent with the \gls{PCC} kinematic model.
+%
+In this paper, we consider the \emph{Delta} parametrization~\cite{della2020improved} of the \gls{PCC} kinematics, but the formulation could also be easily adapted to other kinematic parametrizations such as \gls{PCS}~\cite{renda2018discrete}.
+
+% \begin{figure}[ht]
+%     \centering
+%     \includegraphics[width=1\columnwidth]{srslam/figures/kinematic_parameters.pdf}\label{fig:srslam:kinematic_parameters}
+%     \\
+%     \caption{One graphic showing the kinematic parameters for a multi-segment setup with multiple cameras and all used coordinate transformations.}
+% \end{figure}
+
+We show a pictorial representation of this kinematic model in Fig. \ref{fig:srslam:kinematics}. Each segment of original length $L_{0,i}$ is described with three configuration variables 
+%
+%\begin{equation}
+    $q_i \in \mathbb{R}^{3} = \begin{pmatrix}\Delta_{x,i} & \Delta_{y,i} & \delta L_i\end{pmatrix}^\mathrm{T}$,
+%\end{equation}
+where $\delta L_i$ is segment's extension, and $\Delta_{x,i}$ and $\Delta_{y,i}$ are the differences of the arc lengths of the segment at a radial distance of $d_i$ from the center-line along both cardinal directions of the base~\cite{della2020improved}. The complete robot's configuration is $q \in \mathbb{R}^{3 n_{\mathrm{S}}}$. The coordinate transformation for segment $i$ from the base frame $\{ S_{i-1} \}$ into the tip frame $\{ S_{i} \}$ as a function of the configuration $q_i$ is given by~\cite{della2020improved}
+\begin{equation}\small
+\label{eq:srslam:transformation_improved_pcc}
+\begin{split}
+    R_{i-1}^{i} &= 
+    \begin{pmatrix}
+        1 + \frac{\Delta_{x,i}^2}{\Delta_{i}^2} \left ( \mathrm{c}_i - 1 \right ) & \frac{\Delta_{x,i} \Delta_{y,i}}{\Delta_{i}^2} \left ( \mathrm{c}_i - 1 \right ) & \frac{\Delta_{x,i}}{\Delta_i} \mathrm{s}_i\\
+        \frac{\Delta_{x,i} \Delta_{y,i}}{\Delta_{i}^2} \left ( \mathrm{c}_i - 1 \right ) & 1 + \frac{\Delta_{y,i}^2}{\Delta_{i}^2} \left ( \mathrm{c}_i - 1 \right ) & \frac{\Delta_{y,i}}{\Delta_i} \mathrm{s}_i\\
+        \frac{-\Delta_{x,i}}{\Delta_i} \mathrm{s}_i & \frac{-\Delta_{y,i}}{\Delta_i} \mathrm{s}_i & \mathrm{c}_i
+    \end{pmatrix},\\
+    \vspace{0.25em}
+    t_{i-1}^{i} &= \frac{d_i ( L_{0,i}+\delta L_i)}{\Delta_i^2}
+    \begin{pmatrix}
+        \Delta_{x,i} (1 - \mathrm{c}_i) & \Delta_{y,i} (1 - \mathrm{c}_i) & \Delta_{i} \mathrm{s}_i
+    \end{pmatrix}^{\mathrm{T}},
+\end{split}
+\end{equation}
+where we substituted $\Delta_i = \sqrt{\Delta_{x,i}^2 + \Delta_{y,i}^2}$, $\mathrm{s}_i = \sin \left ( \frac{\Delta_i}{d_i} \right )$, and $\mathrm{c}_i = \cos \left ( \frac{\Delta_i}{d_i} \right )$ for conciseness.
+
+We describe the coordinate frame of camera $i$ with $\{ S_{\mathrm{c}_i} \}$. It is assumed that there exists a fixed transformation $T_{\check{\mathrm{c}},i}^{\mathrm{c}_i} \in \mathbb{R}^{4 \times 4}$ from frame $\{ S_{\check{\mathrm{c}},i} \}$ to the camera frame $\{ S_{\mathrm{c}_i} \}$. 
+$\{ S_{\check{\mathrm{c}},i} \}$ is localized at a distance $l_{\mathrm{c}_i}$ along the center-line from the base of segment $i$. 
+The transformation $T_{i-1}^{\check{\mathrm{c}},i}(q_{\check{c},i})$ from the base to the frame $\{ S_{\check{\mathrm{c}},i} \}$ can be found with \eqref{eq:srslam:transformation_improved_pcc} by plugging in the adjusted configuration $q_{\check{c},i}$ defined as
+\begin{equation}\label{eq:srslam:camera_configuration}
+    q_{\check{c},i} = \frac{l_{\mathrm{c}_i}}{L_{0,i}} q_i,
+\end{equation}
+and the adjusted original length  $l_{\mathrm{c}_i}$.
+
+The \gls{SLAM} algorithm provides a pose estimate for the translation $\hat{t}_{\mathrm{c},\mathrm{t}0,i}^{\mathrm{c}_i} \in \mathbb{R}^3$ and rotation $\hat{R}_{\mathrm{c},\mathrm{t}0,i}^{\mathrm{c}_i} \in \mathbb{R}^{3 \times 3}$ relative to the known initial reference frame of the camera $\{ S_{\mathrm{c},\mathrm{t}0,i} \}$. 
+Thus, we first transform the pose estimates to the inertial frame of the robot $\{ S_0 \}$
+\begin{equation}
+    \begin{pmatrix}
+        \hat{t}_{0}^{\mathrm{c}_i}\\
+        1
+    \end{pmatrix}
+    = T_0^{\mathrm{c},\mathrm{t}0,i}
+    \begin{pmatrix}
+        \hat{t}_{\mathrm{c},\mathrm{t}0,i}^{\mathrm{c}_i}\\
+        1
+    \end{pmatrix},
+    \quad
+    \hat{R}_{0}^{\mathrm{c}_i} = R_0^{\mathrm{c},\mathrm{t}0,i} \hat{R}_{\mathrm{c},\mathrm{t}0,i}^{\mathrm{c}_i}.
+\end{equation}
+
+We introduce the following notations for the \gls{PCC} kinematics
+\begin{equation}\small\label{eq:srslam:Pi}
+\begin{split}
+    \hat{t}_{i-1}^{\mathrm{c}_i} &= \Pi_\mathrm{t}(\hat{q}_i) = 
+    \hat{T}_{i-1}^{\check{\mathrm{c}},i} \left (\frac{l_{\mathrm{c}_i}}{L_{0,i}} \hat{q}_i \right )
+    t_{\check{\mathrm{c}},i}^{\mathrm{c}_i}\\
+    \hat{R}_{i-1}^{\mathrm{c}_i} &= \Pi_\mathrm{R}(\hat{q}_i) =
+    \hat{R}_{i-1}^{\check{\mathrm{c}},i} \left (\frac{l_{\mathrm{c}_i}}{L_{0,i}} \hat{q}_i \right )
+    R_{\check{\mathrm{c}},i}^{\mathrm{c}_i},
+\end{split}
+\end{equation}
+where $\hat{t}_{i-1}^{\check{\mathrm{c}},i}$ and $\hat{R}_{i-1}^{\check{\mathrm{c}},i}$ describe the translation and rotation from the base of the segment to the camera frame according to the \gls{PCC} kinematic model for an estimated configuration of the the segment $\hat{q}_i$. $\hat{T}_{i-1}^{\check{\mathrm{c}},i}(q_{\check{c},i})$ and $\hat{R}_{i-1}^{\check{\mathrm{c}},i}(q_{\check{c},i})$ are based on \eqref{eq:srslam:transformation_improved_pcc} and a function of the adjusted configuration $q_{\check{c},i}$ referenced in \eqref{eq:srslam:camera_configuration}.
+
+Additionally, the pose estimates by the \gls{SLAM} algorithm need to be transformed to the base frame of segment $i$. Thus, we introduce the following
+\begin{equation}\small\label{eq:srslam:Psi}
+\begin{split}
+    \hat{t}_{i-1}^{\mathrm{c}_i} &= \Psi_\mathrm{t}(q_1 \dots q_{i-1}, \hat{t}_{0}^{\mathrm{c}_i}) =
+    \prod_{\tilde{i}=1}^{i-1} \left ( T_{\tilde{i}-1}^{\tilde{i}} \left (\hat{q}_{\tilde{i}} \right )  \right )^\mathrm{T}
+    \begin{pmatrix}
+        \hat{t}_{0}^{\mathrm{c}_i}\\
+        1
+    \end{pmatrix},\\
+    \hat{R}_{i-1}^{\mathrm{c}_i} &= \Psi_\mathrm{R}(q_1 \dots q_{i-1}, \hat{R}_{0}^{\mathrm{c}_i}) =
+    \prod_{\tilde{i}=1}^{i-1} \left ( R_{\tilde{i}-1}^{\tilde{i}} \left (\hat{q}_{\tilde{i}} \right )  \right )^\mathrm{T}
+    \hat{R}_{0}^{\mathrm{c}_i}.
+\end{split}    
+\end{equation}
+
+Next, we define a cost function to optimize the pose estimate by projecting them into the \gls{PCC}-kinematics
+% Please note, that we do not include the orientation estimate $\hat{R}_{0}^{\mathrm{c}_i}$ by the \gls{SLAM} algorithm in the cost function.
+%
+\begin{equation}\small\label{eq:srslam:cost_fun}
+    \min_{\hat{q}} \sum_{i=1}^{n_\mathrm{S}} f_{\mathrm{t},i}(\hat{q}) + \lambda_\mathrm{R} f_{\mathrm{R},i}(\hat{q}),
+\end{equation}
+with
+\begin{equation}\small\label{eq:srslam:cost_fun_ingredients}
+\begin{split}
+    f_{\mathrm{t},i}(\hat{q}) &=
+    \big\lVert 
+    \Pi_\mathrm{t}(\hat{q}_i) - \Psi_\mathrm{t}(q_1 \dots q_{i-1}, \hat{t}_{0}^{\mathrm{c}_i})
+    \big\rVert_2,\\
+    f_{\mathrm{R},i}(\hat{q}) &=
+    \big\lVert 
+    \Pi_\mathrm{R}(\hat{q}_i) - \Psi_\mathrm{R}(q_1 \dots q_{i-1}, \hat{R}_{0}^{\mathrm{c}_i})
+    \big\rVert_F,
+\end{split}
+\end{equation}
+where the Euclidean norm is used to compute the translational error between the predicted translation by the \gls{PCC} kinematic model and the estimated translation by \gls{SLAM}. The rotational error is weighted with $\lambda_\mathrm{R}$ and computed with the Frobenius norm between the predicted rotation matrix by the \gls{PCC} kinematics and the estimated orientation by \gls{SLAM} represented as a rotation matrix as well.
+
+Please note, that the optimization of the configuration estimate $\hat{q}$ can be decoupled for each segment. 
+We start by optimizing the configuration of the first segment $\hat{q}_1$ based on $\Psi_\mathrm{t}(\hat{t}_{0}^{\mathrm{c},1})$ and $\Psi_\mathrm{R}(\hat{R}_{0}^{\mathrm{c},1})$. Next, we optimize the configuration of the second segment $\hat{q}_2$ taking into account the already optimized configuration of segment one in $\Psi_\mathrm{t}(\hat{q}_1, \hat{t}_{0}^{\mathrm{c},2})$ and $\Psi_\mathrm{R}(\hat{q}_1, \hat{R}_{0}^{\mathrm{c},2})$. 
+Subsequently, we move on to optimize the remaining segments sequentially as described by Algorithm~\ref{alg:srslampose_estimation}. This procedure is also graphically represented by the right side of Fig. \ref{fig:srslam:method_overview}.
+
+% \begin{algorithm}[hbt!]
+% \caption{Pose estimation for soft robots through SLAM}\label{alg:srslampose_estimation}
+% \begin{algorithmic}
+% \REQUIRE $o \in \mathbb{R}^{n_\mathrm{S}}$ \COMMENT{Observations of all cameras}
+% \ENSURE $\hat{q} \in \mathbb{R}^{3 n_\mathrm{S}}$ \COMMENT{Estimated robot configuration}
+% \STATE $i \gets 1$
+% \WHILE{$i \leq n_\mathrm{S}$}
+%     \vspace{0.25em}
+%     \STATE $\hat{t}_{0}^{\mathrm{c}_i} \gets T_0^{\mathrm{c},\mathrm{t}0,i} \: \mathrm{SLAM}_\mathrm{t}(o_i)$ \COMMENT{Translational est. SLAM}
+%     \vspace{0.25em}
+%     \STATE $\hat{R}_{0}^{\mathrm{c}_i} \gets R_0^{\mathrm{c},\mathrm{t}0,i} \: \mathrm{SLAM}_\mathrm{R}(o_i)$ \COMMENT{Rotational est. SLAM}
+%     \vspace{0.25em}
+%     \STATE $f_{\mathrm{t},i}(\hat{q}) \gets
+%     \big\lVert 
+%     \Pi_\mathrm{t}(\hat{q}_i) - \Psi_\mathrm{t}(q_1 \dots q_{i-1}, \hat{t}_{0}^{\mathrm{c}_i})
+%     \big\rVert_2$
+%     \vspace{0.25em}
+%     \STATE $f_{\mathrm{R},i}(\hat{q}) \gets
+%     \big\lVert 
+%     \Pi_\mathrm{R}(\hat{q}_i) - \Psi_\mathrm{R}(q_1 \dots q_{i-1}, \hat{R}_{0}^{\mathrm{c}_i})
+%     \big\rVert_F$
+%     \vspace{0.25em}
+%     \STATE $f_{c,i}(\hat{q}) \gets f_{\mathrm{t},i}(\hat{q}) + \lambda_\mathrm{R} f_{\mathrm{R},i}(\hat{q})$ \COMMENT{Cost function for $\hat{q}_i$}
+%     \vspace{0.25em}
+%     \STATE $\hat{q}_i \gets \argmin_{\hat{q_i}} f_c(\hat{q})$
+%     \vspace{0.25em}
+%     \STATE $i \gets i + 1$
+% \ENDWHILE
+% \end{algorithmic}
+% \end{algorithm}
