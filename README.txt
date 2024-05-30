@@ -51,6 +51,8 @@ Recent versions of Debian, and derived distributions such as Ubuntu, use the TeX
 Live system. Install the following packages to make full use of the this
 template:
 
-  texlive, texlive-fonts-extra, texlive-math-extra, texlive-lang-dutch,
-  texlive-lang-english, texlive-latex-extra, texlive-xetex
+```bash
+  sudo apt install texlive-xetex texlive-latex-extra latexmk
+  sudo apt install texlive-lang-european texlive-lang-english texlive-fonts-extra texlive-science
+```
 
