@@ -60,7 +60,6 @@ The partial derivative $\partial_{q} V_{\mathrm{C}}$ is determined as
 % \end{figure*}
 \begin{figure*}[ht]
   \centering
-  \captionsetup[subfigure]{labelformat=empty}
   % End-to-end PID
   \subfigure{\includegraphics[width=0.32\textwidth, trim={0.75cm 0.87cm 0.75cm 0cm}]{backstepping/figures/time_series_plot_configuration_full_system_PID_v2}}
   \subfigure{\includegraphics[width=0.32\textwidth, trim={0.75cm 0.87cm 0.75cm 0cm}]{backstepping/figures/time_series_plot_piston_position_full_system_PID_v2.eps}}
@@ -70,6 +69,7 @@ The partial derivative $\partial_{q} V_{\mathrm{C}}$ is determined as
   \subfigure{\includegraphics[width=0.32\textwidth, trim={0.75cm 0.87cm 0.75cm 0cm}]{backstepping/figures/time_series_plot_piston_position_coupling_aware_PID_v2.eps}}
   \subfigure{\includegraphics[width=0.32\textwidth, trim={0.75cm 0.87cm 0.75cm 0cm}]{backstepping/figures/time_series_plot_actuation_force_coupling_aware_PID_v2.eps}}\\
   % Backstepping
+  \setcounter{subfigure}{0}
   \subfigure[Configuration $q$]{\includegraphics[width=0.32\textwidth, trim={0.75cm 0cm 0.75cm 0cm}]{backstepping/figures/time_series_plot_configuration_backstepping_v2.eps}}
   \subfigure[Piston position $\mu_\mathrm{p}$]{\includegraphics[width=0.32\textwidth, trim={0.75cm 0cm 0.75cm 0cm}]{backstepping/figures/time_series_plot_piston_position_backstepping_v2.eps}}
   \subfigure[Actuation force $f_\mathrm{p}$]{\includegraphics[width=0.32\textwidth, trim={0.75cm 0cm 0.75cm 0cm}]{backstepping/figures/time_series_plot_actuation_force_backstepping_v2.eps}}\\
