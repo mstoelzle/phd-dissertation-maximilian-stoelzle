@@ -45,7 +45,7 @@ $\forall \mu_{\mathrm{p},\mathrm{a}},\mu_{\mathrm{p},\mathrm{b}} \in \mathbb{R}^
 
 Thus, even if the robot side of the dynamics \eqref{eq:backstepping:complete_dyn} is not affine in control when taking $\mu_\mathrm{p}$ as input, still Lemma \ref{lemma:f_g_S} provides some structure that we leverage in the next theorem.
 
-\begin{theo}
+\begin{Theorem}
 	Suppose that a $\Gamma(q,\dot{q})$ exists s.t. the reduced system
 	%
 	\begin{equation}\small\label{eq:backstepping:reduced_sys}
@@ -73,7 +73,7 @@ Thus, even if the robot side of the dynamics \eqref{eq:backstepping:complete_dyn
 	\end{equation}
 	%
 	with $K_1,K_2 \succ 0$, is such that $q \rightarrow \bar{q}$ and $\mu_\mathrm{p} \rightarrow \Gamma(\bar q,\dot{\bar q})$, $\forall (\mu_\mathrm{p}(0),\dot{\mu}_\mathrm{p}(0)) \in \mathbb{R}^{2n_{\mu_\mathrm{p}}}$, and $\forall (q(0),\dot{q}(0)) \in \mathbb{R}^{2 n_{\mathrm{q}}}$.
-\end{theo}
+\end{Theorem}
 \begin{proof}
 	
 	We first consider the problem of deriving a controller under the assumption that the velocity of the piston $v_\mathrm{p}$ is set by a controller. This serves as a first step toward the general solution of the problem. System \eqref{eq:backstepping:complete_dyn} is thus reduced into
