@@ -2,26 +2,26 @@
 %
 % \begin{figure*}[ht]
 %   \centering
-%   \subfloat[Configuration $q$]{\includegraphics[width=0.33\textwidth]{figures/time_series_plot_m_p-0.5_untuned_configuration_v2.eps}\label{fig:backstepping:time_series_plot_m_p_0.5_configuration}}
-%   \subfloat[Piston position $\mu_\mathrm{p}$]{\includegraphics[width=0.33\textwidth]{figures/time_series_plot_m_p-0.5_untuned_piston_position_v2.eps}\label{fig:backstepping:time_series_plot_m_p_0.5_piston_position}}
-%   \subfloat[Actuation force $f_\mathrm{p}$]{\includegraphics[width=0.33\textwidth]{figures/time_series_plot_m_p-0.5_untuned_actuation_force_v2.eps}\label{fig:backstepping:time_series_plot_m_p_0.5_actuation_force}}\\
+%   \subfigure[Configuration $q$]{\includegraphics[width=0.33\textwidth]{figures/time_series_plot_m_p-0.5_untuned_configuration_v2.eps}\label{fig:backstepping:time_series_plot_m_p_0.5_configuration}}
+%   \subfigure[Piston position $\mu_\mathrm{p}$]{\includegraphics[width=0.33\textwidth]{figures/time_series_plot_m_p-0.5_untuned_piston_position_v2.eps}\label{fig:backstepping:time_series_plot_m_p_0.5_piston_position}}
+%   \subfigure[Actuation force $f_\mathrm{p}$]{\includegraphics[width=0.33\textwidth]{figures/time_series_plot_m_p-0.5_untuned_actuation_force_v2.eps}\label{fig:backstepping:time_series_plot_m_p_0.5_actuation_force}}\\
 %   \caption{Simulation of posture regulation under \gls{PCC} approximation for an actuation system with increased inertia ($m_\mathrm{p} = \SI{0.5}{kg}$) comparing the performance of the nonlinear backstepping controller (dashed lines) with a PID baseline controller (dotted lines). The set-point reference configuration is shown with solid lines. All gains remain unchanged and are tuned for the original system with $m_\mathrm{p} = \SI{0.19}{kg}$.}
 % \end{figure*}
 \begin{figure*}[ht]
   \centering
   \captionsetup[subfigure]{labelformat=empty}
   % End-to-end PID
-  \subfloat{\includegraphics[width=0.33\textwidth, trim={0.75cm 0.85cm 0.75cm 0cm}]{backstepping/figures/time_series_plot_m_p-0.5_untuned_configuration_full_system_PID_v2.eps}}
-  \subfloat{\includegraphics[width=0.33\textwidth, trim={0.75cm 0.85cm 0.75cm 0cm}]{backstepping/figures/time_series_plot_m_p-0.5_untuned_piston_position_full_system_PID_v2.eps}}
-  \subfloat{\includegraphics[width=0.33\textwidth, trim={0.75cm 0.85cm 0.75cm 0cm}]{backstepping/figures/time_series_plot_m_p-0.5_untuned_actuation_force_full_system_PID_v2.eps}}\\
+  \subfigure{\includegraphics[width=0.33\textwidth, trim={0.75cm 0.85cm 0.75cm 0cm}]{backstepping/figures/time_series_plot_m_p-0.5_untuned_configuration_full_system_PID_v2.eps}}
+  \subfigure{\includegraphics[width=0.33\textwidth, trim={0.75cm 0.85cm 0.75cm 0cm}]{backstepping/figures/time_series_plot_m_p-0.5_untuned_piston_position_full_system_PID_v2.eps}}
+  \subfigure{\includegraphics[width=0.33\textwidth, trim={0.75cm 0.85cm 0.75cm 0cm}]{backstepping/figures/time_series_plot_m_p-0.5_untuned_actuation_force_full_system_PID_v2.eps}}\\
   % Coupling-aware PID
-  \subfloat{\includegraphics[width=0.33\textwidth, trim={0.75cm 0.87cm 0.75cm 0cm}]{backstepping/figures/time_series_plot_m_p-0.5_untuned_configuration_coupling_aware_PID_v2.eps}}
-  \subfloat{\includegraphics[width=0.33\textwidth, trim={0.75cm 0.87cm 0.75cm 0cm}]{backstepping/figures/time_series_plot_m_p-0.5_untuned_piston_position_coupling_aware_PID_v2.eps}}
-  \subfloat{\includegraphics[width=0.33\textwidth, trim={0.75cm 0.87cm 0.75cm 0cm}]{backstepping/figures/time_series_plot_m_p-0.5_untuned_actuation_force_coupling_aware_PID_v2.eps}}\\
+  \subfigure{\includegraphics[width=0.33\textwidth, trim={0.75cm 0.87cm 0.75cm 0cm}]{backstepping/figures/time_series_plot_m_p-0.5_untuned_configuration_coupling_aware_PID_v2.eps}}
+  \subfigure{\includegraphics[width=0.33\textwidth, trim={0.75cm 0.87cm 0.75cm 0cm}]{backstepping/figures/time_series_plot_m_p-0.5_untuned_piston_position_coupling_aware_PID_v2.eps}}
+  \subfigure{\includegraphics[width=0.33\textwidth, trim={0.75cm 0.87cm 0.75cm 0cm}]{backstepping/figures/time_series_plot_m_p-0.5_untuned_actuation_force_coupling_aware_PID_v2.eps}}\\
   % Backstepping
-  \subfloat[Configuration $q$]{\includegraphics[width=0.33\textwidth, trim={0.75cm 0cm 0.75cm 0cm}]{backstepping/figures/time_series_plot_m_p-0.5_untuned_configuration_backstepping_v2.eps}}
-  \subfloat[Piston position $\mu_\mathrm{p}$]{\includegraphics[width=0.33\textwidth, trim={0.75cm 0cm 0.75cm 0cm}]{backstepping/figures/time_series_plot_m_p-0.5_untuned_piston_position_backstepping_v2.eps}}
-  \subfloat[Actuation force $f_\mathrm{p}$]{\includegraphics[width=0.33\textwidth, trim={0.75cm 0cm 0.75cm 0cm}]{backstepping/figures/time_series_plot_m_p-0.5_untuned_actuation_force_backstepping_v2.eps}}\\
+  \subfigure[Configuration $q$]{\includegraphics[width=0.33\textwidth, trim={0.75cm 0cm 0.75cm 0cm}]{backstepping/figures/time_series_plot_m_p-0.5_untuned_configuration_backstepping_v2.eps}}
+  \subfigure[Piston position $\mu_\mathrm{p}$]{\includegraphics[width=0.33\textwidth, trim={0.75cm 0cm 0.75cm 0cm}]{backstepping/figures/time_series_plot_m_p-0.5_untuned_piston_position_backstepping_v2.eps}}
+  \subfigure[Actuation force $f_\mathrm{p}$]{\includegraphics[width=0.33\textwidth, trim={0.75cm 0cm 0.75cm 0cm}]{backstepping/figures/time_series_plot_m_p-0.5_untuned_actuation_force_backstepping_v2.eps}}\\
   \caption{Simulation of posture regulation under \gls{PCC} approximation for an actuation system with increased inertia ($m_\mathrm{p} = \SI{0.5}{kg}$) comparing the performance of an end-to-end PID baseline controller (1st row), with a coupling-aware PID controller (2nd row) and the nonlinear backstepping controller (3rd row). The set-point reference configuration is shown with solid lines.}
   \label{fig:backstepping:time_series_plots_m_p-0.5_untuned}
   \vspace{-0.5cm}
@@ -29,9 +29,9 @@
 %
 \begin{figure}[ht]
   \centering
-  \subfloat[End-to-end PID]{\includegraphics[width=0.33\columnwidth, trim={0.5cm 0 0.5cm 0}]{backstepping/figures/cartesian_evolution_plot_m_p-0.5_untuned_full_system_pid_v1.eps}\label{fig:backstepping:cartesian_evolution_plot_m_p-0.5_untuned_full_system_pid}}
-  \subfloat[Coupling-aware PID]{\includegraphics[width=0.33\columnwidth, trim={0.5cm 0 0.5cm 0}]{backstepping/figures/cartesian_evolution_plot_m_p-0.5_untuned_coupling_aware_pid_v1.eps}\label{fig:backstepping:cartesian_evolution_plot_m_p-0.5_untuned_coupling_aware_pid}}
-  \subfloat[Backstepping]{\includegraphics[width=0.33\columnwidth, trim={0.5cm 0 0.5cm 0}]{backstepping/figures/cartesian_evolution_plot_m_p-0.5_untuned_backstepping_v2.eps}\label{fig:backstepping:cartesian_evolution_plot_m_p-0.5_untuned_backstepping}}
+  \subfigure[End-to-end PID]{\includegraphics[width=0.33\columnwidth, trim={0.5cm 0 0.5cm 0}]{backstepping/figures/cartesian_evolution_plot_m_p-0.5_untuned_full_system_pid_v1.eps}\label{fig:backstepping:cartesian_evolution_plot_m_p-0.5_untuned_full_system_pid}}
+  \subfigure[Coupling-aware PID]{\includegraphics[width=0.33\columnwidth, trim={0.5cm 0 0.5cm 0}]{backstepping/figures/cartesian_evolution_plot_m_p-0.5_untuned_coupling_aware_pid_v1.eps}\label{fig:backstepping:cartesian_evolution_plot_m_p-0.5_untuned_coupling_aware_pid}}
+  \subfigure[Backstepping]{\includegraphics[width=0.33\columnwidth, trim={0.5cm 0 0.5cm 0}]{backstepping/figures/cartesian_evolution_plot_m_p-0.5_untuned_backstepping_v2.eps}\label{fig:backstepping:cartesian_evolution_plot_m_p-0.5_untuned_backstepping}}
   \caption{Cartesian evolution of the soft robot for an actuation system with increased inertia ($m_\mathrm{p} = \SI{0.5}{kg}$). All gains remain unchanged and are tuned for the original system with $m_\mathrm{p} = \SI{0.19}{kg}$. The dotted lines mark the evolution of the tip of the segments. The soft robot consists of three segment (blue, orange and yellow). The reference configuration at the three set-points is marked with a thick black line.}
 \end{figure}
 %

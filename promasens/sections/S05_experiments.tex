@@ -8,13 +8,13 @@
 \end{figure*}
 % \begin{figure*}[hbt]
 %     \centering
-%     \subfloat[Design]{\includegraphics[width=0.135\textwidth]{promasens/figures/segment_design/segment_exploded_rendering_labeled_v1_cropped.pdf}\label{fig:promasens:exploded_rendering}}
+%     \subfigure[Design]{\includegraphics[width=0.135\textwidth]{promasens/figures/segment_design/segment_exploded_rendering_labeled_v1_cropped.pdf}\label{fig:promasens:exploded_rendering}}
     % \hspace{1pt}
 %     \hfill
-%     \subfloat[Experimental setup]{\includegraphics[width=0.65\textwidth]{promasens/figures/experimental_setup/experimental_setup_v4_compressed.pdf}\label{fig:promasens:experimental_setup}}
+%     \subfigure[Experimental setup]{\includegraphics[width=0.65\textwidth]{promasens/figures/experimental_setup/experimental_setup_v4_compressed.pdf}\label{fig:promasens:experimental_setup}}
 %     % \hspace{1pt}
 %     \hfill
-%     \subfloat[Actuated soft robot]{\includegraphics[width=0.16\textwidth]{promasens/figures/robot_bending/Overlapping_images_left_solid_right_transparent_compressed.pdf}\label{fig:promasens:actuated_soft_robot}}
+%     \subfigure[Actuated soft robot]{\includegraphics[width=0.16\textwidth]{promasens/figures/robot_bending/Overlapping_images_left_solid_right_transparent_compressed.pdf}\label{fig:promasens:actuated_soft_robot}}
 %     \caption{\textbf{Panel (a):} Exploded rendering visualizing the robot design with the three magnetoresistive sensors integrated into a PCB at the tip of the segment. The electrical wires from the PCB are passed through the backbone to the base. A ring magnet attached to a 3D-printed holder is integrated into the backbone at a half-segment-length distance from the proximal end. The air chambers of the segment are connected to a pressure regulator via tubing glued at the base of the segment. \textbf{Panel (b):} Experimental setup with the soft robot segment attached in tip-down configuration to the motion capture cage. % Magnet and \gls{PCB} with \glsp{MRS} are scaled relative to the soft robot segment.
 %     \textbf{Panel (c):} Evolution of a soft robot during 1D bending.}
 % \end{figure*}
@@ -27,15 +27,15 @@ After measuring the ground-truth pose of the tip of the segment with a motion ca
 
 \begin{figure*}[hbt]
   \centering
-  \subfloat[\textbf{T0:} random setpoints]{\includegraphics[width=0.16\textwidth]{promasens/figures/trajectories/trajectory_visualizations/random_compressed.pdf}}
+  \subfigure[\textbf{T0:} random setpoints]{\includegraphics[width=0.16\textwidth]{promasens/figures/trajectories/trajectory_visualizations/random_compressed.pdf}}
   % \hfill% or \hspace{5mm} or \hspace{0.3\textwidth}
-  \subfloat[\textbf{T1:} 1D bending]{\includegraphics[width=0.16\textwidth]{promasens/figures/trajectories/trajectory_visualizations/1D_bending_compressed.pdf}}
-  \subfloat[\textbf{T2:} half lemniscate]{\includegraphics[width=0.16\textwidth]{promasens/figures/trajectories/trajectory_visualizations/half_lemniscate_compressed.pdf}}
-  \subfloat[\textbf{T3:} full lemniscate]{\includegraphics[width=0.16\textwidth]{promasens/figures/trajectories/trajectory_visualizations/full_lemniscate_compressed.pdf}\label{fig:promasens:t3_viz}}
-  \subfloat[\textbf{T4:} spiral]{\includegraphics[width=0.16\textwidth]{promasens/figures/trajectories/trajectory_visualizations/spiral_compressed.pdf}}
-  \subfloat[\textbf{T5:} flower]{\includegraphics[width=0.16\textwidth]{promasens/figures/trajectories/trajectory_visualizations/flower_compressed.pdf}}
+  \subfigure[\textbf{T1:} 1D bending]{\includegraphics[width=0.16\textwidth]{promasens/figures/trajectories/trajectory_visualizations/1D_bending_compressed.pdf}}
+  \subfigure[\textbf{T2:} half lemniscate]{\includegraphics[width=0.16\textwidth]{promasens/figures/trajectories/trajectory_visualizations/half_lemniscate_compressed.pdf}}
+  \subfigure[\textbf{T3:} full lemniscate]{\includegraphics[width=0.16\textwidth]{promasens/figures/trajectories/trajectory_visualizations/full_lemniscate_compressed.pdf}\label{fig:promasens:t3_viz}}
+  \subfigure[\textbf{T4:} spiral]{\includegraphics[width=0.16\textwidth]{promasens/figures/trajectories/trajectory_visualizations/spiral_compressed.pdf}}
+  \subfigure[\textbf{T5:} flower]{\includegraphics[width=0.16\textwidth]{promasens/figures/trajectories/trajectory_visualizations/flower_compressed.pdf}}
 %   \hfill
-%   \subfloat[Neural network architecture]{\includegraphics[width=0.33\textwidth]{promasens/figures/Experiments/NN_architecture_P.pdf}\label{fig:promasens:NNgradientdescent}}
+%   \subfigure[Neural network architecture]{\includegraphics[width=0.33\textwidth]{promasens/figures/Experiments/NN_architecture_P.pdf}\label{fig:promasens:NNgradientdescent}}
   \caption{Trajectories used during the experiments. We plot the shape of the segment under PCC approximation in light blue and the position of the tip of the segment in dark blue. 
   % Trajectory 1 represents a 1D bending, trajectory 2 a half lemniscate, trajectory 3 a full lemniscate movement of the tip and trajectory 4 resembles a spiral. 
   % \textbf{Panel (e):} Architecture of the sensor measurement prediction network. Each block consists of a linear layer, a \gls{ReLU}, and a batch norm layer.
@@ -74,7 +74,7 @@ resulting in a digital signal of \SI{16}{bit} resolution. All sensor measurement
 
 \begingroup
 \setlength{\tabcolsep}{6pt} % Default value: 6pt
-\begin{table*}\small
+\begin{table*}\footnotesize
 \centering
 \caption{Experimental results: absolute [mm] and relative RMSE [\%] of sensor measurement predictions and robot configuration estimates for various trajectories. The RMSE is normalized with the range of the dataset for $u$ and each configuration variable respectively as stated in \eqref{eq:promasens:relative_RMSE}. We report the error as $\text{mean} \pm \text{stdev}$ and compute the statistics over three different random seeds. The random seed determines at the start of the training the initialization of the neural network weights.}
 \begin{tabular}{l rr rrrr}\toprule
@@ -112,9 +112,9 @@ Furthermore, we identify the earth's magnetic field direction in the base from a
 
 \begin{figure*}[hbt]
   \centering
-  \subfloat[Loss landscape]{\includegraphics[width=0.3125\textwidth]{promasens/figures/loss_landscape/loss_landscape_v3_cropped.pdf}\label{fig:promasens:loss_landscape}}
+  \subfigure[Loss landscape]{\includegraphics[width=0.3125\textwidth]{promasens/figures/loss_landscape/loss_landscape_v3_cropped.pdf}\label{fig:promasens:loss_landscape}}
   %
-  \subfloat[Experimental results for T2 (top) and T5 (bottom)]{\includegraphics[width=0.6775\textwidth]{promasens/figures/experimental_results/2022-05-02_results_merged.pdf}\label{fig:promasens:2022-05-02_results_merged}}\\ %  [T5.train $\rightarrow$ T2.test] [T5.train $\rightarrow$ T5.test]
+  \subfigure[Experimental results for T2 (top) and T5 (bottom)]{\includegraphics[width=0.6775\textwidth]{promasens/figures/experimental_results/2022-05-02_results_merged.pdf}\label{fig:promasens:2022-05-02_results_merged}}\\ %  [T5.train $\rightarrow$ T2.test] [T5.train $\rightarrow$ T5.test]
   
   \caption{\textbf{Panel (a):} Sample loss landscape for optimization of $\Delta_x$ and $\Delta_y$ on T5. With the hue, we visualize the RMSE of the sensor measurement prediction $\hat{u}$ for a given configuration $\hat{q} = (\Delta_x, \Delta_y)^\mathrm{T}$. Additionally, we denote the initial configuration estimate with $\hat{q}_0$, the trajectory of the gradient descent with $\hat{q}_l$, the optimal configuration with $\hat{q}$, and the ground truth with $q$. \textbf{Panel (b) top:} Proprioception on the test set of T2 using a model trained on T5. \textbf{Panel (b) bottom:} Configuration estimates for a model trained and evaluated on separated parts of trajectory 5. We plot the ground-truth configuration $q$ in solid, the estimate $\hat{q}$ as a mean over three random seeds with dashed lines, and the standard deviation as an error band. The bottom right plot zooms onto a selected part of T5 (e.g. \SI{18}{s} to \SI{22}{s}) to more clearly visually distinguish the dashed lines from the solid lines.}
   \label{fig:promasens:results_trajectories}
@@ -280,11 +280,11 @@ We split off the final \SI{20}{\percent} of all datasets as a test set.
 % \begin{figure*}[ht]
 %   \centering
 %   \hspace{-0.4cm}
-%   \subfloat{\includegraphics[width=\textwidth]{promasens/figures/experimental_results/2022-05-02_FLOWER_SLOW_NOMINAL_P0_R1_to_2022-05-02_T2_P0_R1_size_(16.0, 4.0)_cropped.pdf}\label{fig:promasens:results_T5_to_T2}}\\ % [T5.train $\rightarrow$ T2.test]
+%   \subfigure{\includegraphics[width=\textwidth]{promasens/figures/experimental_results/2022-05-02_FLOWER_SLOW_NOMINAL_P0_R1_to_2022-05-02_T2_P0_R1_size_(16.0, 4.0)_cropped.pdf}\label{fig:promasens:results_T5_to_T2}}\\ % [T5.train $\rightarrow$ T2.test]
 
 %   \vspace{-0.4cm}
   
-%   \subfloat{\includegraphics[width=0.999\textwidth]{promasens/figures/experimental_results/2022-05-02_FLOWER_SLOW_NOMINAL_P0_R1_to_2022-05-02_FLOWER_SLOW_NOMINAL_P0_R1_size_(16.0, 4.0)_cropped.pdf}\label{fig:promasens:results_T5_to_T5}}\\ % [T5.train $\rightarrow$ T5.test]
+%   \subfigure{\includegraphics[width=0.999\textwidth]{promasens/figures/experimental_results/2022-05-02_FLOWER_SLOW_NOMINAL_P0_R1_to_2022-05-02_FLOWER_SLOW_NOMINAL_P0_R1_size_(16.0, 4.0)_cropped.pdf}\label{fig:promasens:results_T5_to_T5}}\\ % [T5.train $\rightarrow$ T5.test]
   
 %   \caption{\textbf{Top:} Proprioception on the test set of T2 using a model trained on T5. \textbf{Bottom:} Configuration estimates for a model trained and evaluated on separated parts of trajectory 5. We plot the ground-truth configuration $q$ in solid, the estimate $\hat{q}$ as a mean over three random seeds with dashed lines and the standard deviation as an error band.}
 %   \label{fig:promasens:results_trajectories}
@@ -294,44 +294,44 @@ We split off the final \SI{20}{\percent} of all datasets as a test set.
 \begin{figure*}[hbt]
   \centering
   % camera view front: 800 x 1000px
-  \subfloat{\includegraphics[width=0.162\textwidth]{promasens/figures/experiment_sequences/T3_front_t=0s_compressed.png}}
+  \subfigure{\includegraphics[width=0.161\textwidth]{promasens/figures/experiment_sequences/T3_front_t=0s_compressed.png}}
   \hfill
-  \subfloat{\includegraphics[width=0.162\textwidth]{promasens/figures/experiment_sequences/T3_front_t=2s_compressed.png}}
+  \subfigure{\includegraphics[width=0.161\textwidth]{promasens/figures/experiment_sequences/T3_front_t=2s_compressed.png}}
   \hfill
-  \subfloat{\includegraphics[width=0.162\textwidth]{promasens/figures/experiment_sequences/T3_front_t=4s_compressed.png}}
+  \subfigure{\includegraphics[width=0.161\textwidth]{promasens/figures/experiment_sequences/T3_front_t=4s_compressed.png}}
   \hfill
-  \subfloat{\includegraphics[width=0.162\textwidth]{promasens/figures/experiment_sequences/T3_front_t=6s_compressed.png}}
+  \subfigure{\includegraphics[width=0.161\textwidth]{promasens/figures/experiment_sequences/T3_front_t=6s_compressed.png}}
   \hfill
-  \subfloat{\includegraphics[width=0.162\textwidth]{promasens/figures/experiment_sequences/T3_front_t=8s_compressed.png}}
+  \subfigure{\includegraphics[width=0.161\textwidth]{promasens/figures/experiment_sequences/T3_front_t=8s_compressed.png}}
   \hfill
-  \subfloat{\includegraphics[width=0.162\textwidth]{promasens/figures/experiment_sequences/T3_front_t=10s_compressed.png}}
+  \subfigure{\includegraphics[width=0.161\textwidth]{promasens/figures/experiment_sequences/T3_front_t=10s_compressed.png}}
   \\
   % camera view side: 860 x 1075px
-  % \subfloat{\includegraphics[width=0.162\textwidth]{promasens/figures/experiment_sequences/T3_side_t=0s_compressed.png}}
+  % \subfigure{\includegraphics[width=0.161\textwidth]{promasens/figures/experiment_sequences/T3_side_t=0s_compressed.png}}
   % \hfill
-  % \subfloat{\includegraphics[width=0.162\textwidth]{promasens/figures/experiment_sequences/T3_side_t=2s_compressed.png}}
+  % \subfigure{\includegraphics[width=0.161\textwidth]{promasens/figures/experiment_sequences/T3_side_t=2s_compressed.png}}
   % \hfill
-  % \subfloat{\includegraphics[width=0.162\textwidth]{promasens/figures/experiment_sequences/T3_side_t=4s_compressed.png}}
+  % \subfigure{\includegraphics[width=0.161\textwidth]{promasens/figures/experiment_sequences/T3_side_t=4s_compressed.png}}
   % \hfill
-  % \subfloat{\includegraphics[width=0.162\textwidth]{promasens/figures/experiment_sequences/T3_side_t=6s_compressed.png}}
+  % \subfigure{\includegraphics[width=0.161\textwidth]{promasens/figures/experiment_sequences/T3_side_t=6s_compressed.png}}
   % \hfill
-  % \subfloat{\includegraphics[width=0.162\textwidth]{promasens/figures/experiment_sequences/T3_side_t=8s_compressed.png}}
+  % \subfigure{\includegraphics[width=0.161\textwidth]{promasens/figures/experiment_sequences/T3_side_t=8s_compressed.png}}
   % \hfill
-  % \subfloat{\includegraphics[width=0.162\textwidth]{promasens/figures/experiment_sequences/T3_side_t=10s_compressed.png}}
+  % \subfigure{\includegraphics[width=0.161\textwidth]{promasens/figures/experiment_sequences/T3_side_t=10s_compressed.png}}
   % \\
   \setcounter{subfigure}{0}
   % Pyvista: 1240 x 1300px
-  \subfloat[$t=\SI{0}{s}$]{\includegraphics[width=0.162\textwidth]{promasens/figures/experiment_sequences/T3_pyvista_t=0s_cropped.png}}
+  \subfigure[$t=\SI{0}{s}$]{\includegraphics[width=0.161\textwidth]{promasens/figures/experiment_sequences/T3_pyvista_t=0s_cropped.png}}
   \hfill
-  \subfloat[$t=\SI{2}{s}$]{\includegraphics[width=0.162\textwidth]{promasens/figures/experiment_sequences/T3_pyvista_t=2s_cropped.png}}
+  \subfigure[$t=\SI{2}{s}$]{\includegraphics[width=0.161\textwidth]{promasens/figures/experiment_sequences/T3_pyvista_t=2s_cropped.png}}
   \hfill
-  \subfloat[$t=\SI{4}{s}$]{\includegraphics[width=0.162\textwidth]{promasens/figures/experiment_sequences/T3_pyvista_t=4s_cropped.png}}
+  \subfigure[$t=\SI{4}{s}$]{\includegraphics[width=0.161\textwidth]{promasens/figures/experiment_sequences/T3_pyvista_t=4s_cropped.png}}
   \hfill
-  \subfloat[$t=\SI{6}{s}$]{\includegraphics[width=0.162\textwidth]{promasens/figures/experiment_sequences/T3_pyvista_t=6s_cropped.png}}
+  \subfigure[$t=\SI{6}{s}$]{\includegraphics[width=0.161\textwidth]{promasens/figures/experiment_sequences/T3_pyvista_t=6s_cropped.png}}
   \hfill
-  \subfloat[$t=\SI{8}{s}$]{\includegraphics[width=0.162\textwidth]{promasens/figures/experiment_sequences/T3_pyvista_t=8s_cropped.png}}
+  \subfigure[$t=\SI{8}{s}$]{\includegraphics[width=0.161\textwidth]{promasens/figures/experiment_sequences/T3_pyvista_t=8s_cropped.png}}
   \hfill
-  \subfloat[$t=\SI{10}{s}$]{\includegraphics[width=0.162\textwidth]{promasens/figures/experiment_sequences/T3_pyvista_t=10s_cropped.png}}
+  \subfigure[$t=\SI{10}{s}$]{\includegraphics[width=0.161\textwidth]{promasens/figures/experiment_sequences/T3_pyvista_t=10s_cropped.png}}
   \caption{Sequence of stills for inference on T3 (full lemniscate) of a model trained on T5. The top row shows camera recordings of an external view and the sequence in the bottom row consists of renderings of the ground-truth state (in full opacity) and the estimated segment shape (slightly transparent). The sensors are colored in blue and the ring magnet integrated into the backbone is shown in green.}
   \label{fig:promasens:experiment_sequences}
 \end{figure*}
