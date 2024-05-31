@@ -11,17 +11,9 @@ Along this thought, an obvious choice would be to measure the earth's magnetic f
 %\textcolor{blue}{Since a soft robot will elongate when pneumatically actuated, it is required to quantify the lengthening or shortening of the robot. This can not be achieved with solely an constant external magnetic source (like earth) and thus, an permanent magnet needs to be embedded in the robot.} 
 Alternatively, some papers \cite{ozel2015precise,luo2017toward,guo2019continuum} use co-axial pairs of magnets and sensors embedded in the robot to estimate planar deformations. Recently, Mitchell et al.~\cite{mitchell2021fast} have shown that a similar strategy can sense 3D deformations. Such simple arrangements greatly simplify the analysis, allowing for connecting readings to shape through direct interpolation. Nevertheless, relying on isolated pairs of sensors and magnets also strongly limits the density and the amount of information gathered through this method.
 
-% \begin{figure*}[ht]
-%   \centering
-%   \includegraphics[width=1.0\textwidth]{promasens/figures/methodology/methodology_proprioception_v6_compressed.pdf}
-%   \caption{Proprioception for continuum soft robots with magnetic sensors: an initial \gls{PCC} configuration estimate $\hat{q} \in \mathbb{R}^{n_\mathrm{b}}$ is employed to derive the kinematic relationship between a sensor and each magnet. Subsequently, this kinematic description is used to predict the sensor measurements $\hat{u} \in \mathbb{R}^{n_\mathrm{s}}$ through a previously trained neural network. A \gls{MSE} error metric evaluates the accuracy of the predictions compared to the actual measurements $u$. Finally, we optimize the configuration estimate $\hat{q}$ to achieve proprioception by minimizing the sensor measurement prediction loss.}
-%   \label{fig:promasens:methodology}
-% \end{figure*}
-
 \begin{figure*}[ht]
   \centering
   \includegraphics[width=1.0\textwidth]{promasens/figures/methodology/methodology_proprioception_v8_compressed.pdf}
-  
   \caption{Proprioception for continuum soft robots with magnetic sensors: an initial configuration estimate $\hat{q}$ is employed to derive the kinematic relationship $\hat{\xi}$ between a sensor and each magnet. Subsequently, this kinematic description is used to predict the sensor measurements $\hat{u} \in \mathbb{R}^{n_\mathrm{s}}$ with a neural network trained in advance. A Mean Squared Error (MSE) metric evaluates the accuracy of the predictions $\hat{u}$ compared to the actual measurements $u$. Finally, we optimize the configuration estimate $\hat{q}$ to achieve proprioception by minimizing the sensor measurement prediction loss.}\label{fig:promasens:methodology}
 \end{figure*}
 
