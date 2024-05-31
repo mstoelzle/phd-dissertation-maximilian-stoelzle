@@ -28,7 +28,7 @@ Each \gls{HSA} rod is electrically actuated by a Dynamixel M-28 servo up to a ma
 % MoCap
 The robot is attached platform-down to a motion capture cage with eight Optitrack Prime X13 cameras tracking at \SI{200}{Hz} the pose of reflective markers attached to the end-effector of the \gls{HSA} robot.
 We estimate the current Cartesian-space velocity of the end-effector with a Savitzky-Golay filter. 
-Subsequently, we leverage a closed-form expression of the inverse kinematics of a \gls{CS} model~\cite{stolzle2023experimental} to compute the current configuration $q$ of the robot.
+Subsequently, we leverage a closed-form expression of the inverse kinematics of a \gls{CS} model~\cite{stolzle2024experimental} to compute the current configuration $q$ of the robot.
 % projector
 We render an image of the current shape of the robot together with the present end-effector position (white dot), the attractor planned by the user (green square), the operational workspace (grey, see also Fig.~\ref{fig:braincontrol:hsa_workspace}) and if applicable, the goal position (red dot). 
 We specify the currently active axis of movement $e_\mathrm{a}$ with a double arrow and project the resulting image onto a black screen in the background of the motion capture cage.
@@ -49,7 +49,7 @@ The robot is operated with a ROS2 software framework\footnote{\url{https://githu
 % dual-way communication works at 100Hz, so maximum delay (solely based on communication) of 10ms
 The entire control pipeline from measuring \gls{EEG} signals to sending the actuation commands to the motors exhibits a maximum latency of (i.e., is upper-bounded by)  \SI{130}{ms}.
 
-\subsection{BMI protocol:}\label{sub:braincontrol:bmi_protocol}
+\subsection{BMI protocol}\label{sub:braincontrol:bmi_protocol}
 In the following, we will describe the protocol for collecting the motor imagery dataset, training the \gls{EEG} classifiers, and mapping classifier outputs into actionable robot commands.
 
 \subsubsection{Training protocol}
@@ -94,18 +94,18 @@ At the end of the trial, we train both classifiers (see Sections~\ref{sub:brainc
 % \captionof{figure}{Protocol design of the Real-time HSA robots control}
 % \end{minipage} 
 
-% \begin{figure*}[t]
-%     \centering
-%     \subfigure[End-effector x-coordinate]{\includegraphics[width=0.47\textwidth, trim={5, 5, 5, 5}]{braincontrol/figures/setpoint_regulation/20231031_181745_pee_x.pdf}\label{fig:braincontrol:experimental_results:setpoint_regulation:keyboard:pee_x}}
-%     \subfigure[End-effector y-coordinate]{\includegraphics[width=0.47\textwidth, trim={5, 5, 5, 5}]{braincontrol/figures/setpoint_regulation/20231031_181745_pee_y.pdf}\label{fig:braincontrol:experimental_results:setpoint_regulation:keyboard:pee_y}}\\
-%     \subfigure[Configuration $q$]{\includegraphics[width=0.47\textwidth, trim={5, 5, 5, 5}]{braincontrol/figures/setpoint_regulation/20231031_181745_q.pdf}\label{fig:braincontrol:experimental_results:setpoint_regulation:keyboard:q}}
-%     \subfigure[Control input $\phi$]{\includegraphics[width=0.47\textwidth, trim={5, 5, 5, 5}]{braincontrol/figures/setpoint_regulation/20231031_181745_phi.pdf}\label{fig:braincontrol:experimental_results:setpoint_regulation:keyboard:phi}}
-%     \caption{Experimental results for tracking a reference trajectory of nine step functions with keyboard inputs. \textbf{Panel (a) \& (b):} The x/y-coordinate of the end-effector position with the solid line denoting the actual position, the dotted line the attractor position, and the dashed line the reference (i.e., the setpoint).
-%     \textbf{Panel (c):} The evolution of the configuration.
-%     \textbf{Panel(d):} The saturated planar control inputs. }\label{fig:braincontrol:experimental_results:setpoint_regulation:keyboard}
-% \end{figure*}
+\begin{figure}[t]
+    \centering
+    \subfigure[End-effector x-coordinate]{\includegraphics[width=0.47\textwidth, trim={5, 5, 5, 5}]{braincontrol/figures/setpoint_regulation/20231031_181745_pee_x.pdf}\label{fig:braincontrol:experimental_results:setpoint_regulation:keyboard:pee_x}}
+    \subfigure[End-effector y-coordinate]{\includegraphics[width=0.47\textwidth, trim={5, 5, 5, 5}]{braincontrol/figures/setpoint_regulation/20231031_181745_pee_y.pdf}\label{fig:braincontrol:experimental_results:setpoint_regulation:keyboard:pee_y}}\\
+    \subfigure[Configuration $q$]{\includegraphics[width=0.47\textwidth, trim={5, 5, 5, 5}]{braincontrol/figures/setpoint_regulation/20231031_181745_q.pdf}\label{fig:braincontrol:experimental_results:setpoint_regulation:keyboard:q}}
+    \subfigure[Control input $\phi$]{\includegraphics[width=0.47\textwidth, trim={5, 5, 5, 5}]{braincontrol/figures/setpoint_regulation/20231031_181745_phi.pdf}\label{fig:braincontrol:experimental_results:setpoint_regulation:keyboard:phi}}
+    \caption{Experimental results for tracking a reference trajectory of nine step functions with keyboard inputs. \textbf{Panel (a) \& (b):} The x/y-coordinate of the end-effector position with the solid line denoting the actual position, the dotted line the attractor position, and the dashed line the reference (i.e., the setpoint).
+    \textbf{Panel (c):} The evolution of the configuration.
+    \textbf{Panel(d):} The saturated planar control inputs. }\label{fig:braincontrol:experimental_results:setpoint_regulation:keyboard}
+\end{figure}
 
-\begin{figure*}[t]
+\begin{figure}[t]
     \centering
     \subfigure[End-effector x-coordinate]{\includegraphics[width=0.47\textwidth, trim={5, 5, 5, 5}]{braincontrol/figures/setpoint_regulation/20231030_181558_pee_x.pdf}\label{fig:braincontrol:experimental_results:setpoint_regulation:computational:pee_x}}
     \subfigure[End-effector y-coordinate]{\includegraphics[width=0.47\textwidth, trim={5, 5, 5, 5}]{braincontrol/figures/setpoint_regulation/20231030_181558_pee_y.pdf}\label{fig:braincontrol:experimental_results:setpoint_regulation:computational:pee_y}}\\
@@ -114,7 +114,7 @@ At the end of the trial, we train both classifiers (see Sections~\ref{sub:brainc
     \caption{Experimental results for tracking a reference trajectory of nine step functions directly with the Cartesian impedance controller with access to the privileged information $x^\mathrm{d}$. \textbf{Panel (a) \& (b):} The x/y-coordinate of the end-effector position with the solid line denoting the actual position, the dotted line the attractor position, and the dashed line the reference (i.e., the setpoint).
     \textbf{Panel (c):} The evolution of the configuration.
     \textbf{Panel(d):} The saturated planar control inputs. }\label{fig:braincontrol:experimental_results:setpoint_regulation:computational}
-\end{figure*}
+\end{figure}
 
 
 \subsubsection{Online robot control}
@@ -126,9 +126,9 @@ Moreover, we map the outputs of the classifier into actionable commands: we init
 \subsection{Setpoint regulation}\label{sub:braincontrol:experiments:setpoint_regulation}
 We randomly generate nine setpoints $x^\mathrm{d}(t) \in \mathbb{R}^2$ within the operational workspace of the robot (see Fig.~\ref{fig:braincontrol:hsa_workspace} and display them as a red circle to the user over a duration of \SI{540}{s}.
 The user can freely move the attractor to reach and keep the end-effector at the setpoint.
-% In addition to the motor imagery-based control, we conduct experiments where the subject controls the robot with a keyboard.
-% As a keyboard is a very efficient and precise \gls{HMI}~\textcolor{red}{TODO Sonal: add a citation if you can find one}, this represents an upper bound on the performance we could expect from the \gls{BCI}.
-% Here, the space button is used to switch that axis of movement $e_\mathrm{a}$ and positive/negative movement can be controlled via the left/right arrows.
+In addition to the motor imagery-based control, we conduct experiments where the subject controls the robot with a keyboard.
+As a keyboard is a very efficient and precise \gls{HMI}~\cite{vasiljevic2016case, mahmud2020interface}, this represents an upper bound on the performance we could expect from the \gls{BCI}.
+Here, the space button is used to switch that axis of movement $e_\mathrm{a}$ and positive/negative movement can be controlled via the left/right arrows.
 Furthermore, we execute an experiment in which the computational controller has access to normally privileged information: as we substitute $x^\mathrm{at}$ with $x^\mathrm{d}$ in \eqref{eq:braincontrol:cartesian_impedance_controller}, the Cartesian impedance controller now immediately regulates the robot towards the setpoint.
 By excluding the \gls{BMI} from the pipeline, this provides us with a reference of the performance we can expect from the computational controller and, with that, also represents a performance upper bound.
 
