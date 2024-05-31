@@ -11,12 +11,32 @@
 
 \LoadClass[10pt]{book}
 
-%% Import packages
+% math packages
 \RequirePackage{fontawesome}
 \RequirePackage{amsmath}
 \RequirePackage{amssymb}
 \RequirePackage{txfonts}
 \RequirePackage{mathptmx}
+\RequirePackage{mathtools}
+\DeclareMathOperator*{\argmin}{\arg\!\min}
+\DeclareMathOperator*{\argmax}{\arg\!\max}
+
+% math proof
+\let\endproof\relax
+\let\openbox\relax
+\let\proof\relax
+\RequirePackage{amsthm}
+\theoremstyle{plain}
+\newtheorem{Theorem}{Theorem}
+\newtheorem{Remark}{Remark}
+\newtheorem{Lemma}{Lemma}
+\newtheorem{Proposition}{Proposition}
+\newtheorem{Definition}{Definition}
+\newtheorem{Corollary}{Corollary}
+\newtheorem{Example}{Example}%[section]
+
+% physics packages
+\RequirePackage{siunitx}
 
 %% English is the default language, but Dutch is used for some sections.
 \RequirePackage[dutch,english]{babel}
@@ -49,6 +69,7 @@
     \RequirePackage[utf8]{inputenc}
 \fi
 \RequirePackage{rotating}
+\RequirePackage{pdflscape}  % landscape pages
 \RequirePackage{tablefootnote}
 \RequirePackage{lettrine}
 \RequirePackage{metalogo}
@@ -57,8 +78,6 @@
 \RequirePackage{titletoc}
 %\RequirePackage[nottoc]{tocbibind}
 \RequirePackage[dvipsnames,svgnames,table,xcdraw]{xcolor}
-%\RequirePackage[table]{xcolor}
-\RequirePackage{tikz}
 
 %% If the document is not compiled with XeLaTeX, we need to use the native
 %% fonts.
@@ -117,10 +136,17 @@
 
 \RequirePackage{pbox}
 \RequirePackage{tabularx}
+\usepackage{makecell}
 \RequirePackage{soul}
 
 \RequirePackage{array}
 
+% figures
+\RequirePackage{svg}
+\DeclareGraphicsExtensions{.eps}
+% we can either use subfig, subfloat, or subfigure
+\RequirePackage{subfigure}
+% \RequirePackage{subfig}
 \RequirePackage{wrapfig}
 
 \RequirePackage{pifont}
@@ -165,7 +191,6 @@
 
 % *** GRAPHICS RELATED PACKAGES ***
 %
-% \RequirePackage{subfig}
 %% Make figures appear in the same section (to avoid a bunch of figures at the end of a section)
 \RequirePackage[section]{placeins}
 % declare the path(s) where your graphic files are

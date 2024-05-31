@@ -2,25 +2,6 @@
 %\documentclass[print]{dissertation}
 %\documentclass[print,draft]{dissertation}
 
-% add custom packages here
-\usepackage{siunitx}
-% math
-\let\endproof\relax
-\let\openbox\relax
-\let\proof\relax
-\usepackage{amsthm}
-% figures
-\usepackage{subfigure}
-\usepackage{svg}
-\DeclareGraphicsExtensions{.eps}
-\usepackage{epstopdf}
-% tables
-\usepackage{booktabs}       % professional-quality tables
-\usepackage{tabularx}
-\usepackage{makecell}
-% layout
-\usepackage{pdflscape}  % landscape pages
-
 \hyphenation{TestRoots WatchDog proj-ect proj-ects Ec-lipse two-fold clie-nts Mo-cki-to wide-spread}
 \newcommand{\sparkline}[1]{$\vcenter{\hbox{\includegraphics[scale=0.04]{#1}}}$}
 
@@ -30,19 +11,8 @@
 \let\oldarrow\textrightarrow
 \renewcommand*{\textrightarrow}{\fontfamily{cmr}\selectfont\origrightarrow}
 
-% math proof
-\theoremstyle{plain}
-\newtheorem{Theorem}{Theorem}
-\newtheorem{Remark}{Remark}
-\newtheorem{Lemma}{Lemma}
-\newtheorem{Proposition}{Proposition}
-\newtheorem{Definition}{Definition}
-\newtheorem{Corollary}{Corollary}
-\newtheorem{Example}{Example}%[section]
 
-% THEOREMS
-\DeclareMathOperator*{\argmin}{\arg\!\min}
-\DeclareMathOperator*{\argmax}{\arg\!\max}
+
 
 % \loadglsentries[main]{glossary}
 \input{abbreviations}
