@@ -15,7 +15,7 @@ Our algorithms run within a ROS2 framework\footnote{\url{https://github.com/tud-
 % Our algorithms run within a ROS2 framework. 
 The pose measurements are first projected into the plane of actuation and serve as an input to the closed-form inverse kinematics introduced in \eqref{eq:hsacontrol:kinematics}. 
 We use a Savitzky-Golay filter with a window duration of $\SI{0.1}{s}$ to numerically differentiate $\chi_\mathrm{ee}(t)$, $q(t)$ and gather with that $\dot{\chi}_\mathrm{ee}(t)$ and $\dot{q}(t)$.
-% We fit a cubic spline to the last $16$ configuration measurements and differentiate~\cite{kaptanoglu2022pysindy} to gather $\dot{q}(t)$.
+We fit a cubic spline to the last $16$ configuration measurements and differentiate~\cite{kaptanoglu2022pysindy} to gather $\dot{q}(t)$.
 
 \subsection{System identification}
 Next, we strive to identify the parameters used in our dynamic model.
@@ -90,23 +90,23 @@ Here, we select $K_\mathrm{p}^\mathrm{PID} = \mathrm{diag}(10, 10) \, \si{rad \p
     \textbf{Panel(d):} The saturated planar control inputs are visualized with solid lines, and the computed steady-state actuation with dotted lines.}\label{fig:hsacontrol:hsacontrol:experimental_results:fpu:p_sati_d}
 \end{figure}
 
-% \begin{figure}[ht]
-%     \centering
-%     \subfigure[End-effector position]{\includegraphics[width=0.49\columnwidth, trim={5, 5, 5, 5}]{hsacontrol/figures/experimental_results/fpu/20230925_094023_pee.pdf}\label{fig:hsacontrol:hsacontrol:experimental_results:fpu:p_sati_d_plus_gc:pee}}
-%     \subfigure[Configuration]{\includegraphics[width=0.49\columnwidth, trim={5, 5, 5, 5}]{hsacontrol/figures/experimental_results/fpu/20230925_094023_q.pdf}\label{fig:hsacontrol:hsacontrol:experimental_results:fpu:p_sati_d_plus_gc:q}}\\
-%     \subfigure[Actuation coordinates]{\includegraphics[width=0.49\columnwidth, trim={5, 5, 5, 5}]{hsacontrol/figures/experimental_results/fpu/20230925_094023_varphi.pdf}\label{fig:hsacontrol:hsacontrol:experimental_results:fpu:p_sati_d_plus_gc:varphi}}
-%     \subfigure[Control input]{\includegraphics[width=0.49\columnwidth, trim={5, 5, 5, 5}]{hsacontrol/figures/experimental_results/fpu/20230925_094023_phi.pdf}\label{fig:hsacontrol:hsacontrol:experimental_results:fpu:p_sati_d_plus_gc:phi}}\\
-%     \caption{Experimental results for tracking a reference trajectory of eleven step functions with the P-satI-D + gravity cancellation controller on an FPU-based HSA robot. \textbf{Panel (a):} End-effector position with the dotted and solid lines denoting the task-space reference and actual position, respectively.
-%     \textbf{Panel (b):} The planned (dotted) and the actual (solid) configuration. 
-%     \textbf{Panel (c):} The planned (dotted) and the actual (solid) actuation coordinates of the collocated system. 
-%     \textbf{Panel(d):} The saturated planar control inputs are visualized with solid lines and the computed steady-state actuation with dotted lines.}\label{fig:hsacontrol:hsacontrol:experimental_results:fpu:p_sati_d_plus_gc}
-% \end{figure}
+\begin{figure}[ht]
+    \centering
+    \subfigure[End-effector position]{\includegraphics[width=0.49\columnwidth, trim={5, 5, 5, 5}]{hsacontrol/figures/experimental_results/fpu/20230925_094023_pee.pdf}\label{fig:hsacontrol:hsacontrol:experimental_results:fpu:p_sati_d_plus_gc:pee}}
+    \subfigure[Configuration]{\includegraphics[width=0.49\columnwidth, trim={5, 5, 5, 5}]{hsacontrol/figures/experimental_results/fpu/20230925_094023_q.pdf}\label{fig:hsacontrol:hsacontrol:experimental_results:fpu:p_sati_d_plus_gc:q}}\\
+    \subfigure[Actuation coordinates]{\includegraphics[width=0.49\columnwidth, trim={5, 5, 5, 5}]{hsacontrol/figures/experimental_results/fpu/20230925_094023_varphi.pdf}\label{fig:hsacontrol:hsacontrol:experimental_results:fpu:p_sati_d_plus_gc:varphi}}
+    \subfigure[Control input]{\includegraphics[width=0.49\columnwidth, trim={5, 5, 5, 5}]{hsacontrol/figures/experimental_results/fpu/20230925_094023_phi.pdf}\label{fig:hsacontrol:hsacontrol:experimental_results:fpu:p_sati_d_plus_gc:phi}}\\
+    \caption{Experimental results for tracking a reference trajectory of eleven step functions with the P-satI-D + gravity cancellation controller on an FPU-based HSA robot. \textbf{Panel (a):} End-effector position with the dotted and solid lines denoting the task-space reference and actual position, respectively.
+    \textbf{Panel (b):} The planned (dotted) and the actual (solid) configuration. 
+    \textbf{Panel (c):} The planned (dotted) and the actual (solid) actuation coordinates of the collocated system. 
+    \textbf{Panel(d):} The saturated planar control inputs are visualized with solid lines and the computed steady-state actuation with dotted lines.}\label{fig:hsacontrol:hsacontrol:experimental_results:fpu:p_sati_d_plus_gc}
+\end{figure}
 
-\noindent\textbf{Evaluation:}
+\subsubsection{Evaluation}
 We define a reference trajectory $p_\mathrm{ee}^\mathrm{d}(k), k \in \{ 1, \dots, n_k \}$ with a duration of \SI{110}{s} and consisting of eleven step functions as the reference trajectory.
 We report the \gls{RMSE} metric $\sqrt{\sum_{k=1}^{n_k} \frac{\lVert p_\mathrm{ee}^\mathrm{d}(k) - p_\mathrm{ee}(k) \rVert_2^2}{n_k}}$ for assessing the control performance, where $p_\mathrm{ee}(k)$ is the actual trajectory of the end-effector.\\
 
-\noindent\textbf{Control of an FPU-based HSA robot:}
+\subsubsection{Control of an FPU-based HSA robot}
 The \emph{baseline PID} achieves an \gls{RMSE} of \SI{5.86}{mm} with respect to the reference trajectory. The \emph{P-satI-D} based on \eqref{eq:hsacontrol:gravity_compensation_controller} (with gravity compensation) exhibits an RMSE of \SI{4.17}{mm}. Similarly, the \emph{P-satI-D + GC} based on \eqref{eq:hsacontrol:gravity_cancellation_controller} (with gravity cancellation) displays an RMSE of \SI{4.13}{mm}.
 We present a comparison of the three different controllers for a step response in Fig.~\ref{fig:hsacontrol:hsacontrol:experimental_results:fpu:step_response} and plot the entire trajectories of the \emph{baseline PID} and the \emph{P-satI-D} in Figures~\ref{fig:hsacontrol:hsacontrol:experimental_results:fpu:baseline_pid} and \ref{fig:hsacontrol:hsacontrol:experimental_results:fpu:p_sati_d}, respectively.
 Additionally, we discretize various continuous reference trajectories into setpoints: 
@@ -158,7 +158,7 @@ We conclude that \emph{P-satI-D} (gravity compensation) and \emph{P-satI-D + GC}
     \textbf{Panel(d):} The saturated planar control inputs are visualized with solid lines, and the computed steady-state actuation with dotted lines.}\label{fig:hsacontrol:hsacontrol:experimental_results:epu:p_sati_d}
 \end{figure}
 
-\noindent \textbf{Control of an EPU-based HSA robot:}
+\subsubsection{Control of an EPU-based HSA robot}
 Tracking the reference trajectory of eleven step functions with an EPU-based robot, the \emph{baseline PID} controller has an \gls{RMSE} of \SI{4.40}{mm}. The \emph{P-satI-D} (with gravity compensation) can able to achieve an \gls{RMSE} of \SI{3.63}{mm}. The \emph{P-satI-D + GC} controller exhibits similar performance(\gls{RMSE} of \SI{3.71}{mm}).
 We visualize the step response of all three controllers in Fig.~\ref{fig:hsacontrol:hsacontrol:experimental_results:epu:step_response} and the entire trajectory of the \emph{P-satI-D} controller in Fig.~\ref{fig:hsacontrol:hsacontrol:experimental_results:epu:p_sati_d}.
 
