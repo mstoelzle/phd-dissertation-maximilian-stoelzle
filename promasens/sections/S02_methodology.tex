@@ -71,8 +71,7 @@ To achieve proprioception, we jointly optimize $\hat{q}$ for all sensor measurem
 \section{Background: Continuum soft robot kinematics}\label{sec:promasens:kinematics}
 A kinematic description provides us with the forward kinematic transformation $T_{i-1}^s(q_i,s)$ from base frame $\{S_{i-1}\}$ at the proximal end of the $i^\mathrm{th}$ segment to the local frame $\{S_{v}\}$ at a coordinate $v \in [0,1]$ for a given configuration $q_i$. Furthermore, the tip frame of the $i^\mathrm{th}$ segment located at the coordinate $v = 1$ is denoted as $\{S_{i}\}$, as shown in Fig.~\ref{fig:promasens:kinematics_frames_soft_segment}.
 
-\subsection{$\Delta$-parametrization of the piecewise constant curvature kinematics}\label{sub:promasens:kinematic_model_pcc}
-% \section*{Appendix: $\Delta$-parametrization of the Piecewise Constant Curvature Kinematics}\label{sub:promasens:kinematic_model_pcc}
+\subsection{Piecewise constant curvature kinematics}\label{sub:promasens:kinematic_model_pcc}
 
 Under the \gls{PCC} hypothesis, the shape of each segment $i$ of length $L_{i}$ and radius $d_i$ can be fully parameterized through three variables
 \begin{equation}

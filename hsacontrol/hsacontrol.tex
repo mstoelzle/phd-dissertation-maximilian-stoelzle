@@ -1,0 +1,28 @@
+\chapter{Model-based Control of Handed Shearing Auxetics (HSA) Robots}
+\label{chp:hsacontrol}
+
+\begin{abstract}
+    Parallel robots based on Handed Shearing Auxetics (HSAs) can implement complex motions using standard electric motors while maintaining the complete softness of the structure, thanks to specifically designed architected metamaterials.
+    However, their control is especially challenging due to varying and coupled stiffness, shearing, non-affine terms in the actuation model, and underactuation. In this paper, we present a model-based control strategy for planar HSA robots enabling regulation in task space. 
+    We formulate equations of motion, show that they admit a collocated form, and design a P-satI-D feedback controller with compensation for elastic and gravitational forces. 
+    We experimentally identify and verify the proposed control strategy in closed loop.
+\end{abstract}
+
+\blfootnote{This chapter is partly based on 
+    \begin{itemize}
+        \item[\faFileTextO] ~\emph{\textbf{M. Stölzle}, D. Rus, and C. Della Santina (2023, December). An Experimental Study of Model-based Control for Planar Handed Shearing Auxetics Robots. In Experimental Robotics: The 18th International Symposium. Springer}~\cite{stolzle2024experimental}.
+        \item[\faFileTextO] ~\emph{\textbf{M. Stölzle}*, S. S. Baberwal*, D. Rus, S. Coyle, and C. Della Santina (2024). Guiding Soft Robots with Motor-Imagery Brain Signals and Impedance Control. In Proceedings of The 2024 IEEE 7th International Conference on Soft Robotics (RoboSoft) (pp. 1-8). IEEE. \textbf{Best Paper Award}}~\cite{stolzle2024guiding}.
+    \end{itemize}
+}
+
+
+%% Start the actual chapter on a new page.
+\newpage
+
+\input{hsacontrol/sections/S01_introduction}
+\input{hsacontrol/sections/S02_technical_approach}
+\input{hsacontrol/sections/S03_experimental_validation}
+\input{hsacontrol/sections/S04_experimental_insights}
+
+\section*{Acknowledgments}
+The authors thank Pietro Pustina for the valuable insights into a coordinate transformation into collocated variables, control of underactuated soft robots, and his help revising the manuscript.
