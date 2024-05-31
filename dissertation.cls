@@ -18,8 +18,13 @@
 \RequirePackage{txfonts}
 \RequirePackage{mathptmx}
 \RequirePackage{mathtools}
+\RequirePackage{pifont}
+\RequirePackage{nicefrac}
+\RequirePackage[super]{nth}
 \DeclareMathOperator*{\argmin}{\arg\!\min}
 \DeclareMathOperator*{\argmax}{\arg\!\max}
+\newcommand{\cmark}{\ding{51}}%
+\newcommand{\xmark}{\ding{55}}%
 
 % math proof
 \let\endproof\relax
@@ -37,6 +42,7 @@
 
 % physics packages
 \RequirePackage{siunitx}
+\sisetup{product-units=single}
 
 %% English is the default language, but Dutch is used for some sections.
 \RequirePackage[dutch,english]{babel}
@@ -136,7 +142,7 @@
 
 \RequirePackage{pbox}
 \RequirePackage{tabularx}
-\usepackage{makecell}
+\RequirePackage{makecell}
 \RequirePackage{soul}
 
 \RequirePackage{array}
@@ -148,8 +154,6 @@
 \RequirePackage{subfigure}
 % \RequirePackage{subfig}
 \RequirePackage{wrapfig}
-
-\RequirePackage{pifont}
 
 \RequirePackage{textcomp}
 \RequirePackage{slashbox}
