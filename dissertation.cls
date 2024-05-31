@@ -214,7 +214,9 @@
 \RequirePackage{multicol}
 
 \RequirePackage{algorithm}
-\RequirePackage{algpseudocode}
+% use either algorithmic or algpseudocode
+\RequirePackage{algorithmic}
+% \RequirePackage{algpseudocode}
 \newcommand{\var}[1]{{\ttfamily#1}}% variable
 
 \newcommand{\ahref}[2]{\href{#1}{\nolinkurl{#2}}}
