@@ -32,13 +32,13 @@
 \let\proof\relax
 \RequirePackage{amsthm}
 \theoremstyle{plain}
-\newtheorem{Theorem}{Theorem}
-\newtheorem{Remark}{Remark}
-\newtheorem{Lemma}{Lemma}
-\newtheorem{Proposition}{Proposition}
-\newtheorem{Definition}{Definition}
-\newtheorem{Corollary}{Corollary}
-\newtheorem{Example}{Example}%[section]
+\newtheorem{theorem}{Theorem}
+\newtheorem{remark}{Remark}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+\newtheorem{definition}{Definition}
+\newtheorem{corollary}{Corollary}
+\newtheorem{example}{Example}%[section]
 
 % physics packages
 \RequirePackage{siunitx}

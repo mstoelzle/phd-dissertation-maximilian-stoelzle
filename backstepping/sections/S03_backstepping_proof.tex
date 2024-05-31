@@ -5,7 +5,7 @@ We suppose that we have access to $\Gamma(q, \dot{q})$ controlling the piston po
 The derived model-based control approach assumes that all model parameters are known, and all states are measurable (namely the configuration $q$, its time derivative $\dot{q}$, the piston position $\mu_\mathrm{p}$ and the piston velocity $\dot{\mu}_\mathrm{p}$), and that there are no disturbances or model uncertainties. 
 We first introduce a Lemma, which will be instrumental to the proof of the main theorem. It allows to relate an offset in the actuation-space to a change in acceleration in configuration-space that is proportional to the offset.
 %
-\begin{Lemma}\label{lemma:f_g_S}%{\color{red} I have the feeling that words are missing here}
+\begin{lemma}\label{lemma:f_g_S}%{\color{red} I have the feeling that words are missing here}
 The input field defined in \eqref{eq:backstepping:gf} verifies
 %
 \begin{equation*}
@@ -18,7 +18,7 @@ $\forall \mu_{\mathrm{p},\mathrm{a}},\mu_{\mathrm{p},\mathrm{b}} \in \mathbb{R}^
 	\begin{equation*}
 	    S_{i,j} = \frac{ A_{\mathrm{p},j} \alpha_{\mathrm{air},j} \partial_{q_i}V_{\mathrm{C},j}}{(V_{\mathrm{C},j}(q_i) + A_{\mathrm{p},j} \mu_{\mathrm{p},\mathrm{a},j})(V_{\mathrm{C},j}(q_i) + A_{\mathrm{p},j} \mu_{\mathrm{p},\mathrm{b},j})}.
 	\end{equation*}
-\end{Lemma}
+\end{lemma}
 %
 \begin{proof}
 	We express the left term of the equality using \eqref{eq:backstepping:gf}
@@ -44,7 +44,7 @@ $\forall \mu_{\mathrm{p},\mathrm{a}},\mu_{\mathrm{p},\mathrm{b}} \in \mathbb{R}^
 
 Thus, even if the robot side of the dynamics \eqref{eq:backstepping:complete_dyn} is not affine in control when taking $\mu_\mathrm{p}$ as input, still Lemma \ref{lemma:f_g_S} provides some structure that we leverage in the next theorem.
 
-\begin{Theorem}
+\begin{theorem}
 	Suppose that a $\Gamma(q,\dot{q})$ exists s.t. the reduced system
 	%
 	\begin{equation}\label{eq:backstepping:reduced_sys}
@@ -72,7 +72,7 @@ Thus, even if the robot side of the dynamics \eqref{eq:backstepping:complete_dyn
 	\end{equation}
 	%
 	with $K_1,K_2 \succ 0$, is such that $q \rightarrow \bar{q}$ and $\mu_\mathrm{p} \rightarrow \Gamma(\bar q,\dot{\bar q})$, $\forall (\mu_\mathrm{p}(0),\dot{\mu}_\mathrm{p}(0)) \in \mathbb{R}^{2n_{\mu_\mathrm{p}}}$, and $\forall (q(0),\dot{q}(0)) \in \mathbb{R}^{2 n_{\mathrm{q}}}$.
-\end{Theorem}
+\end{theorem}
 \begin{proof}
 	
 	We first consider the problem of deriving a controller under the assumption that the velocity of the piston $v_\mathrm{p}$ is set by a controller. This serves as a first step toward the general solution of the problem. System \eqref{eq:backstepping:complete_dyn} is thus reduced into
