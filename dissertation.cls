@@ -25,6 +25,7 @@
 \DeclareMathOperator*{\argmax}{\arg\!\max}
 \newcommand{\cmark}{\ding{51}}%
 \newcommand{\xmark}{\ding{55}}%
+\newcommand{\presub}[2]{\prescript{}{#1}{#2}}
 
 % math proof
 \let\endproof\relax
@@ -44,8 +45,8 @@
 \RequirePackage{siunitx}
 \sisetup{product-units=single}
 
-%% English is the default language, but Dutch is used for some sections.
-\RequirePackage[dutch,english]{babel}
+%% English is the default language, but Dutch and German are used for some sections.
+\RequirePackage[german,dutch,english]{babel}
 \RequirePackage{calc}
 \RequirePackage[nooneline,footnotesize]{caption}
 %\RequirePackage{chapterbib}

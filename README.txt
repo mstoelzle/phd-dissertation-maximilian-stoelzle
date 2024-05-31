@@ -53,6 +53,6 @@ template:
 
 ```bash
   sudo apt install texlive-xetex texlive-latex-extra latexmk
-  sudo apt install texlive-lang-european texlive-lang-english texlive-fonts-extra texlive-science
+  sudo apt install texlive-lang-english texlive-lang-european texlive-lang-german texlive-fonts-extra texlive-science
 ```
 
