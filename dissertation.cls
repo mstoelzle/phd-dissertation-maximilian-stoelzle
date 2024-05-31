@@ -58,7 +58,7 @@
     \RequirePackage[xetex]{geometry}
     \RequirePackage[xetex]{graphicx}
     %\usepackage[bookmarks=false,hidelinks]{hyperref}
-    \RequirePackage[xetex,bookmarks=false,hidelinks,backref=page]{hyperref}
+    \RequirePackage[xetex,hidelinks,backref=page]{hyperref}
     \RequirePackage{fontspec}
     \RequirePackage{xltxtra}
     \defaultfontfeatures{Ligatures=TeX}
@@ -66,11 +66,11 @@
     \ifpdf
         \RequirePackage[pdftex]{geometry}
         \RequirePackage[pdftex]{graphicx}
-        \RequirePackage[pdftex,bookmarks=false,hidelinks,backref=page]{hyperref}
+        \RequirePackage[pdftex,hidelinks,backref=page]{hyperref}
     \else
         \RequirePackage[dvips]{geometry}
         \RequirePackage[dvips]{graphicx}
-        \RequirePackage[hypertex,bookmarks=false,hidelinks,backref=page]{hyperref}
+        \RequirePackage[hypertex,hidelinks,backref=page]{hyperref}
         \fi
     \RequirePackage[utf8]{inputenc}
 \fi
