@@ -1,0 +1,19 @@
+\section{Results and Discussion}\label{sec:braincontrol:results_and_discussion}
+
+First, we analyze the \gls{ERD}/\gls{ERS} behavior with respect to rest vs. motor imaginations in Fig.~\ref{fig:braincontrol:ERDS}. It is evident that the baseline of rest remained the same in both scenarios when the participant did not perform motor imagery, but as soon as the cue is presented at \SI{0.0}{s}, a shift in power for the right-hand motor imagery with comparison to rest state is noticeable. 
+
+We present the results for setpoint regulation employing motor imagery in Fig.~\ref{fig:braincontrol:experimental_results:setpoint_regulation:brain}. 
+We observe that the participant can reach the proximity of the setpoint within the allotted time of \SI{60}{s} six out of nine times (i.e., \SI{66.6}{\percent}).
+For the successful steps, the average response time is \SI{21.5}{s}.
+However, as our protocol does not contain a command to let the attractor rest, it is challenging to keep the end-effector at the setpoint and we observe oscillations, particularly with respect to the x-coordinate.
+% From the results in Fig.~\ref{fig:braincontrol:experimental_results:setpoint_regulation:keyboard}, it is evident that a keyboard is a superior \gls{HMI}. It only takes the participant two setpoints to get familiar with the interface, and afterwards, the performance displayed is excellent.
+% However, for instance, for people with limb impairment, or people with Spinal Cord Injury (SCI), such an interface is inaccessible and, therefore, only represents an upper bound of what we strive to achieve with \gls{BCI} systems.
+In our third experiment, we ask the Cartesian impedance controller to track the setpoints directly.
+The fast response time, a well-known characteristic of model-based control approaches, is evident. However, the errors in the model (for example, caused by hysteresis or unmodelled nonlinearities)~\cite{stolzle2023experimental}, together with the lack of integral action, lead to steady-state errors. % They are especially pronounced for the y-coordinate.
+
+Finally, we consider the \gls{ADL} task of releasing hair spray using the end-effector of the \gls{HSA} robot. We present a sequence of stills in Fig.~\ref{fig:braincontrol:experimental_results:adl_task:sequence_of_stills} and plots of the entire sequence in Fig.~\ref{fig:braincontrol:experimental_results:adl_task:brain}.
+Already during the first attempt, the participant can steer the end-effector toward the button, apply force, and release the fluid within \SI{86}{s}.
+The impedance of the controller is clearly visible in Fig.~\ref{fig:braincontrol:experimental_results:adl_task:brain:pee_y} when the manipulator is in contact with the object at time \SI{74}{s} to \SI{104}{s}.
+Also, we noticed that the end-effector does not need to be perfectly aligned with the center of the button and can still complete the task successfully due to the compliance of the closed-loop system in the tangential direction.
+
+We noticed that the variability of setting up the \gls{EEG} device on each study participant and the \gls{EEG} sensor noise caused by external factors (e.g., floor vibrations) still pose a considerable challenge for deploying motor imagery-based tools in practice. Furthermore, subject-specific factors such as the ability to focus on imagining motor actions, mental tiredness, etc., significantly affected the performance (e.g., classification accuracy, setpoint tracking error).
