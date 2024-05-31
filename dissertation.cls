@@ -228,7 +228,7 @@
 \RequirePackage{booktabs}
 
 \RequirePackage{relsize}
-\renewcommand*{\UrlFont}{\ttfamily\relax}
+\renewcommand*{\UrlFont}{\ttfamily\small}
 
 % number circles. They go well together with my favorite way of
 % labeling stuff in pictures.
