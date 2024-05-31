@@ -218,6 +218,8 @@
 \RequirePackage{algorithmic}
 % \RequirePackage{algpseudocode}
 \newcommand{\var}[1]{{\ttfamily#1}}% variable
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
 
 \newcommand{\ahref}[2]{\href{#1}{\nolinkurl{#2}}}
 % number circles. They go well together with my favorite way of
