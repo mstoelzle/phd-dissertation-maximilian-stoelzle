@@ -6,7 +6,7 @@ A motion capture setup is employed to gather an accurate ground-truth on the sha
      \centering
      \subfigure[Experimental setup]{\includegraphics[height=.525\columnwidth]{srslam/figures/graphic_experimental_setup.drawio_v1_compressed.pdf} \label{fig:srslam:experimental_setup}}
      \subfigure[Trajectory 3]{\includegraphics[height=.525\columnwidth]{srslam/figures/graphic_sequences_of_stills_lab_experiment_trajectory_3_compressed.pdf} \label{fig:srslam:graphic_sequences_of_stills_lab_experiment_trajectory_3}}
-     \caption{\small In Panel (a), a soft robotic segment is mounted to a cage with attached motion capture cameras. The segment is pneumatically actuated by a pressure regulator (Fest Motion Terminal). A Raspberry Pi camera v2.0 is attached to the tip of the segment and in a straight segment configuration looks down towards check-board patterns. Panel (b) depicts a sequence of stills showing the robot following trajectory 3 from two different vantage points. The second vantage point differs \SI{90}{\degree} from the first one. The third row displays a few representative frames as recorded by the camera attached to the tip of the segment.}
+     \caption{ In Panel (a), a soft robotic segment is mounted to a cage with attached motion capture cameras. The segment is pneumatically actuated by a pressure regulator (Fest Motion Terminal). A Raspberry Pi camera v2.0 is attached to the tip of the segment and in a straight segment configuration looks down towards check-board patterns. Panel (b) depicts a sequence of stills showing the robot following trajectory 3 from two different vantage points. The second vantage point differs \SI{90}{\degree} from the first one. The third row displays a few representative frames as recorded by the camera attached to the tip of the segment.}
 \end{figure*}
 
 \subsection{Experimental setup}
@@ -71,9 +71,9 @@ The optimization also slightly improves the rotational \gls{RMSE} by \SI{4}{\per
 The experimental results of the \gls{SLAM} algorithm are coherent with the simulations as the small segment length (\SI{11}{cm}) used in the experiments increases the translational errors as shown similarly in the simulations for a robot of length \SI{15}{cm}.
 Even though the translational error is greatly reduced through optimization, it is still significantly higher than in simulation. Two reasons for this difference could be that a) the segment in simulation was modelled as in-extensible, while the real robot segment is extended via pneumatic pressurization, which introduces additional errors by \gls{SLAM} not accurately estimating the elongation movement and b) the real robot does not perfectly behave according to the \gls{CC} approximation as the simulated robot does.
 
-% \begin{table}\small
+% \begin{table}
 % \centering
-% \caption{\small \textcolor{orange}{OLD RESULTS: }oReal-world results before and after optimization: the translational errors are stated through a relative \gls{RMSE} and the rotational errors with an absolute \gls{RMSE} taking into account the Frobenius norm of the rotation matrices.}
+% \caption{ \textcolor{orange}{OLD RESULTS: }oReal-world results before and after optimization: the translational errors are stated through a relative \gls{RMSE} and the rotational errors with an absolute \gls{RMSE} taking into account the Frobenius norm of the rotation matrices.}
 % \begin{tabular}{lclll}\toprule
 % \textbf{Error category} & \textbf{Opt.} & \textbf{Traj. 1} & \textbf{Traj. 2} & \textbf{Traj. 3}\\
 % \midrule
@@ -90,9 +90,9 @@ Even though the translational error is greatly reduced through optimization, it 
 % \label{tab:srslam:results_lab_experiments}
 % \end{table}
 
-\begin{table}\small
+\begin{table}
 \centering
-\caption{\small Real-world results before and after optimization. The translational errors are stated through a relative \gls{RMSE} as described in \eqref{eq:srslam:evaluation_translational_error}. For rotation, we report both an absolute \gls{RMSE} computed with the Frobenius norm between the rotation matrices as stated in \eqref{eq:srslam:evaluation_rotational_error} and an angle error [rad] for the orientation of the z-axis of the tip of the segment as defined in \eqref{eq:srslam:evaluation_angle_error}. The results are averaged over two trials for each trajectory.}
+\caption{ Real-world results before and after optimization. The translational errors are stated through a relative \gls{RMSE} as described in \eqref{eq:srslam:evaluation_translational_error}. For rotation, we report both an absolute \gls{RMSE} computed with the Frobenius norm between the rotation matrices as stated in \eqref{eq:srslam:evaluation_rotational_error} and an angle error [rad] for the orientation of the z-axis of the tip of the segment as defined in \eqref{eq:srslam:evaluation_angle_error}. The results are averaged over two trials for each trajectory.}
 \begin{tabular}{lclll}\toprule
 \textbf{Error category} & \textbf{Opt.} & \textbf{Traj. 1} & \textbf{Traj. 2} & \textbf{Traj. 3}\\
 \midrule
@@ -113,7 +113,7 @@ Rotation $e_{\theta_z}$ & Yes & $\SI{0.080}{\radian}$ & $\SI{0.067}{\radian}$ & 
     \centering
     \includegraphics[width=\columnwidth, trim={2cm 1.2cm 2cm 0}]{srslam/figures/vtem28_t3_coordinates.eps}\\
     \includegraphics[width=\columnwidth, trim={2cm 0 2cm 1.2cm}]{srslam/figures/vtem28_t3_angles.eps}
-    \caption{\small Experimental results for trajectory 3. Comparison between ground-truth (solid line), \gls{SLAM} (dashed line) and optimized through projection into \gls{PCC} kinematics (dotted line) for translation and orientation estimates.}
+    \caption{ Experimental results for trajectory 3. Comparison between ground-truth (solid line), \gls{SLAM} (dashed line) and optimized through projection into \gls{PCC} kinematics (dotted line) for translation and orientation estimates.}
     \label{fig:srslam:experiments_t3_over_time}
 \end{figure}
 

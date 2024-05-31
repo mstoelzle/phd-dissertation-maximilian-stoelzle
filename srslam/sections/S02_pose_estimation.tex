@@ -46,7 +46,7 @@ We show a pictorial representation of this kinematic model in Fig. \ref{fig:srsl
     $q_i \in \mathbb{R}^{3} = \begin{pmatrix}\Delta_{x,i} & \Delta_{y,i} & \delta L_i\end{pmatrix}^\mathrm{T}$,
 %\end{equation}
 where $\delta L_i$ is segment's extension, and $\Delta_{x,i}$ and $\Delta_{y,i}$ are the differences of the arc lengths of the segment at a radial distance of $d_i$ from the center-line along both cardinal directions of the base~\cite{della2020improved}. The complete robot's configuration is $q \in \mathbb{R}^{3 n_{\mathrm{S}}}$. The coordinate transformation for segment $i$ from the base frame $\{ S_{i-1} \}$ into the tip frame $\{ S_{i} \}$ as a function of the configuration $q_i$ is given by~\cite{della2020improved}
-\begin{equation}\small
+\begin{equation}
 \label{eq:srslam:transformation_improved_pcc}
 \begin{split}
     R_{i-1}^{i} &= 
@@ -89,7 +89,7 @@ Thus, we first transform the pose estimates to the inertial frame of the robot $
 \end{equation}
 
 We introduce the following notations for the \gls{PCC} kinematics
-\begin{equation}\small\label{eq:srslam:Pi}
+\begin{equation}\label{eq:srslam:Pi}
 \begin{split}
     \hat{t}_{i-1}^{\mathrm{c}_i} &= \Pi_\mathrm{t}(\hat{q}_i) = 
     \hat{T}_{i-1}^{\check{\mathrm{c}},i} \left (\frac{l_{\mathrm{c}_i}}{L_{0,i}} \hat{q}_i \right )
@@ -102,7 +102,7 @@ We introduce the following notations for the \gls{PCC} kinematics
 where $\hat{t}_{i-1}^{\check{\mathrm{c}},i}$ and $\hat{R}_{i-1}^{\check{\mathrm{c}},i}$ describe the translation and rotation from the base of the segment to the camera frame according to the \gls{PCC} kinematic model for an estimated configuration of the the segment $\hat{q}_i$. $\hat{T}_{i-1}^{\check{\mathrm{c}},i}(q_{\check{c},i})$ and $\hat{R}_{i-1}^{\check{\mathrm{c}},i}(q_{\check{c},i})$ are based on \eqref{eq:srslam:transformation_improved_pcc} and a function of the adjusted configuration $q_{\check{c},i}$ referenced in \eqref{eq:srslam:camera_configuration}.
 
 Additionally, the pose estimates by the \gls{SLAM} algorithm need to be transformed to the base frame of segment $i$. Thus, we introduce the following
-\begin{equation}\small\label{eq:srslam:Psi}
+\begin{equation}\label{eq:srslam:Psi}
 \begin{split}
     \hat{t}_{i-1}^{\mathrm{c}_i} &= \Psi_\mathrm{t}(q_1 \dots q_{i-1}, \hat{t}_{0}^{\mathrm{c}_i}) =
     \prod_{\tilde{i}=1}^{i-1} \left ( T_{\tilde{i}-1}^{\tilde{i}} \left (\hat{q}_{\tilde{i}} \right )  \right )^\mathrm{T}
@@ -119,11 +119,11 @@ Additionally, the pose estimates by the \gls{SLAM} algorithm need to be transfor
 Next, we define a cost function to optimize the pose estimate by projecting them into the \gls{PCC}-kinematics
 % Please note, that we do not include the orientation estimate $\hat{R}_{0}^{\mathrm{c}_i}$ by the \gls{SLAM} algorithm in the cost function.
 %
-\begin{equation}\small\label{eq:srslam:cost_fun}
+\begin{equation}\label{eq:srslam:cost_fun}
     \min_{\hat{q}} \sum_{i=1}^{n_\mathrm{S}} f_{\mathrm{t},i}(\hat{q}) + \lambda_\mathrm{R} f_{\mathrm{R},i}(\hat{q}),
 \end{equation}
 with
-\begin{equation}\small\label{eq:srslam:cost_fun_ingredients}
+\begin{equation}\label{eq:srslam:cost_fun_ingredients}
 \begin{split}
     f_{\mathrm{t},i}(\hat{q}) &=
     \big\lVert 

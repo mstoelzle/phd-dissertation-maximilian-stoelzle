@@ -12,12 +12,12 @@ As the camera is attached to the tip of the segment, we set $l_{\mathrm{c}_1} = 
 \subsection{Trajectories and calibration sequence}\label{sub:srslam:trajectories}
 Three different trajectories are considered for the simulated movement of the soft robotic segment and its attached virtual camera. While the first one represents a planar side bending, the second one describes an “8” shape with the tip, and the last one covers a lobe of the “8”. 
 Those trajectories were commanded in $\Delta_{x,1}$ and $\Delta_{y,1}$, with the following mathematical formulas:
-\begin{equation}\small\label{eq:srslam:trajectory_parametrization}
+\begin{equation}\label{eq:srslam:trajectory_parametrization}
     \Delta_{x,1} = L_{0,1} A_x \sin(2 \pi f_x) \qquad \Delta_{y,1} = L_{0,1} A_y \sin(2 \pi f_y),
 \end{equation}
 with $L_{0,1}$ the unextended length of the robot, $A_x$ and $A_y$ amplitudes of the sinusoids and $f_x$ and $f_y$ frequencies of the sinusoids.
 The parameters $f_x$ and $f_y$ are defined as follows with $k$ representing the current time index:
-\begin{equation}\small
+\begin{equation}
     f_x = \frac{F_x (k-1)}{n_{\mathrm{t}}}, \qquad f_y = \frac{F_y (k-1)}{n_{\mathrm{t}}}.
 \end{equation}
 Please note that these trajectories do not contain any elongation of the segment. 
@@ -81,21 +81,21 @@ We solve the optimization problem outlined in \eqref{eq:srslam:cost_fun} using n
 To quantitatively evaluate the performance of our proposed approach, we introduce error metrics for both the translation and orientation estimates.
 %
 We measure the translational pose prediction error with a relative \gls{RMSE} $e_\mathrm{t}$
-\begin{equation}\label{eq:srslam:evaluation_translational_error}\small
+\begin{equation}\label{eq:srslam:evaluation_translational_error}
     e_\mathrm{t} = \frac{\sqrt{\sum_{t=1}^{n_\mathrm{t}} \left (\lVert \hat{t}_{0,t}^{\mathrm{c},1} - t_{0,t}^{\mathrm{c},1} \rVert_2 \right )^2}}{\sqrt{n_\mathrm{t}} \; l_\mathrm{traj}},
 \end{equation}
 where $l_\mathrm{traj}$ corresponds to the length of the trajectory and $n_\mathrm{t}$ the total number of data points along the trajectory. Similarly, we leverage the Frobenius norm for the rotational error $e_\mathrm{R}$
-\begin{equation}\label{eq:srslam:evaluation_rotational_error}\small
+\begin{equation}\label{eq:srslam:evaluation_rotational_error}
     e_\mathrm{R} = \sqrt{\sum_{t=1}^{n_\mathrm{t}} \frac{\left (\big\lVert \hat{R}_{0,t}^{\mathrm{c},1} - R_{0,t}^{\mathrm{c},1} \big\rVert_F \right )^2}{n_\mathrm{t}}}.
 \end{equation}
 As torsion can often be neglected for soft robotic arms, we state the angle error for the orientation of the local z-axis of the tip of the segment for intuitive analysis of the orientation estimates. First, the unit vector of the local z-axis $\{ o_{1} \}_{0}$ is computed in the base frame $\{ S_0 \}$
-\begin{equation}\small
+\begin{equation}
     \{ o_1 \}_0 = R_{0,t}^{1}\begin{pmatrix}0 & 0 & 1\end{pmatrix}^\mathrm{T},
     \quad
     \{ \hat{o}_1 \}_0 = \hat{R}_{0,t}^{1}\begin{pmatrix}0 & 0 & 1\end{pmatrix}^\mathrm{T},
 \end{equation}
 which allows us to subsequently compute the angle error between the ground-truth z-axis of the tip $\{ o_1 \}_0$ and the estimated z-axis $ \{ \hat{o}_1 \}_0$
-\begin{equation}\label{eq:srslam:evaluation_angle_error}\small
+\begin{equation}\label{eq:srslam:evaluation_angle_error}
     e_{\theta_z} = \sqrt{\sum_{t=1}^{n_\mathrm{t}} \frac{\left (\arccos \left ( \{ o_1 \}_0 \cdot \{ \hat{o}_1 \}_0 \right ) \right )^2}{n_\mathrm{t}}}.
 \end{equation}
 
@@ -103,7 +103,7 @@ which allows us to subsequently compute the angle error between the ground-truth
 % \begingroup
 % \setlength{\tabcolsep}{2.0pt} % Default value: 6pt
 % \renewcommand{\arraystretch}{1} % Default value: 1
-\begin{table*}\small
+\begin{table*}
 \centering
 \caption{Relative \gls{RMSE} [\%] for translations as referenced in \eqref{eq:srslam:evaluation_translational_error} of various trajectories and of robot segments with different lengths (\SI{15}{cm}, \SI{30}{cm}, \SI{100}{cm}). We state the error as $\text{mean} \pm \text{stdev} \; (\min, \max)$ and compute the statistics over seven trials from different initial poses.}
 \begin{tabular}{cclll}\toprule
@@ -124,7 +124,7 @@ Trajectory 3 & Yes & $2 \pm 3 \; (0, 9)$ & $0.5 \pm 0.3 \; (0.1, 0.8)$ & $2 \pm 
 % \endgroup
 
 \iffalse
-\begin{table*}\small
+\begin{table*}
 \centering
 \caption{Absolute \gls{RMSE} [-] for rotations computed with the Frobenius norm between rotation matrices of various trajectories and of robots with various lengths as referenced in \eqref{eq:srslam:evaluation_rotational_error}. We state the error as $\text{mean} \pm \text{stdev} \; (\min, \max)$ and compute the statistics over seven trials from different initial poses.}
 \begin{tabular}{cclll}\toprule
@@ -143,7 +143,7 @@ Trajectory 3 & Yes & $2 \pm 3 \; (0, 9)$ & $0.5 \pm 0.3 \; (0.1, 0.8)$ & $2 \pm 
 \label{tab:srslam:results_simulations_rotation_frobenius}
 \end{table*}
 
-\begin{table*}\small
+\begin{table*}
 \centering
 \caption{Absolute \gls{RMSE} [rad] for rotations computed with dot product \textcolor{red}{...}. We state the error as $\text{mean} \pm \text{stdev} \; (\min, \max)$ and compute the statistics over seven trials from different initial poses.}
 \begin{tabular}{cclll}\toprule

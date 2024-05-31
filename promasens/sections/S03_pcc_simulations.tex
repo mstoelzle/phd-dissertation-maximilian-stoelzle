@@ -135,7 +135,7 @@ We use a step size $\gamma = 3.5 \cdot 10^{-4}$, $3 \cdot 10^{-3}$, and $2 \cdot
 
 \subsection{Evaluation}\label{sub:promasens:pcc_simulations:evaluation}
 We evaluate the performance of our method at estimating the configuration of the segment by computing a relative Root Mean-Squared Error (RMSE) metric with respect to the ground-truth configuration $q(t)$ for each configuration variable separately
-\begin{equation}\small\label{eq:promasens:relative_RMSE}
+\begin{equation}\label{eq:promasens:relative_RMSE}
 \begin{split}
     e_{q_\star} = \frac{\sqrt{\sum_{t=0}^{n_\mathrm{t}} \left ( \hat{q}_\star(t) - q_\star(t) \right )^2}}{\sqrt{n_\mathrm{t}} \; D_{q_\star}},\\
     % e_{\Delta_y} = \frac{\sqrt{\sum_{t=0}^{n_\mathrm{t}} \left ( \hat{\Delta}_y(t) - \Delta_y(t) \right )^2}}{\sqrt{n_\mathrm{t}} \; L_{\Delta_y}},\\
@@ -187,7 +187,7 @@ Finally, an earth's magnetic field of magnitude \SI{0.065}{mT} is added. A separ
 %     \cdot (R_{i-1}^{\mathrm{m}_k})^{\mathrm{T}} \cdot t_{i-1}^{jk},
 % \end{equation}
 % which allows us to define the magnetic field vector in the frame $\{ S_{\mathrm{m}_k} \}$:
-% \begin{equation}\small
+% \begin{equation}
 %     B_{\mathrm{m}_k}^{jk} = 
 %     \begin{bmatrix}
 %         \frac{x^{t_{jk}}_{\mathrm{m}_k,xy}}{\lVert  t_{\mathrm{m}_k,xy}^{jk} \rVert} \cdot B^{r,jk} & \frac{y^{t_{jk}}_{\mathrm{m}_k,xy}}{\lVert  t_{\mathrm{m}_k,xy}^{jk} \rVert} \cdot B^{r,jk} & B^{a,jk}

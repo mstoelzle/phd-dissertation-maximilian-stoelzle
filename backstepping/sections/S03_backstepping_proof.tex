@@ -8,14 +8,14 @@ We first introduce a Lemma, which will be instrumental to the proof of the main 
 \begin{Lemma}\label{lemma:f_g_S}%{\color{red} I have the feeling that words are missing here}
 The input field defined in \eqref{eq:backstepping:gf} verifies
 %
-\begin{equation*}\small
+\begin{equation*}
     g(q,\mu_{\mathrm{p},\mathrm{a}}) - g(q,\mu_{\mathrm{p},\mathrm{b}}) \!=\!  -B^{-1}\!(q)S(q,\mu_{\mathrm{p},\mathrm{a}},\mu_{\mathrm{p},\mathrm{b}})(\mu_{\mathrm{p},\mathrm{a}} \!- \mu_{\mathrm{p},\mathrm{b}}),    
 \end{equation*}
 %
 $\forall \mu_{\mathrm{p},\mathrm{a}},\mu_{\mathrm{p},\mathrm{b}} \in \mathbb{R}^{n_{\mu_\mathrm{p}}}$ and $q \in \mathbb{R}^{n_{\mathrm{q}}}$
 	with $S \in \mathbb{R}^{n_{\mathrm{q}} \times n_{\mu_\mathrm{p}}} $ so defined
 	%
-	\begin{equation*}\small
+	\begin{equation*}
 	    S_{i,j} = \frac{ A_{\mathrm{p},j} \alpha_{\mathrm{air},j} \partial_{q_i}V_{\mathrm{C},j}}{(V_{\mathrm{C},j}(q_i) + A_{\mathrm{p},j} \mu_{\mathrm{p},\mathrm{a},j})(V_{\mathrm{C},j}(q_i) + A_{\mathrm{p},j} \mu_{\mathrm{p},\mathrm{b},j})}.
 	\end{equation*}
 \end{Lemma}
@@ -23,7 +23,7 @@ $\forall \mu_{\mathrm{p},\mathrm{a}},\mu_{\mathrm{p},\mathrm{b}} \in \mathbb{R}^
 \begin{proof}
 	We express the left term of the equality using \eqref{eq:backstepping:gf}
 	%
-	\begin{equation*}\small%\footnotesize
+	\begin{equation*}%\footnotesize
 	\begin{split}
 	g(q,\mu_{\mathrm{p},\mathrm{a}}) - g(q,\mu_{\mathrm{p},\mathrm{b}}) 
 	=-B^{-1}(q) (G_{\mathrm{P}}^{\mathrm{q}}(q,\mu_{\mathrm{p},\mathrm{a}}) - G_{\mathrm{P}}^{\mathrm{q}}(q,\mu_{\mathrm{p},\mathrm{b}})),
@@ -32,10 +32,9 @@ $\forall \mu_{\mathrm{p},\mathrm{a}},\mu_{\mathrm{p},\mathrm{b}} \in \mathbb{R}^
 	%
 	where we recognize the term $B^{-1}(q)$ appearing in the Lemma. The term between brackets can be adjusted by using \eqref{eq:backstepping:GPq}
 	%
-	\begin{equation}\small
+	\begin{equation}
 	\begin{split}
-		&G_{\mathrm{P},i}^{\mathrm{q}}(q,\mu_{\mathrm{p},\mathrm{a}}) - G_{\mathrm{P},i}^{\mathrm{q}}(q,\mu_{\mathrm{p},\mathrm{b}})  \\
-	= &-\left(\sum_{j = 1}^{n_{\mu_\mathrm{p}}}  \frac{\alpha_{\mathrm{air},j} \partial_{q_i}V_{\mathrm{C},j}}{V_{\mathrm{C},j}(q_i) + A_{\mathrm{p},j} \mu_{\mathrm{p},\mathrm{a},i}} \!-\! \sum_{j = 1}^{n_{\mu_\mathrm{p}}}  \frac{\alpha_{\mathrm{air},j} \partial_{q_i}V_{\mathrm{C},j}}{V_{\mathrm{C},j}(q_i) + A_{\mathrm{p},j} \mu_{\mathrm{p},\mathrm{b},j}}\right)  \\
+		G_{\mathrm{P},i}^{\mathrm{q}}(q,\mu_{\mathrm{p},\mathrm{a}}) - G_{\mathrm{P},i}^{\mathrm{q}}(q,\mu_{\mathrm{p},\mathrm{b}}) = &-\left(\sum_{j = 1}^{n_{\mu_\mathrm{p}}}  \frac{\alpha_{\mathrm{air},j} \partial_{q_i}V_{\mathrm{C},j}}{V_{\mathrm{C},j}(q_i) + A_{\mathrm{p},j} \mu_{\mathrm{p},\mathrm{a},i}} \!-\! \sum_{j = 1}^{n_{\mu_\mathrm{p}}}  \frac{\alpha_{\mathrm{air},j} \partial_{q_i}V_{\mathrm{C},j}}{V_{\mathrm{C},j}(q_i) + A_{\mathrm{p},j} \mu_{\mathrm{p},\mathrm{b},j}}\right),  \\
 	= &\sum_{j = 1}^{n_{\mu_\mathrm{p}}} \frac{ (\mu_{\mathrm{p},\mathrm{a},j} - \mu_{\mathrm{p},\mathrm{b},j})  A_{\mathrm{p},j} \alpha_{\mathrm{air},j} \partial_{q_i}V_{\mathrm{C},j}}{(V_{\mathrm{C},j}(q_i) + A_{\mathrm{p},j} \mu_{\mathrm{p},\mathrm{a},j})(V_{\mathrm{C},j}(q_i) + A_{\mathrm{p},j} \mu_{\mathrm{p},\mathrm{b},j})}.
 	\end{split}
 	\end{equation}
@@ -48,13 +47,13 @@ Thus, even if the robot side of the dynamics \eqref{eq:backstepping:complete_dyn
 \begin{Theorem}
 	Suppose that a $\Gamma(q,\dot{q})$ exists s.t. the reduced system
 	%
-	\begin{equation}\small\label{eq:backstepping:reduced_sys}
+	\begin{equation}\label{eq:backstepping:reduced_sys}
 		\ddot{q} = f(q,\dot{q}) + g(q,\Gamma(q,\dot{q}))
 	\end{equation}
 	%
 	converges to a desired trajectory $\bar{q}(t)$, $\forall (q(0),\dot{q}(0)) \in \mathbb{R}^{2 n_{\mathrm{q}}}$. Suppose that the convergence is proven by Lyapunov arguments through the function $H(q,\dot{q})$. Then the closed loop of the full system \eqref{eq:backstepping:complete_dyn} and the controller
 	%
-%	\begin{equation}\small\small
+%	\begin{equation}
 %		\begin{split}
 %%			\tau &= G_{\mathrm{P}}^{\mathrm{l}} + J  \ddot{\Gamma} + (JK_1 + K_2) (\dot{l} - \dot{\Gamma}) + (K_2 K_1 - I) (l - \Gamma)\\
 %%			&- J\frac{\mathrm{d}}{\mathrm{d} t}\left(M^{\mathrm{T}}(q,l,\Gamma)B^{-\mathrm{T}}(q)\partial_{\dot{q}} H^{\mathrm{T}}\right) \\
@@ -64,7 +63,7 @@ Thus, even if the robot side of the dynamics \eqref{eq:backstepping:complete_dyn
 %			&- M^{\mathrm{T}}(q,l,\Gamma)B^{-\mathrm{T}}(q)\partial_{\dot{q}} H^{\mathrm{T}}
 %		\end{split}
 %	\end{equation}
-	\begin{equation}\small\label{eq:backstepping:pi_psi}
+	\begin{equation}\label{eq:backstepping:pi_psi}
 		\begin{split}
 			f_\mathrm{p} &= \Psi = G_{\mathrm{P}}^{\mu_\mathrm{p}} + D_\mathrm{p} \Pi + M_\mathrm{p} \dot{\Pi} - K_2 (\dot{\mu}_\mathrm{p} - \Pi) - (\mu_\mathrm{p} - \Gamma),\\
 			\Pi &= \dot{\Gamma} - K_1 (\mu_\mathrm{p} - \Gamma) 
@@ -78,7 +77,7 @@ Thus, even if the robot side of the dynamics \eqref{eq:backstepping:complete_dyn
 	
 	We first consider the problem of deriving a controller under the assumption that the velocity of the piston $v_\mathrm{p}$ is set by a controller. This serves as a first step toward the general solution of the problem. System \eqref{eq:backstepping:complete_dyn} is thus reduced into
 	%
-	\begin{equation}\small\label{eq:backstepping:intermediate}\small
+	\begin{equation}\label{eq:backstepping:intermediate}
 	\begin{split}
 	B(q)\ddot{q} \! + \! C(q,\dot{q})\dot{q} \! + \! G(q) \! + \! K(q) \! + \! D(q,\dot{q}) \! + \! G_{\mathrm{P}}^{\mathrm{q}}(q,\mu_\mathrm{p}) &= 0, \\
 	\dot{\mu}_\mathrm{p} &= v_\mathrm{p}. 
@@ -87,19 +86,18 @@ Thus, even if the robot side of the dynamics \eqref{eq:backstepping:complete_dyn
 	%
 	We introduce the following control Lyapunov candidate
 	%
-	\begin{equation}\small
+	\begin{equation}
 		W(q,\dot{q},\mu_\mathrm{p}) = H(q,\dot{q}) + \frac{1}{2}(\mu_\mathrm{p} - \Gamma)^{\mathrm{T}}(\mu_\mathrm{p} - \Gamma)\;,
 	\end{equation}
 	%
 	which can thus be differentiated obtaining
 	%
-	\begin{equation}\small
+	\begin{equation}
 		\begin{split}
-			&\dot{W}(q,\dot{q},\mu_\mathrm{p}) = 
-			\dot{H} + (\mu_\mathrm{p} - \Gamma)^{\mathrm{T}}(v_\mathrm{p} - \dot\Gamma) \\
-			& =  \partial_{q} H \dot{q} + \partial_{\dot{q}} H (f(q,\dot{q}) + g(q,\mu_\mathrm{p})) + (\mu_\mathrm{p} - \Gamma)^{\mathrm{T}}(v_\mathrm{p} - \dot\Gamma) \\
-			& = \partial_{q} H \dot{q} + \partial_{\dot{q}} H (f(q,\dot{q}) + g(q,\Gamma(q,\dot{q}))) \\
-			&+ \partial_{\dot{q}} H (g(q,\mu_\mathrm{p}) - g(q,\Gamma(q,\dot{q}))) + (\mu_\mathrm{p} - \Gamma)^{\mathrm{T}} (v_\mathrm{p} - \dot\Gamma)\;,
+			\dot{W}(q,\dot{q},\mu_\mathrm{p}) =& \: \dot{H} + (\mu_\mathrm{p} - \Gamma)^{\mathrm{T}}(v_\mathrm{p} - \dot\Gamma)\\
+			=&  \: \partial_{q} H \dot{q} + \partial_{\dot{q}} H (f(q,\dot{q}) + g(q,\mu_\mathrm{p})) + (\mu_\mathrm{p} - \Gamma)^{\mathrm{T}}(v_\mathrm{p} - \dot\Gamma) \\
+			=& \: \partial_{q} H \dot{q} + \partial_{\dot{q}} H (f(q,\dot{q}) + g(q,\Gamma(q,\dot{q}))) \\
+			& \: + \partial_{\dot{q}} H (g(q,\mu_\mathrm{p}) - g(q,\Gamma(q,\dot{q}))) + (\mu_\mathrm{p} - \Gamma)^{\mathrm{T}} (v_\mathrm{p} - \dot\Gamma)\;,
 		\end{split}
 	\end{equation}
 	%
@@ -107,7 +105,7 @@ Thus, even if the robot side of the dynamics \eqref{eq:backstepping:complete_dyn
 	%
 	We now propose the controller $v_\mathrm{p} = \Pi(q,\dot{q},\mu_\mathrm{p})$ for stabilizing this system, with
 	%
-	\begin{equation*}\small
+	\begin{equation*}
 		\begin{split}
 			\Pi(q,\dot{q},\mu_\mathrm{p}) &= \dot{\Gamma} - K_1 (\mu_\mathrm{p} - \Gamma) + S^{\mathrm{T}}(q,\mu_\mathrm{p},\Gamma)B^{-\mathrm{T}}(q)\partial_{\dot{q}} H^{\mathrm{T}}.
 		\end{split}
@@ -115,17 +113,17 @@ Thus, even if the robot side of the dynamics \eqref{eq:backstepping:complete_dyn
 	%
 	The derivative of the Lyapunov candidate for the closed loop system is thus
 	%
-	\begin{equation*}\small
+	\begin{equation*}
 	\begin{split}
-	&\dot{W}(q,\dot{q},\mu_\mathrm{p}) =  \partial_{q} H \dot{q} + \partial_{\dot{q}} H (f(q,\dot{q}) + g(q,\Gamma(q,\dot{q}))) \\
-	&\quad + \partial_{\dot{q}} H (g(q,\mu_\mathrm{p}) - g(q,\Gamma(q,\dot{q}))) - (\mu_\mathrm{p} - \Gamma)^{\mathrm{T}}K_1(\mu_\mathrm{p} - \Gamma) \\
-	&\quad +  \partial_{\dot{q}} H B^{-1}(q) S(q,\mu_\mathrm{p},\Gamma) (\mu_\mathrm{p} - \Gamma)\;,
+	\dot{W}(q,\dot{q},\mu_\mathrm{p}) =& \: \partial_{q} H \dot{q} + \partial_{\dot{q}} H (f(q,\dot{q}) + g(q,\Gamma(q,\dot{q}))) \\
+	&\: + \partial_{\dot{q}} H (g(q,\mu_\mathrm{p}) - g(q,\Gamma(q,\dot{q}))) - (\mu_\mathrm{p} - \Gamma)^{\mathrm{T}}K_1(\mu_\mathrm{p} - \Gamma) \\
+	&\: +  \partial_{\dot{q}} H B^{-1}(q) S(q,\mu_\mathrm{p},\Gamma) (\mu_\mathrm{p} - \Gamma)\;,
 	\end{split}
 	\end{equation*}
 	%
 	where we exploited that all terms are scalar to extract the transpose of the last one. This equation can be  simplified by invoking Lemma 1 into
 	%
-	\begin{equation}\small
+	\begin{equation}
 	\begin{split}
 	\dot{W}(q,\dot{q},\mu_\mathrm{p}) &=  \partial_{q} H \dot{q} + \partial_{\dot{q}} H (f(q,\dot{q}) + g(q,\Gamma(q,\dot{q}))) \\
 	&\quad - (\mu_\mathrm{p} - \Gamma)^{\mathrm{T}}K_1(\mu_\mathrm{p} - \Gamma).
@@ -134,7 +132,7 @@ Thus, even if the robot side of the dynamics \eqref{eq:backstepping:complete_dyn
 	%
 	Consider now that $H$ is a Lyapunov function for \eqref{eq:backstepping:reduced_sys} under the control action $\Gamma$. This assures that
 	%
-	\begin{equation}\small
+	\begin{equation}
 		0 > \dot{H} = \partial_{q} H \dot{q} + \partial_{\dot{q}} H (f(q,\dot{q}) + g(q,\Gamma(q,\dot{q}))).
 	\end{equation}
 	%
@@ -146,23 +144,22 @@ Thus, even if the robot side of the dynamics \eqref{eq:backstepping:complete_dyn
 	%
 	The complete Lyapunov candidate that we propose is
 	%
-	\begin{equation}\small
+	\begin{equation}
 		Q = W + \frac{1}{2}(\dot{\mu}_\mathrm{p} - \Pi)^{\mathrm{T}} M_\mathrm{p} (\dot{\mu}_\mathrm{p} - \Pi),
 	\end{equation}
 	%
 	with time derivative
 	%
-	\begin{equation*}\small
+	\begin{equation*}
 		\begin{split}
 			\dot{Q} &= \dot{W} + (\dot{\mu}_\mathrm{p} - \Pi)^{\mathrm{T}} (\Psi - G_{\mathrm{P}}^{\mu_\mathrm{p}} - M_\mathrm{p} \dot{\Pi}) \\
-			 &= \partial_{q} W \dot{q} + \partial_{\dot{q}} W \ddot{q} + \partial_{\mu_\mathrm{p}} W \dot{\mu}_p\\
-			 & + (\dot{\mu}_\mathrm{p} - \Pi)^{\mathrm{T}} (\Psi - G_{\mathrm{P}}^{\mu_\mathrm{p}} - D_\mathrm{p} \dot{\mu}_\mathrm{p} - M_\mathrm{p} \dot{\Pi}) .
+			 &= \partial_{q} W \dot{q} + \partial_{\dot{q}} W \ddot{q} + \partial_{\mu_\mathrm{p}} W \dot{\mu}_p + (\dot{\mu}_\mathrm{p} - \Pi)^{\mathrm{T}} (\Psi - G_{\mathrm{P}}^{\mu_\mathrm{p}} - D_\mathrm{p} \dot{\mu}_\mathrm{p} - M_\mathrm{p} \dot{\Pi}) .
 		\end{split}
 	\end{equation*}
 	%
 	We therefore propose the controller
 	%
-	\begin{equation}\small\label{eq:backstepping:final_controller_1}
+	\begin{equation}\label{eq:backstepping:final_controller_1}
 	%\begin{split}
 	    \Psi(q, \dot{q}, \mu_\mathrm{p}, \dot{\mu}_\mathrm{p}) = G_{\mathrm{P}}^{\mu_\mathrm{p}} + D_\mathrm{p} \Pi + M_\mathrm{p} \dot{\Pi} - K_2 (\dot{\mu}_\mathrm{p} - \Pi) 
 	    - \partial_{\mu_\mathrm{p}} W^{\mathrm{T}}\!,
@@ -172,10 +169,10 @@ Thus, even if the robot side of the dynamics \eqref{eq:backstepping:complete_dyn
 	%
 	which generates the following closed loop Lyapunov candidate
 	%
-	\begin{equation}\small
+	\begin{equation}
 	    \begin{split}
-			\dot{Q} &= \partial_{q} W \dot{q} + \partial_{\dot{q}} W \ddot{q} + \partial_{\mu_\mathrm{p}} W \Pi \\
-			&- (\dot{\mu}_\mathrm{p} - \Pi)^{\mathrm{T}} (K_2 + D_\mathrm{p}) (\dot{\mu}_\mathrm{p} - \Pi)
+			\dot{Q} =& \partial_{q} W \dot{q} + \partial_{\dot{q}} W \ddot{q} + \partial_{\mu_\mathrm{p}} W \Pi \\
+			&\: - (\dot{\mu}_\mathrm{p} - \Pi)^{\mathrm{T}} (K_2 + D_\mathrm{p}) (\dot{\mu}_\mathrm{p} - \Pi)
 			%& \quad -\dot{\mu}_\mathrm{p}^\mathrm{T} M_\mathrm{p} D_\mathrm{p} \dot{\mu}_\mathrm{p}  
 			< 0,
 	    \end{split}
@@ -185,14 +182,14 @@ Thus, even if the robot side of the dynamics \eqref{eq:backstepping:complete_dyn
 	
 %	The Theorem follows considering that
 %	%
-%	%\begin{equation}\small
+%	%\begin{equation}
 %	%	\begin{split}
 %			$\dot{\Pi} =  \ddot{\Gamma} + P^{-1} K_1 (\dot{l} - \dot{\Gamma}) - P^{-1}\frac{\mathrm{d}}{\mathrm{d} t}\left(M^{\mathrm{T}}(q,l,\Gamma)B^{-\mathrm{T}}(q)\partial_{\dot{q}} H^{\mathrm{T}}\right)$, 
 %			$\partial_{l} W^{\mathrm{T}} = (l - \Gamma)$.
 %	%	\end{split}
 %	%\end{equation}
 %	%
-%	\begin{equation}\small\small
+%	\begin{equation}
 %	\begin{split}
 %	%			\tau &= G_{\mathrm{P}}^{\mathrm{l}} + J  \ddot{\Gamma} + (JK_1 + K_2) (\dot{l} - \dot{\Gamma}) + (K_2 K_1 - I) (l - \Gamma)\\
 %	%			&- J\frac{\mathrm{d}}{\mathrm{d} t}\left(M^{\mathrm{T}}(q,l,\Gamma)B^{-\mathrm{T}}(q)\partial_{\dot{q}} H^{\mathrm{T}}\right) \\
