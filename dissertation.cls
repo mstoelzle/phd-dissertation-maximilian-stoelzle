@@ -13,10 +13,10 @@
 
 % math packages
 \RequirePackage{fontawesome}
-\RequirePackage{amsmath}
-\RequirePackage{amssymb}
-\RequirePackage{txfonts}
+\RequirePackage{amsmath, amsfonts, amssymb}
+\RequirePackage{wasysym}
 \RequirePackage{mathptmx}
+\RequirePackage{bm}
 \RequirePackage{mathtools}
 \RequirePackage{pifont}
 \RequirePackage{nicefrac}
@@ -154,6 +154,7 @@
 \RequirePackage{subfigure}
 % \RequirePackage{subfig}
 \RequirePackage{wrapfig}
+\RequirePackage{sidecap}
 
 \RequirePackage{textcomp}
 \RequirePackage{slashbox}
@@ -228,10 +229,6 @@
 
 \RequirePackage{relsize}
 \renewcommand*{\UrlFont}{\ttfamily\relax}
-
-\RequirePackage{wasysym}
-\RequirePackage{amssymb}
-\RequirePackage{mathptmx}
 
 % number circles. They go well together with my favorite way of
 % labeling stuff in pictures.
