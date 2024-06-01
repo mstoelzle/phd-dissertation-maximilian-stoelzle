@@ -51,7 +51,7 @@ This strategy may present clear limitations in terms of performance and stabilit
   \caption{Schematic block diagram of the proposed nonlinear backstepping controller for a pneumatically-actuated soft robot. The approach considers both the fluidic drive cylinder and the soft system dynamics. It is agnostic to the chosen soft system controller in configuration-space $\tau(q,\dot{q})$.}\label{fig:backstepping:control_scheme}
 \end{figure}
 
-As model-based control of soft robots becomes a mature discipline, the need for general ways of dealing with actuators' dynamics becomes more pressing. In this work we deal with this challenge by follow a backstepping approach - which is an established strategy to deal with dynamical systems with triangular structure. %We focus on piston-driven pneumatically-actuated soft robots.
+As model-based control of soft robots becomes a mature discipline, the need for general ways of dealing with actuators' dynamics becomes more pressing. In this chapter we deal with this challenge by follow a backstepping approach - which is an established strategy to deal with dynamical systems with triangular structure. %We focus on piston-driven pneumatically-actuated soft robots.
 %
 A pneumatic model based on the ideal gas law is derived and the pneumatic actuation system is compensated in a quasi-static fashion in Falkenhahn et al.~\cite{falkenhahn2016dynamic}.
 %
@@ -66,7 +66,7 @@ Similarily, Franco et al.~\cite{franco2021nonlinear} derive an energy-based cont
 %{In a separate work considering the control of the \gls{BHA}, a pneumatic model based on the ideal gas law is derived and the pneumatic actuation system is controlled using a feedback-linearization controller that can compensate for the nonlinearities of the model~\cite{falkenhahn2016dynamic}.
 Both pieces of work focus on pneumatic actuation with valves and thus cannot be immediately applied to systems actuated with fluidic drive cylinders.
 
-To conclude, this work targets the dynamic control of piston-driven pneumatic-actuated soft robots (see for example Fig.~\ref{fig:backstepping:fluidic_drive_cylinder},~\ref{fig:backstepping:pcc_case_overview}). 
+To conclude, this chapter targets the dynamic control of piston-driven pneumatic-actuated soft robots (see for example Fig.~\ref{fig:backstepping:fluidic_drive_cylinder},~\ref{fig:backstepping:pcc_case_overview}). 
 We provide general strategies for (i) augmenting existing dynamic models of soft robots through a description of pneumatic actuation, (ii) controlling these systems via model-based feedback. 
 % Note that the application of backstepping is made not trivial by the non affine nature of the potential coupling. 
 As an example, we specialize the model to planar soft robots satisfying the \gls{PCC} assumption~\cite{della2020model} including the proposal of a kinematic model for the air volume in the chambers, and the controller to the set-point regulation of configuration. In this context, we also propose a simplified, potential coupling-aware PID-like controller. We provide simulations showing the effectiveness of both strategies.
