@@ -1,6 +1,6 @@
 \section{Backstepping Control of Piston-Driven Pneumatically-Actuated Soft Robots}\label{sec:backstepping:backstepping_proof}
 
-This section discusses the main contribution of this paper, a backstepping-based approach to generalize controllers $\Gamma(q,\dot{q})$ designed in the directly actuated case, to systems that can be modeled through \eqref{eq:backstepping:complete_dyn}.
+This section discusses the main contribution of this chapter, a backstepping-based approach to generalize controllers $\Gamma(q,\dot{q})$ designed in the directly actuated case, to systems that can be modeled through \eqref{eq:backstepping:complete_dyn}.
 We suppose that we have access to $\Gamma(q, \dot{q})$ controlling the piston position $\mu_\mathrm{p}$. Next, we perform backstepping twice to the controllers of the piston velocity $\dot{\mu}_\mathrm{p}$ and the piston actuation force $f_\mathrm{p}$ and prove the stability of each controller with Lyapunov arguments.
 The derived model-based control approach assumes that all model parameters are known, and all states are measurable (namely the configuration $q$, its time derivative $\dot{q}$, the piston position $\mu_\mathrm{p}$ and the piston velocity $\dot{\mu}_\mathrm{p}$), and that there are no disturbances or model uncertainties. 
 We first introduce a Lemma, which will be instrumental to the proof of the main theorem. It allows to relate an offset in the actuation-space to a change in acceleration in configuration-space that is proportional to the offset.
