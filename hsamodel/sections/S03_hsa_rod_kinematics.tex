@@ -1,4 +1,10 @@
-\section{A Selective Piecewise Constant Strain kinematic model for HSAs}\label{sec:hsamodel:kinematic_model}
+\section{A kinematic model for HSA rods}\label{sec:hsamodel:hsa_rod_kinematics}
+In this section, we aim to derive a forward kinematic model which can be used to describe the shape of a single \gls{HSA} rod with a minimum amount of parameters. More specifically, we want to describe the transformation from the base frame $\{ S_{\mathcal{B}} \}$ to a local frame $\{ S_s \}(q,s)$ at a coordinate $s \in [0, \Bar{L}]$. This coordinate lies on the backbone of an \gls{HSA} rod of printed (i.e. initial) length $\Bar{L}$.
+
+\subsection{Selective Piecewise Constant Strain (SPCS) kinematics}\label{sub:hsamodel:hsa_rod_kinematics:spcs_kinematics}
+For this purpose, we combine the existing kinematic models \gls{CS} and \gls{PCS}~\cite{renda2018discrete} to selectively keep specific strains constant along the entire length of the robot or vary them piece-wise among the segments.
+%Opposite to existing kinematic models based on \gls{CC}~\cite{garg2022kinematic}, our kinematic description strives to model the twist of the \gls{HSA} rod.
+This parametrization can be combined with the results in Sec.~\ref{sec:hsamodel:hsa_robot_simulation} to generate a compact dynamic model for the movement of HSA robots in 3D space.
 \begin{figure}[htb]
     \centering
     \includegraphics[width=0.25\columnwidth]{hsamodel/figures/kinematics/twisting_kinematics_v2_cropped.pdf}
@@ -6,11 +12,6 @@
     }
     \label{fig:hsamodel:hsa_kinematics}
 \end{figure}
-
-In this section, we aim to derive a forward kinematic model which can be used to describe the shape of an \gls{HSA} with a minimum amount of parameters. More specifically, we want to describe the transformation from the base frame $\{ S_{\mathcal{B}} \}$ to a local frame $\{ S_s \}(q,s)$ at a coordinate $s \in [0, \Bar{L}]$. This coordinate lies on the backbone of an \gls{HSA} rod of printed (i.e. initial) length $\Bar{L}$.
-For this purpose, we combine the existing kinematic models \gls{CS} and \gls{PCS}~\cite{renda2018discrete} to selectively keep specific strains constant along the entire length of the robot or vary them piece-wise among the segments.
-%Opposite to existing kinematic models based on \gls{CC}~\cite{garg2022kinematic}, our kinematic description strives to model the twist of the \gls{HSA} rod.
-This parametrization can be combined with the results in Sec.~\ref{sec:hsamodel:simulation} to generate a compact dynamic model.
 
 First, we define that 
 \begin{equation}
@@ -30,7 +31,7 @@ The strain in the $i$th segment is then the sum of the rest strain $\hat{\xi} = 
 \end{equation}
 Analogue to the concept introduced in \cite{renda2020geometric}, $B_\mathrm{CS} \in \mathbb{R}^{6 \times n_{q,\mathrm{CS}}}$, $B_\mathrm{PCS} \in \mathbb{R}^{6 \times n_{q,\mathrm{PCS}}}$ are the strain bases of $q_\mathrm{CS}$ and $q_\mathrm{PCS}$ respectively.
 
-In this paper, we specifically investigate a setting where the twist \& stretch strains are constant across the entire rod and the bend \& shear strains vary for each segment.
+In this chapter, we specifically investigate a setting where the twist \& stretch strains are constant across the entire rod and the bend \& shear strains vary for each segment.
 Accordingly, we choose $q_\mathrm{CS} = \begin{pmatrix} \kappa_z & \sigma_z \end{pmatrix}^\mathrm{T}$ and $q_{\mathrm{PCS},i} = \begin{pmatrix} \kappa_{x,i} & \kappa_{y,i} & \sigma_{x,i} & \sigma_{y,i} \end{pmatrix}^\mathrm{T}$.
 Then, the corresponding strain bases are determined to be
 \begin{equation}
@@ -51,7 +52,7 @@ Then, the corresponding strain bases are determined to be
 Next, we find homogeneous forward kinematic mappings for the given configuration and strains.
 As the twist angle $\phi_0$ demands a rotation around the local $z_{\mathcal{B}}$-axis of the base frame, the matrix $R_{\mathcal{B}}^0(\phi_0) \in SO(3)$ contains the rotation from the base frame $\{ S_{\mathcal{B}} \}$ to the proximal end of the rod denoted as frame $\{ S_{0} \}$.
 For a point $s$ on the $i$th segment with constant strain $\xi_i$, the transformation matrix from the segment's proximal frame $\{ S_{i-1} \}$ to the local frame at coordinate $s$ is given by the exponential map $e: \mathfrak{se}(3) \mapsto SE(3)$~\cite{renda2018discrete}
-\begin{equation}\footnotesize
+\begin{equation}
 \begin{split}
     e^{(s-\bar{L}_{i-1}) \check{\xi}_i} =& I_4 + (s-\bar{L}_{i-1}) \, \check{\xi}_i + \left ( 1 - \cos((s-\bar{L}_{i-1}) \, \theta_i) \right )\\ 
     &\frac{\check{\xi}_i^2}{\theta_i^2} + \left ( (s-\bar{L}_{i-1}) \, \theta_i - \sin((s-\bar{L}_{i-1}) \theta_i) \right ) \frac{\check{\xi}_i^3}{\theta_i^3}.
@@ -84,11 +85,11 @@ Therefore, the fully assembled transformation $T_{\mathcal{B}}^i(q)$ from the ba
     \subfigure{\includegraphics[width=0.49\columnwidth]{hsamodel/figures/simulation_plots/Kinematic_rotation_error_vs._number_of_PCS_segments_v3_cropped.pdf}}
     
     \caption{Verification of kinematic models in simulation. 
-    The plot in the first row shows the positional error $e_\mathrm{p}$ of the kinematic model against the simulated HSA. The plot in the second row visualizes the rotational error metric $e_\mathrm{quat}$, which is based on the vector component of the unit quaternion. For more information on the evaluation metrics, we refer to Section~\ref{sub:hsamodel:kinematics:evaluation_metrics}.
+    The plot in the first row shows the positional error $e_\mathrm{p}$ of the kinematic model against the simulated HSA. The plot in the second row visualizes the rotational error metric $e_\mathrm{quat}$, which is based on the vector component of the unit quaternion. For more information on the evaluation metrics, we refer to Section~\ref{ssub:hsamodel:hsa_rod_kinematics:evaluation_metrics}.
     %The poses of $25$ points along the rod determined through forward kinematics of a regressed configuration are compared against the links of a simulated, discretized Cosserat rod. 
     The kinematic model used here assumes the twist \& stretch strains to be constant along the entire HSA and the bend \& shear strains to be captured by $n_\mathrm{S}$ segments.
     Along this line, we report the performance of the kinematic model for a parametrization containing between one and five segments.
-    }\label{fig:hsamodel:simulation_kinematic_error_vs_number_of_PCS_segments}
+    }\label{fig:hsamodel:hsa_robot_simulation_kinematic_error_vs_number_of_PCS_segments}
 \end{figure}
 
 % \subsection{Differential Kinematics}
@@ -107,15 +108,15 @@ Therefore, the fully assembled transformation $T_{\mathcal{B}}^i(q)$ from the ba
 
 
 
-\section{Verification of the \gls{SPCS} model}\label{sec:hsamodel:verification_kinematics}
-The section is structured as follows. We introduce relevant actuation sequences for the \gls{HSA} robot in \ref{sub:hsamodel:kinematics:actuation_sequences}.
-Next, we present an inverse kinematic approach to identify the kinematic configuration in \ref{sub:hsamodel:kinematics:inverse_kinematics}.
-Translational and rotational error metrics are then defined in \ref{sub:hsamodel:kinematics:evaluation_metrics} to evaluate the quality of reconstructions. %mismatch between the poses predicted by the kinematic model and the actual measurements.
+\subsection{Verification of the SPCS kinematics}\label{sub:hsamodel:hsa_rod_kinematics:verification}
+The section is structured as follows. We introduce relevant actuation sequences for the \gls{HSA} robot.
+Next, we present an inverse kinematic approach to identify the kinematic configuration.
+Translational and rotational error metrics are then defined to evaluate the quality of reconstructions. %mismatch between the poses predicted by the kinematic model and the actual measurements.
 % Finally, we investigate the importance of the various strains and the performance with respect to the number of \gls{CS} segments for both simulation data and experimental datasets.
-Finally, we verify the performance of the proposed \gls{SPCS} kinematic model both for simulated data (\ref{sub:hsamodel:simulation_results}) and on experimental datasets (\ref{sub:hsamodel:kinematics:experimental_results}).
+Finally, we verify the performance of the proposed \gls{SPCS} kinematic model both for simulated data and on experimental datasets.
 The code and all datasets are made available on GitHub~\footnote{\scriptsize \url{https://github.com/tud-phi/hsa-kinematic-model}}.
 
-\subsection{Actuation sequences}\label{sub:hsamodel:actuation_sequences}\label{sub:hsamodel:kinematics:actuation_sequences}
+\subsubsection{Actuation sequences}\label{ssub:hsamodel:hsa_rod_kinematics:actuation_sequences}
 We collect datasets with a variety of actuation sequences, which includes both pure motion primitives and random actuation. 
 % The elongation, bending, and twisting motion primitives are invoked with the specifications in Fig.~\ref{fig:hsamodel:motion_primitives}(a). 
 For all sequences, we apply a twist angle of magnitude  $|u_\mathrm{d}| \in [0, \pi \: \si{rad}]$ at the base of each \gls{HSA}. The sign of $u_\mathrm{d}$ is determined by the handedness $h$ of the respective \gls{HSA}.
@@ -129,7 +130,7 @@ In total, the elongation and Lemniscate trajectories contain $100$ samples each,
 
 % We consider different datasets as part of this study. In some datasets, we actuate the \gls{HSA} robot such as to exhibit one of the motion primitives purely (e.g. elongation, bending, and twisting). Contrarily, the \emph{random actuation} dataset combines these motion primitives as we randomly sample each motor position $u_j \in h_j \, \mathcal{U}(0,\pi \, \si{rad})$. 
 
-\subsection{Inverse Kinematics}\label{sub:hsamodel:kinematics:inverse_kinematics}
+\subsubsection{Inverse kinematics}\label{ssub:hsamodel:hsa_rod_kinematics:inverse_kinematics}
 Differential inverse kinematics can be used to reconstruct the rod's configuration $q$ from $N$ known poses $T_{\mathcal{B}}^{s_i} \in SE(3), i \in [1, N]$ along the rod. 
 %While any of the standard Jacobian-based inverse differential kinematics approaches from literature~\cite{siciliano2009differential} could be used, 
 We implemented an inverse kinematics algorithm based on the analytical Jacobian $J_\mathrm{A}^{s_i} \in \mathbb{R}^{6 \times 7}$ of the pose representation
@@ -159,7 +160,7 @@ For Piecewise Constant Curvature (PCC), Piecewise Constant Twist (PCT), Piecewis
 % All kinematic parametrization use two Piecewise Constant Strain (PCS) segments.
 Additionally, we test the importance of including the shear strain component.
 For each kinematic parametrization, we state the Degrees of Freedom (DoF). 
-We report RMSEs for both translations and rotations (see Sec.~\ref{sub:hsamodel:kinematics:evaluation_metrics}).}
+We report RMSEs for both translations and rotations (see Sec.~\ref{ssub:hsamodel:hsa_rod_kinematics:evaluation_metrics}).}
 \begin{tabular}{l cccc cccc c c c ccc}\toprule
 \textbf{Trajectory} & \textbf{CC} & \textbf{CT} & \textbf{CSH} & \textbf{CA} & \textbf{PCC} & \textbf{PCT} & \textbf{PCSH} & \textbf{PCA} & \textbf{DoF} & $e_\mathrm{p}$ [mm] & $e_\mathrm{quat}$ [-] & $e_\mathrm{eul,\alpha}$ [rad] & $e_\mathrm{eul,\beta}$ [rad] & $e_\mathrm{eul,\gamma}$ [rad]\\
 \midrule
@@ -202,7 +203,7 @@ Rand. actuation & \xmark & \xmark & \xmark & \xmark & \cmark & \cmark & \cmark &
     }\label{fig:hsamodel:experiment_inverse_kinematics_sequence_of_stills}
 \end{figure*}
 
-\subsection{Evaluation metrics}\label{sub:hsamodel:kinematics:evaluation_metrics}
+\subsubsection{Evaluation metrics}\label{ssub:hsamodel:hsa_rod_kinematics:evaluation_metrics}
 We briefly introduce the metrics to quantify shape reconstruction accuracy by the proposed kinematic parametrization. 
 We first define a \gls{RMSE} for comparing each ground-truth position $p_t^i \in \mathbb{R}^{3}, t \in \{1,\dots,n_t\}, i \in \{1,\dots,N\}$ to the position estimated by the kinematic model $\tilde{p}_t^i$ over a time period of $n_t$ steps
 \begin{equation}\label{eq:hsamodel:translational_rmse}
@@ -226,15 +227,15 @@ where $f_\vartheta(\cdot)$ is the operator to compute the XYZ Euler angles $\var
 %     R_T^{\tilde{T}} = R_s^\mathcal{B} \, \tilde{R}_{\mathcal{B}}^s
 % \end{equation}
 
-\subsection{Simulation results}\label{sub:hsamodel:simulation_results}
+\subsubsection{Simulation results}\label{ssub:hsamodel:hsa_rod_kinematics:simulation_results}
 %The suitability of the proposed, low-dimensional kinematic parametrization is first tested in simulation. 
 %
-We employ the higher dimensional \gls{HSA} robot simulator proposed in Section~\ref{sec:hsamodel:simulation} to generate steady-state \gls{HSA} states. We use the same simulation parameters as in Section~\ref{sub:hsamodel:simulation:motion_primitives}. This provides us with $25$ discrete poses along each of the four \glspl{HSA}.
+We employ the higher dimensional \gls{HSA} robot simulator proposed in Section~\ref{sec:hsamodel:hsa_robot_simulation} to generate steady-state \gls{HSA} states. We use the same simulation parameters as in Section~\ref{sub:hsamodel:hsa_robot_simulation:motion_primitives}. This provides us with $25$ discrete poses along each of the four \glspl{HSA}.
 Then, we perform differential inverse kinematics with a step size of $\lambda = 0.2$ to find an optimal configuration $q$ describing the shape of the \gls{HSA}. We choose a higher step size ($\lambda=1$) for regressing the twist strains.
 
 For the kinematic model, we assume that the twist \& stretch strains are constant along the entire \gls{HSA} rod. The bend \& shear strains on the other hand are instead piece-wise constant across $n_\mathrm{S}$ segments. We evaluate the influence of the $n_\mathrm{S}$ parameter and test the performance of a kinematic model involving between $1$ and $5$ \gls{PCS} segments.
 
-The results are in Fig.~\ref{fig:hsamodel:simulation_kinematic_error_vs_number_of_PCS_segments}. While a kinematic model with a single \gls{CS} segment still works sufficiently well for the elongation and bending motion primitives, its performance deteriorates for any trajectories involving twisting. Instead, two segments of our model are sufficient to accurately represent the shape of the \gls{HSA}. 
+The results are in Fig.~\ref{fig:hsamodel:hsa_robot_simulation_kinematic_error_vs_number_of_PCS_segments}. While a kinematic model with a single \gls{CS} segment still works sufficiently well for the elongation and bending motion primitives, its performance deteriorates for any trajectories involving twisting. Instead, two segments of our model are sufficient to accurately represent the shape of the \gls{HSA}. 
 
 % We perform an ablation study to identify which components of the kinematic parametrization are essential for accurately representing the shape of an \gls{HSA} rod. The results in Table~\ref{tab:hsamodel:kinematic_results_simulations} show that a parametrization neglecting the shear strains is not able to model the bending or twisting motion primitives. While one \gls{CS} segment is sufficient to represent the elongation and bending motion primitives, the performance sharply deteriorates on the twisting dataset. Finally, we conclude that considering the twist strain is not necessary and does not positively influence the performance significantly. 
 
@@ -246,7 +247,7 @@ The results are in Fig.~\ref{fig:hsamodel:simulation_kinematic_error_vs_number_o
 %     \caption{Kinematic model fitted on the experimental data of the Lemniscate actuation sequence. The solid lines denote the ground-truth poses with respect to the base frame $\{ S_{\mathcal{B}} \}$ collected by the motion capture system. The dotted lines represent the poses found when evaluating the kinematic model for the configuration $q$. This configuration was previously fitted through the means of differential inverse kinematics. The subscript $\mathrm{r}$ denotes the pose of the marker ring and the subscript $\mathrm{d}$ is connected to the pose of the distal end of the HSA rod. The kinematic model used to produce this results consists of two PCS~\cite{renda2018discrete} segments with the twist strains being neglected.}
 % \end{figure*}
 
-\subsection{Experimental results}\label{sub:hsamodel:kinematics:experimental_results}
+\subsubsection{Experimental results}\label{ssub:hsamodel:hsa_rod_kinematics:experimental_results}
 In addition to the simulations, we also experimentally verify the kinematic model using an \gls{HSA} robot consisting of four closed rods 3D-printed via digital projection lithography from the flexible photopolymer resin Carbon FPU 50~\cite{truby2021recipe}. Each \gls{HSA} rod was printed to a length of $\bar{L} = \SI{101.6}{mm}$ and is independently actuated by DYNAMIXEL MX-28T servo motors.
 % Right-handed and left-handed \glspl{HSA} are placed diagonally opposite of each other respectively.
 As seen in Fig.~\ref{fig:hsamodel:experimental_setup}, we attach motion capture markers to several points on the robot to track the ground-truth pose information. Namely, we measure the pose of the motor base, the platform, and the midpoint of one of the right-handed \gls{HSA} rods (i.e. the front-left \gls{HSA} on the picture). Please note, that we extract the rotation angle $\phi_0$ from the servo encoders directly. The robot is mounted at its base to a cubical cage of side length \SI{750}{mm} in platform-down configuration. Eight Optitrack Prime X 13 cameras are attached to the cage tracking the reflective markers at \SI{30}{Hz}.
@@ -255,7 +256,7 @@ We actuate the robot from a workstation next-by with the control loop running at
 
 In Fig.~\ref{fig:hsamodel:experiment_inverse_kinematics_sequence_of_stills}, we show sequences of stills for the Lemniscate and twisting trajectory. The kinematic model used here assumes a constant twist strain along the entire rod and employs two \gls{PCS} segments to capture the remaining five strains. We see that except for extreme twisting states, e.g. the far right image in Fig.~\ref{fig:hsamodel:experiment_twisting_inverse_kinematics_sequence_of_stills}, the kinematic model is able to represent the complex \gls{HSA} shape very well.
 
-In Tab.~\ref{tab:hsamodel:kinematic_results_experiments}, we quantitatively evaluate multiple kinematic models on the trajectories defined in \ref{sub:hsamodel:kinematics:actuation_sequences}. 
+In Tab.~\ref{tab:hsamodel:kinematic_results_experiments}, we quantitatively evaluate multiple kinematic models on the trajectories defined in \ref{ssub:hsamodel:hsa_rod_kinematics:actuation_sequences}. 
 The first ($7$ DoF) and second ($11$ DoF) kinematic models are very similar as both assume constant twist and constant stretch along the entire \gls{HSA}. The other strains are contained in two \gls{PCS} segments in both cases. However, the first model exhibits much larger positional errors as it neglects shear strains, which are very important in \gls{HSA} robots, but were not accounted for in the literature~\cite{garg2022kinematic}.
 The third model provides the upper bound on the performance, as it has with $12$ comparatively many DoF and uses a piecewise formulation with two segments for all segments. 
 % With two poses along the rod available in the experimental data, which results in 12 constraints, it should therefore be possible to perfectly fit this kinematic model to the provided pose information.

@@ -1,8 +1,8 @@
-\chapter{Modelling of Handed Shearing Auxetics (HSA) Robots}
+\chapter{Modeling of Handed Shearing Auxetics (HSA) Robots}
 \label{chp:hsamodel}
 
 \begin{abstract}
-    Electrically-actuated continuum soft robots based on Handed Shearing Auxetics (HSAs) promise rapid actuation capabilities while preserving structural compliance. However, the foundational models of these novel actuators required for precise control strategies are missing. This paper proposes two key components extending discrete Cosserat rod model (DCM) to allow for modeling HSAs. First, we propose a mechanism for incorporating the auxetic trajectory into DCM dynamical simulations. We also propose an implementation of this extension as a plugin for the Elastica simulator. Second, we introduce a Selective Piecewise Constant Strain (SPCS) kinematic parameterization that can describe an HSA segment's shape with fewer configuration variables. We verify both theoretical contributions experimentally. The simulator is used to replicate experimental data of the mechanical characterization of HSA rods. For the second component, we attach motion capture markers at various points to a parallel HSA robot and find that the shape of the HSAs can be kinematically represented with an average accuracy of \SI{0.3}{mm} for positions and \SI{0.07}{rad} for orientations.
+    Electrically-actuated continuum soft robots based on Handed Shearing Auxetics (HSAs) promise rapid actuation capabilities while preserving structural compliance. However, the foundational models of these novel actuators required for precise control strategies are missing. This chapter proposes two key components extending discrete Cosserat rod model (DCM) to allow for modeling HSAs. First, we propose a mechanism for incorporating the auxetic trajectory into DCM dynamical simulations. We also propose an implementation of this extension as a plugin for the Elastica simulator. Second, we introduce a Selective Piecewise Constant Strain (SPCS) kinematic parameterization that can describe an HSA segment's shape with fewer configuration variables. We verify both theoretical contributions experimentally. The simulator is used to replicate experimental data of the mechanical characterization of HSA rods. For the second component, we attach motion capture markers at various points to a parallel HSA robot and find that the shape of the HSAs can be kinematically represented with an average accuracy of \SI{0.3}{mm} for positions and \SI{0.07}{rad} for orientations.
 \end{abstract}
 
 \blfootnote{This chapter is partly based on 
@@ -17,9 +17,10 @@
 \newpage
 
 \input{hsamodel/sections/S01_introduction}
-\input{hsamodel/sections/S02_simulation}
-\input{hsamodel/sections/S03_kinematics}
-\input{hsamodel/sections/S04_conclusion}
+\input{hsamodel/sections/S02_hsa_robot_simulation}
+\input{hsamodel/sections/S03_hsa_rod_kinematics}
+\input{hsamodel/sections/S04_planar_hsa_robot_model}
+\input{hsamodel/sections/S05_conclusion}
 
 \section*{Acknowledgments}
 We thank I. Good and J. Lipton from the University of Washington, U.S. for sharing the mechanical characterization published in \cite{good2022expanding}.

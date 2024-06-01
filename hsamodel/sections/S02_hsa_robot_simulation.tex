@@ -1,13 +1,13 @@
-\section{Dynamic simulation of HSA robots}\label{sec:hsamodel:simulation}
+\section{Dynamic simulation of HSA robots}\label{sec:hsamodel:hsa_robot_simulation}
 We introduce a new concept to enable the simulation of \gls{HSA} robots with the discretized Cosserat rod theory, which is used by many of the SoA simulators of soft continuum robots~\cite{naughton2021elastica, mathew2022sorosim}.
 While we provide an implementation of the proposed concept as a plugin to Elastica~\cite{naughton2021elastica}, the same strategy could be used to adapt other simulators such as SoRoSim~\cite{mathew2022sorosim} to \gls{HSA} robots.
 % The proposed mechanism couples the rest length of the rods with their twist strains to mirror the auxetic trajectory and modifies the stiffness of the rod as a function to the twist strain to match the known mechanical characteristics of \glspl{HSA}. %~\cite{good2022expanding}.
 % We provide an implementation of this strategy through a plugin for the Elastica simulator~\cite{naughton2021elastica}.
 % Our simulator is based on a discretized version of the Cosserat rod theory~\cite{renda2018discrete, gazzola2018forward, naughton2021elastica, mathew2022sorosim} and allows the user to simulate the behaviour of a system consisting of $n_\mathrm{HSA}$ rods, each with a handedness $h_j \in \{-1, 1 \}$, and a rigid cylindrical platform constraining all of the \glspl{HSA} at their tips.
 %
-We give some background on the \gls{DCM} in Section~\ref{sub:hsamodel:simulation:discretized_cosserat_rod_model}. Then, in \ref{sub:hsamodel:simulation:auxetic_trajectory}, we propose a mechanism to infuse the auxetic trajectory for a \gls{HSA} into the \gls{DCM} framework. Subsequently, we verify the steady-state behaviour of an \gls{HSA} against the mechanical characteristics in \ref{sub:hsamodel:simulation:verification_good}. Next, we lay out in \ref{sub:hsamodel:simulation:hsa_robots} the necessary boundary conditions of the \glspl{HSA} and describe the joint mechanism connecting the platform with the rods. Finally, we explain in Section~\ref{sub:hsamodel:simulation:motion_primitives} how we were able to reproduce in simulation the main motion primitives of \gls{HSA} robots.
+We give some background on the \gls{DCM} in Section~\ref{sub:hsamodel:hsa_robot_simulation:discretized_cosserat_rod_model}. Then, in \ref{sub:hsamodel:hsa_robot_simulation:auxetic_trajectory}, we propose a mechanism to infuse the auxetic trajectory for a \gls{HSA} into the \gls{DCM} framework. Subsequently, we verify the steady-state behaviour of an \gls{HSA} against the mechanical characteristics in \ref{sub:hsamodel:hsa_robot_simulation:verification_good}. Next, we lay out in \ref{sub:hsamodel:hsa_robot_simulation:hsa_robots} the necessary boundary conditions of the \glspl{HSA} and describe the joint mechanism connecting the platform with the rods. Finally, we explain in Section~\ref{sub:hsamodel:hsa_robot_simulation:motion_primitives} how we were able to reproduce in simulation the main motion primitives of \gls{HSA} robots.
 
-\subsection{Background: Discretized Cosserat-rod model}\label{sub:hsamodel:simulation:discretized_cosserat_rod_model}
+\subsection{Background: Discretized Cosserat-rod model}\label{sub:hsamodel:hsa_robot_simulation:discretized_cosserat_rod_model}
 This subsection will introduce the governing equations of the \gls{DCM} following the work by Gazzola et al.~\cite{gazzola2018forward}.
 According to the Cosserat rod theory, a slender rod's shape can be purely described by the line along its backbone. % The coordinate $s \in [0,L] \in \mathbb{R}$ can then be used to define a point along the backbone. % arc-length coordinate
 The backbone curve is divided into a discrete set of nodes with position $r_i(t) \in \mathbb{R}^3$ for $i \in \{1,\dots,n_\mathrm{v}+1\}$ and $n_\mathrm{v}$ links of orientation $Q_i(t) \in \mathbb{R}^{3 \times 3}$.
@@ -37,7 +37,7 @@ $\Delta^h : \{\mathbb{R}^3 \}_N \rightarrow \{ \mathbb{R}^3 \}_{N+1}$ is used as
 % Several quantities were expressed in the Voronoi domain $\mathcal{D}$, in which the length of the region $\mathcal{D}_i$ can be computed as $\mathcal{D}_i = \frac{l_{i+1} + l_i}{2}, i \in [1,n_\mathrm{v}-1]$. Examples are the Voronoi dilation $\epsilon_i$, the Voronoi curvature $\hat{\kappa}_{\mathcal{L}}^i$ over the interior vertices, and the bend twist stiffness matrix $\hat{B}_i$.
 % $\Delta^h : \{\mathbb{R}^3 \}_N \rightarrow \{ \mathbb{R}^3 \}_{N+1}$ is used as the discrete difference operator and $\mathcal{A}^h : \{\mathbb{R}^3 \}_N \rightarrow \{ \mathbb{R}^3 \}_{N+1}$ averages over $\mathcal{D}$ to get the corresponding values in the node domain.
 
-\subsection{Auxetic trajectory}\label{sub:hsamodel:simulation:auxetic_trajectory}
+\subsection{Auxetic trajectory}\label{sub:hsamodel:hsa_robot_simulation:auxetic_trajectory}
 % We implement several modifications and extension to the Elastica simulator~\cite{gazzola2018forward} to allow for realistic simulation of \glspl{HSA}.
 We propose several adjustments to the standard definition of the \gls{DCM} to allow for realistic simulation of \glspl{HSA}.
 The main assumption behind the proposed concept is that twist strains agreeing with the handedness of the rod will modify the internal angle between the auxetic pattern cells and with that also change the system characteristics such spring constant, blocked force, etc.
@@ -65,7 +65,7 @@ To keep the twist strain constant across the entire auxetic trajectory, we defin
 
 \begin{table}[hbt]
 \centering
-\caption{Parameters of simulated HSA rods in Section~\ref{sub:hsamodel:simulation:verification_good} for various number of HSA row tilings $n_\mathrm{rows}$. Row tilings represent the number of vertically stacked unit cells~\cite{good2022expanding}. The rest length $\hat{L}$ and the elastic modulus $E$ are a linear function of the twist strain $\kappa_z$. $B_z$ represents the twist rigidity.}
+\caption{Parameters of simulated HSA rods in Section~\ref{sub:hsamodel:hsa_robot_simulation:verification_good} for various number of HSA row tilings $n_\mathrm{rows}$. Row tilings represent the number of vertically stacked unit cells~\cite{good2022expanding}. The rest length $\hat{L}$ and the elastic modulus $E$ are a linear function of the twist strain $\kappa_z$. $B_z$ represents the twist rigidity.}
 \begin{tabular}{c ccc}\toprule
 $n_\mathrm{rows}$ & $\hat{L} \, [\si{mm}]$ & $E \, [\si{kPa}]$ & $B_z \, [\si{Nm^2 \per rad}]$\\
 \midrule
@@ -85,7 +85,7 @@ Finally, recent work by Good et al.~\cite{good2022expanding} has shown that \gls
 \end{equation}
 where $C_{S_z}$ is a tunable constant.
 
-\subsection{Verification of single HSA steady-state behaviour}\label{sub:hsamodel:simulation:verification_good}
+\subsection{Verification of single HSA steady-state behaviour}\label{sub:hsamodel:hsa_robot_simulation:verification_good}
 We verify that our simulator can represent the steady-state behaviour of a real \gls{HSA} by re-producing the characterisation results for closed \glspl{HSA} by Good et al.~\cite{good2022expanding}.
 More specifically, we let the simulator converge to steady-state and then identify several mechanical properties such as blocked force ($F_\mathrm{b}$), minimum energy length, holding torque ($\tau_\mathrm{h}$) and the spring constant ($k$).
 Following the reporting in \cite{good2022expanding}, we tune the parameters of our simulation to match the behaviour of closed Carbon FPU50 \glspl{HSA} with \SI{19}{mm} outside diameter, \SI{2}{mm} wall thickness, as good as possible. We report the chosen simulation parameters in Table~\ref{tab:hsamodel:hsa_rod_parameters_sim_verification}. 
@@ -120,7 +120,7 @@ Next, we will go into more detail about each mechanical characteristic.
 
 The results show that the proposed simulator can accurately represent the steady-state behaviour of the \glspl{HSA} with the simulated characteristics mostly staying within the stated error-range of the experimental measurements by Good et al.~\cite{good2022expanding}. The only exception is Fig.~\ref{fig:hsamodel:closed_hsa_properties_good_et_al}(a), in which the simulation is overestimating the blocked force $F_\mathrm{b}$. This points to the fact that this linear approximation of the auxetic trajectory is only accurate in a limited range of the motion range of the closed \glspl{HSA}. Further research is necessary to come up with auxetic trajectory models for semi-closed and open \glspl{HSA}.
 
-\subsection{Simulating HSA robots: boundary conditions and joints}\label{sub:hsamodel:simulation:hsa_robots}
+\subsection{Simulating HSA robots: boundary conditions and joints}\label{sub:hsamodel:hsa_robot_simulation:hsa_robots}
 %In the previous subsections, we have devised a strategy for simulating \gls{HSA} rods and have successfully verified the steady-state behaviour of such single \glspl{HSA}. Now, 
 %
 We discuss here how to combine a platform and multiple \glspl{HSA} to form a \gls{HSA} robot.  Assume to have $n_\mathrm{HSA}$ rods equilly distributed along a circle of radius $R_\mathrm{cHSA}$ in the x-y plane with the rods pointing towards the positive z-direction in a straight configuration.
@@ -144,7 +144,7 @@ Similarly to the contact force, a contact torque $\tau_\mathrm{c}$ is computed t
 \end{equation}
 where the $\log(\cdot): \mathbb{R}^{3 \times 3} \rightarrow $ operator computes the rotation vector from the rotation matrix~\cite{gazzola2018forward}, and $Q_\mathrm{p}$ is the material frame of the platform.
 
-\subsection{Qualitative evaluation of motion primitives in simulation}\label{sub:hsamodel:simulation:motion_primitives}
+\subsection{Qualitative evaluation of motion primitives in simulation}\label{sub:hsamodel:hsa_robot_simulation:motion_primitives}
 We reproduce the typical motion primitives of a \gls{HSA} robot consisting of four \glspl{HSA} (e.g. $n_\mathrm{HSA} = 4$) in simulation and show the final steady-states in Fig.~\ref{fig:hsamodel:motion_primitives}. Two of the \glspl{HSA} are left-handed and positioned diagonally from each other. 
 Each rod is discretized by $n_\mathrm{v} = 25$ links and $26$ point mass vertices. Furthermore, it has a printed length of $\Bar{L} = \SI{100}{mm}$, an outside radius of \SI{25.4}{mm} and a wall-thickness of \SI{2.43}{mm}. The rods are placed at a radial distance of $R_\mathrm{cHSA} = \SI{24}{mm}$ from the center of the robot and a material density of $\rho_\mathrm{HSA} = \SI{1050}{kg \per m^3}$ is assumed. Therefore, the chosen simulation parameters mirror the geometric characteristics of our experimental platform.
 Based on an elastic modulus $E=\SI{10}{MPa}$ and a shear modulus $G=\SI{0.6}{MPa}$, the shear and stretch stiffnesses amount to $S_{x,y} = \SI{101.5}{N \per m}$, and $S_z = \SI{1753.5}{N \per m}$.
