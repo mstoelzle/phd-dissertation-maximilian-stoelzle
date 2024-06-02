@@ -1,5 +1,5 @@
 \section{Introduction}
-The deformability, adaptiveness, and compliance of invertebrates serve as an inspiration for continuum soft robots.
+% The deformability, adaptiveness, and compliance of invertebrates serve as an inspiration for continuum soft robots.
 While serial continuum soft robots have been intensively investigated in recent years~\cite{della2023model}, parallel soft robots~\cite{hughes2020extensible} % more references for parallel robots: zhang2020modeling
 are less studied despite exhibiting exciting properties such as an improved stiffness-to-weight ratio. 
 One recent development in this field is robots based on \glspl{HSA}~\cite{truby2021recipe, kaarthik2022motorized, stolzle2024guiding} in which multiple \gls{HSA} rods are connected at their distal end through a rigid platform. 
@@ -13,22 +13,14 @@ the mechanical characterization~\cite{good2022expanding}, simulation~\cite{stolz
 % Still, the task of control is still unsolved as \textcolor{orange}{prior work} and solutions need to be developed on how to deal with the challenges of underactuation and changing stiffness properties. 
 In this work, we make a first step towards achieving task-space control by designing model-based regulators for planar motions. Our approach considers essential characteristics of \gls{HSA} robots, such as underactuation, shear strains, and varying stiffness. % and thus can serve as a building block for future research.
 
-\begin{figure}[ht]
-    \centering
-    \subfigure[Blockscheme]{\includegraphics[width=0.62\textwidth]{hsacontrol/figures/control_scheme/control_scheme_v4_cropped.pdf}\label{fig:hsacontrol:block_scheme_closed_loop_control}}
-    \subfigure[Operational workspace]{\includegraphics[width=0.37\columnwidth, trim={7, 7, 7, 7}]{hsacontrol/figures/kinematics/fpu_operational_workspace.pdf}\label{fig:hsacontrol:kinematics:workspace}}
-    \caption{\textbf{Panel (a):} Block scheme of the closed-loop system: we plan the steady-state behavior such that the end-effector matches the given desired position $p_\mathrm{ee}^\mathrm{d}$. The outputs of this planning are the steady-state actuation $\phi^\mathrm{ss}$ and a suitable end-effector orientation $\theta_\mathrm{ee}^\mathrm{d}$. After leveraging inverse kinematics to identify the desired and current configuration, $q$ is mapped into a collocated form where the inputs are decoupled. Finally, we use a P-satI-D feedback controller on the actuation coordinates $\varphi$. \textbf{Panel (b):} Visualization of the operational workspace of a planar HSA robot consisting of FPU rods. The colored area within the black dashed borders represents the positions the end-effector (visualized as a dot) can reach. The coloring denotes the mean magnitude of actuation (i.e., twisting of the rods). Furthermore, we plot three sample configurations: the unactuated straight configuration $q = [0, 0, 0]^\mathrm{T}$ (blue), maximum clockwise bending $q = [\SI{-11.2}{rad \per m}, 0.08, 0.30]^\mathrm{T}$ (red), and maximum counter-clockwise bending $q = [\SI{11.2}{rad \per m}, -0.08, 0.30]^\mathrm{T}$ (green).}
-\end{figure}
+In Chapter~\ref{chp:hsamodel}, we derived a dynamic model for planar \gls{HSA} in Euler-Lagrange form and experimentally verified it.
+We notice that the resulting planar dynamics are underactuated and that the actuation forces are non-affine with respect to the control inputs, which are the motor angles. The latter is a peculiarity of these systems, rarely observed in other robots.
+Based on the model knowledge, we propose in this chapter two control strategies for planar \gls{HSA} robots capable of regulating the end-effector towards a desired position in task-space.
+The first strategy, as shown in Fig.~\ref{fig:hsacontrol:configuration_space_regulation:block_scheme_closed_loop_control}, performs steady-state planning to identify an admittable configuration and steady-state control input matching the desired end-effector position and then subsequently applies a P-satI-D feedback controller~\cite{pustina2022p} on the collocated form~\cite{pustina2024input} of the system dynamics.
+The second strategy, as shown in Fig.~\ref{fig:hsacontrol:task_space_impedance_control:block_scheme_closed_loop_control}, directly regulates the end-effector position using a Cartesian impedance controller that fully preserves the softness of the robot.
 
-\textcolor{red}{TODO: make connection to HSA model chapter}
-We notice that the resulting planar dynamics are underactuated
-%  as prior work has shown that shear cannot be neglected~\cite{stolzle2023modelling} 
-and that the actuation forces are non-affine with respect to the control inputs, which are the motor angles. The latter is a peculiarity of these systems, rarely observed in other robots.
-Based on the model knowledge, we devise a control strategy shown in Fig.~\ref{fig:hsacontrol:block_scheme_closed_loop_control} that first maps end-effector positions to desired configurations and steady-state (feedforward) control inputs and then 
-% in addition  to this static compensation of gravitational and elastic forces 
-also applies a P-satI-D~\cite{pustina2022p} feedback action on the collocated form~\cite{pustina2024input} of the system dynamics.
-
-In summary, we state our contributions as (i) the derivation of a planar HSA dynamic model in collocated form, (ii) a provably stable model-based control strategy for guiding the end-effector of the robot towards a desired position in Cartesian space, and (iii) experimental verification of both the model and the controller. A video accompanies this chapter explaining the methodology and displaying video recordings of the control experiments\footnote{\url{https://youtu.be/7PgKnE_MOsY}}.
+In summary, we state our contributions as (i) a provably stable model-based control strategy for guiding the end-effector of the robot towards a desired position in Cartesian space with a configuration-space controller that combines an integral-saturated PID with a potential shaping feedforward term, (ii) a Cartesian impedance controller that allows combining the passive compliance of the \gls{HSA} robot with active compliance in the control strategy and (iii) extensive experimental verification of both control strategies. 
+A video accompanies this chapter explaining the methodology and displaying video recordings of the control experiments\footnote{\url{https://youtu.be/7PgKnE_MOsY}}.
 
 
 %Structure
