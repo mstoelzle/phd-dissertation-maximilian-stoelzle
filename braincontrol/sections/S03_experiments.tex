@@ -58,7 +58,22 @@ The participant is given brief instructions about motor imagery signals.
 We follow the Graz-BCI~\cite{roc2021review} paradigm, which assists with training, where the display of the cue instructs the participant to perform imagination of movements: when a left arrow appears, the participant is asked to rest and not focus on motor movement. When the right arrow appears on the screen, the participant is asked to imagine the motor activity from the dominant hand (here, the right hand), such as grasping or squeezing an object. The training protocol for right-hand motor imagery v/s rest demands fifty cues per class. 
 We similarly collect data for the second classifier by asking participants to clench their jaw, which can be detected as muscular artifacts (vs. no muscular movement) in the \gls{EEG} signals.
 At the end of the trial, we train both classifiers (see Sections~\ref{sub:braincontrol:motor_imagery_bmi} and \ref{ssub:braincontrol:eeg_pipeline} for more information) and repeat the procedure until an accuracy of \SI{75}{\percent} is obtained for right-hand motor imagery v/s rest and accuracy of \SI{85}{\percent} for jaw clench artifact v/s raw EEG.
+We evaluate the trained motor imagery classfier on the test set and report the results in Tab.~\ref{tab:braincontrol:confusion_matrix}.
 
+\begin{table}[hbt]
+    \centering
+    \begin{tabular}{c c|c c}
+        %  \toprule
+        & & \multicolumn{2}{c}{\textbf{Prediction}}\\
+        \rule{0pt}{4ex} && Rest & \makecell{Right-handed\\ motor imagery} \\
+        \midrule
+        & Rest & \SI{70.7}{\percent} & \SI{29.3}{\percent}\\
+        \raisebox{\dimexpr 2ex}[0pt][0pt]{\rotatebox[origin=c]{90}{\small \textbf{Label}}} & \makecell{Right-handed\\ motor imagery} & \SI{33.3}{\percent} & \SI{68.7}{\percent}\\
+         % \bottomrule
+    \end{tabular}
+    \caption{Confusion matrix for the \gls{LDA} classifier at predicting right-hand motor imagery vs. rest based on the preprocessed \gls{EEG} signals evaluated on a test set.}
+    \label{tab:braincontrol:confusion_matrix}
+\end{table}
 
 % \definecolor{adaee4ed-88c8-5b21-a9e7-31316ebef86f}{RGB}{255, 179, 178}
 % \definecolor{f3551e38-74df-57e2-b793-83d7fe876c85}{RGB}{0, 0, 0}
@@ -141,12 +156,19 @@ Here, the space button is used to switch that axis of movement $e_\mathrm{a}$ an
 \end{figure*}
 
 \subsection{Interacting with the environment on a real-world task}\label{sub:braincontrol:experiments:adl}
-We consider the \gls{ADL} task of releasing hairspray by actuating the button of its container with the \gls{HSA} robot's end-effector. For successful execution, the end-effector must be very stiff in the normal direction of the contact. On the other hand, we might want to benefit from the physical intelligence of the system by being relatively flexible in the tangential direction. Therefore, we first define the perpendicular stiffness $k_\perp = \SI{500}{N\per\meter}$ and the tangential stiffness as $k_\parallel = \SI{50}{N \per \meter}$. We assume that the normal direction of the contact can be described by the polar angle $\theta_\perp$ (with respect to the x-axis). We envision that in the future, the user can adjust such stiffness characteristics online via a \gls{BMI} system similar to~\cite{schiatti2017soft}. In this chapter, however, we estimate by visual inspection that $\theta_\perp=\SI{1.31}{rad}$.
+We consider the \gls{ADL} task of releasing hairspray by actuating the button of its container with the \gls{HSA} robot's end-effector (see Fig.~\ref{fig:braincontrol:cartesian_impedance_adl}). For successful execution, the end-effector must be very stiff in the normal direction of the contact. On the other hand, we might want to benefit from the physical intelligence of the system by being relatively flexible in the tangential direction. Therefore, we first define the perpendicular stiffness $k_\perp = \SI{500}{N\per\meter}$ and the tangential stiffness as $k_\parallel = \SI{50}{N \per \meter}$. We assume that the normal direction of the contact can be described by the polar angle $\theta_\perp$ (with respect to the x-axis). We envision that in the future, the user can adjust such stiffness characteristics online via a \gls{BMI} system similar to~\cite{schiatti2017soft}. In this chapter, however, we estimate by visual inspection that $\theta_\perp=\SI{1.31}{rad}$.
 The Cartesian stiffness matrix in global coordinates is then given by $K_x = R(\theta_\perp) \, \mathrm{diag}(k_\perp, k_\parallel) \, R(\theta_\perp)^\mathrm{T}$
 where $R(\theta_\perp) \in SO(2)$ is the rotation matrix between global and contact frames.
 % Analog to the setpoint regulation task, the user can move the attractor freely in Cartesian space when executing the described \gls{ADL} task.
 
-\begin{figure*}[tb]
+\begin{figure}[hbt]
+    \centering
+    \includegraphics[width=0.35\textwidth]{braincontrol/figures/adl_task/cartesian_impedance_adl_cropped.pdf}
+    \caption{Cartesian impedance shaping when interacting with the environment, for example, while performing \gls{ADL}. }
+    \label{fig:braincontrol:cartesian_impedance_adl}
+\end{figure}
+
+\begin{figure}[htb]
     \centering
     \subfigure[End-effector $x$-coordinate]{\includegraphics[width=0.47\textwidth, trim={5, 5, 5, 5}]{braincontrol/figures/adl_task/20231031_203004_pee_x.pdf}\label{fig:braincontrol:experimental_results:adl_task:brain:pee_x}}
     \subfigure[End-effector $y$-coordinate]{\includegraphics[width=0.47\textwidth, trim={5, 5, 5, 5}]{braincontrol/figures/adl_task/20231031_203004_pee_y.pdf}\label{fig:braincontrol:experimental_results:adl_task:brain:pee_y}}
@@ -158,7 +180,7 @@ where $R(\theta_\perp) \in SO(2)$ is the rotation matrix between global and cont
     \textbf{Panel (c):} The evolution of the configuration.
     % \textbf{Panel (c):} The joy commands $u$ derived from the classified brain signals used to move the attractor in Cartesian space.
     \textbf{Panel(d):} The saturated planar control inputs. }\label{fig:braincontrol:experimental_results:adl_task:brain}
-\end{figure*}
+\end{figure}
 
 \subsection{Evaluation metrics}
 % Look at this paper for evaluation metrics: ~\cite{rakshit2020hybrid}

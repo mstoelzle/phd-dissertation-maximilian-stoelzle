@@ -28,8 +28,18 @@ Our goal is to control the end-effector, which is defined as the distal surface 
 However, the mapping into configuration space is not trivial as we do not know which end-effector orientation $\theta_\mathrm{ee}$ is feasible at steady-state. 
 To tackle this challenge, we perform steady-state planning identifying admittable configurations $q^\mathrm{d}$ and matching steady-state actuations $\phi^\mathrm{ss}$, which allow the robot's end-effector to statically remain at $p_\mathrm{ee}^\mathrm{d}$. More details on the used planning procedure can be found in Section~\ref{sub:hsacontrol:experiments:steady_state_planning}.
 
+\begin{figure}[hbt]
+    \centering
+    \subfigure[$\alpha(q, \phi)$ for FPU]{\includegraphics[width=0.80\columnwidth]{hsacontrol/figures/actuation_characteristics/nonlinear_alpha_fpu_cropped.pdf}}\\
+    \subfigure[$\alpha(q, \phi)$ for EPU]{\includegraphics[width=0.80\columnwidth]{hsacontrol/figures/actuation_characteristics/nonlinear_alpha_epu_cropped.pdf}}\\
+    \subfigure[$\alpha(q^\mathrm{ss}, \phi^\mathrm{ss}) + A_{\phi^\mathrm{ss}}(q) \, (\phi - \phi^\mathrm{ss})$ for EPU]{\includegraphics[width=0.80\columnwidth]{hsacontrol/figures/actuation_characteristics/linearized_alpha_epu_cropped.pdf}}\\
+    \subfigure[$A_{\varphi} \, (\phi - \phi^\mathrm{ss})$]{\includegraphics[width=0.80\columnwidth]{hsacontrol/figures/actuation_characteristics/actuation_coordinates_cropped.pdf}}\\
+    \caption{Mapping of actuation $\phi \in \mathbb{R}^2$ to configuration-space torques $\tau \in \mathbb{R}^3$ for planar \gls{HSA} robots. The first two rows visualize the modeled nonlinear, coupled mapping for the FPU and EPU materials, respectively. The third row illustrates the mapping for a linearized actuation term. Finally, in actuation coordinates, the mapping is fully decoupled, as shown in the fourth row.}
+    \label{fig:hsacontrol:actuation_characteristics}
+\end{figure}
+
 In principle, we can command $\phi = \phi^\mathrm{ss}$ to achieve regulation towards the desired end-effector position.
-Nevertheless, we add a feedback controller to compensate for any errors in $\phi^\mathrm{ss}$ caused by unmodelled effects such as hysteresis. Unfortunately, the non-affine actuation $\alpha(q,\phi)$ would complicate the design of such a feedback controller.
+Nevertheless, we add a feedback controller to compensate for any errors in $\phi^\mathrm{ss}$ caused by unmodelled effects such as hysteresis. Unfortunately, as illustrated in Fig.~\ref{fig:hsacontrol:actuation_characteristics}, the non-affine actuation $\alpha(q,\phi)$ would complicate the design of such a feedback controller.
 % Now, we can regulate the robot in configuration space towards $q^\mathrm{d}$. However, we notice that our system is non-affine in the control input $\phi$. 
 Therefore, we perform a first-order Taylor expansion of the actuation forces with respect to $\phi$ resulting in a configuration-dependent actuation matrix $A_{\phi^\mathrm{ss}}(q) = \frac{\partial \alpha}{\partial \phi} \big|_{\phi = \phi_\mathrm{ss}} \in \mathbb{R}^{3 \times 2}$. This allows us to re-write the right side of the \gls{EOM} as $\tau_q = \alpha(q^\mathrm{ss}, \phi^\mathrm{ss}) + A_{\phi^\mathrm{ss}}(q) \, u$ where $u = \phi - \phi^\mathrm{ss}$ is the new control input.
 % We remark that $\alpha(q^\mathrm{ss}, \phi^\mathrm{ss})$ is already compensating for the gravitational and elastic forces at the desired configuration. 
@@ -73,7 +83,14 @@ The implementation of all control laws is available on GitHub\footnote{\url{http
 \subsection{Steady-state planning}\label{sub:hsacontrol:experiments:steady_state_planning}
 Our approach, as detailed in Section~\ref{sub:hsacontrol:configuration_space_regulation:control_strategy}, requires us for a given desired end-effector position $p_\mathrm{ee}^\mathrm{d}$ to identify a statically-feasible configuration $q^\mathrm{d}$ with the matching steady-state actuation $\phi^\mathrm{ss}$.
 
-We perform online static inversion to identify admittable desired configurations $q^\mathrm{d}$ and matching steady-state control inputs $\phi^\mathrm{ss}$ during our experiments involving the FPU \gls{HSA} robots. First, we substitute the inverse kinematics $\varrho_\mathrm{ee}(\chi_\mathrm{ee})$ into the static \gls{EOM}. Then, we find the roots of the equation $G\circ\varrho_\mathrm{ee}(\chi_\mathrm{ee}^\mathrm{d}) + K\circ\varrho_\mathrm{ee}(\chi_\mathrm{ee}^\mathrm{d})-\alpha(\varrho_\mathrm{ee}(\chi_\mathrm{ee}^\mathrm{d}), \phi_\mathrm{ss})$ with respect to $(\theta_\mathrm{ee},\phi_1, \phi_2)$ using nonlinear least-squares while enforcing constraints on the sign of $\phi$. We solve this optimization problem with projected gradient descent.
+\begin{figure}[hbt]
+    \centering
+\includegraphics[width=0.5\textwidth]{hsacontrol/figures/control_schemes/configuration_space_regulation/steady_state_planning_cropped.pdf}
+    \caption{Illustration of the idea behind steady-state planning: we balance the static forces that are acting at steady-state on the robot with a torques generated by a steady-state actuation $\phi^\mathrm{ss}$.}
+    \label{fig:hsacontrol:configuration_space_regulation:steady_state_planning}
+\end{figure}
+
+We perform online static inversion to identify admittable desired configurations $q^\mathrm{d}$ and matching steady-state control inputs $\phi^\mathrm{ss}$ during our experiments involving the FPU \gls{HSA} robots. First, we substitute the inverse kinematics $\varrho_\mathrm{ee}(\chi_\mathrm{ee})$ into the static \gls{EOM}. Then, as illustrated in Fig~\ref{fig:hsacontrol:configuration_space_regulation:steady_state_planning}, we find the roots of the equation $G\circ\varrho_\mathrm{ee}(\chi_\mathrm{ee}^\mathrm{d}) + K\circ\varrho_\mathrm{ee}(\chi_\mathrm{ee}^\mathrm{d})-\alpha(\varrho_\mathrm{ee}(\chi_\mathrm{ee}^\mathrm{d}), \phi_\mathrm{ss})$ with respect to $(\theta_\mathrm{ee},\phi_1, \phi_2)$ using nonlinear least-squares while enforcing constraints on the sign of $\phi$. We solve this optimization problem with projected gradient descent.
 
 In contrast, the static inversion optimization problem is not well-behaved for the identified EPU system parameters. Instead, we rely on rolling out the dynamics over a duration $t_\mathrm{ss}$ to steady-state and then optimize the steady-state input $\phi^\mathrm{ss}$ such that the final end-effector error $\lVert p_\mathrm{ee}^\mathrm{d} - p_\mathrm{ee}^\mathrm{ss} \rVert$ is as small as possible. We formalize this optimization problem in a least-squares fashion
 \begin{equation}\label{eq:hsacontrol:steady_state_rollout_optim_problem}
