@@ -253,12 +253,13 @@
 % labeling stuff in pictures.
 \newcommand\circled[1]{\raisebox{1.2pt}{\textcircled{\hspace{0.33pt}\scriptsize{\raisebox{-.1pt}{#1}}}}}
 
-\RequirePackage[outdir=./img/]{epstopdf}
+% \RequirePackage[outdir=./img/]{epstopdf}
+\RequirePackage{epstopdf}
 \RequirePackage[export]{adjustbox}
 
 \RequirePackage[nomain,acronym,nonumberlist,style=list]{glossaries} % nomain, if you define glossaries in a file, and you use \include{INP-00-glossary}
 % https://tex.stackexchange.com/questions/441939/glossaries-acronyms-how-to-display-only-the-first-appearance-of-an-acronym-amo
-\usepackage[abbreviations]{glossaries-extra}
+\usepackage[abbreviations, automake]{glossaries-extra}
 
 %% Stop importing packages
 
