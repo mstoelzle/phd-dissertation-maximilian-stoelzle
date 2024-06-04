@@ -250,21 +250,16 @@ We will in the following refer to the mapping $f_\xi(q): q \in \mathbb{R}^{n_\ma
 
 
 \begin{algorithm}[hbt!]
-\caption{Proprioception with magnetic sensors}\label{alg:proprioception}
+\caption{Proprioception with magnetic sensors}\label{alg:promasens:proprioception}
 \begin{algorithmic}
 \REQUIRE $u(t) \in \mathbb{R}^{n_\mathrm{s}}$ \COMMENT{Sensor measurements}
 \STATE  \hspace{7mm} $\hat{q}(t-1) \in \mathbb{R}^{3n_\mathrm{b}}$
-\COMMENT{Configuration of prev. time-step}
-\STATE  \hspace{7mm} $\hat{q}_\mathrm{glob}^*(t-\delta) \in \mathbb{R}^{3n_\mathrm{b}}$
-\COMMENT{Solution of grid search $\delta$ ago}
-\STATE  \hspace{7mm} $f_\xi: \mathbb{R}^{2n_\mathrm{b}} \rightarrow \mathbb{R}^{n_\mathrm{s} + 4n_\mathrm{m} n_\mathrm{s}}$ \COMMENT{Magnet Sensor Kin.}
+\COMMENT{Estimated configuration at the last time step}
+\STATE  \hspace{7mm} $f_\xi: \mathbb{R}^{2n_\mathrm{b}} \rightarrow \mathbb{R}^{n_\mathrm{s} + 4n_\mathrm{m} n_\mathrm{s}}$ \COMMENT{Magnet sensor kinematics}
 \STATE  \hspace{7mm} $f_\pi: \mathbb{R}^{n_\mathrm{s} + 4n_\mathrm{m} n_\mathrm{s}} \rightarrow \mathbb{R}^{n_\mathrm{s}}$ \COMMENT{Trained neural network}
+\STATE  \hspace{7mm} $\gamma \in \mathbb{R}$ \COMMENT{Step size}
 \ENSURE $\hat{q}(t) \in \mathbb{R}^{2n_\mathrm{b}}$ \COMMENT{Estimated robot configuration}
-    \IF{gridSearchIsFinished()}
-        \STATE $\hat{q}_0 \gets \hat{q}_\mathrm{glob}^*(t-\delta)$
-    \ELSE
-        \STATE $\hat{q}_0 \gets \hat{q}(t-1)$
-    \ENDIF
+    \STATE $\hat{q}_0 \gets \hat{q}(t-1)$
     \vspace{0.25em}
     \STATE $l \gets 0$
     \STATE $b_l \gets 0 \in \mathbb{R}^{3n_\mathrm{b}}$
@@ -320,6 +315,7 @@ $f_\Pi(\xi): \xi \rightarrow u$. We discuss the choice of the specific network a
 \label{sub:promasens:proprioception_optimization}
 
 Now, that we are able to predict the sensor measurement $\hat{u}$ using the composition of the kinematics $f_\xi(\hat{q})$ and the neural networks $f_\Pi(\hat{\xi})$, we need to optimize the configuration estimate $\hat{q}$ for the predictions $\hat{u}$ to match the actual sensor measurements $u$ as closely as possible.
+We detail the procedure in Alg.~\ref{alg:promasens:proprioception}.
 We capture the error between the predicted sensor measurements $\hat{u}$ and the actual sensor measurements $u$ by the MSE loss function we strive to minimize
 \begin{equation}\label{eq:promasens:proprioception_loss}
     \mathcal{L}_{u}(\hat{q}) = \sum_{j=1}^{n_\mathrm{s}} \frac{\left ( f_\pi(\xi_j) - u_j \right )^2}{n_\mathrm{s}}

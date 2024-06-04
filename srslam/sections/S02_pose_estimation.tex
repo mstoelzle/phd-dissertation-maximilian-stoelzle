@@ -64,7 +64,7 @@ where $\delta L_i$ is segment's extension, and $\Delta_{x,i}$ and $\Delta_{y,i}$
 \end{equation}
 where we substituted $\Delta_i = \sqrt{\Delta_{x,i}^2 + \Delta_{y,i}^2}$, $\mathrm{s}_i = \sin \left ( \frac{\Delta_i}{d_i} \right )$, and $\mathrm{c}_i = \cos \left ( \frac{\Delta_i}{d_i} \right )$ for conciseness.
 
-We describe the coordinate frame of camera $i$ with $\{ S_{\mathrm{c}_i} \}$. It is assumed that there exists a fixed transformation $T_{\check{\mathrm{c}},i}^{\mathrm{c}_i} \in \mathbb{R}^{4 \times 4}$ from frame $\{ S_{\check{\mathrm{c}},i} \}$ to the camera frame $\{ S_{\mathrm{c}_i} \}$. 
+We describe the coordinate frame of camera $i$ with $\{ S_{\mathrm{c}_i} \}$. It is assumed that there exists a fixed transformation $T_{\check{\mathrm{c}},i}^{\mathrm{c}_i} \in SE(3)$ from frame $\{ S_{\check{\mathrm{c}},i} \}$ to the camera frame $\{ S_{\mathrm{c}_i} \}$. 
 $\{ S_{\check{\mathrm{c}},i} \}$ is localized at a distance $l_{\mathrm{c}_i}$ along the center-line from the base of segment $i$. 
 The transformation $T_{i-1}^{\check{\mathrm{c}},i}(q_{\check{c},i})$ from the base to the frame $\{ S_{\check{\mathrm{c}},i} \}$ can be found with \eqref{eq:srslam:transformation_improved_pcc} by plugging in the adjusted configuration $q_{\check{c},i}$ defined as
 \begin{equation}\label{eq:srslam:camera_configuration}
@@ -72,7 +72,7 @@ The transformation $T_{i-1}^{\check{\mathrm{c}},i}(q_{\check{c},i})$ from the ba
 \end{equation}
 and the adjusted original length  $l_{\mathrm{c}_i}$.
 
-The \gls{SLAM} algorithm provides a pose estimate for the translation $\hat{t}_{\mathrm{c},\mathrm{t}0,i}^{\mathrm{c}_i} \in \mathbb{R}^3$ and rotation $\hat{R}_{\mathrm{c},\mathrm{t}0,i}^{\mathrm{c}_i} \in \mathbb{R}^{3 \times 3}$ relative to the known initial reference frame of the camera $\{ S_{\mathrm{c},\mathrm{t}0,i} \}$. 
+The \gls{SLAM} algorithm provides a pose estimate for the translation $\hat{t}_{\mathrm{c},\mathrm{t}0,i}^{\mathrm{c}_i} \in \mathbb{R}^3$ and rotation $\hat{R}_{\mathrm{c},\mathrm{t}0,i}^{\mathrm{c}_i} \in SO(3)$ relative to the known initial reference frame of the camera $\{ S_{\mathrm{c},\mathrm{t}0,i} \}$. 
 Thus, we first transform the pose estimates to the inertial frame of the robot $\{ S_0 \}$
 \begin{equation}
     \begin{pmatrix}
@@ -85,8 +85,9 @@ Thus, we first transform the pose estimates to the inertial frame of the robot $
         1
     \end{pmatrix},
     \quad
-    \hat{R}_{0}^{\mathrm{c}_i} = R_0^{\mathrm{c},\mathrm{t}0,i} \hat{R}_{\mathrm{c},\mathrm{t}0,i}^{\mathrm{c}_i}.
+    \hat{R}_{0}^{\mathrm{c}_i} = R_0^{\mathrm{c},\mathrm{t}0,i} \hat{R}_{\mathrm{c},\mathrm{t}0,i}^{\mathrm{c}_i},
 \end{equation}
+where $T_0^{\mathrm{c},\mathrm{t}0,i} \in SE(3)$ and $R_0^{\mathrm{c},\mathrm{t}0,i} \in SO(3)$ are the known transformation and rotation matrices from the world frame to the initial frame of the $i$th camera, respectively.
 
 We introduce the following notations for the \gls{PCC} kinematics
 \begin{equation}\label{eq:srslam:Pi}
@@ -135,7 +136,7 @@ with
     \big\rVert_F,
 \end{split}
 \end{equation}
-where the Euclidean norm is used to compute the translational error between the predicted translation by the \gls{PCC} kinematic model and the estimated translation by \gls{SLAM}. The rotational error is weighted with $\lambda_\mathrm{R}$ and computed with the Frobenius norm between the predicted rotation matrix by the \gls{PCC} kinematics and the estimated orientation by \gls{SLAM} represented as a rotation matrix as well.
+where the Euclidean norm is used to compute the translational error between the predicted translation by the \gls{PCC} kinematic model and the estimated translation by \gls{SLAM}. The rotational error is weighted with $\lambda_\mathrm{R} \in \mathbb{R}$ and computed with the Frobenius norm between the predicted rotation matrix by the \gls{PCC} kinematics and the estimated orientation by \gls{SLAM} represented as a rotation matrix as well.
 
 Please note, that the optimization of the configuration estimate $\hat{q}$ can be decoupled for each segment. 
 We start by optimizing the configuration of the first segment $\hat{q}_1$ based on $\Psi_\mathrm{t}(\hat{t}_{0}^{\mathrm{c},1})$ and $\Psi_\mathrm{R}(\hat{R}_{0}^{\mathrm{c},1})$. Next, we optimize the configuration of the second segment $\hat{q}_2$ taking into account the already optimized configuration of segment one in $\Psi_\mathrm{t}(\hat{q}_1, \hat{t}_{0}^{\mathrm{c},2})$ and $\Psi_\mathrm{R}(\hat{q}_1, \hat{R}_{0}^{\mathrm{c},2})$. 
@@ -144,14 +145,22 @@ Subsequently, we move on to optimize the remaining segments sequentially as desc
 \begin{algorithm}[hbt!]
 \caption{Pose estimation for soft robots through SLAM}\label{alg:srslampose_estimation}
 \begin{algorithmic}
-\REQUIRE $o \in \mathbb{R}^{n_\mathrm{S}}$ \COMMENT{Observations of all cameras}
+\REQUIRE $o \in \mathbb{R}^{n_\mathrm{S} \times h_\mathrm{o} \times w_\mathrm{o}}$ \COMMENT{Observations of all cameras}
+\STATE  \hspace{7mm} $R_0^{\mathrm{c},\mathrm{t}0,i} \in SO(3), \: T_0^{\mathrm{c},\mathrm{t}0,i} \in SE(3)$ \COMMENT{Transformation world to initial $i$th camera frame.}
+\STATE \hspace{7mm} $\lambda_\mathrm{R} \in \mathbb{R}$ \COMMENT{Weight of rotational error}
+\STATE \hspace{7mm} $\mathrm{SLAM}: \mathbb{R}^{h_\mathrm{o} \times w_\mathrm{o}} \rightarrow \mathbb{R}^{3} \times SO(3)$
+\STATE \hspace{7mm} $\Pi_\mathrm{t}: \mathbb{R}^3 \rightarrow \mathbb{R}^{3}$ \COMMENT{Translation component of CC forward kinematics.}
+\STATE \hspace{7mm} $\Pi_\mathrm{R}: \mathbb{R}^3 \rightarrow SO(3)$ \COMMENT{Rotational component of CC forward kinematics.}
+\STATE \hspace{7mm} $\Psi_\mathrm{t}: \mathbb{R}^{3(i-1)} \times \mathbb{R}^3 \rightarrow \mathbb{R}^{3}$ \COMMENT{Translation of SLAM estimates.}
+\STATE \hspace{7mm} $\Psi_\mathrm{R}: \mathbb{R}^{3(i-1)} \times SO(3) \rightarrow SO(3)$ \COMMENT{Rotation of SLAM estimates.}
 \ENSURE $\hat{q} \in \mathbb{R}^{3 n_\mathrm{S}}$ \COMMENT{Estimated robot configuration}
 \STATE $i \gets 1$
 \WHILE{$i \leq n_\mathrm{S}$}
     \vspace{0.25em}
-    \STATE $\hat{t}_{0}^{\mathrm{c}_i} \gets T_0^{\mathrm{c},\mathrm{t}0,i} \: \mathrm{SLAM}_\mathrm{t}(o_i)$ \COMMENT{Translational est. SLAM}
+    \STATE $\left ( \hat{t}_{\mathrm{c},\mathrm{t}0,i}^{\mathrm{c}_i} \, , \hat{R}_{\mathrm{c},\mathrm{t}0,i}^{\mathrm{c}_i} \right ) \gets \mathrm{SLAM}(o_i)$ \COMMENT{SLAM algorithm}
+    % \STATE  \gets R_0^{\mathrm{c},\mathrm{t}0,i} \: \mathrm{SLAM}_\mathrm{R}(o_i)$ \STATE 
     \vspace{0.25em}
-    \STATE $\hat{R}_{0}^{\mathrm{c}_i} \gets R_0^{\mathrm{c},\mathrm{t}0,i} \: \mathrm{SLAM}_\mathrm{R}(o_i)$ \COMMENT{Rotational est. SLAM}
+    \STATE $\left ( \hat{t}_{0}^{\mathrm{c}_i}, \hat{R}_{0}^{\mathrm{c}_i} \right) \gets \left ( T_0^{\mathrm{c},\mathrm{t}0,i} \, \hat{t}_{\mathrm{c},\mathrm{t}0,i}^{\mathrm{c}_i} \, , R_0^{\mathrm{c},\mathrm{t}0,i} \, \hat{R}_{\mathrm{c},\mathrm{t}0,i}^{\mathrm{c}_i} \right )$ \COMMENT{Transformation into world frame.}
     \vspace{0.25em}
     \STATE $f_{\mathrm{t},i}(\hat{q}) \gets
     \big\lVert 
@@ -163,7 +172,7 @@ Subsequently, we move on to optimize the remaining segments sequentially as desc
     \Pi_\mathrm{R}(\hat{q}_i) - \Psi_\mathrm{R}(q_1 \dots q_{i-1}, \hat{R}_{0}^{\mathrm{c}_i})
     \big\rVert_F$
     \vspace{0.25em}
-    \STATE $f_{c,i}(\hat{q}) \gets f_{\mathrm{t},i}(\hat{q}) + \lambda_\mathrm{R} f_{\mathrm{R},i}(\hat{q})$ \COMMENT{Cost function for $\hat{q}_i$}
+    \STATE $f_{c,i}(\hat{q}) \gets f_{\mathrm{t},i}(\hat{q}) + \lambda_\mathrm{R} \, f_{\mathrm{R},i}(\hat{q})$ \COMMENT{Cost function for $\hat{q}_i$}
     \vspace{0.25em}
     \STATE $\hat{q}_i \gets \argmin_{\hat{q_i}} f_c(\hat{q})$
     \vspace{0.25em}
