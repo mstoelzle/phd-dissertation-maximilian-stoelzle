@@ -144,39 +144,39 @@ Subsequently, we move on to optimize the remaining segments sequentially as desc
 
 \begin{algorithm}[hbt!]
 \caption{Pose estimation for soft robots through SLAM}\label{alg:srslampose_estimation}
-\begin{algorithmic}
-\REQUIRE $o \in \mathbb{R}^{n_\mathrm{S} \times h_\mathrm{o} \times w_\mathrm{o}}$ \COMMENT{Observations of all cameras}
-\STATE  \hspace{7mm} $R_0^{\mathrm{c},\mathrm{t}0,i} \in SO(3), \: T_0^{\mathrm{c},\mathrm{t}0,i} \in SE(3)$ \COMMENT{Transformation world to initial $i$th camera frame.}
-\STATE \hspace{7mm} $\lambda_\mathrm{R} \in \mathbb{R}$ \COMMENT{Weight of rotational error}
-\STATE \hspace{7mm} $\mathrm{SLAM}: \mathbb{R}^{h_\mathrm{o} \times w_\mathrm{o}} \rightarrow \mathbb{R}^{3} \times SO(3)$
-\STATE \hspace{7mm} $\Pi_\mathrm{t}: \mathbb{R}^3 \rightarrow \mathbb{R}^{3}$ \COMMENT{Translation component of CC forward kinematics.}
-\STATE \hspace{7mm} $\Pi_\mathrm{R}: \mathbb{R}^3 \rightarrow SO(3)$ \COMMENT{Rotational component of CC forward kinematics.}
-\STATE \hspace{7mm} $\Psi_\mathrm{t}: \mathbb{R}^{3(i-1)} \times \mathbb{R}^3 \rightarrow \mathbb{R}^{3}$ \COMMENT{Translation of SLAM estimates.}
-\STATE \hspace{7mm} $\Psi_\mathrm{R}: \mathbb{R}^{3(i-1)} \times SO(3) \rightarrow SO(3)$ \COMMENT{Rotation of SLAM estimates.}
-\ENSURE $\hat{q} \in \mathbb{R}^{3 n_\mathrm{S}}$ \COMMENT{Estimated robot configuration}
-\STATE $i \gets 1$
-\WHILE{$i \leq n_\mathrm{S}$}
-    \vspace{0.25em}
-    \STATE $\left ( \hat{t}_{\mathrm{c},\mathrm{t}0,i}^{\mathrm{c}_i} \, , \hat{R}_{\mathrm{c},\mathrm{t}0,i}^{\mathrm{c}_i} \right ) \gets \mathrm{SLAM}(o_i)$ \COMMENT{SLAM algorithm}
-    % \STATE  \gets R_0^{\mathrm{c},\mathrm{t}0,i} \: \mathrm{SLAM}_\mathrm{R}(o_i)$ \STATE 
-    \vspace{0.25em}
-    \STATE $\left ( \hat{t}_{0}^{\mathrm{c}_i}, \hat{R}_{0}^{\mathrm{c}_i} \right) \gets \left ( T_0^{\mathrm{c},\mathrm{t}0,i} \, \hat{t}_{\mathrm{c},\mathrm{t}0,i}^{\mathrm{c}_i} \, , R_0^{\mathrm{c},\mathrm{t}0,i} \, \hat{R}_{\mathrm{c},\mathrm{t}0,i}^{\mathrm{c}_i} \right )$ \COMMENT{Transformation into world frame.}
-    \vspace{0.25em}
-    \STATE $f_{\mathrm{t},i}(\hat{q}) \gets
-    \big\lVert 
-    \Pi_\mathrm{t}(\hat{q}_i) - \Psi_\mathrm{t}(q_1 \dots q_{i-1}, \hat{t}_{0}^{\mathrm{c}_i})
-    \big\rVert_2$
-    \vspace{0.25em}
-    \STATE $f_{\mathrm{R},i}(\hat{q}) \gets
-    \big\lVert 
-    \Pi_\mathrm{R}(\hat{q}_i) - \Psi_\mathrm{R}(q_1 \dots q_{i-1}, \hat{R}_{0}^{\mathrm{c}_i})
-    \big\rVert_F$
-    \vspace{0.25em}
-    \STATE $f_{c,i}(\hat{q}) \gets f_{\mathrm{t},i}(\hat{q}) + \lambda_\mathrm{R} \, f_{\mathrm{R},i}(\hat{q})$ \COMMENT{Cost function for $\hat{q}_i$}
-    \vspace{0.25em}
-    \STATE $\hat{q}_i \gets \argmin_{\hat{q_i}} f_c(\hat{q})$
-    \vspace{0.25em}
-    \STATE $i \gets i + 1$
-\ENDWHILE
+\begin{algorithmic}[1]
+    \Require $o \in \mathbb{R}^{n_\mathrm{S} \times h_\mathrm{o} \times w_\mathrm{o}}$ \Comment{Observations of all cameras}
+    \Require $R_0^{\mathrm{c},\mathrm{t}0,i} \in SO(3), \: T_0^{\mathrm{c},\mathrm{t}0,i} \in SE(3)$ \Comment{Transformation world to initial $i$th camera frame.}
+    \Require $\lambda_\mathrm{R} \in \mathbb{R}$ \Comment{Weight of rotational error}
+    \Require $\mathrm{SLAM}: \mathbb{R}^{h_\mathrm{o} \times w_\mathrm{o}} \rightarrow \mathbb{R}^{3} \times SO(3)$ \Comment{SLAM algorithm providing translations and orientations based on images.}
+    \Require $\Pi_\mathrm{t}: \mathbb{R}^3 \rightarrow \mathbb{R}^{3}$ \Comment{Translation component of CC forward kinematics.}
+    \Require $\Pi_\mathrm{R}: \mathbb{R}^3 \rightarrow SO(3)$ \Comment{Rotational component of CC forward kinematics.}
+    \Require $\Psi_\mathrm{t}: \mathbb{R}^{3(i-1)} \times \mathbb{R}^3 \rightarrow \mathbb{R}^{3}$ \Comment{Translation of SLAM estimates.}
+    \Require $\Psi_\mathrm{R}: \mathbb{R}^{3(i-1)} \times SO(3) \rightarrow SO(3)$ \Comment{Rotation of SLAM estimates.}
+    \Ensure $\hat{q} \in \mathbb{R}^{3 n_\mathrm{S}}$ \Comment{Estimated robot configuration}
+    \State $i \gets 1$
+    \While{$i \leq n_\mathrm{S}$}
+        \vspace{0.25em}
+        \State $\left ( \hat{t}_{\mathrm{c},\mathrm{t}0,i}^{\mathrm{c}_i} \, , \hat{R}_{\mathrm{c},\mathrm{t}0,i}^{\mathrm{c}_i} \right ) \gets \mathrm{SLAM}(o_i)$ \Comment{SLAM algorithm}
+        % \STATE  \gets R_0^{\mathrm{c},\mathrm{t}0,i} \: \mathrm{SLAM}_\mathrm{R}(o_i)$ \STATE 
+        \vspace{0.25em}
+        \State $\left ( \hat{t}_{0}^{\mathrm{c}_i}, \hat{R}_{0}^{\mathrm{c}_i} \right) \gets \left ( T_0^{\mathrm{c},\mathrm{t}0,i} \, \hat{t}_{\mathrm{c},\mathrm{t}0,i}^{\mathrm{c}_i} \, , R_0^{\mathrm{c},\mathrm{t}0,i} \, \hat{R}_{\mathrm{c},\mathrm{t}0,i}^{\mathrm{c}_i} \right )$ \Comment{Transformation into world frame.}
+        \vspace{0.25em}
+        \State $f_{\mathrm{t},i}(\hat{q}) \gets
+        \big\lVert 
+        \Pi_\mathrm{t}(\hat{q}_i) - \Psi_\mathrm{t}(q_1 \dots q_{i-1}, \hat{t}_{0}^{\mathrm{c}_i})
+        \big\rVert_2$
+        \vspace{0.25em}
+        \State $f_{\mathrm{R},i}(\hat{q}) \gets
+        \big\lVert 
+        \Pi_\mathrm{R}(\hat{q}_i) - \Psi_\mathrm{R}(q_1 \dots q_{i-1}, \hat{R}_{0}^{\mathrm{c}_i})
+        \big\rVert_F$
+        \vspace{0.25em}
+        \State $f_{c,i}(\hat{q}) \gets f_{\mathrm{t},i}(\hat{q}) + \lambda_\mathrm{R} \, f_{\mathrm{R},i}(\hat{q})$ \Comment{Cost function for $\hat{q}_i$}
+        \vspace{0.25em}
+        \State $\hat{q}_i \gets \argmin_{\hat{q_i}} f_c(\hat{q})$
+        \vspace{0.25em}
+        \State $i \gets i + 1$
+    \EndWhile
 \end{algorithmic}
 \end{algorithm}

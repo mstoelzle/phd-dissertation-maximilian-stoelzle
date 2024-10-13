@@ -18,7 +18,8 @@
 
 %% Specify the title and author of the thesis. This information will be used on
 %% the title page (in title/title.tex) and in the metadata of the final PDF.
-\title{Discovering and Leveraging Minimalist Models for Continuum Soft Robots}
+% Discovering and Leveraging Minimalist Models for Continuum Soft Robots
+\title{Discovering and Leveraging Compact Models for Continuum Soft Robots}
 \author{Maximilian}{Stölzle}
 
 %% Use Roman numerals for the page numbers of the title pages and table of
@@ -29,10 +30,10 @@
 
 %% The (optional) dedication can be used to thank someone or display a
 %% significant quotation.
-\dedication{\epigraph{I [...] like to give the maximum in everything I do. The maximum I have. The
-    maximum I can give. I am not perfect. But if I do something, I do it [as best I can].
-    %And many people are not made like this. There are only few. But I like these few.
-  }{Reinhold Messner}}
+% \dedication{\epigraph{I [...] like to give the maximum in everything I do. The maximum I have. The
+%     maximum I can give. I am not perfect. But if I do something, I do it [as best I can].
+%     %And many people are not made like this. There are only few. But I like these few.
+%   }{Reinhold Messner}}
 
 \tableofcontents
 
@@ -49,6 +50,7 @@
 
 \part{Discovering Compact Models}
 \include{hsamodel/hsamodel}
+\include{con/con}
 
 \part{Leveraging Compact Models for Shape Sensing }
 \include{srslam/srslam}
@@ -63,9 +65,10 @@
 \include{conclusion/conclusion}
 
 %% Use letters for the chapter numbers of the appendices.
-%\appendix
+\part{Appendices and Supplementary Material}
+\appendix
 
-%\include{appendix-a/appendix-a}
+\include{appendix-con/appendix-con}
 
 %% Turn off thumb indices for unnumbered chapters.
 \thumbfalse
