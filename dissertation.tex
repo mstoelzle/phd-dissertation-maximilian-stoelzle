@@ -2,7 +2,7 @@
 %\documentclass[print]{dissertation}
 %\documentclass[print,draft]{dissertation}
 
-\hyphenation{TestRoots WatchDog proj-ect proj-ects Ec-lipse two-fold clie-nts Mo-cki-to wide-spread}
+% \hyphenation{TestRoots WatchDog proj-ect proj-ects Ec-lipse two-fold clie-nts Mo-cki-to wide-spread}
 \newcommand{\sparkline}[1]{$\vcenter{\hbox{\includegraphics[scale=0.04]{#1}}}$}
 
 \makeglossaries
@@ -19,7 +19,8 @@
 %% Specify the title and author of the thesis. This information will be used on
 %% the title page (in title/title.tex) and in the metadata of the final PDF.
 % Discovering and Leveraging Minimalist Models for Continuum Soft Robots
-\title{Discovering and Leveraging Compact Models for Continuum Soft Robots}
+\title{Towards Safe and Effective Model-based Control of Soft Robots:\newline A Journey From First-Principle to Data-driven Models Incorporating Physical Structure}
+
 \author{Maximilian}{Stölzle}
 
 %% Use Roman numerals for the page numbers of the title pages and table of
@@ -38,7 +39,6 @@
 \tableofcontents
 
 \include{summary/summary}
-\include{acks/acks}
 
 %% Use Arabic numerals for the page numbers of the chapters.
 \mainmatter
@@ -48,18 +48,17 @@
 
 \include{introduction/introduction}
 
-\part{Discovering Compact Models}
+\part{Sensing and Control with Advanced First-Principle Models}
+\include{srslam/srslam}
 \include{hsamodel/hsamodel}
+\include{hsacontrol/hsacontrol}
+\include{braincontrol/braincontrol}
+\include{backstepping/backstepping}
+
+\part{Incorporating Physical Structure and Stability Guarantees into Data-Driven Models and Controllers}
+\include{promasens/promasens}
 \include{con/con}
 
-\part{Leveraging Compact Models for Shape Sensing }
-\include{srslam/srslam}
-\include{promasens/promasens}
-
-\part{Leveraging Compact Models for Control}
-\include{hsacontrol/hsacontrol}
-\include{backstepping/backstepping}
-\include{braincontrol/braincontrol}
 
 \part{Conclusion}
 \include{conclusion/conclusion}
@@ -92,6 +91,7 @@
 \addcontentsline{toc}{chapter}{Abbreviations}
 \setheader{Abbreviations}
 
+\include{acks/acks}
 \include{cv/cv}
 \include{publications/publications}
 

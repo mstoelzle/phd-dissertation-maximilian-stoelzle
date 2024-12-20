@@ -625,3 +625,5 @@
     colorlinks = false
 }
 
+% remove subsections from table of content
+\setcounter{tocdepth}{1}
