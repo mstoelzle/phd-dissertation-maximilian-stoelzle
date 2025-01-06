@@ -1,12 +1,12 @@
 \section{Experiments} \label{sec:srslam:experiments}
 We confirm the simulation results in a preliminary experimental study by mounting a Raspberry Pi camera to the tip of a soft segment~\cite{katzschmann2019dynamic}. The robotic segment is guided to follow three trajectories similar to the ones tested in simulation (see Section~\ref{sub:srslam:trajectories}). % in 3D space by pneumatically actuating its segment with a pressure regulator. 
-A motion capture setup is employed to gather an accurate ground-truth on the shape of the segment.
+A motion capture setup is employed to gather an accurate ground truth on the shape of the segment.
 
 \begin{figure*}
      \centering
      \subfigure[Experimental setup]{\includegraphics[height=.525\columnwidth]{srslam/figures/graphic_experimental_setup.drawio_v1_compressed.pdf} \label{fig:srslam:experimental_setup}}
      \subfigure[Trajectory 3]{\includegraphics[height=.525\columnwidth]{srslam/figures/graphic_sequences_of_stills_lab_experiment_trajectory_3_compressed.pdf} \label{fig:srslam:graphic_sequences_of_stills_lab_experiment_trajectory_3}}
-     \caption{ In Panel (a), a soft robotic segment is mounted to a cage with attached motion capture cameras. The segment is pneumatically actuated by a pressure regulator (Fest Motion Terminal). A Raspberry Pi camera v2.0 is attached to the tip of the segment and in a straight segment configuration looks down towards check-board patterns. Panel (b) depicts a sequence of stills showing the robot following trajectory 3 from two different vantage points. The second vantage point differs \SI{90}{\degree} from the first one. The third row displays a few representative frames as recorded by the camera attached to the tip of the segment.}
+     \caption{ In Panel (a), a soft robotic segment is mounted to a cage with attached motion capture cameras. The segment is pneumatically actuated by a pressure regulator (Fest Motion Terminal). A Raspberry Pi camera v2.0 is attached to the tip of the segment and, in a straight segment configuration, looks down towards check-board patterns. Panel (b) depicts a sequence of stills showing the robot following trajectory 3 from two different vantage points. The second vantage point differs \SI{90}{\degree} from the first one. The third row displays a few representative frames as recorded by the camera attached to the tip of the segment.}
 \end{figure*}
 
 \subsection{Experimental setup}
@@ -20,8 +20,8 @@ A 3D-printed ring with four motion capture markers is located near the tip of th
 We mount a Raspberry Pi camera module v2.0 to the tip of the segment.
 This camera has a \SI{8}{MP} sensor and records frames at a sampling rate of \SI{30}{Hz} and a resolution of 1080p.
 The focal length is \SI{3.04}{mm} and the field of view is $\SI{62.2}{\degree} \times \SI{48.8}{\degree}$.
-The camera module is attached to a Raspberry Pi 3B+ single-board computer which saves the frames for later processing by the ORB-SLAM~\cite{mur2017orb} algorithm.
-The camera is screwed onto a custom 3D-printed holder which in turn is glued with the tip plane of the segment.
+The camera module is attached to a Raspberry Pi 3B+ single-board computer, which saves the frames for later processing by the ORB-SLAM~\cite{mur2017orb} algorithm.
+The camera is screwed onto a custom 3D-printed holder, which in turn is glued with the tip plane of the segment.
 %
 % Actuation motion terminal, communication, commanding of pressures
 The segment with its four air chambers is actuated with a proportional pressure regulator.
@@ -47,7 +47,7 @@ Tubing attached to the base of the segment connects each chamber with the assign
 % The commanded valve pressures are relayed via Modbus / TCP from our lab workstation to the Motion Terminal at a frequency of approximately \SI{10}{Hz}.
 %
 % Cage and environment
-The segment is attached in up-side-down configuration to the top plane of a cubical cage of \SI{750}{mm} side length. For a straight segment, the camera is facing downwards towards the floor of the cage, which is covered by multiple printed checkerboard patterns.
+The segment is attached in an up-side-down configuration to the top plane of a cubical cage of \SI{750}{mm} side length. For a straight segment, the camera is facing downwards towards the floor of the cage, which is covered by multiple printed checkerboard patterns.
 %
 % Motion capture system and cage
 We acquire ground-truth pose information of the tip of the segment using an Optitrack motion capture system. %, consisting of eight PrimeX 13 cameras mounted to the previously mentioned cubic cage. 
@@ -60,7 +60,7 @@ The ground-truth poses of the tip of the segment are recorded at \SI{30}{Hz}. % 
 We also include the elongation of the segment $\delta L_1$ in the cost function \eqref{eq:srslam:cost_fun} of our optimization.
 %
 % Calibration sequence
-To resemble the calibration sequence from simulation for the \gls{SLAM} map, we manually move the robot lateral into the x-coordinate direction before fixing it to the cage for the start of the experiments.
+To resemble the calibration sequence from the simulation for the \gls{SLAM} map, we manually move the robot lateral into the x-coordinate direction before fixing it to the cage for the start of the experiments.
 
 \subsection{Results}
 Our experimental results reported in Table~\ref{tab:srslam:results_lab_experiments} and visualized for trajectory 3 in Figure~\ref{fig:srslam:experiments_t3_over_time} show translational relative \gls{RMSE} of between \SI{9}{\percent} and \SI{20}{\percent} for the three trajectories before optimization. 
@@ -69,7 +69,7 @@ The translational error is improved to between \SI{5}{\percent} and \SI{9}{\perc
 The optimization also slightly improves the rotational \gls{RMSE} by \SI{4}{\percent} to \SI{10}{\percent} relative to naive \gls{SLAM}.
 
 The experimental results of the \gls{SLAM} algorithm are coherent with the simulations as the small segment length (\SI{11}{cm}) used in the experiments increases the translational errors as shown similarly in the simulations for a robot of length \SI{15}{cm}.
-Even though the translational error is greatly reduced through optimization, it is still significantly higher than in simulation. Two reasons for this difference could be that a) the segment in simulation was modelled as in-extensible, while the real robot segment is extended via pneumatic pressurization, which introduces additional errors by \gls{SLAM} not accurately estimating the elongation movement and b) the real robot does not perfectly behave according to the \gls{CC} approximation as the simulated robot does.
+Even though the translational error is greatly reduced through optimization, it is still significantly higher than in simulation. Two reasons for this difference could be that a) the segment in the simulation was modeled as in-extensible, while the real robot segment is extended via pneumatic pressurization, which introduces additional errors by \gls{SLAM} not accurately estimating the elongation movement and b) the real robot does not perfectly behave according to the \gls{CC} approximation as the simulated robot does.
 
 % \begin{table}
 % \centering
@@ -113,7 +113,7 @@ Rotation $e_{\theta_z}$ & Yes & $\SI{0.080}{\radian}$ & $\SI{0.067}{\radian}$ & 
     \centering
     \includegraphics[width=0.9\columnwidth, trim={2cm 1.2cm 2cm 0}]{srslam/figures/vtem28_t3_coordinates.eps}\\
     \includegraphics[width=0.9\columnwidth, trim={2cm 0 2cm 1.2cm}]{srslam/figures/vtem28_t3_angles.eps}
-    \caption{ Experimental results for trajectory 3. Comparison between ground-truth (solid line), \gls{SLAM} (dashed line) and optimized through projection into \gls{PCC} kinematics (dotted line) for translation and orientation estimates.}
+    \caption{ Experimental results for trajectory 3. Comparison between ground-truth (solid line), \gls{SLAM} (dashed line), and optimized through projection into \gls{PCC} kinematics (dotted line) for translation and orientation estimates.}
     \label{fig:srslam:experiments_t3_over_time}
 \end{figure}
 

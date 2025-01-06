@@ -1,10 +1,15 @@
 \chapter{Model-based Control of Handed Shearing Auxetics (HSA) Robots}
 \label{chp:hsacontrol}
 
+\begin{foreword}
+    In Chapter~\ref{chp:hsacontrol}, we developed kinematic and dynamical models for planar \gls{HSA} robots. However, the control of \gls{HSA} remains an unexplored area, both in our previous chapters and in the existing literature. 
+    We present in this chapter various model-based control approaches for planar \gls{HSA} robots ranging from PID (with integral saturation) + feedforward configuration-space control to Cartesian-space impedance control. Notably, we rigorously validate and benchmark the proposed control strategies experimentally on two different \gls{HSA} robot prototypes.
+\end{foreword}
+
 \begin{abstract}
-    Parallel robots based on Handed Shearing Auxetics (HSAs) can implement complex motions using standard electric motors while maintaining the complete softness of the structure, thanks to specifically designed architected metamaterials.
-    However, their control is especially challenging due to varying and coupled stiffness, shearing, non-affine terms in the actuation model, and underactuation. In this chapter, we present two model-based control strategies for planar HSA robots enabling regulation in task space. 
-    In the first strategy, we perform steady-state planning to identify a statically admittable robot shape with matching actuation, show that the configuration-space dynamics admit a collocated form, and design a P-satI-D feedback controller with compensation for elastic and gravitational forces in configuration space. 
+    % Parallel robots based on Handed Shearing Auxetics (HSAs) can implement complex motions using standard electric motors while maintaining the complete softness of the structure, thanks to specifically designed architected metamaterials.
+    The control of robots based on Handed Shearing Auxetics (HSAs) is especially challenging due to varying and coupled stiffness, shearing, non-affine terms in the actuation model, and underactuation. In this chapter, we present two model-based control strategies for planar HSA robots enabling regulation in task space. 
+    Firstly, we propose a control strategy composed of steady-state planning for identifying a statically admittable robot shape with matching actuation and a P-satI-D feedback controller compensating elastic and gravitational forces in configuration space. 
     Secondly, we derive a task-space impedance controller that allows us to unite the soft robot's embodied intelligence with computational intelligence to guarantee compliance and interaction safety.
     We experimentally verify both proposed control strategies in closed loop.
 \end{abstract}
@@ -24,6 +29,3 @@
 \input{hsacontrol/sections/S02_configuration_space_regulation}
 \input{hsacontrol/sections/S03_task_space_impedance_control}
 \input{hsacontrol/sections/S04_conclusion}
-
-\section*{Acknowledgments}
-The authors thank Pietro Pustina for the valuable insights into a coordinate transformation into collocated variables, control of underactuated soft robots, and his help revising the manuscript~\cite{stolzle2024experimental}.

@@ -21,6 +21,7 @@
 \RequirePackage{pifont}
 \RequirePackage{nicefrac}
 \RequirePackage[super]{nth}
+\RequirePackage[thinc]{esdiff} % makes writing derivatives very easy
 \DeclareMathOperator*{\argmin}{\arg\!\min}
 \DeclareMathOperator*{\argmax}{\arg\!\max}
 \newcommand{\cmark}{\ding{51}}%
@@ -75,6 +76,7 @@
         \fi
     \RequirePackage[utf8]{inputenc}
 \fi
+\RequirePackage{bookmark}
 \RequirePackage{rotating}
 \RequirePackage{pdflscape}  % landscape pages
 \RequirePackage{tablefootnote}
@@ -511,7 +513,7 @@
 %% Chapter titles have the same layout as parts.
 \titleformat{\chapter}[display]
     {\flushright\titlestyle}
-    {\fontsize{75pt}{75pt}\selectfont\bfseries\thechapter}
+    {\fontsize{70pt}{70pt}\selectfont\bfseries\thechapter}
     {0pt}
     {\Huge\color{title}}
 \titlespacing{\chapter}{0pt}{0pt}{2\baselineskip}
@@ -597,13 +599,20 @@
 }
 
 %% The abstract environment is used for the abstract of a chapter.
+% \newenvironment{abstract}{%
+%     \list{}{\leftmargin\rightmargin}%
+%     \item%
+%     \relax%
+%     \rmfamily\itshape%
+% }{%
+%     \endlist%
+% }
 \newenvironment{abstract}{%
     \list{}{\leftmargin\rightmargin}%
-    \item%
-    \relax%
-    \rmfamily\itshape%
+    \item \textbf{Abstract.}\ 
+    \itshape
 }{%
-    \endlist%
+    \endlist
 }
 
 %% Define a drop command which can be used to generate drop caps at the
@@ -627,3 +636,11 @@
 
 % remove subsections from table of content
 \setcounter{tocdepth}{1}
+
+% Foreword environment that is placed at the beginning of chapters to connect them to previous chapters
+\newenvironment{foreword}{%
+  \par\noindent\textbf{Foreword.}\hspace{0.2em} \ignorespaces
+}{%
+  \ifhmode\unskip\fi
+  \par
+}

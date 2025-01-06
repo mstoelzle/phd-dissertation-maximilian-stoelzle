@@ -1,4 +1,4 @@
-\section{Task-space impedance control}\label{sec:hsacontrol:task_space_impedance_control}
+\section{Task-space Impedance Control}\label{sec:hsacontrol:task_space_impedance_control}
 We introduce below a novel control strategy that addresses some limitations of the configuration-space regulation controller presented in Sec.~\ref{sub:hsacontrol:configuration_space_regulation:control_strategy} that are critically for achieving both structural and computational compliance. Namely, we (i) avoid computationally demanding planning procedures, (ii) remove integral terms that are unsafe for environment interaction, and (iii) enable impedance shaping in operational space. This Cartesian-space impedance controller is inspired by ~\cite{ott2008cartesian,della2020model}, but specifically designed for and tailored to \gls{HSA} robots. Crucially, we need to overcome the challenges of underactuation and the nonlinearity in the actuation - which were not present in that original work. %We, therefore, solve online a least-squares optimization problem, identifying the optimal actuation for generating the demanded task space forces.
 
 \begin{figure}

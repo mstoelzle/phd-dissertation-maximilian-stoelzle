@@ -4,7 +4,7 @@
 %     \caption{Coordinate frames for a soft segment containing the $j^\mathrm{th}$ magnetic sensor and the $k^\mathrm{th}$ cylindrical magnet placed along the center line. $\{S_{i-1}\}$ and $\{S_{i}\}$ describe the frames of the base and tip of the $i^\mathrm{th}$ segment respectively.}\label{fig:promasens:kinematics_frames_soft_segment}
 % \end{figure}
 
-\section{Proprioception with magnetic sensors}
+\section{Proposed Methodology: Proprioception with Magnetic Sensors}
 
 This section introduces a methodology to achieve proprioception for soft robots with magnetic sensors.
 %
@@ -68,7 +68,7 @@ To achieve proprioception, we jointly optimize $\hat{q}$ for all sensor measurem
 \caption{\textbf{Panel (a):} Parameters used to describe the kinematics between the $j^\mathrm{th}$ sensor and the $k^\mathrm{th}$ magnet. To simplify the illustration, we visualize the unextended planar case with both magnet and sensor part of the $i^\mathrm{th}$ segment. However, this is not a strict assumption as magnets and sensors can also be part of different segments. \textbf{Panel (b):} Coordinate frames for a soft segment containing the $j^\mathrm{th}$ magnetoresistive sensor and the $k^\mathrm{th}$ cylindrical magnet placed along the center line. $\{S_{i-1}\}$ and $\{S_{i}\}$ describe the frames of the base and tip of the $i^\mathrm{th}$ segment, respectively.}
 \end{figure}
 
-\section{Background: Continuum soft robot kinematics}\label{sec:promasens:kinematics}
+\section{Background: Continuum Soft Robot Kinematics}\label{sec:promasens:kinematics}
 A kinematic description provides us with the forward kinematic transformation $T_{i-1}^s(q_i,s)$ from base frame $\{S_{i-1}\}$ at the proximal end of the $i^\mathrm{th}$ segment to the local frame $\{S_{v}\}$ at a coordinate $v \in [0,1]$ for a given configuration $q_i$. Furthermore, the tip frame of the $i^\mathrm{th}$ segment located at the coordinate $v = 1$ is denoted as $\{S_{i}\}$, as shown in Fig.~\ref{fig:promasens:kinematics_frames_soft_segment}.
 
 \subsection{Piecewise constant curvature kinematics}\label{sub:promasens:kinematic_model_pcc}

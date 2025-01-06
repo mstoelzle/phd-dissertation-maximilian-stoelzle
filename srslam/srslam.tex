@@ -1,11 +1,19 @@
-\chapter{Sensing Soft Robots' Shape with Cameras: An Investigation on Kinematics-Aware SLAM}
+% \chapter{Sensing Soft Robots' Shape with Cameras: An Investigation on Kinematics-Aware SLAM}
+\chapter{Shape Sensing with Cameras: An Investigation on Kinematics-Aware SLAM}
 \label{chp:srslam}
 
+\begin{foreword}
+    Before we can develop advanced soft robot controllers, we require access to state information. Specifically, we need to know the configuration of the soft robot, which, as introduced in Chapter~\ref{chp:background}, is for soft robots usually defined as the parametrized shape of the backbone.
+    In this chapter, we demonstrate how we can augment in a plug-and-play fashion existing state-of-the-art \gls{SLAM} algorithms with kinematic knowledge to achieve shape sensing for soft robots.
+\end{foreword}
+
 \begin{abstract}
-    The nature of continuum soft robots calls for novel perception solutions, which can provide information on the robot's shape while not substantially modifying their bodies' softness. One way to achieve this goal is to develop innovative and completely deformable sensors. However, these solutions tend to be less reliable than classic sensors for rigid robots. As an alternative, we consider here the use of monocular cameras. By admitting a small rigid component in our design, we can leverage well-established solutions from mobile robotics. We propose a shape sensing strategy that combines a SLAM algorithm with nonlinear optimization based on the robot's kinematic model. We prove the method's effectiveness in simulation and with experiments of a single-segment continuous soft robot with a camera mounted to the tip. We achieve mean relative translational errors below 9\% simulations and experiments alike, and as low as 0.5\% on average for some simulation conditions.
+    % The nature of continuum soft robots calls for novel perception solutions, which can provide information on the robot's shape while not substantially modifying their bodies' softness. One way to achieve this goal is to develop innovative and completely deformable sensors. 
+    One way to achieve proprioception of the soft robot's shape while not substantially modifying their bodies' softness is to develop innovative and completely deformable sensors. 
+    However, these solutions tend to be less reliable than classic sensors for rigid robots. As an alternative, we consider here the use of monocular cameras. By admitting a small rigid component in our design, we can leverage well-established solutions from mobile robotics. We propose a shape-sensing strategy that combines a SLAM algorithm with nonlinear optimization based on the robot's kinematic model. We prove the method's effectiveness in simulation and with experiments of a single-segment continuous soft robot with a camera mounted to the tip. We achieve mean relative translational errors below 9\% simulations and experiments alike and as low as 0.5\% on average for some simulation conditions.
 \end{abstract}
 
-\blfootnote{This chapter is partly based on \faFileTextO~\emph{Sensing Soft Robots' Shape with Cameras: an Investigation on Kinematics-Aware SLAM}~\cite{rosi2022sensing}.
+\blfootnote{This chapter is partly based on \faFileTextO~\emph{\textbf{M. Stölzle}*, F. Solari, and C. Della Santina (2022, April). Sensing Soft Robots' Shape with Cameras: an Investigation on Kinematics-Aware SLAM. In 2022 IEEE 5th International Conference on Soft Robotics (RoboSoft) (pp. 795-801). IEEE.}~\cite{rosi2022sensing}.
 }
 
 

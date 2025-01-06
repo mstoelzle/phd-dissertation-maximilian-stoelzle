@@ -1,0 +1,25 @@
+% \chapter{Learning Low-Dimensional Strain Models of Soft Robots by Looking at the Evolution of Their Shape}
+\chapter{Learning Low-Dimensional Strain Models based on the Evolution of the Backbone Shape}
+\label{chp:pcsregression}
+
+\begin{abstract}
+    Obtaining dynamic models of continuum soft robots is central to the analysis and control of soft robots, and researchers have devoted much attention to the challenge of proposing both data-driven and first-principle solutions.
+    Both avenues have, however, shown their limitations; the former lacks structure and performs poorly outside training data, while the latter requires significant simplifications and extensive expert knowledge to be used in practice. This paper introduces a streamlined method for learning low-dimensional, physics-based models that are both accurate and easy to interpret. We start with an algorithm that uses image data (i.e., shape evolutions) to determine the minimal necessary segments for describing a soft robot's movement. Following this, we apply a dynamic regression and strain sparsification algorithm to identify relevant strains and define the model's dynamics. 
+    We validate our approach through simulations with various planar soft manipulators, comparing its performance against other learning strategies, showing that our models are both computationally efficient and 25x more accurate on out-of-training distribution inputs.
+    Finally, we demonstrate that thanks to the capability of the method of generating physically compatible models, the learned models can be straightforwardly combined with model-based control policies.
+\end{abstract}
+
+\blfootnote{This chapter is partly based on \faFileTextO~\emph{R. Valadas*, \textbf{M. Stölzle}*, J. Liu, and C. Della Santina (2025). Learning Low-Dimensional Strain Models of Soft Robots by Looking at the Evolution of Their Shape with Application to Model-Based Control. In Proceedings of the 2025 IEEE 8th International Conference on Soft Robotics (RoboSoft) (pp. 1-8). IEEE.}~\cite{valadas2025learning}.
+}
+
+
+%% Start the actual chapter on a new page.
+\newpage
+
+\input{pcsregression/sections/S01_introduction}
+\input{pcsregression/sections/S02_preliminaries}
+\input{pcsregression/sections/S03_methodology}
+\input{pcsregression/sections/S04_validation}
+\input{pcsregression/sections/S05_conclusion}
+
+% 

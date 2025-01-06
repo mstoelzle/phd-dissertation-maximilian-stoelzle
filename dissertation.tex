@@ -19,7 +19,8 @@
 %% Specify the title and author of the thesis. This information will be used on
 %% the title page (in title/title.tex) and in the metadata of the final PDF.
 % Discovering and Leveraging Minimalist Models for Continuum Soft Robots
-\title{Towards Safe and Effective Model-based Control of Soft Robots:\newline A Journey From First-Principle to Data-driven Models Incorporating Physical Structure}
+% \title{Towards Safe and Effective Model-based Control of Soft Robots:\newline A Journey From First-Principle to Data-driven Models Incorporating Physical Structure}
+\title{Model-based Control of Soft Robots: Bridging Physics and Learned Models}
 
 \author{Maximilian}{Stölzle}
 
@@ -48,19 +49,38 @@
 
 \include{introduction/introduction}
 
-\part{Sensing and Control with Advanced First-Principle Models}
+\chapter{Background on Modeling and Control of Soft Robots}\label{chp:background}
+\section{Kinematic Parametrizations}
+\section{Dynamic Modeling}
+\section{Model-based Controllers}
+
+\include{safetymetric/safetymetric}
+
+
+\part{Shape Sensing and Control with Advanced Physics-based Models}\label{part:physicsmodels}
 \include{srslam/srslam}
 \include{hsamodel/hsamodel}
 \include{hsacontrol/hsacontrol}
 \include{braincontrol/braincontrol}
 \include{backstepping/backstepping}
 
-\part{Incorporating Physical Structure and Stability Guarantees into Data-Driven Models and Controllers}
+\part{Incorporating Physical Structure and Stability Guarantees into Learned Models and Controllers}\label{part:learning}
 \include{promasens/promasens}
+\include{pcsregression/pcsregression}
 \include{con/con}
+\chapter{Learning Stable Periodic Robotic Motions from Demonstration}
+
+% \part{Achieving a Symbiotic Partnership between and Body and Brain Through Co-Design}
+% other synonym: aligning, harmonizing, synergizing, mutualize
 
 
-\part{Conclusion}
+\part{Conclusion \& Outlook}
+\chapter{How Holistic Co-Design Will Enable the Societal Uptake of Soft Robots}\label{chp:towardscodesign}
+\section{Existing Soft Robotic Co-Design Approaches}
+\section{A Framework for Holistic Co-Design}
+\section{Reduced-order Design Parametrizations}
+\section{Co-designing Physical Intelligence}
+\section{Exploiting Safety vs. Performance Trade-off with Multi-objective Optimization}
 \include{conclusion/conclusion}
 
 %% Use letters for the chapter numbers of the appendices.
@@ -68,6 +88,10 @@
 \appendix
 
 \include{appendix-con/appendix-con}
+
+% turn off the part
+\bookmarksetup{startatroot}% this is it
+\addtocontents{toc}{\bigskip}% perhaps as well
 
 %% Turn off thumb indices for unnumbered chapters.
 \thumbfalse

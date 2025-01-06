@@ -1,4 +1,4 @@
-\section{An approximate closed-form solution for the rollout of CON}
+\section{An Approximate Closed-form Solution to the CON Dynamics}
 
 \subsection{Approach}\label{sub:con:cfa:approach}
 To predict future system states, we need to integrate the ODE in Eq.~\eqref{eq:con:con_dynamics}, with the solution given by $y(t_{k+1}) = y_{t_k} + \int_{t_k}^{t_{k+1}} f(y(t'), u(t')) \, \mathrm{d}t'$.
@@ -191,7 +191,7 @@ The simulation vs. real-time factor is computed as the simulated rollout duratio
 
 
 \subsubsection{Results}
-We also provide qualitative results for the integration accuracy in Fig.~\ref{fig:cfa_con_comparison}
+We also provide qualitative results for the integration accuracy in Fig.~\ref{fig:con:cfa_con_comparison}
 The results in Table~\ref{tab:con:cfa_evaluation} show that \gls{CFA-CON} is \SI{30}{\percent} more accurate than the Euler integrator at half of the speed. Comparing against the Tsit5 integrator, \gls{CFA-CON} exhibits a 1.56x speed increase while being significantly less accurate.
 For the underdamped case with $\zeta < 1$, the specialized implementation \gls{CFA-UDCON} is \SI{14.8}{\percent} faster and at the same time \SI{32}{\percent} more accurate than the Euler integrator. Furthermore, \gls{CFA-UDCON} is 3.7x faster and significantly less accurate than the Tsit5 integrator.
 We can conclude that in the pure rollout setting (i.e., no backpropagation involved) for a generic \gls{CON}, the \gls{CFA-CON} does not show clear advantages to an appropriately tuned Euler or Tsit5 solver. However, the specialized version \gls{CFA-UDCON} demonstrates a 2.4x speed-up at no reduction of accuracy vs. \gls{CFA-CON} for underdamped oscillator networks.

@@ -1,5 +1,5 @@
-\section{A kinematic model for HSA rods}\label{sec:hsamodel:hsa_rod_kinematics}
-In this section, we aim to derive a forward kinematic model which can be used to describe the shape of a single \gls{HSA} rod with a minimum amount of parameters. More specifically, we want to describe the transformation from the base frame $\{ S_{\mathcal{B}} \}$ to a local frame $\{ S_s \}(q,s)$ at a coordinate $s \in [0, \Bar{L}]$. This coordinate lies on the backbone of an \gls{HSA} rod of printed (i.e. initial) length $\Bar{L}$.
+\section{A Kinematic Model for HSA Rods}\label{sec:hsamodel:hsa_rod_kinematics}
+In this section, we aim to derive a forward kinematic model that can be used to describe the shape of a single \gls{HSA} rod with a minimum amount of parameters. More specifically, we want to describe the transformation from the base frame $\{ S_{\mathcal{B}} \}$ to a local frame $\{ S_s \}(q,s)$ at a coordinate $s \in [0, \Bar{L}]$. This coordinate lies on the backbone of an \gls{HSA} rod of printed (i.e. initial) length $\Bar{L}$.
 
 \subsection{Selective Piecewise Constant Strain (SPCS) kinematics}\label{sub:hsamodel:hsa_rod_kinematics:spcs_kinematics}
 For this purpose, we combine the existing kinematic models \gls{CS} and \gls{PCS}~\cite{renda2018discrete} to selectively keep specific strains constant along the entire length of the robot or vary them piece-wise among the segments.
@@ -88,7 +88,7 @@ Therefore, the fully assembled transformation $T_{\mathcal{B}}^i(q)$ from the ba
     The plot in the first row shows the positional error $e_\mathrm{p}$ of the kinematic model against the simulated HSA. The plot in the second row visualizes the rotational error metric $e_\mathrm{quat}$, which is based on the vector component of the unit quaternion. For more information on the evaluation metrics, we refer to Section~\ref{ssub:hsamodel:hsa_rod_kinematics:evaluation_metrics}.
     %The poses of $25$ points along the rod determined through forward kinematics of a regressed configuration are compared against the links of a simulated, discretized Cosserat rod. 
     The kinematic model used here assumes the twist \& stretch strains to be constant along the entire HSA and the bend \& shear strains to be captured by $n_\mathrm{S}$ segments.
-    Along this line, we report the performance of the kinematic model for a parametrization containing between one and five segments.
+    Along this line, we report the performance of the kinematic model for a parametrization containing one to five segments.
     }\label{fig:hsamodel:hsa_robot_simulation_kinematic_error_vs_number_of_PCS_segments}
 \end{figure}
 
@@ -103,7 +103,7 @@ Therefore, the fully assembled transformation $T_{\mathcal{B}}^i(q)$ from the ba
 \begin{figure*}
     \centering
     \includegraphics[width=0.77\textwidth]{hsamodel/figures/experimental_setup/experimental_setup_v3_compressed.pdf}
-    \caption{Experimental setup with the \gls{HSA} robot attached in platform-down configuration to the motion capture cage. The robot contains two left-handed (L) and two right-handed (R) \gls{HSA} rods respectively. Rods of the same handedness are placed opposite of each other. The reflective markers allow us to determine the pose information of the base, an intermediate point along the left \gls{HSA} rod, and the platform.}\label{fig:hsamodel:experimental_setup}
+    \caption{Experimental setup with the \gls{HSA} robot attached in platform-down configuration to the motion capture cage. The robot contains two left-handed (L) and two right-handed (R) \gls{HSA} rods, respectively. Rods of the same handedness are placed opposite of each other. The reflective markers allow us to determine the pose information of the base, an intermediate point along the left \gls{HSA} rod, and the platform.}\label{fig:hsamodel:experimental_setup}
 \end{figure*}
 
 
@@ -117,15 +117,15 @@ Finally, we verify the performance of the proposed \gls{SPCS} kinematic model bo
 The code and all datasets are made available on GitHub~\footnote{\scriptsize \url{https://github.com/tud-phi/hsa-kinematic-model}}.
 
 \subsubsection{Actuation sequences}\label{ssub:hsamodel:hsa_rod_kinematics:actuation_sequences}
-We collect datasets with a variety of actuation sequences, which includes both pure motion primitives and random actuation. 
+We collect datasets with a variety of actuation sequences, which include both pure motion primitives and random actuation. 
 % The elongation, bending, and twisting motion primitives are invoked with the specifications in Fig.~\ref{fig:hsamodel:motion_primitives}(a). 
 For all sequences, we apply a twist angle of magnitude  $|u_\mathrm{d}| \in [0, \pi \: \si{rad}]$ at the base of each \gls{HSA}. The sign of $u_\mathrm{d}$ is determined by the handedness $h$ of the respective \gls{HSA}.
-The elongation dataset consists of samples between the rest and fully-elongated \gls{HSA} state. Please refer to Fig.~\ref{fig:hsamodel:motion_primitives}(a) for more details how each motion primitive can be invoked.
+The elongation dataset consists of samples between the rest and fully-elongated \gls{HSA} state. Please refer to Fig.~\ref{fig:hsamodel:motion_primitives}(a) for more details on how each motion primitive can be invoked.
 For the bending motion primitive, we consider two separate trajectory types: a) a Lemniscate trajectory and b) a trajectory containing circles of varying bending angles. The different bending angles are achieved by varying the actuation angle from $\SI{20}{\percent}$ to \SI{100}{\percent} of its maximum magnitude. For each fixed bending angle, we collect $15$ samples along the circle, e.g. $15$ different azimuth angles.
 To achieve the desired azimuth angle, we smoothly interpolate between the east, north, west, and south actuation specifications of Fig.~\ref{fig:hsamodel:motion_primitives}(a).
 The twisting trajectory collects discrete samples between maximum clockwise (CW) and maximum counter-clockwise (CCW) twisting.
 Finally, we collect a dataset of randomly sampled actuation inputs, which combines the elongation, bending, and twisting motion primitives. % More specifically, we randomly the azimuth angle of bending from a uniform distribution $\mathcal{U}(0,2\pi)$.
-In total, the elongation and Lemniscate trajectories contain $100$ samples each, the circles and twisting trajectory have $225$ and $100$ samples respectively. $500$ samples are included in the random actuation actuation sequence.
+In total, the elongation and Lemniscate trajectories contain $100$ samples each, and the circles and twisting trajectory have $225$ and $100$ samples, respectively. $500$ samples are included in the random actuation actuation sequence.
 
 
 % We consider different datasets as part of this study. In some datasets, we actuate the \gls{HSA} robot such as to exhibit one of the motion primitives purely (e.g. elongation, bending, and twisting). Contrarily, the \emph{random actuation} dataset combines these motion primitives as we randomly sample each motor position $u_j \in h_j \, \mathcal{U}(0,\pi \, \si{rad})$. 
@@ -140,7 +140,7 @@ We implemented an inverse kinematics algorithm based on the analytical Jacobian 
     \end{pmatrix}^\mathrm{T} \in \mathbb{R}^{7},
 \end{equation*}
 which includes rotational orientation estimates in unit quaternion representation $\mathcal{Q} = \begin{pmatrix} \varepsilon_x & \varepsilon_y & \varepsilon_z & \eta \end{pmatrix}^\mathrm{T}$ and positions in Cartesian space $p = \begin{pmatrix} p_x & p_y & p_z \end{pmatrix}^\mathrm{T}$.
-Please note that usually $\phi_0$ does not need to be found through (differential) inverse kinematics, but can rather be directly be read-out from the encoders of the electric servos.
+Please note that usually $\phi_0$ does not need to be found through (differential) inverse kinematics but can rather be directly read out from the encoders of the electric servos.
 All $N$ poses and Jacobians can be vertically stacked as $\chi \in \mathbb{R}^{7N}$  and $J_\mathrm{A} \in \mathbb{R}^{7N \times 6}$  respectively. This then allows us to then iteratively optimize the pose error $e_\chi = \chi_\mathrm{d} - \tilde{\chi}$ between the known pose $\chi_\mathrm{d}$ and the pose $\tilde{\chi}$ computed using the forward kinematics
 \begin{equation}
     \tilde{q}_{\mathrm{it} + 1} = \tilde{q}_{\mathrm{it}} + \lambda \, J_\mathrm{A}^\mathrm{T}(\tilde{q}) \, \left ( \chi_\mathrm{d} - \tilde{\chi}(\tilde{q}) \right ),
@@ -151,8 +151,8 @@ where $\tilde{q}$ is the current configuration estimate, and $\lambda$ is the st
 \setlength{\tabcolsep}{2pt} % Default value: 6pt
 \begin{table}\scriptsize
 \centering
-\caption{Experimental verification of kinematic models on an HSA robot. Motion capture markers attached to one of the HSAs provide with two ground-truth poses along the rod,
-and we measure $\phi_0$ from the servo readings ($13$ constrains in total). %Therefore, we have in total $13$ constrains for the kinematic model.
+\caption{Experimental verification of kinematic models on an HSA robot. Motion capture markers attached to one of the \glspl{HSA} provide two ground-truth poses along the rod,
+and we measure $\phi_0$ from the servo readings ($13$ constraints in total). %Therefore, we have in total $13$ constrains for the kinematic model.
 % We evaluate on a variety of datasets collected with actuation sequences mirroring certain motion primitives such as pure elongation, pure bending, and pure twisting. Additionally, we also consider a dataset with random actuation angles. As a consequence, this dataset contains samples exhibiting all three motion primitives simultaneously. 
 In the spirit of an ablation study, we investigate different variations of the proposed kinematic parametrization.
 For Constant Curvature (CC), Constant Twist (CT), Constant Shear (CSH), and Constant Axial (CA) strain, the strain is kept constant along the entire HSA.
@@ -196,9 +196,9 @@ Rand. actuation & \xmark & \xmark & \xmark & \xmark & \cmark & \cmark & \cmark &
     
     \caption{Sequence of stills for a Lemniscate and a twisting trajectory. 
     % The numbers at the bottom signify the sample indices of the frames.
-    \textbf{Top row i):} frames of a video recording the HSA robot during the experiments. The shape of the front-left HSA rod is fitted using inverse kinematics and rendered in ii).
-    \textbf{Bottom row ii):} Rendered shape of the HSA rod produced by evaluating the forward kinematics along the backbone length. The arrows with full opacity denote the ground-truth pose of three points along the HSA rod as measured by the motion capture system. The red arrow points along the local x-axis and the green arrow along the local y-axis respectively. The arrows with slight transparency represent poses along the backbone computed with the forward kinematics.
-    We assume the last \SI{25}{mm} and \SI{20}{mm} at the proximal and distal end  of the rod respectively to be rigid and therefore do not include them in the kinematic parametrization.
+    \textbf{Top row i):} frames of a video recording of the HSA robot during the experiments. The shape of the front-left HSA rod is fitted using inverse kinematics and rendered in ii).
+    \textbf{Bottom row ii):} Rendered shape of the HSA rod produced by evaluating the forward kinematics along the backbone length. The arrows with full opacity denote the ground-truth pose of three points along the HSA rod as measured by the motion capture system. The red arrow points along the local x-axis, and the green arrow along the local y-axis, respectively. The arrows with slight transparency represent poses along the backbone computed with the forward kinematics.
+    We assume the last \SI{25}{mm} and \SI{20}{mm} at the proximal and distal end of the rod, respectively, to be rigid and therefore do not include them in the kinematic parametrization.
     % The white ring with the reflective motion capture markers points out the HSA rod (e.g. front-left), of which its shape is rendered in i).
     }\label{fig:hsamodel:experiment_inverse_kinematics_sequence_of_stills}
 \end{figure*}
@@ -250,13 +250,13 @@ The results are in Fig.~\ref{fig:hsamodel:hsa_robot_simulation_kinematic_error_v
 \subsubsection{Experimental results}\label{ssub:hsamodel:hsa_rod_kinematics:experimental_results}
 In addition to the simulations, we also experimentally verify the kinematic model using an \gls{HSA} robot consisting of four closed rods 3D-printed via digital projection lithography from the flexible photopolymer resin Carbon FPU 50~\cite{truby2021recipe}. Each \gls{HSA} rod was printed to a length of $\bar{L} = \SI{101.6}{mm}$ and is independently actuated by DYNAMIXEL MX-28T servo motors.
 % Right-handed and left-handed \glspl{HSA} are placed diagonally opposite of each other respectively.
-As seen in Fig.~\ref{fig:hsamodel:experimental_setup}, we attach motion capture markers to several points on the robot to track the ground-truth pose information. Namely, we measure the pose of the motor base, the platform, and the midpoint of one of the right-handed \gls{HSA} rods (i.e. the front-left \gls{HSA} on the picture). Please note, that we extract the rotation angle $\phi_0$ from the servo encoders directly. The robot is mounted at its base to a cubical cage of side length \SI{750}{mm} in platform-down configuration. Eight Optitrack Prime X 13 cameras are attached to the cage tracking the reflective markers at \SI{30}{Hz}.
+As seen in Fig.~\ref{fig:hsamodel:experimental_setup}, we attach motion capture markers to several points on the robot to track the ground-truth pose information. Namely, we measure the pose of the motor base, the platform, and the midpoint of one of the right-handed \gls{HSA} rods (i.e. the front-left \gls{HSA} on the picture). Please note that we extract the rotation angle $\phi_0$ from the servo encoders directly. The robot is mounted at its base to a cubical cage of side length \SI{750}{mm} in platform-down configuration. Eight Optitrack Prime X 13 cameras are attached to the cage, tracking the reflective markers at \SI{30}{Hz}.
 
-We actuate the robot from a workstation next-by with the control loop running at \SI{10}{Hz}. The control loop communicates motor position setpoints $u_\mathrm{d} \in \mathbb{R}^4$ to the servos. The inner control loop of the servos then applies the appropriate torques to guide the motors towards the desired position. As soon as the motors have reached their goal position, we wait for \SI{2}{s} to reach steady-state and then read-out the pose measurements.
+We actuate the robot from a workstation next-by with the control loop running at \SI{10}{Hz}. The control loop communicates motor position setpoints $u_\mathrm{d} \in \mathbb{R}^4$ to the servos. The inner control loop of the servos then applies the appropriate torques to guide the motors toward the desired position. As soon as the motors have reached their goal position, we wait for \SI{2}{s} to reach steady-state and then read out the pose measurements.
 
 In Fig.~\ref{fig:hsamodel:experiment_inverse_kinematics_sequence_of_stills}, we show sequences of stills for the Lemniscate and twisting trajectory. The kinematic model used here assumes a constant twist strain along the entire rod and employs two \gls{PCS} segments to capture the remaining five strains. We see that except for extreme twisting states, e.g. the far right image in Fig.~\ref{fig:hsamodel:experiment_twisting_inverse_kinematics_sequence_of_stills}, the kinematic model is able to represent the complex \gls{HSA} shape very well.
 
 In Tab.~\ref{tab:hsamodel:kinematic_results_experiments}, we quantitatively evaluate multiple kinematic models on the trajectories defined in \ref{ssub:hsamodel:hsa_rod_kinematics:actuation_sequences}. 
-The first ($7$ DoF) and second ($11$ DoF) kinematic models are very similar as both assume constant twist and constant stretch along the entire \gls{HSA}. The other strains are contained in two \gls{PCS} segments in both cases. However, the first model exhibits much larger positional errors as it neglects shear strains, which are very important in \gls{HSA} robots, but were not accounted for in the literature~\cite{garg2022kinematic}.
+The first ($7$ DoF) and second ($11$ DoF) kinematic models are very similar as both assume constant twist and constant stretch along the entire \gls{HSA}. The other strains are contained in two \gls{PCS} segments in both cases. However, the first model exhibits much larger positional errors as it neglects shear strains, which are very important in \gls{HSA} robots but were not accounted for in the literature~\cite{garg2022kinematic}.
 The third model provides the upper bound on the performance, as it has with $12$ comparatively many DoF and uses a piecewise formulation with two segments for all segments. 
 % With two poses along the rod available in the experimental data, which results in 12 constraints, it should therefore be possible to perfectly fit this kinematic model to the provided pose information.

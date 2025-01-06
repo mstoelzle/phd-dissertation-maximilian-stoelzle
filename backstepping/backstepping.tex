@@ -1,6 +1,15 @@
 % \chapter{Piston-Driven Pneumatically-Actuated Soft Robots: Modeling and Backstepping Control}
-\chapter{Backstepping Control of Piston-Driven Pneumatically-Actuated Soft Robots}
+% \chapter{Backstepping Control of Piston-Driven Pneumatically-Actuated Soft Robots}
+\chapter{Backstepping Control of Pneumatic Piston-Driven Soft Robots}
 \label{chp:backstepping}
+
+\begin{foreword}
+    So far, our models and controllers, as presented in Chapters \ref{chp:hsamodel} and \ref{chp:hsacontrol}, have neglected the dynamics of the actuator (e.g., the dynamics of the servo motor driving the \gls{HSA} rods). The underlying assumption is that the controller within the actuator is sufficiently fast and accurate to regulate the actuator towards the desired actuation (i.e., the control input). This approach is akin to a cascade controller, where the output of the outer control loop (the soft robot controller) serves as a reference to the inner control loop (the actuator controller), which operates at a faster rate.
+    However, literature has shown that cascade controllers fail when the inner closed-loop system cannot track its reference accurately. While the mentioned assumption may be acceptable in certain scenarios, such as when the actuator is over-dimensioned (e.g., a fast-moving servo paired with a relatively slow-moving soft robot), it inherently limits our pursuit of more practical, fast-moving soft robots. It prevents us from fully exploiting the dynamics of the soft robot system.
+    In this chapter, we model the integrated dynamics of a pneumatically-actuated soft robot where pressure is generated using pneumatic pistons. Subsequently, we exploit this dynamical model within a backstepping controller that considers the dynamics of the pneumatic pistons.
+\end{foreword}
+
+\pagebreak
 
 \begin{abstract}
     Actuators' dynamics have been so far mostly neglected when devising feedback controllers for continuum soft robots since the problem under the direct actuation hypothesis is already quite hard to solve. Directly considering actuation would have made the challenge too complex. However, these effects are, in practice, far from being negligible. The present chapter focuses on model-based control of piston-driven pneumatically-actuated soft robots. We propose a model of the relationship between the robot's state, the acting fluidic pressure, and the piston dynamics, which is agnostic to the chosen model for the soft system dynamics. 
