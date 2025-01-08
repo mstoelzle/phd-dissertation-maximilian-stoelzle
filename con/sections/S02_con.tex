@@ -1,5 +1,12 @@
 \section{Input-to-State Stable (ISS) Coupled Oscillator Networks (CONs)}\label{sec:con:con}
 
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.8\linewidth]{con/figures/con/blockdiagram_coupled_oscillator_network_v2_cropped.pdf}
+    \caption{The proposed Coupled Oscillator Network (CON) network consists of $n$ damped harmonic oscillators that are coupled through the neuron-like connection $\tanh(Wx+b)$ and the non-diagonal stiffness $K-k$ and damping coefficients $D-d$, respectively. The state of the network is captured by the positions $x(t)$ and velocities $\dot{x}(t)$ of the oscillators. The time-dependent input is mapped through the (possibly nonlinear) function $g(u)$ to a forcing $\tau$ acting on the oscillators.}
+    \label{fig:con:con}
+\end{figure}
+
 \subsection{Formulation} 
 The integral component to (coupled) oscillatory \glspl{RNN}~\cite{rusch2020coupled, rusch2021unicornn, ceni2024random, lanthaler2024neural} are one-dimensional, potentially damped, harmonic oscillators, which are described by their state $y_i = \begin{bmatrix}
     x_i & \dot{x}_i

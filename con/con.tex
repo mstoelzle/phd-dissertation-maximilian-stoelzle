@@ -2,19 +2,29 @@
 \chapter{Learning Latent Dynamics with ISS Coupled Oscillator Networks}
 \label{chp:con}
 
+\begin{foreword}
+    In Chapter~\ref{chp:pcsregression}, we presented a data-driven approach for learning strain models for continuum soft robots that exhibits full \emph{white-box} interpretability of the identified kinematic parametrization and the physics-based dynamics.
+    However, the kinematic and dynamical behavior of certain more complex robots, such as non-slender soft robots or soft robots exhibiting nonlinear stiffness, varying cross-sections, and hysteresis, cannot be captured by the proposed strain-based approach that builds on the Cosserat rod theory.
+    Furthermore, we sometimes cannot easily extract low-dimensional state information and instead only have access to high-dimensional observation in the form of images or depth measurements.
+    As a solution, we leverage in this chapter \glsxtrfull{CON} for learning latent dynamics of physical systems directly from image observations. The \gls{CON} network consists of harmonic oscillators that are coupled by a potential energy. We leverage a \gls{VAE}-based autoencoder to encode the pixels into latent space. Interestingly, this setup now allows us to assign a mechanical interpretation to the latent encoding of the image, as each latent variable corresponds to the position of a harmonic oscillator. Furthermore, we can learn the potential energy of the system in such a way that strong stability guarantees for the latent dynamics are automatically incorporated. In particular, we can, for example, guarantee \glsxtrfull{GAS} for the unactuated system and \glsxtrfull{ISS} for the actuated system.
+    Finally, we can exploit the physical structure of the \gls{CON} dynamics for closed-form model-based control with P-satI-D+Feedforward controllers, as already seen previously in Chapters~\ref{chp:hsacontrol} \& \ref{chp:pcsregression}.
+\end{foreword}
+
+\blfootnote{This chapter is partly based on \faFileTextO \, \faTrophy~\emph{\textbf{M. Stölzle}, and C. Della Santina (2024). Input-to-State Stable Coupled Oscillator Networks for Closed-form Model-based Control in Latent Space. In Proceedings of Advances in Neural Information Processing Systems (NeurIPS) 37, Accepted as a \textbf{Spotlight} paper~\cite{stolzle2024input}.}}
+
+\pagebreak
+
 \begin{abstract}
     Even though a variety of methods have been proposed in the literature, efficient and effective latent-space control (i.e., control in a learned low-dimensional space) of physical systems remains an open challenge.
     We argue that a promising avenue is to leverage powerful and well-understood closed-form strategies from control theory literature in combination with learned dynamics, such as potential-energy shaping.
     We identify three fundamental shortcomings in existing latent-space models that have so far prevented this powerful combination: (i) they lack the mathematical structure of a physical system, (ii) they do not inherently conserve the stability properties of the real systems, (iii) these methods do not have an invertible mapping between input and latent-space forcing.
     This work proposes a novel Coupled Oscillator Network (CON) model that simultaneously tackles all these issues. 
     More specifically, (i) we show analytically that CON is a Lagrangian system - i.e., it possesses well-defined potential and kinetic energy terms. Then, (ii) we provide formal proof of global Input-to-State stability using Lyapunov arguments.
-    Moving to the experimental side, we demonstrate that CON reaches SoA performance when learning complex nonlinear dynamics of mechanical systems directly from images.
+    Moving to the experimental side, we demonstrate that \gls{CON} reaches \gls{SOTA} performance when learning complex nonlinear dynamics of mechanical systems directly from images.
     An additional methodological innovation contributing to achieving this third goal is an approximated closed-form solution for efficient integration of network dynamics, which eases efficient training.
     We tackle (iii) by approximating the forcing-to-input mapping with a decoder that is trained to reconstruct the input based on the encoded latent space force.
     Finally, we leverage these three properties and show that they enable latent-space control. We use an integral-saturated PID with potential force compensation and demonstrate high-quality performance on a soft robot using raw pixels as the only feedback information.
 \end{abstract}
-
-\blfootnote{This chapter is partly based on \faFileTextO \, \faTrophy~\emph{\textbf{M. Stölzle}, and C. Della Santina (2024). Input-to-State Stable Coupled Oscillator Networks for Closed-form Model-based Control in Latent Space. In Proceedings of Advances in Neural Information Processing Systems (NeurIPS) 37, \textbf{Spotlight}~\cite{stolzle2024input}.}}
 
 
 %% Start the actual chapter on a new page.
@@ -25,5 +35,14 @@
 \input{con/sections/S03_cfa_con}
 \input{con/sections/S04_learning_latent_dynamics}
 \input{con/sections/S05_latent_space_control}
-\input{con/sections/S06_conclusion_limitations}
+\input{con/sections/S06_conclusion}
+
+\section*{Afterword}
+In this chapter, we introduced \glsxtrfull{CON} and leveraged them for learning mechanically interpretable latent dynamics of physical systems.
+The ability to derive kinetic and potential energy terms of the \gls{CON} i) allows us to provide strong stability guarantees (e.g., \gls{ISS}), and ii) enables us to apply computationally efficient model-based control strategies established in the (soft) robotics community such as P-satI-D+feedforward directly in latent space.
+% Even though, compared to Chapter~\ref{chp:pcsregression}, the learned dynamics do not map one-to-one to a physics-based soft robot model anymore, the latent dynamics having a physical (in this case mechanical) interpretation allows us a) enforce similar stability characteristics in the learned system that the original physical system also exhibits, and b) to apply control strategies that were originally developed to be used with fully physics-derived models. These characteristics and features motivate the benefits of \emph{grey-box}, specifically ones that exhibit physical structure and stability guarantees.
+Although the learned dynamics no longer map directly to a physics-based soft robot model as they did in Chapter~\ref{chp:pcsregression}, the fact that the latent dynamics retain a physical (in this case, mechanical) interpretation offers several advantages: (a) it enables us to enforce stability characteristics in the learned system similar to those observed in the original physical system, and (b) it allows the application of control strategies originally designed for fully physics-derived models. These attributes underscore the benefits of \emph{grey-box} approaches, particularly those that incorporate physical structure and provide stability guarantees.
+
+% However, the presented strategy of combining an encoding into latent space with a latent dynamical system that exhibits certain physical structures and stability guarantees is not only useful for modeling but also for motion planning. In recent years, there has been an increasing community trend to learn motion policies from demonstration with stability guarantees by combining diffeomorphic encoders with latent dynamics parametrized by stable dynamical systems in the framework of \gls{SMP}~\cite{rana2020euclideanizing, perez2023stable, zhi2024teaching}. In Chapter~\ref{chp:osmp}, we extend this approach to learning period motions and demonstrate on multiple real (soft) robots how this approach is able to generate natural, compliant, and safe robot behavior.
+The proposed approach of integrating an encoding into a latent space with a latent dynamical system that incorporates specific physical structures and stability guarantees proves valuable not only for learning models but also for motion planning. In recent years, there has been a growing trend in the research community to develop motion policies with stability guarantees by leveraging diffeomorphic encoders and latent dynamics represented by stable dynamical systems within the framework of \gls{SMP}\cite{rana2020euclideanizing, perez2023stable, zhi2024teaching}. In Chapter\ref{chp:osmp}, we expand this method to learn periodic motions and demonstrate its ability to generate natural, compliant, and safe behavior across various real (soft) robots.
 

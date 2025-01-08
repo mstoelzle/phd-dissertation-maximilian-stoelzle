@@ -3,6 +3,13 @@ We now move towards learning latent dynamical models based on \gls{CON} and \gls
 % , which we will leverage later in Sec~\ref{sec:latent_space_control} for model-based control. 
 \glspl{CON} are an ideal fit for learning latent dynamics as they guarantee that the latent states stay bounded. 
 
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=1.0\linewidth]{con/figures/autoencoder/blockdiagram_autoencoder_v1_cropped.pdf}
+    \caption{Exploiting \glspl{CON} for learning latent dynamics from pixels: We encode the initial observation $o(t_0)$ and the input $u(t)$ into latent space where we leverage the \gls{CON} to predict future latent states. Finally, we decode both the latent-space torques $\tau(t)$ and the predicted latent states $z(t)$.}
+    \label{fig:con:blockdiagram_autoencoder}
+\end{figure}
+
 We assume to have access to observations in the form of images $o \in \mathbb{R}^{h_\mathrm{o} \times w_\mathrm{o} \times c_\mathrm{o}}$, where $c_\mathrm{o}$ denotes the number of channels. Please note that this could also be other high-dimensional observations such as LiDAR scans, point clouds, etc.
 We now leverage an encoder-decoder architecture to map these high-dimensional observations into a compressed latent space: % parametrized by $z^\mathrm{T} & \dot{z}^\mathrm{T} \end{bmatrix}^\mathrm{T} \in \mathbb{R}^{2n_z}$.
 The encoder $\Phi: \mathbb{R}^{h_\mathrm{o} \times w_\mathrm{o} \times c_\mathrm{o}} \to \mathbb{R}^{n_z} $ with $n_z \ll h_\mathrm{o} \,  w_\mathrm{o}$ identifies a low-dimensional latent representation $z \in \mathbb{R}^{n_z}$ of the images. The decoder $\Psi: \mathbb{R}^{n_z} \to \mathbb{R}^{h_\mathrm{o} \times w_\mathrm{o} \times c_\mathrm{o}}$ approximates the inverse operation by reconstructing an image $\hat{o} \in \mathbb{R}^{h_\mathrm{o} \times w_\mathrm{o} \times c_\mathrm{o}}$ based on the latent representation.

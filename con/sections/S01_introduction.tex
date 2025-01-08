@@ -33,14 +33,15 @@ This allows us to leverage Lyapunov arguments~\cite{khalil2002nonlinear} for pro
 Even though we constrain the dynamics to a very specific structure, we demonstrate (a) the CON network achieves similar performance as \glspl{NODE} when learning the dynamics of unactuated, mechanical systems with two orders of magnitude fewer parameters and (b) that the proposed model achieves, for the complex task of learning the actuated, highly nonlinear dynamics of continuum soft robots~\cite{alora2023data, stolzle2021piston} directly from pixels, a \SI{60}{\percent} lower prediction error than \gls{coRNN}~\cite{rusch2020coupled} and reaches the SoA performance across all techniques that we tested.
 Finally, we show some initial results that the proposed \gls{CON} model is also able to learn the latent dynamics of \glspl{PDE}, in this case containing reaction-diffusion~\cite{champion2019data, epstein2016reaction} dynamics.
 
-\begin{figure}[t]
-    \centering
-    \subfigure[Coupled Oscillator Network (CON)]{\includegraphics[width=0.45\columnwidth]{con/figures/con/blockdiagram_coupled_oscillator_network_v2_cropped.pdf}\label{fig:con:con}}
-    \subfigure[Learning latent-space dynamics with CON]{\includegraphics[width=0.53\columnwidth]{con/figures/autoencoder/blockdiagram_autoencoder_v1_cropped.pdf}\label{fig:con:blockdiagram_autoencoder}}
-    \caption{\textbf{Panel (a)}: The proposed CON network consists of $n$ damped harmonic oscillators that are coupled through the neuron-like connection $\tanh(Wx+b)$ and the non-diagonal stiffness $K-k$ and damping coefficients $D-d$, respectively. The state of the network is captured by the positions $x(t)$ and velocities $\dot{x}(t)$ of the oscillators. The time-dependent input is mapped through the (possibly nonlinear) function $g(u)$ to a forcing $\tau$ acting on the oscillators. 
-    \textbf{Panel (b):} Exploiting \glspl{CON} for learning latent dynamics from pixels: We encode the initial observation $o(t_0)$ and the input $u(t)$ into latent space where we leverage the \gls{CON} to predict future latent states. Finally, we decode both the latent-space torques $\tau(t)$ and the predicted latent states $z(t)$.
-    }
-\end{figure}
+
+% \begin{figure}[t]
+%     \centering
+%     \subfigure[Coupled Oscillator Network (CON)]{\includegraphics[width=0.45\columnwidth]{con/figures/con/blockdiagram_coupled_oscillator_network_v2_cropped.pdf}\label{fig:con:con}}
+%     \subfigure[Learning latent-space dynamics with CON]{\includegraphics[width=0.53\columnwidth]{con/figures/autoencoder/blockdiagram_autoencoder_v1_cropped.pdf}\label{fig:con:blockdiagram_autoencoder}}
+%     \caption{\textbf{Panel (a)}: The proposed CON network consists of $n$ damped harmonic oscillators that are coupled through the neuron-like connection $\tanh(Wx+b)$ and the non-diagonal stiffness $K-k$ and damping coefficients $D-d$, respectively. The state of the network is captured by the positions $x(t)$ and velocities $\dot{x}(t)$ of the oscillators. The time-dependent input is mapped through the (possibly nonlinear) function $g(u)$ to a forcing $\tau$ acting on the oscillators. 
+%     \textbf{Panel (b):} Exploiting \glspl{CON} for learning latent dynamics from pixels: We encode the initial observation $o(t_0)$ and the input $u(t)$ into latent space where we leverage the \gls{CON} to predict future latent states. Finally, we decode both the latent-space torques $\tau(t)$ and the predicted latent states $z(t)$.
+%     }
+% \end{figure}
 
 Subsequently, we derive an approximate closed-form solution, that is, in parameter regimes in which the linear, decoupled dynamics dominate transient, more accurate than numerical integrators with comparable computational requirements and which increases training speed by 2x with a small decrease in prediction accuracy.
 Finally, as we can derive the system's potential energy, we can leverage potential shaping~\cite{bloch2001controlled, ortega2021pid} to derive a controller that combines an integral-saturated PID controller with a feedforward term compensating potential forces.

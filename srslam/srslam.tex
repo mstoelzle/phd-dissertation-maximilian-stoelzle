@@ -25,3 +25,10 @@
 \input{srslam/sections/S03_simulations}
 \input{srslam/sections/S04_experiments}
 \input{srslam/sections/S05_conclusion}
+
+\section*{Afterword}
+This chapter demonstrated how inexpensive commercialized monocular cameras can be effectively used together with established \gls{SLAM} algorithms and kinematic models (e.g., \gls{PCC}) to achieve shape sensing for soft robots. One of the main advantages of this solution is that all necessary components are readily available - either commercially or even via open source. However, the presented approach also has some drawbacks: 
+i) Firstly, while cameras have been significantly miniaturized in recent years, the requirement for them to have a clear, unobstructed view of the environment necessitates the inclusion of a rigid component on the surface of the soft robot, which we generally prefer to avoid for safety reasons. 
+Secondly, ii), the performance of \gls{SLAM} algorithms is affected in environments with limited visually distinguishable features.
+Finally, iii) high-dimensional perceptive data such as images are generally computationally expensive to process, leading to higher computational requirements and/or relatively low sampling rates of the shape-sensing information.
+Therefore, we present in Chapter~\ref{chp:promasens} an alternative shape-sensing approach based on magnetic sensors. The necessary magnets and magnetic sensors can be deeply embedded into the soft robot body, thus allowing us to keep the robot surface entirely soft and compliant. Furthermore, the sensory data is several orders of magnitude lower dimensional, and thus, its processing is potentially much less computationally demanding.

@@ -9,6 +9,9 @@
     In this chapter, we model the integrated dynamics of a pneumatically-actuated soft robot where pressure is generated using pneumatic pistons. Subsequently, we exploit this dynamical model within a backstepping controller that considers the dynamics of the pneumatic pistons.
 \end{foreword}
 
+\blfootnote{This chapter is based on \faFileTextO~\emph{\textbf{M. Stölzle}, C. Della Santina (2021). Piston-driven pneumatically-actuated soft robots: Modeling and backstepping control. IEEE Control Systems Letters, 6, 1837-1842.}~\cite{stolzle2021piston}.
+}
+
 \pagebreak
 
 \begin{abstract}
@@ -16,9 +19,6 @@
     We show that backstepping is applicable even if the feedback coupling of the outer on the inner subsystem is not linear.
     Thus, we introduce a general model-based control strategy based on backstepping for soft robots actuated by fluidic drive. As an example, we derive a specialized version for a robot with piecewise constant curvature. 
 \end{abstract}
-
-\blfootnote{This chapter is based on \faFileTextO~\emph{\textbf{M. Stölzle}, C. Della Santina (2021). Piston-driven pneumatically-actuated soft robots: Modeling and backstepping control. IEEE Control Systems Letters, 6, 1837-1842.}~\cite{stolzle2021piston}.
-}
 
 
 %% Start the actual chapter on a new page.
@@ -30,3 +30,10 @@
 \input{backstepping/sections/S04_pcc_case}
 \input{backstepping/sections/S05_simulations}
 \input{backstepping/sections/S06_conclusion}
+
+\section*{Afterword}
+In this chapter, we have presented a dynamical model that, in addition to the standard soft robot dynamics, also considers the dynamics of a piston-driven pneumatic actuation system. Subsequently, we exploited the actuation dynamics within a backstepping controller.
+We believe that similar approaches could also be applied to other soft robotic actuation methods, such as tendons pulled by electrical motors or Shape Memory Alloys actuators~\cite{zaidi2021actuation}.
+For example, recently, a similar backstepping-based control approach has been successfully applied to soft robots actuated by valve-driven pressure regulators~\cite{franco2024model}.
+Sometimes, modeling the dynamics of soft robots from first principles can be challenging, making it difficult to effectively control their behavior. In other cases, such as pneumatic systems, hysteresis effects are prevalent~\cite{vo2010new}, and direct measurement of the hysteretic displacement is not possible using available sensor data.
+In such situations, employing learning approaches (e.g., machine learning with neural networks) can be beneficial. Still, we would like to preserve the interpretability, structure, and guarantees provided by fully physics-based models. For that reason, we explore integrating physical structures and stability guarantees into learning-based models and controllers in Part~\ref{part:learning} of this thesis.

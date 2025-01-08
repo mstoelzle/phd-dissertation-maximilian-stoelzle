@@ -6,6 +6,13 @@
     We present in this chapter various model-based control approaches for planar \gls{HSA} robots ranging from PID (with integral saturation) + feedforward configuration-space control to Cartesian-space impedance control. Notably, we rigorously validate and benchmark the proposed control strategies experimentally on two different \gls{HSA} robot prototypes.
 \end{foreword}
 
+\blfootnote{This chapter is partly based on 
+    \begin{itemize}
+        \item[\faFileTextO] ~\emph{\textbf{M. Stölzle}, D. Rus, and C. Della Santina (2023, December). An Experimental Study of Model-based Control for Planar Handed Shearing Auxetics Robots. In Experimental Robotics: The 18th International Symposium. Springer}~\cite{stolzle2024experimental}.
+        \item[\faTrophy \, \faFileTextO] ~\emph{\textbf{M. Stölzle}*, S. S. Baberwal*, D. Rus, S. Coyle, and C. Della Santina (2024). Guiding Soft Robots with Motor-Imagery Brain Signals and Impedance Control. In Proceedings of The 2024 IEEE 7th International Conference on Soft Robotics (RoboSoft) (pp. 1-8). IEEE. Received the \textbf{Best Paper Award}~\cite{stolzle2024guiding}}.
+    \end{itemize}
+}
+
 \begin{abstract}
     % Parallel robots based on Handed Shearing Auxetics (HSAs) can implement complex motions using standard electric motors while maintaining the complete softness of the structure, thanks to specifically designed architected metamaterials.
     The control of robots based on Handed Shearing Auxetics (HSAs) is especially challenging due to varying and coupled stiffness, shearing, non-affine terms in the actuation model, and underactuation. In this chapter, we present two model-based control strategies for planar HSA robots enabling regulation in task space. 
@@ -14,14 +21,6 @@
     We experimentally verify both proposed control strategies in closed loop.
 \end{abstract}
 
-\blfootnote{This chapter is partly based on 
-    \begin{itemize}
-        \item[\faFileTextO] ~\emph{\textbf{M. Stölzle}, D. Rus, and C. Della Santina (2023, December). An Experimental Study of Model-based Control for Planar Handed Shearing Auxetics Robots. In Experimental Robotics: The 18th International Symposium. Springer}~\cite{stolzle2024experimental}.
-        \item[\faFileTextO] ~\emph{\textbf{M. Stölzle}*, S. S. Baberwal*, D. Rus, S. Coyle, and C. Della Santina (2024). Guiding Soft Robots with Motor-Imagery Brain Signals and Impedance Control. In Proceedings of The 2024 IEEE 7th International Conference on Soft Robotics (RoboSoft) (pp. 1-8). IEEE. \textbf{Best Paper Award}~\cite{stolzle2024guiding}}.
-    \end{itemize}
-}
-
-
 %% Start the actual chapter on a new page.
 \newpage
 
@@ -29,3 +28,12 @@
 \input{hsacontrol/sections/S02_configuration_space_regulation}
 \input{hsacontrol/sections/S03_task_space_impedance_control}
 \input{hsacontrol/sections/S04_conclusion}
+
+\section*{Afterword}
+This chapter presented the first control strategies in literature for \gls{HSA} robots and verified them experimentally on two \gls{HSA} robot prototypes in the planar case.
+Each of the two presented controllers offers unique advantages:
+On the one hand, the configuration-space P-satI-D + feedforward controller exhibits exceptional regulation accuracy, with minimal or no steady-state errors and exceptionally short response times.
+On the other hand, the task-space impedance controller complements the passive compliance of the soft robot with active compliance in the control strategy. It accomplishes this by eliminating integral terms that could pose potential safety hazards. Additionally, it enables us to precisely shape the stiffness of the closed-loop system in Cartesian space.
+% In this chapter, we programmatically specified the setpoints of the regulation controller. When working towards a future where soft robots assist, for example, elderly people with activities of daily living, we are lacking, however, an effective \gls{HRI} approach. A \gls{BMI} would arguably represent the most direct and barrier-free \gls{HRI} approach for assisting with activities of daily living. For that reason, we investigate in Chapter~\ref{chp:braincontrol} the guidance of the task-space impedance controller with \gls{EEG}-based motor imagery.
+In envisioning a future where soft robots assist elderly individuals with activities of daily living, an effective \gls{HRI} is paramount. While this chapter has focused on programmatically specifying setpoints for regulation controllers, we recognize a gap in how humans can intuitively command these robots. A \gls{BMI} emerges as a compelling solution, offering a direct and barrier-free interaction method that could significantly enhance the usability of assistive robotics. Consequently, in Chapter~\ref{chp:braincontrol}, we explore the feasibility of guiding a task-space impedance controller via \gls{EEG}-based motor imagery, aiming to create a more natural and accessible means of control of soft, and specifically \gls{HSA}, robots.
+Furthermore, we illustrate how the Cartesian-space stiffness enables us to apply force in the desired directions (in this case, releasing hairspray by pressing a button with the end-effector) while maintaining the compliance and, consequently, the embodied intelligence of the soft robot in all other directions.

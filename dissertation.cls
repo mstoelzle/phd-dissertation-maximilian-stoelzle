@@ -22,6 +22,7 @@
 \RequirePackage{nicefrac}
 \RequirePackage[super]{nth}
 \RequirePackage[thinc]{esdiff} % makes writing derivatives very easy
+\RequirePackage{accents}  % for accents, such as \halfapprox
 \DeclareMathOperator*{\argmin}{\arg\!\min}
 \DeclareMathOperator*{\argmax}{\arg\!\max}
 \newcommand{\cmark}{\ding{51}}%
