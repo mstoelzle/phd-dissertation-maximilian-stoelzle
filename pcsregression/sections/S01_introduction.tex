@@ -1,6 +1,6 @@
 \section{Introduction}
 % Continuum soft robot's inherent compliance and embodied intelligence make them promising candidates for close collaboration between humans and robots and contact-rich manipulation~\cite{rus2015design, mengaldo2022concise}.
-Modeling the dynamical behavior~\cite{armanini2023soft} of soft robots with computationally tractable models is important for many applications, such as efficient simulation~\cite{alkayas2025soft}, model-based control~\cite{della2023model}, state estimation~\cite{shao2023model}, and co-design~\cite{wang2024diffusebot}. 
+\dropcap{M}odeling the dynamical behavior~\cite{armanini2023soft} of soft robots with computationally tractable models is important for many applications, such as efficient simulation~\cite{alkayas2025soft}, model-based control~\cite{della2023model}, state estimation~\cite{shao2023model}, and co-design~\cite{wang2024diffusebot}. 
 %
 % To fully exploit their potential, we need to be able to effectively control their dynamic motion.
 % The complex and underactuated nature of continuum soft robots renders methods that are able to directly learn the control policy through experience~\cite{chen2024data} (e.g., \gls{RL}~\cite{thuruthel_model-based_2019, bianchi2023softoss, jitosho2023reinforcement}, Iterative Learning control~\cite{pierallini2023provably}) very interesting. However, they usually lack safety guarantees, are sample inefficient, and exhibit poor performance outside their training set distribution.
@@ -48,43 +48,4 @@ However, we find that the difference is even greater in extrapolation scenarios 
 % We also exhibit the significantly improved extrapolation performance.
 Finally, we demonstrate how the Lagrangian structure of the identified dynamical model allows us to easily design a model-based controller that is effective at regulating the shape of the soft robot.
 
-% The way humans conceptualize the role of robots has been changing in recent years. Traditional robots were built to execute simple and repetitive heavy-duty tasks with high precision. Lately, this idea has evolved to a more human- and service-centered approach, where robots can
-% collaborate and perform activities that were thought to be exclusive to biological systems \cite{della_santina_soft_2020}. Handling fragile objects, interacting safely with humans, or adapting their shape to fit in confined environments
-% are all features that could be achieved with the emergence of soft robots \cite{ashuri_biomedical_2020}. Among soft robots, continuum robots, which do not contain discrete joints, are particularly appealing due to their continuous and smooth deformation. The inherent flexibility presents, nonetheless, numerous challenges, particularly in modeling and control.
-
-% Accurate modeling is essential for optimizing both the design and control of soft robots, but the continuum nature introduces complex, nonlinear dynamics that are difficult to describe with traditional rigid-robot approaches \cite{yasa_overview_2023}. Recently, data-driven methods have become popular as a way to overcome this. By learning directly from data, neural network architectures \cite{giorelli_learning_2015}\cite{thuruthel2017learning}\cite{tariverdi_recurrent_2021} can model the deformations of soft robots without requiring detailed physical derivations. This allows them to capture behaviors that are hard to express analytically \cite{hyatt_model-based_2019} \cite{chen_neural_2022}. However, these methods have their limitations. Firstly, they often require large amounts of high-quality training data \cite{armanini2023soft}. Secondly, these black-box techniques ignore any system's physical properties, which not only hinders interpretability but also does not guarantee good performance outside the conditions seen during training (i.e., extrapolation) \cite{kim2021review}.
-
-% High-dimensional analytical models have been developed based on simulating the continuum mechanics of soft robots. They are solved using finite-element methods, both in 3D \cite{ding_dynamic_2022} \cite{duriez_control_2013} \cite{polygerinos_modeling_2015} and 1D formulations (i.e., discrete Cosserat rod) \cite{boyer2020dynamics} \cite{trivedi_geometrically_2008} \cite{renda_dynamic_2014}. Although highly effective at simulating the nonlinear deformations, their high dimensionality and computational cost are often impractical for real-time control \cite{della_santina_model-based_2020} \cite{armanini2023soft}. Therefore, if the model is required for control applications, we need to find a good trade-off between computational efficiency and accuracy. %which could be later compensated with an effective control framework \cite{kazemipour_adaptive_2022}. 
-% Low-dimensional analytical models appear as a good solution to this. They rely on geometric simplifications that make them faster to compute and easily derivable for control law proofs \cite{schegg_review_2022}. A commonly used method is the \gls{PCS}~\cite{renda2018discrete}, which divides the robot's structure into segments, each assumed to have constant deformation. Additional simplifications can be carried if some of the strains are neglected. For example, the popular \gls{PCC} model~\cite{webster2010design} neglects all strains but bending. The constant strain assumption means the robot can be described through a finite set of configuration variables, allowing for more efficient control. However, previous works have relied heavily on the designer's intuition to make decisions on the number of segments or which strains to consider \cite{toshimitsu2021sopra}. This is not always an obvious choice and it could result in models that are higher-dimensional than necessary or that important strains are ignored based on a wrong intuition \cite{garg2022kinematic}.
-
-%Overall, analytical methods for obtaining low-dimensional soft robot models, such as the \gls{PCS} model, maintain a physically consistent format while generally offering a good balance between simplifying assumptions and the complexity of the model derivation. However, previous works have relied heavily on designer intuition to make decisions on the number of segments or strains to consider. 
-
-% In this work, we propose an end-to-end method for identifying low-dimensional kinematic and dynamic models of planar continuum soft robots based on the \gls{PCS} parametrization, using as data source captured images of the robot in motion. Firstly, a kinematic fusion procedure is used to obtain an efficient segmentation for the \gls{PCS} model. Afterward, based on the determined kinematic model, a dynamic model identification is employed to find the inertial and impedance parameters. This process begins by assuming that all possible strains are present and recursively neglects the less relevant ones based on their estimated stiffness. In the end, the dynamic model is extracted in standard Euler-Lagrange form, allowing a quick deployment in classical model-based controllers \cite{della_santina_model-based_2020} \cite{katzschmann_dynamic_2019} \cite{della_santina_dynamic_2018}. Ultimately, this method incorporates data-driven techniques to derive low-dimensional dynamic models that retain a physics-based structure, capture the key dynamics, and are more closely informed by the system's behavior.
-
-% The main contributions of this work include:
-% \begin{itemize}
-%     \item A kinematic regression procedure that facilitates the determination of an efficient \gls{PCS} segmentation, tailored to the user's requirements.
-%     %A kinematic regression procedure that guides the user in obtaining a compact \gls{PCS} segmentation, depending on their specific needs. %based to determine the number of \gls{PCS} segments and the length of each segment.
-%     \item A data-driven dynamic identification method that infers the model's parameters while systematically identifying strains that can be neglected and removing them from the model.
-%     \item 
-% \end{itemize}
-
-%Overall, previous methods for obtaining low-dimensional models for control fail to identify the number of segments or relevant strains automatically. Analytical approaches (e.g. \gls{PCS}) have relied heavily on designer intuition for these decisions, while learning-based methods capture complex behaviors but lack the interpretability needed to reveal insights about the physical system’s segmentation or strain relevance. 
-
-%In this work, we aim to combine the advantages of physics-based modelling with data-driven insights. We propose an end-to-end method for identifying low-dimensional kinematic and dynamic models of planar continuum soft robots based on the \gls{PCS} parametrization,  using as data source captured images of the robot in motion. In the end, the dynamic model is extracted in standard Euler-Lagrange form, allowing a quick deployment in classical model-based controllers \cite{della_santina_model-based_2020} \cite{katzschmann_dynamic_2019} \cite{della_santina_dynamic_2018}. The performance of the method is evaluated with several simulated planar soft manipulators and we demonstrate the effectiveness of the method to generate accurate models.
-
-%This work provides the following contributions:
-% \begin{itemize}
-%     \item A kinematic regression procedure to determine the number of \gls{PCS} segments and the length of each segment.
-%     \item A data-driven dynamic identification method that infers the model's parameters while systematically identifying strains that can be neglected and removing them from the model.
-%     \item An evaluation of the obtained model performances with several simulated planar soft manipulators.
-% \end{itemize}
-
-% \begin{itemize}
-%     \item Introduce the soft robots topic - check
-%     \item Importance of having fast enough dynamic models
-%     \item Importance of co-designing soft robot morphology and control strategies; 
-%     \item Importance of having interpretable and generalizable models;
-%     \item Research gaps;
-%     \item Research objectives and main contributions
-% \end{itemize}
+A video attachment presents the research idea \& methodology and contains supplementary plots and animations of the results presented in the paper.\footnote{{\small \url{https://youtu.be/dfO-PhDIiHI}}}

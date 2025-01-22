@@ -42,6 +42,9 @@
 \newtheorem{definition}{Definition}
 \newtheorem{corollary}{Corollary}
 \newtheorem{example}{Example}%[section]
+\newtheorem{contribution}{Contribution}
+\renewcommand{\thecontribution}{\Roman{contribution}}
+\newtheorem{researchquestion}{Research Question}
 
 % physics packages
 \RequirePackage{siunitx}
@@ -141,6 +144,7 @@
 
 \RequirePackage{paralist}
 \RequirePackage[noabbrev]{cleveref}
+\RequirePackage{nameref}
 \Crefname{enumi}{Step}{Steps}
 \crefname{enumi}{step}{steps}
 
@@ -228,6 +232,26 @@
 \RequirePackage{framed}
 \let\oldframed\framed
 \def\framed{\oldframed\noindent\ignorespaces}
+% define the colors for the framed package
+\definecolor{TFFrameColor}{cmyk}{1,0.66,0,0.4} % tudelft-dark-blue
+\definecolor{TFTitleColor}{cmyk}{0,0,0,0}  % white
+\definecolor{shadecolor}{cmyk}{0.82,0,0.21,0.08} % tudelft-turquoise
+% other options below
+% \definecolor{tudelft-cyan}{cmyk}{1,0,0,0}
+% \definecolor{tudelft-black}{cmyk}{0,0,0,1}
+% \definecolor{tudelft-white}{cmyk}{0,0,0,0}
+% \definecolor{tudelft-sea-green}{cmyk}{0.54,0,0.32,0}
+% \definecolor{tudelft-green}{cmyk}{1,0.15,0.4,0}
+% \definecolor{tudelft-dark-blue}{cmyk}{1,0.66,0,0.4}
+% \definecolor{tudelft-purple}{cmyk}{0.98,1,0,0.35}
+% \definecolor{tudelft-turquoise}{cmyk}{0.82,0,0.21,0.08}
+% \definecolor{tudelft-sky-blue}{cmyk}{0.45,0,0.06,0.06}
+% \definecolor{tudelft-lavendel}{cmyk}{0.45,0.2,0,0.07}
+% \definecolor{tudelft-orange}{cmyk}{0.02,0.56,0.84,0}
+% \definecolor{tudelft-warm-purple}{cmyk}{0.58,1,0,0.02}
+% \definecolor{tudelft-fuchsia}{cmyk}{0.19,1,0,0.19}
+% \definecolor{tudelft-bright-green}{cmyk}{0.36,0,1,0}
+% \definecolor{tudelft-yellow}{cmyk}{0.02,0,0.54,0}
 
 \RequirePackage{booktabs}
 

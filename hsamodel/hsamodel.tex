@@ -4,7 +4,7 @@
 \begin{foreword}
     Novel soft robots based on \glspl{HSA} show great promise by integrating multiple \gls{DOF} in a compact form. Their parallel nature promises a larger payload capacity while preserving compliance. Notably, they represent a paradigm shift in the soft robotics domain by i) establishing compliance through their metamaterial structure rather than material softness and ii) transmitting actuation through their elasticity with the auxetic metamaterial instead of directly applying forces and torques into the desired directions of deformation.
     However, despite the extensive literature on their design, fabrication, and integration of sensing, the absence of kinematic and dynamic models hinders their widespread adoption. These models are crucial for developing accurate simulators and effective model-based controllers.
-    This chapter addresses this gap by demonstrating how kinematic and dynamical models can be derived for general 3D motion scenarios. Furthermore, we present low-dimensional kinematical parametrizations and a control-oriented Euler-Lagrangian model tailored explicitly to planar \gls{HSA} robot motions.
+    This chapter addresses this gap by demonstrating how kinematic (Section~\ref{sec:hsamodel:hsa_rod_kinematics}) and dynamical (Section~\ref{sec:hsamodel:hsa_robot_simulation}) models can be derived for general 3D motion scenarios. Furthermore, we present in Section~\ref{sec:hsamodel:planar_hsa_robot_model} low-dimensional kinematical parametrizations and a control-oriented Euler-Lagrangian model tailored explicitly to planar \gls{HSA} robot motions.
     We follow here a strategy of exploiting the vast and well-grounded literature on control-oriented modeling of rigid robotic manipulators and augment them with a specialized kinematic model based on the \gls{PCS} parametrization and a nonlinear, actuation-dependent elastic model.
 \end{foreword}
 
@@ -37,6 +37,6 @@
 
 \section*{Afterword}
 This chapter presented approaches for representing the kinematics and dynamics of \gls{HSA} rods in the general case. Additionally, we introduced the first low-dimensional kinematic parameterizations and control-oriented dynamical models for planar \gls{HSA} robots.
-Next, Chapter~\ref{chp:hsacontrol} will focus on leveraging the models proposed in this chapter for model-based control of planar \gls{HSA} robots.
+Next, Chapter~\circled{\ref{chp:hsacontrol}} will focus on leveraging the models proposed in this chapter for model-based control of planar \gls{HSA} robots.
 Namely, this includes the development of stable and effective configuration-space PID+feedforward and task-space impedance controllers.
-Subsequently, Chapter~\ref{chp:braincontrol} will develop a \gls{BCI} strategy for guiding soft robots, and specifically \gls{HSA} robots, using motor imagery in a safe and compliant fashion.
+Subsequently, Chapter~\circled{\ref{chp:braincontrol}} will develop a \gls{BCI} strategy for guiding soft robots, and specifically \gls{HSA} robots, using motor imagery in a safe and compliant fashion.

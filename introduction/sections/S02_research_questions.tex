@@ -1,0 +1,69 @@
+\section{Research Questions}\label{sec:introduction:research_questions}
+In this section, we lay out the research questions that guided the research conducted as part of this thesis.
+The principal \gls{RQ} that we pose in this thesis is
+% \begin{large}
+\begin{titled-frame}{\textbf{Principal Research Question}}
+% How can we integrate physical structure and stability guarantees into the sensing and control of soft robots?
+% \noindent How can we effectively leverage learned models to achieve computationally efficient and safe control of soft robots?
+% \noindent How can we computationally efficiently control soft robots via learned models to achieve precise and safe motion behavior?
+\noindent How can we efficiently control soft robots using learned models, ensuring precise and safe behavior?
+\end{titled-frame}
+% \end{large}
+This principal \gls{RQ} investigates how we can develop (dynamical) models for soft robots with a physical structure that enables the use of closed-form feedback and feedforward control strategies, thereby addressing the research gap identified in Sec.~\ref{sec:introduction:motivation}.To make answering this principal \gls{RQ} more tractable, we pose several key \glspl{RQ}, which we list below.
+
+\begin{researchquestion}\label{rq:soft_robotic_safety}
+    % What makes soft robots safer than rigid robots, and when are they safe enough?
+    What makes soft robots safer than rigid robots, and under what conditions can they considered safe enough?
+\end{researchquestion}
+% As referenced in Sec.~\ref{sec:introduction:motivation}, one of the key motivators behind soft robotics is that their passive compliance would increase/guarantee safety, which is crucial for deploying soft robots in human-centric environments.
+% While a few papers argue this connection between material softness and safety using toy models, such as the Timoshenko beam~\cite{abidi2017intrinsic}, the safety of soft robots has been so far neither a) quantified with a safety metric, b) analyzed in thorough experimental user studies, and c) compared to rigid robots in a quantitative fashion.
+% Therefore, we argue that in order to justify the continued investment into soft robotics research, the community needs to start quantifying the added safety of soft robots.
+% Or framed differently, quantifying the safety of soft robots would allow us to certify that they meet the safety requirements for specific human-centric applications.
+% This \gls{RQ}, which we investigate in Chapter~\ref{chp:safetymetric}, connects to the principal \gls{RQ} by analyzing the safety of the closed-loop system.
+As highlighted in Sec.\ref{sec:introduction:motivation}, a key driver of soft robotics is the belief that their passive compliance enhances or guarantees safety, a critical factor for deploying soft robots in human-centric environments~\cite{rus2015design, mengaldo2022concise}. While some studies link material softness to safety using simplified models, such as the Timoshenko beam\cite{abidi2017intrinsic}, the safety of soft robots has yet to be: a) quantified using a safety metric, b) rigorously evaluated through comprehensive experimental user studies, or c) compared quantitatively to rigid robots.
+To justify continued investment in soft robotics research, we argue that the field must begin quantifying the safety benefits of soft robots. Alternatively, framing the issue differently, quantifying safety would allow us to certify that soft robots meet the safety requirements for specific human-centric applications.
+This \gls{RQ}, which we explore in Chapter~\ref{chp:safetymetric}, ties into the primary \gls{RQ} by evaluating the safety of the closed-loop system.
+
+\begin{researchquestion}\label{rq:shape_sensing}
+    How can we make shape sensing for soft robots more robust and effective by integrating prior (kinematic) knowledge?
+\end{researchquestion}
+State information is essential for any feedback control policy. More specifically, most soft robot controllers require access to measurements of the configuration space, which, irrespective of the chosen kinematic parametrization, usually approximates the shape of the soft robotic backbone.
+Compared to rigid manipulators, where joint encoders are sufficient to get a good estimate of the robot's state, shape sensing for soft robots is particularly challenging for various reasons, with two primary ones being that a) we would need to measure infinite degrees of freedom theoretically and b) the possibly rigid sensors and electronics should not obstruct the natural softness of the soft robot.
+While there has been a major community effort in recent years toward developing new proprioception \& shape-sensing concepts for soft robots, interpreting the sensor measurements and mapping them to configuration variables remains a significant challenge. Specifically, existing proprioception approaches only rarely~\cite{stella2023soft} leverage prior knowledge, such as the kinematic model, to make the problem more tractable and the algorithms more robust.
+Therefore, we investigate in Chapters~\circled{\ref{chp:srslam}} \& \circled{\ref{chp:promasens}} how we can use kinematic priors as an inductive bias when implementing shape sensing algorithm, which would, in turn, improve the performance of feedback controllers, therefore connecting to the principal \gls{RQ}.
+
+\begin{researchquestion}\label{rq:actuation_models}
+    Which advanced actuation models are required for exploiting the dynamic behavior of soft robots, and how can we leverage them for control? 
+\end{researchquestion}
+Over the last decade, there has been tremendous progress on the modeling~\cite{armanini2023soft} and the control~\cite{della2023model} of soft robots.
+To this day, most of the research has focused on identifying expressive and, at the same, low-dimensional, kinematic, and dynamic models that accurately capture the behavior of the soft robot's backbone shape. Such control-oriented models have proven to be key for improving the performance and effectiveness of model-based controllers.
+In these models, the actuation of the robot is mostly incorporated by the inclusion of actuation-affine terms in the \gls{EOM}, either through a configuration-dependent or even a constant actuation matrix.
+In this thesis, however, we argue that this approach is too simplistic and that more accurate and advanced actuation models are necessary for fully infusing highly dynamic motions into soft robots.
+Indeed, the actuation of soft robots from their rigid counterparts where usually electric actuators directly attack at the joints (i.e., the \glspl{DOF} of the robot). Instead, the actuators of soft robots, be they tendon-driven, pneumatically-actuated, etc., are distributed over the soft robot's body or even contained in its base and apply the actuation forces and torques indirectly to large parts of the soft robot's body, affecting and coupling many \gls{DOF}. 
+Furthermore, modeling and accounting for the dynamics of the actuator itself would allow us to decrease the response time and improve the transient behavior of the soft robot.
+Therefore, Chapters~\circled{\ref{chp:hsamodel}} \& \circled{\ref{chp:backstepping}} investigate how we can develop more accurate physics-based actuation models for soft robots considering the cases of a complex auxetic metamaterial-based and pneumatic piston-driven actuation.
+Subsequently, we probe how these advanced actuation models can be exploited within model-based control schemes, ranging from task-space control in Chapter~\circled{\ref{chp:hsacontrol}} to backstepping control in Chapter~\circled{\ref{chp:backstepping}}.
+This research aims to highlight the limitations of fully physics-based models regarding their expressiveness in fully capturing the dynamical behavior of soft robots and the needed expert knowledge to design them, motivating the exploration of more expressive and adaptable neural network-based alternatives.
+Furthermore, this gained knowledge about advanced physics-based actuation models can be used in the future as an inductive bias when learning models.
+
+\begin{researchquestion}\label{rq:physical_structure_learned_models}
+    Which physical structure do learned models need to exhibit to allow us to apply closed-form model-based control strategies with stability guarantees? 
+\end{researchquestion}
+To tackle this \gls{RQ}, we aim to learn about soft robotic models in a data-driven fashion. This would (potentially) increase the expressiveness and accuracy of the model while simultaneously lowering the expert knowledge needed for designing and tuning that is usually required when deriving the models from first principles.
+There already exists literature on establishing soft robot models using machine learning approaches~\cite{armanini2023soft, kim2021review, chen2024data}, spanning from neural network-based approaches~\cite{thuruthel2017learning} such as \glspl{MLP}, \glspl{RNN}~\cite{schafke2024learning} or \glspl{NODE} to \gls{GP}-based approaches~\cite{sabelhaus2021gaussian}.
+However, these models all lack a (physical) structure, which prevents us from leveraging effective feedforward+feedback control concepts and analyzing the stability characteristics of the closed-loop system. Instead, existing work that learned models had to employ computationally expensive \gls{MPC}~\cite{gillespie2018learning, alora2023robust, schafke2024learning} or \gls{RL}~\cite{thuruthel2018model} for control.
+Only very recently, we have seen initial works that establish a physical structure in the learned model: for example, the Koopman operator theory learns linear dynamics, which allows for the application of efficient \gls{LQR}-based control schemes~\cite{bruder2020data}. \glspl{LNN} and \glspl{HNN}~\cite{lutter2019deep} directly learn the energy of the system, thus directly providing us with energy terms that we can exploit for control and stability analysis.
+Still, there remains the need for model learning approaches that incorporate priors tailored to the specific soft robot dynamics.
+Therefore, we tackle in Chapters~\circled{\ref{chp:pcsregression}} \& \circled{\ref{chp:con}} the \gls{RQ} of how we can learn models for soft robots that incorporate physical structure such that we can leverage them within closed-form model-based control strategies such as energy-shaping feedforward controllers with PID-like feedback terms.
+This directly helps us answer the principal \gls{RQ} of this thesis.
+
+
+\begin{researchquestion}\label{rq:compliant_motion_behaviors}
+    How can we generate compliant motion behaviors for soft robots?
+\end{researchquestion}
+A compliant structure (provided by the material softness) and a compliant low-level controller (e.g., an impedance controller) alone are not sufficient for generating safe and compliant motions around humans as the high-level motion policy providing references and setpoints to the low-level controller can also instill unstable, unnatural/unexpected, or unsafe behavior into the soft robotic system.
+Adding on to this point, motion policies/planning tailored towards soft robots is an underexplored topic in general.
+Therefore, we investigate in Chapters~\circled{\ref{chp:braincontrol}} \& \circled{\ref{chp:osmp}} techniques for providing references to low-level controllers that instill compliant, natural, stable, and safe motion.
+Specifically, we consider in \circled{\ref{chp:braincontrol}} \glspl{BMI} and in \circled{\ref{chp:osmp}} motion policies learned from demonstration for communicating setpoints to the low-level controller.
+This research conducted as part of this \gls{RQ} contributes towards the principal \gls{RQ} by establishing safe holistic, and not \emph{just} low-level, control policies for soft robots.
+
