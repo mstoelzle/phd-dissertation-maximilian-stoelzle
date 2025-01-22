@@ -34,11 +34,11 @@ Such requirement aligns with Asimov's First Law--robots must never harm humans--
 In the context of autonomous vehicles (AVs) and mobile robots, safety is typically ensured through safety-aware autonomy stacks. 
 Specifically, existing technologies leverage advanced control mechanisms such as safety filters, real-time collision detection, and predefined safety zones~\cite{zhao2024potential}. 
 These systems rely on sophisticated sensors, algorithms, and extensive pre-programming to anticipate and avoid hazards \cite{fragapane2021planning}. 
-Collaborative robots (cobots) \cite{el2019cobot}, designed to safely interact with humans, achieve this through mechanical and control strategies such as decoupling actuators from links, reducing inertia, and using compliant controllers to detect and respond to external forces. 
+\glspl{Cobot}~\cite{el2019cobot}, designed to safely interact with humans, achieve this through mechanical and control strategies such as decoupling actuators from links, reducing inertia, and using compliant controllers to detect and respond to external forces. 
 Yet, their considerable link inertia and rigid structures still pose significant risks to nearby humans~\cite{haddadin2013towards}.
 Collision detection further enhances safety by stopping or slowing the robot upon contact. While reducing the worst-case injury likelihood, this approach is inherently reactive and cannot fully prevent injuries.
-Design standards such as ISO/TS 15066:2016~\cite{Isots_15066_2016} demand that cobot controllers be designed so that when in proximity to humans, they move slowly enough to stop in time to prevent collisions~\cite{ajoudani2018progress, lucci2020combining}. 
-However, this strategy poses high requirements on perception systems and significantly reduces cobots' efficiency and effectiveness in the context of human-centered environments.
+Design standards such as ISO/TS 15066:2016~\cite{Isots_15066_2016} demand that \gls{Cobot} controllers be designed so that when in proximity to humans, they move slowly enough to stop in time to prevent collisions~\cite{ajoudani2018progress, lucci2020combining}. 
+However, this strategy poses high requirements on perception systems and significantly reduces \gls{Cobot}'s efficiency and effectiveness in the context of human-centered environments.
 
 Interestingly, soft robotics redefines safety from the ground up. 
 In these robots~\cite{rus2015design, laschi2016soft}, safety is not an add-on or managed through autonomy stacks but is embedded in the material and structural properties of the robot itself. 

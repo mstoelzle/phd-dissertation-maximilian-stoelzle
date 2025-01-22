@@ -3,7 +3,7 @@
 \label{chp:srslam}
 
 \begin{foreword}
-    Before we can develop advanced soft robot controllers, we require access to state information. Specifically, we need to know the configuration of the soft robot, which, as introduced in Chapter~\circled{\ref{chp:background}}, is for soft robots usually defined as the parametrized shape of the backbone.
+    Before we can develop advanced soft robot controllers, we require access to state information. Specifically, we need to know the configuration of the soft robot, which, as introduced in Chapter~\ref{chp:background}, is for soft robots usually defined as the parametrized shape of the backbone.
     In this chapter, we demonstrate how we can augment in a plug-and-play fashion existing state-of-the-art \gls{SLAM} algorithms with kinematic knowledge to achieve shape sensing for soft robots.
 \end{foreword}
 
@@ -31,4 +31,4 @@ This chapter demonstrated how inexpensive commercialized monocular cameras can b
 i) Firstly, while cameras have been significantly miniaturized in recent years, the requirement for them to have a clear, unobstructed view of the environment necessitates the inclusion of a rigid component on the surface of the soft robot, which we generally prefer to avoid for safety reasons. 
 Secondly, ii), the performance of \gls{SLAM} algorithms is affected in environments with limited visually distinguishable features.
 Finally, iii) high-dimensional perceptive data such as images are generally computationally expensive to process, leading to higher computational requirements and/or relatively low sampling rates of the shape-sensing information.
-Therefore, we present in Chapter~\circled{\ref{chp:promasens}} an alternative shape-sensing approach based on magnetic sensors. The necessary magnets and magnetic sensors can be deeply embedded into the soft robot body, thus allowing us to keep the robot surface entirely soft and compliant. Furthermore, the sensory data is several orders of magnitude lower dimensional, and thus, its processing is potentially much less computationally demanding.
+Therefore, we present in Chapter~\ref{chp:promasens} an alternative shape-sensing approach based on magnetic sensors. The necessary magnets and magnetic sensors can be deeply embedded into the soft robot body, thus allowing us to keep the robot surface entirely soft and compliant. Furthermore, the sensory data is several orders of magnitude lower dimensional, and thus, its processing is potentially much less computationally demanding.
