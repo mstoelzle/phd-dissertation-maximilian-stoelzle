@@ -10,7 +10,7 @@ In this work, we make a first step towards achieving task-space control by desig
 
 In Chapter~\ref{chp:hsamodel}, we derived a dynamic model for planar \gls{HSA} in Euler-Lagrange form and experimentally verified it.
 We notice that the resulting planar dynamics are underactuated and that the actuation forces are non-affine with respect to the control inputs, which are the motor angles. The latter is a peculiarity of these systems, rarely observed in other robots.
-Based on the model knowledge, we propose in this chapter two control strategies for planar \gls{HSA} robots capable of regulating the end-effector towards a desired position in task-space.
+Based on the model knowledge, we propose in this chapter two control strategies for planar \gls{HSA} robots capable of regulating the end-effector towards a desired position in task space.
 The first strategy, as shown in Fig.~\ref{fig:hsacontrol:configuration_space_regulation:block_scheme_closed_loop_control}, performs steady-state planning to identify an admittable configuration and steady-state control input matching the desired end-effector position and then subsequently applies a P-satI-D feedback controller~\cite{pustina2022p} on the collocated form~\cite{pustina2024input} of the system dynamics.
 The second strategy, as shown in Fig.~\ref{fig:hsacontrol:task_space_impedance_control:block_scheme_closed_loop_control}, directly regulates the end-effector position using a Cartesian impedance controller that fully preserves the softness of the robot.
 
