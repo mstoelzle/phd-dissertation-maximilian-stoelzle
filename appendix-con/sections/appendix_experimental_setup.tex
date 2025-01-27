@@ -1,15 +1,15 @@
 \section{Appendix on Experimental Setup and Datasets}\label{sec:apx-con:experimental_setup}
 
 \subsection{Autoencoder architecture}
-For the encoder and decoder, we rely on a vanilla \glspl{CNN} implemented as a $\beta$-\gls{VAE}~\cite{kingma2014auto}.
+For the encoder and decoder, we rely on a vanilla \glspl{CNN} implemented as a $\beta$-\gls{VAE}~\citep{kingma2014auto}.
 
 \textbf{Encoder.} The encoder consists of two convolutional layers with kernel size $(3, 3)$ and stride $(1, 1)$ mapping to $16$, $32$, respectively.
 The features are flattened and then passed to two linear layers with hidden dimension $256$ and $n_z$.
-Each layer (except for the last) is followed by a layer norm~\cite{ba2016layer} and a LeakyReLU nonlinearity.
+Each layer (except for the last) is followed by a layer norm~\citep{ba2016layer} and a LeakyReLU nonlinearity.
 
 \textbf{Decoder.} The decoder first uses two linear layers to map to hidden dimensions of $256$ and $32768$, respectively.
-We then apply two 2D transposed convolutions~\cite{dumoulin2016guide} reducing the number of channels first to $16$, and then to $1$.
-Each layer (except for the last linear and last convolutional) is followed by a layer norm~\cite{ba2016layer} and a LeakyReLU nonlinearity.
+We then apply two 2D transposed convolutions~\citep{dumoulin2016guide} reducing the number of channels first to $16$, and then to $1$.
+Each layer (except for the last linear and last convolutional) is followed by a layer norm~\citep{ba2016layer} and a LeakyReLU nonlinearity.
 Finally, we apply a sigmoid function to clip the output into the range $[-1, 1]$.
 
 \subsection{Latent dynamic models}\label{sub:apx-con:latent_dynamic_models}
@@ -28,7 +28,7 @@ Specifically, we consider the input-to-force mapping $g(u)) = B(u) \, u(t)$, whe
 % \end{figure}
 
 When training the model, we jointly optimize $M_\mathrm{w}^{-1}, K_\mathrm{w}, D_\mathrm{w}, b$ and $g(u)$. 
-However, we also need to make sure that we adhere to the stability constraints  $M_\mathrm{w}^{-1}, K_\mathrm{w}, D_\mathrm{w} \succ 0$. For this, we leverage the Cholvesky decomposition~\cite{petersen2008matrix}. Instead of directly learning the full matrix $A \in \mathbb{R}^{n_z \times n_z}$, we designate the elements of an upper triangular matrix $U \in \mathbb{R}^{n_z \times n_z}$ as the trainable parameters.
+However, we also need to make sure that we adhere to the stability constraints  $M_\mathrm{w}^{-1}, K_\mathrm{w}, D_\mathrm{w} \succ 0$. For this, we leverage the Cholvesky decomposition~\citep{petersen2008matrix}. Instead of directly learning the full matrix $A \in \mathbb{R}^{n_z \times n_z}$, we designate the elements of an upper triangular matrix $U \in \mathbb{R}^{n_z \times n_z}$ as the trainable parameters.
 The Cholesky decomposition demands that $\mathrm{diag}(U_{11}, \dots, U_{n_z n_z}) > 0$. Therefore, we apply the operation
 \begin{equation}
     U_{ii} = \log \left (1+ e^{\breve{U}_{ii} + \epsilon_1} \right ) + \epsilon_2,
@@ -37,7 +37,7 @@ where $\breve{U}$ is the learned upper triangular matrix, and $\epsilon_1 = \num
 The positive-definite matrix $A$ is now given by $A = U^\mathrm{T} \, U \succ 0$.
 
 \subsubsection{Neural ODEs}
-We consider two kinds of Neural ODEs~\cite{chen2018neural}: the vanilla $f_\mathrm{NODE}: \xi(t) \times u(t) \mapsto \dot{\xi}(t)$ maps latent state and system actuation directly into a time derivative of the latent state. In contrast, for the \emph{MECH-NODE}, we enforce the latent dynamics to have a mechanical structure
+We consider two kinds of Neural ODEs~\citep{chen2018neural}: the vanilla $f_\mathrm{NODE}: \xi(t) \times u(t) \mapsto \dot{\xi}(t)$ maps latent state and system actuation directly into a time derivative of the latent state. In contrast, for the \emph{MECH-NODE}, we enforce the latent dynamics to have a mechanical structure
 \begin{equation}
     \dot{\xi}(t) = \begin{bmatrix}
         \frac{\mathrm{d} z}{\mathrm{d}t}\\
@@ -65,7 +65,7 @@ We implement a standard, single-layer Elman RNN with \texttt{tanh} nonlinearity.
 where $W_\mathrm{hh} \in \mathbb{R}^{2 n_z \times 2 n_z}$, $b_\mathrm{hh} \in \mathbb{R}^{2 n_z}$, $W_\mathrm{ih} \in \mathbb{R}^{2 n_z \times m}$, and $b_\mathrm{ih} \in \mathbb{R}^{2 n_z}$.
 
 \paragraph{GRU.}
-We implement a standard, single-layer GRU~\cite{cho2014learning} with \texttt{sigmoid} activation function where we interpret the latent state of the system as the hidden state of the cell. The latent state transition functions are given by
+We implement a standard, single-layer GRU~\citep{cho2014learning} with \texttt{sigmoid} activation function where we interpret the latent state of the system as the hidden state of the cell. The latent state transition functions are given by
 \begin{equation}
 \begin{split}
     r =& \: \sigma \left ( W_\mathrm{hr} \, \xi(t_{k'}) + b_\mathrm{hr} + W_\mathrm{ir} \, u(t_{k}) + b_\mathrm{ir} \right )\\
@@ -130,15 +130,15 @@ where the closed-form solution for the integral is given by
 \end{equation}
 
 \subsection{Training}
-We implement the network dynamics and the neural networks (e.g., encoder, decoder, and \glspl{MLP}) in JAX~\cite{jax2018github} and Flax~\cite{flax2020github}, respectively. When training or inferring time-continuous dynamical models (e.g., NeuralODE, CON), we rely on Diffrax~\cite{kidger2021neural} for numerical integration of the \gls{ODE} using the Dormand-Prince's 5/4 method~\cite{dormand1980family} (Dopri5). For the numerical integration of both the time-continuous and the time-discrete models (e.g., RNN, \gls{coRNN}, \gls{CFA-CON}), we use an integration time-step $\delta t$ of \SI{0.025}{s} and $\SI{0.01}{s}$ for the \emph{Toy Physics}~\cite{botev2021priors} and soft robotic datasets, respectively.
+We implement the network dynamics and the neural networks (e.g., encoder, decoder, and \glspl{MLP}) in JAX~\citep{jax2018github} and Flax~\citep{flax2020github}, respectively. When training or inferring time-continuous dynamical models (e.g., NeuralODE, CON), we rely on Diffrax~\citep{kidger2021neural} for numerical integration of the \gls{ODE} using the Dormand-Prince's 5/4 method~\citep{dormand1980family} (Dopri5). For the numerical integration of both the time-continuous and the time-discrete models (e.g., RNN, \gls{coRNN}, \gls{CFA-CON}), we use an integration time-step $\delta t$ of \SI{0.025}{s} and $\SI{0.01}{s}$ for the \emph{Toy Physics}~\citep{botev2021priors} and soft robotic datasets, respectively.
 
-Because of the GPU memory constraints, we limit ourselves to a batch size of $30$ and $80$ trajectories for the \emph{Toy Physics}~\cite{botev2021priors} and soft robotic datasets, respectively.
-We implement a learning rate schedule consisting of a warm-up (5 epochs) and a cosine annealing~\cite{loshchilov2016sgdr} period (remaining epochs). 
-We employ an AdamW optimizer~\cite{kingma2014adam, loshchilov2018decoupled} with $\beta_1 = 0.9$, $\beta_2 = 0.999$ for updating both neural network weights (e.g., encoder, decoder) and parameters of the dynamical model (e.g., $K_\mathrm{}, D_\mathrm{w}$, $M_\mathrm{w}$, etc.).
+Because of the GPU memory constraints, we limit ourselves to a batch size of $30$ and $80$ trajectories for the \emph{Toy Physics}~\citep{botev2021priors} and soft robotic datasets, respectively.
+We implement a learning rate schedule consisting of a warm-up (5 epochs) and a cosine annealing~\citep{loshchilov2016sgdr} period (remaining epochs). 
+We employ an AdamW optimizer~\citep{kingma2014adam, loshchilov2018decoupled} with $\beta_1 = 0.9$, $\beta_2 = 0.999$ for updating both neural network weights (e.g., encoder, decoder) and parameters of the dynamical model (e.g., $K_\mathrm{}, D_\mathrm{w}$, $M_\mathrm{w}$, etc.).
 
 \subsection{Evaluation metrics}
-Similar to other publications in the field~\cite{liu2018image, yu2018generative, stolzle2022reconstructing}, % more citations about evaluation metrics: \cite{yi2020cosmovae, yang2017high}
-we state the \gls{RMSE}, the \gls{PSNR} and the \gls{SSIM}~\cite{wang2004image} between the ground-truth image $o \in \mathbb{R}^{h_\mathrm{o} \times w_\mathrm{o}}$ and the predicted image image $\hat{o} \in \mathbb{R}^{h_\mathrm{o} \times w_\mathrm{o}}$.
+Similar to other publications in the field~\citep{liu2018image, yu2018generative, stolzle2022reconstructing}, % more citations about evaluation metrics: \citep{yi2020cosmovae, yang2017high}
+we state the \gls{RMSE}, the \gls{PSNR} and the \gls{SSIM}~\citep{wang2004image} between the ground-truth image $o \in \mathbb{R}^{h_\mathrm{o} \times w_\mathrm{o}}$ and the predicted image image $\hat{o} \in \mathbb{R}^{h_\mathrm{o} \times w_\mathrm{o}}$.
 We use the separated test set for all evaluation results.
 
 \subsubsection{Root Mean-Square Error}
@@ -156,7 +156,7 @@ As we work with normalized images with pixels in the interval $[-1, 1]$, the dyn
 % It is important to mention that the \gls{PSNR} is not linearly accumulated over mini-batches but rather computed as a function of the \gls{MSE} loss over the entire dataset.
 
 \subsubsection{Structural Similarity Index Measure}
-As simple pixel-by-pixel metrics such as \gls{RMSE} or \gls{PSNR} tend to average out any encountered errors, this could lead to a situation in which a significant reconstruction error in a part of the image is not seen in the \gls{RMSE} metric but has a huge impact on the visual appearance of the reconstruction. \gls{SSIM}~\cite{wang2004image} incorporates not just the \emph{absolute errors}, but also the strong inter-dependencies between pixels, especially when they are spatially close.
+As simple pixel-by-pixel metrics such as \gls{RMSE} or \gls{PSNR} tend to average out any encountered errors, this could lead to a situation in which a significant reconstruction error in a part of the image is not seen in the \gls{RMSE} metric but has a huge impact on the visual appearance of the reconstruction. \gls{SSIM}~\citep{wang2004image} incorporates not just the \emph{absolute errors}, but also the strong inter-dependencies between pixels, especially when they are spatially close.
 The \gls{SSIM} metric between two observations $o$ and $\hat{o}$ is given by
 \begin{equation}
     \mathrm{SSIM}(o, \hat{o}) = l^\alpha(o, \hat{o}) \, c^\beta(o, \hat{o}) \, s^\gamma(o, \hat{o}),
@@ -172,7 +172,7 @@ where
 We use the constants $C_1 = (k_1 L)^2$, $C_2 = (k_2 L)^2$ and $C_3 = C_2 / 2$, where $L$ signifies the dynamic range as previously used for the \gls{PSNR} metric,
 and $k_1 = 0.01$ and $k_2 = 0.03$. The average $\mu$ and the variance $\sigma^2$ is computed with a Gaussian filter with a 1D kernel of size $11$ and sigma $1.5$.
 We set the weight exponents $\alpha$, $\beta$, and $\gamma$ for the luminance, contrast, and structure comparisons all to one.
-We rely on the PIX library~\cite{deepmind2020jax} for efficiently computing the \gls{SSIM} metric.
+We rely on the PIX library~\citep{deepmind2020jax} for efficiently computing the \gls{SSIM} metric.
 
 \subsection{Compute resources}\label{apx:sub:compute_resource}
 % We train all models on a desktop workstation with a 12th-Gen i9 12900KF CPU with 16 cores, 64 GB of RAM, and an Nvidia GeForce RTX 3090 GPU with 24 GB of VRAM.

@@ -8,7 +8,7 @@
 \end{figure}
 
 \subsection{Formulation} 
-The integral component to (coupled) oscillatory \glspl{RNN}~\cite{rusch2020coupled, rusch2021unicornn, ceni2024random, lanthaler2024neural} are one-dimensional, potentially damped, harmonic oscillators, which are described by their state $y_i = \begin{bmatrix}
+The integral component to (coupled) oscillatory \glspl{RNN}~\citep{rusch2020coupled, rusch2021unicornn, ceni2024random, lanthaler2024neural} are one-dimensional, potentially damped, harmonic oscillators, which are described by their state $y_i = \begin{bmatrix}
     x_i & \dot{x}_i
 \end{bmatrix}^\mathrm{T} \in \mathbb{R}^2$, where $x_i$ and $\dot{x}_i$ are the position and velocity of the oscillator, respectively. Then, the oscillator's dynamics are defined by the following \gls{EOM}
 \begin{equation}\label{eq:con:harmonic_oscillator}
@@ -19,11 +19,11 @@ The integral component to (coupled) oscillatory \glspl{RNN}~\cite{rusch2020coupl
 Here, $m_i$ is the mass, $\kappa_i$ is the stiffness, and $d_i$ is the damping coefficient of the damped harmonic oscillator. $F_i(t) \in \mathbb{R}$ is a (possibly time-dependent) external forcing term acting on the mass.
 
 Even though the state is extremely low dimensional and the number of parameters is small, this single, damped harmonic oscillator can already exhibit a variety of (designable) behaviors:
-The expressions $\omega_{\mathrm{n},i} = \sqrt{\frac{\kappa_i}{m_i}}$ and $\zeta_i = \frac{d_i}{2 \, \sqrt{\kappa_i \, m_i}}$ let us determine the natural frequency and the damping factor, respectively and allow us to design the transient behavior. For example, $\omega_{\mathrm{n},i}$ lets us isolate a spectrum of the input signal $F_i(t)$~\cite{ceni2024random} and $\zeta_i$ determines the damping regime: underdamped ($\omega_{\mathrm{n},i} < 1$), critically damped ($\omega_{\mathrm{n},i} = 1$), overdamped ($\omega_{\mathrm{n},i} > 1$). 
+The expressions $\omega_{\mathrm{n},i} = \sqrt{\frac{\kappa_i}{m_i}}$ and $\zeta_i = \frac{d_i}{2 \, \sqrt{\kappa_i \, m_i}}$ let us determine the natural frequency and the damping factor, respectively and allow us to design the transient behavior. For example, $\omega_{\mathrm{n},i}$ lets us isolate a spectrum of the input signal $F_i(t)$~\citep{ceni2024random} and $\zeta_i$ determines the damping regime: underdamped ($\omega_{\mathrm{n},i} < 1$), critically damped ($\omega_{\mathrm{n},i} = 1$), overdamped ($\omega_{\mathrm{n},i} > 1$). 
 Furthermore, as (damped) harmonic oscillators are omnipresent in nature (and especially in physical systems), they have been intensively studied and are well understood (e.g., characteristics, closed-form solutions, etc.). 
 In this work, we will exploit some of these properties and knowledge to learn stable (latent) dynamics efficiently.
 
-By intercoupling damped harmonic oscillators, we can drastically increase the expressiveness of the dynamical system~\cite{rusch2020coupled, ceni2024random, lanthaler2024neural} while preserving some of the intuition and understanding we have for these systems. In this work, we propose a \gls{ISS}-stable \gls{CON} consisting of $n$ damped harmonic oscillators that are coupled through both linear and nonlinear terms. The networks' state is defined as $y = \begin{bmatrix}
+By intercoupling damped harmonic oscillators, we can drastically increase the expressiveness of the dynamical system~\citep{rusch2020coupled, ceni2024random, lanthaler2024neural} while preserving some of the intuition and understanding we have for these systems. In this work, we propose a \gls{ISS}-stable \gls{CON} consisting of $n$ damped harmonic oscillators that are coupled through both linear and nonlinear terms. The networks' state is defined as $y = \begin{bmatrix}
     x^\mathrm{T} & \dot{x}^\mathrm{T}
 \end{bmatrix}^\mathrm{T} \in \mathbb{R}^{2n}$ and its dynamics can be formulated as a \nth{2}-order \gls{ODE}
 \begin{equation}\label{eq:con:con_dynamics}
@@ -39,7 +39,7 @@ where $K, D \in \mathbb{R}^{n \times n}$ are the linear stiffness and damping ma
 The network is excited by the time-dependent input $u(t) \in \mathbb{R}^m$ through the possibly nonlinear mapping $g: \mathbb{R}^m \to \mathbb{R}^n$.
 Specifically, we consider in this work a formulation where an input-dependent matrix $B(u) \in \mathbb{R}^{n \times m}$ projects the input $u(t)$ to a time-dependent forcing on the oscillators: $\tau = g(u) = B(u) \, u$. Here $B(u)$ could, for example, be parametrized by a \gls{MLP}.
 
-We specifically designed the network architecture such that (i) the system exhibits a unique and isolated equilibrium and (ii) we can derive expressions for the kinetic and potential energies. These two features allow us to (a) prove \gls{GAS} and \gls{ISS} stability using an established procedure based on strict Lyapunov arguments~\cite{calzolari2020exponential, wu2022passive}, and (b) implement model-based controller based on potential shaping.
+We specifically designed the network architecture such that (i) the system exhibits a unique and isolated equilibrium and (ii) we can derive expressions for the kinetic and potential energies. These two features allow us to (a) prove \gls{GAS} and \gls{ISS} stability using an established procedure based on strict Lyapunov arguments~\citep{calzolari2020exponential, wu2022passive}, and (b) implement model-based controller based on potential shaping.
 
 \subsection{Potential energy and determination of equilibria}
 
@@ -64,7 +64,7 @@ In $\mathcal{W}$-coordinates, the dynamics can be rewritten as
 \end{equation}
 with $K_\mathrm{w} = K \, W$, $D_\mathrm{w} = D \, W$ and $M_\mathrm{w} = W^{-1}$. 
 
-A difference of this formulation compared to prior work~\cite{rusch2020coupled, rusch2021unicornn, ceni2024random, lanthaler2024neural} is that (i) the forcing produced by the input term $\tau = g(u)$ is fully separated from the forcing produced by the elastic coupling terms $K_\mathrm{w}$, and (ii) the generalized force is symmetric as stated in Lemma~\ref{lemma:con:conw_symmetric_potential}, allowing us to define a potential energy expression, which we can later on leverage for stability analysis and control.
+A difference of this formulation compared to prior work~\citep{rusch2020coupled, rusch2021unicornn, ceni2024random, lanthaler2024neural} is that (i) the forcing produced by the input term $\tau = g(u)$ is fully separated from the forcing produced by the elastic coupling terms $K_\mathrm{w}$, and (ii) the generalized force is symmetric as stated in Lemma~\ref{lemma:con:conw_symmetric_potential}, allowing us to define a potential energy expression, which we can later on leverage for stability analysis and control.
 
 \begin{lemma}\label{lemma:con:conw_symmetric_potential}
     Let $\tilde{x}_\mathrm{w} \in \mathbb{R}^n$ be generalized coordinates and $\bar{x}_\mathrm{w}, b \in \mathbb{R}^n$ constants.
@@ -128,11 +128,11 @@ Next, we introduce a mapping into the $\tilde{\text{tilde}}$ coordinates $\tilde
 \end{figure}
 
 \subsection{Global Asymptotic Stability (GAS) for the unforced system} 
-We first consider the unforced system with $\tau = g(u) = 0, \: \forall t \in [t_0, t_\infty)$ and strive to prove global asymptotic stability~\cite{khalil2002nonlinear} for the attractor $\bar{x}$.
+We first consider the unforced system with $\tau = g(u) = 0, \: \forall t \in [t_0, t_\infty)$ and strive to prove global asymptotic stability~\citep{khalil2002nonlinear} for the attractor $\bar{x}$.
 For this, we need to first identify a valid, (strict) Lyapunov function and subsequently demonstrate that, expect at the global equilibrium, the time derivative of the Lypapunov function is negative definite.
 
 \subsubsection{Strict Lyapunov candidate}
-We propose a strict Lyapunov candidate with skewed level sets~\cite{wu2022passive}
+We propose a strict Lyapunov candidate with skewed level sets~\citep{wu2022passive}
 \begin{equation}\label{eq:con:conw_lyapunov_function}
 \begin{split}
     V_\mu(\tilde{y}_\mathrm{w}) =& \: \frac{1}{2} \, \tilde{y}_\mathrm{w}^\mathrm{T} \, P_\mathrm{V} \, \tilde{y}_\mathrm{w} + \sum_{i=1}^n \int_{0}^{\tilde{x}_{\mathrm{w},i}} \tanh(\bar{x}_{\mathrm{w},i}+\sigma+b_i) \, \mathrm{d} \sigma - \sum_{i=1}^n \int_{0}^{\tilde{x}_{\mathrm{w},i}} \tanh(\bar{x}_{\mathrm{w},i}+b_i) \, \mathrm{d} \sigma,\\
@@ -194,7 +194,7 @@ Below, we will first introduce three auxiliary Lemmas and subsequently proof Lem
         \lambda_\mathrm{m}(S_{P_\mathrm{V}}) >& \: \lambda_\mathrm{m}(M_\mathrm{w}) - \frac{\lambda_\mathrm{m}(M_\mathrm{w}) \, \lambda_\mathrm{m}\left(K_\mathrm{w}\right)}{\lVert M_\mathrm{w} \rVert^2} \, \frac{\lVert M_\mathrm{w} \rVert^2}{\lambda_\mathrm{w}(K_\mathrm{w})} \: = \: 0
     \end{split}
     \end{equation}
-    Consequently, the Eigenvalue sensitivity theorem~\cite{golub2013matrix} demands that $S_{P_\mathrm{V}} \succ 0$.
+    Consequently, the Eigenvalue sensitivity theorem~\citep{golub2013matrix} demands that $S_{P_\mathrm{V}} \succ 0$.
 \end{proof}
 
 \begin{lemma}\label{lemma:con:P_V_positive_definite}
@@ -262,7 +262,7 @@ Below, we will first introduce three auxiliary Lemmas and subsequently proof Lem
         \end{bmatrix} = 0,
     \end{equation}
     $\tilde{y}_\mathrm{w} = 0$ is a critical point of $V_\mu(\tilde{y}_\mathrm{w})$. 
-    According to Lemma~\ref{lemma:con:P_V_positive_definite}, the Hessian in \eqref{eq:con:V_mu_hessian} is positive-definite~\cite{boyd2004convex}: $H_\mathrm{V}(\tilde{y}_\mathrm{w}) \succ 0 \: \: \forall \tilde{y}_\mathrm{w} \in \mathbb{R}^{2n}$.
+    According to Lemma~\ref{lemma:con:P_V_positive_definite}, the Hessian in \eqref{eq:con:V_mu_hessian} is positive-definite~\citep{boyd2004convex}: $H_\mathrm{V}(\tilde{y}_\mathrm{w}) \succ 0 \: \: \forall \tilde{y}_\mathrm{w} \in \mathbb{R}^{2n}$.
     With that, \eqref{eq:con:conw_lyapunov_function} is convex and its global minimum is at $\tilde{y}_\mathrm{w} = 0$, where $V_\mu(0) = 0$. In summary, we state $V_\mu(\tilde{y}_\mathrm{w}) > 0 \: \: \forall \tilde{y}_\mathrm{w} \in \mathbb{R}^n \setminus \{0 \}$.
 
     \textbf{Step 4:} Proof that the Lyapunov candidate is radially unbounded: i.e., $\lVert \tilde{y}_\mathrm{w} \rVert \rightarrow \infty \Rightarrow V_\mu(\tilde{y}_\mathrm{w}) \rightarrow \infty$. Lemma~\ref{lemma:con:V_tanh_term_lower_term} is exploited for identifying a lower bound on $V_\mu(\tilde{y}_\mathrm{w})$:
@@ -321,7 +321,7 @@ In the following, we will demonstrate how the strict Lyapunov candidate of \eqre
         \lambda_\mathrm{m} \left (S_{P_{\dot{V}}} \right ) > \lambda_\mathrm{m}(D_\mathrm{w}) - \mu_{\dot{\mathrm{V}}} \left ( \lambda_\mathrm{m}(M_\mathrm{w}) - \frac{\lVert D_\mathrm{w} \rVert^2}{4 \, \lambda_\mathrm{m}(K_\mathrm{w})} \right ) = 0.
     \end{split}
     \end{equation}
-    We conclude, based on the Eigenvalue sensitivity theorem of symmetric matrices~\cite{golub2013matrix}, that $S_{P_{\dot{V}}} \succ 0$ and with that $P_{\dot{V}} \succ 0$~\cite{boyd2004convex}.
+    We conclude, based on the Eigenvalue sensitivity theorem of symmetric matrices~\citep{golub2013matrix}, that $S_{P_{\dot{V}}} \succ 0$ and with that $P_{\dot{V}} \succ 0$~\citep{boyd2004convex}.
 \end{proof}
 
 \begin{theorem}\label{theorem:con:global_asymptotic_stability}
@@ -347,7 +347,7 @@ In the following, we will demonstrate how the strict Lyapunov candidate of \eqre
         \end{bmatrix}
     \end{equation}
 
-    Lemma~\ref{lemma:con:conw_lyapunov_candidate} states that we can always choose $\mu$ such that \eqref{eq:con:conw_lyapunov_function} is strict Lyapunov function (e.g., Lipschitz continuous, zero-valued at $\tilde{y}_\mathrm{w} = 0$, positive definite, and radially unbounded)~\cite{khalil2002nonlinear, wu2022passive}. We now evaluate the time-derivative of $\dot{V}_\mu(\tilde{y}_\mathrm{w})$ in the case of an unforced system (i.e., $g(u(t)) = 0$):
+    Lemma~\ref{lemma:con:conw_lyapunov_candidate} states that we can always choose $\mu$ such that \eqref{eq:con:conw_lyapunov_function} is strict Lyapunov function (e.g., Lipschitz continuous, zero-valued at $\tilde{y}_\mathrm{w} = 0$, positive definite, and radially unbounded)~\citep{khalil2002nonlinear, wu2022passive}. We now evaluate the time-derivative of $\dot{V}_\mu(\tilde{y}_\mathrm{w})$ in the case of an unforced system (i.e., $g(u(t)) = 0$):
     \begin{equation}\label{eq:con:lyapunov_function_time_derivative}
     \begin{split}
         \dot{V}_\mu(\tilde{y}_\mathrm{w}) =& \: \frac{\partial V_\mu}{\partial \tilde{y}_\mathrm{w}} \, \dot{\tilde{y}}_\mathrm{w} = \frac{\partial V_\mu}{\partial \tilde{y}_\mathrm{w}} \, \tilde{f}_\mathrm{w}(\tilde{y}_\mathrm{w}) 
@@ -363,7 +363,7 @@ In the following, we will demonstrate how the strict Lyapunov candidate of \eqre
     \end{split}
     \end{equation}
     where we exploited the force balance at equilibrium $K_\mathrm{w} \, \bar{x}_\mathrm{w} = -\tanh(\bar{x}_\mathrm{w} + b)$ and Lemma~\ref{lemma:con:V_d_tanh_term_lower_bound} for defining the upper bound on $\dot{V}_\mu(\tilde{y}_\mathrm{w})$. Lemma~\ref{lemma:con:P_V_d_positive_definite} states that $P_{\dot{\mathrm{V}}} \succ 0$ for $0 < \mu < \mu_{\dot{\mathrm{V}}}$. Similarly, Lemma~\ref{lemma:con:conw_lyapunov_candidate} requests that $0 < \mu < \mu_{\mathrm{V}}$. Indeed, both conditions can always be fulfilled by choosing $\mu \in \left (0, \min \{ \mu_{\mathrm{V}}, \mu_{\dot{\mathrm{V}}} \} \right )$. 
-    With $P_{\dot{\mathrm{V}}} \succ 0 \Leftrightarrow \lambda_\mathrm{m}\left(P_{\dot{\mathrm{V}}} \right) > 0$~\cite{golub2013matrix}, we can state that $\dot{V}_\mu(\tilde{y}_\mathrm{w}) < 0 \: \forall \: \tilde{y}_\mathrm{w} \in \mathbb{R}^{2n} \setminus \{0 \}$ and conclude that the unforced system is globally asymptotically stable around $\tilde{y}_\mathrm{w} = 0$.
+    With $P_{\dot{\mathrm{V}}} \succ 0 \Leftrightarrow \lambda_\mathrm{m}\left(P_{\dot{\mathrm{V}}} \right) > 0$~\citep{golub2013matrix}, we can state that $\dot{V}_\mu(\tilde{y}_\mathrm{w}) < 0 \: \forall \: \tilde{y}_\mathrm{w} \in \mathbb{R}^{2n} \setminus \{0 \}$ and conclude that the unforced system is globally asymptotically stable around $\tilde{y}_\mathrm{w} = 0$.
 \end{proof}
 
 \subsection{Global Input-to-State Stability (ISS) for the forced system} 
@@ -400,7 +400,7 @@ In the following, we will first state two auxiliary Lemmas and subsequently prov
     Let $M_\mathrm{w} \succ 0$ and $K_\mathrm{w} \succ 0$. Then, \eqref{eq:con:conw_lyapunov_function} is bounded by the two scalar, class $\mathcal{K}_\infty$ functions $\alpha_1(r)=\frac{1}{2} \, \lambda_\mathrm{m}(P_\mathrm{V})  \, r^2$ and $\alpha_2(r)=\frac{1}{2} \, \lambda_\mathrm{M}(P_\mathrm{V}) \, r^2 + 2 \, \sqrt{n} \, r$: $ \alpha_1(\lVert \tilde{y}_\mathrm{w} \rVert_2^2) \leq V_\mu(\tilde{y}_\mathrm{w}) \leq \alpha_2(\lVert \tilde{y}_\mathrm{w} \rVert)_2^2$.
 \end{lemma}
 \begin{proof}
-    With Lemma~\ref{lemma:con:conw_lyapunov_candidate}, we already showed that  $V_\mu(\tilde{y}_\mathrm{w})$ is a Lyapunov candidate. Now, we additionally also verify the conditions for ISS-Lyapunov candidates~\cite{khalil2002nonlinear}.
+    With Lemma~\ref{lemma:con:conw_lyapunov_candidate}, we already showed that  $V_\mu(\tilde{y}_\mathrm{w})$ is a Lyapunov candidate. Now, we additionally also verify the conditions for ISS-Lyapunov candidates~\citep{khalil2002nonlinear}.
 
     \textbf{Step 1:} Establishing bounds on $V_\mu(\tilde{y}_\mathrm{w})$.\\
     We first identify the lower bound of $V_\mu(\tilde{y}_\mathrm{w})$ by leveraging Lemma~\ref{lemma:con:V_tanh_term_lower_term}:
@@ -425,7 +425,7 @@ In the following, we will first state two auxiliary Lemmas and subsequently prov
 
     \textbf{Step 2:} Proof that $\alpha_1(r), \alpha_2(r)$ belong to class $\mathcal{K}_\infty$.\\
     According to Lemma~\ref{lemma:con:P_V_positive_definite}, $P_\mathrm{V} \succ 0$ and with that $\lambda_\mathrm{m}(P_\mathrm{V}) > 0$.
-    First, we analyze the behavior of $\alpha_1(r)$: as it is strictly increasing and $\alpha_1(0) = 0$, it belongs to class $\mathcal{K}$. Furthermore, we can evaluate $\lim_{r \rightarrow \infty} \alpha_1(r) = \infty$. Therefore, $\alpha_1(r) \in \mathcal{K}_\infty$~\cite{khalil2002nonlinear}.
+    First, we analyze the behavior of $\alpha_1(r)$: as it is strictly increasing and $\alpha_1(0) = 0$, it belongs to class $\mathcal{K}$. Furthermore, we can evaluate $\lim_{r \rightarrow \infty} \alpha_1(r) = \infty$. Therefore, $\alpha_1(r) \in \mathcal{K}_\infty$~\citep{khalil2002nonlinear}.
     $\alpha_2(r)$ is also strictly increasing for $r \in [0, \infty)$, $\alpha_2(0) = 0$, and it is radially unbounded as $\lim_{r \rightarrow \infty} \alpha_2(r) = \infty$. For that reason, $\alpha_2(r) \in \mathcal{K}_\infty$ as well.
 \end{proof}
 
@@ -478,7 +478,7 @@ In the following, we will first state two auxiliary Lemmas and subsequently prov
         \text{and }
         \rho(r) = \frac{\sqrt{1+\mu^2}}{\theta \, \lambda_\mathrm{m}\left(P_{\dot{\mathrm{V}}} \right)} \, r.
     \end{equation}
-    Lemma~\ref{lemma:con:P_V_d_positive_definite} shows that $\lambda_\mathrm{m}\left(P_{\dot{\mathrm{V}}} \right) > 0$. Therefore, $\alpha_3(r)$ is a continuous positive function. Furthermore, as $\mu > 0$, $\rho(r)$ is a strictly increasing for $r \in [0, \infty)$. Additionally with $\rho(0) = 0$ verified, it can be stated that $\rho(r)$ belongs to class $\mathcal{K}$~\cite{khalil2002nonlinear}.
+    Lemma~\ref{lemma:con:P_V_d_positive_definite} shows that $\lambda_\mathrm{m}\left(P_{\dot{\mathrm{V}}} \right) > 0$. Therefore, $\alpha_3(r)$ is a continuous positive function. Furthermore, as $\mu > 0$, $\rho(r)$ is a strictly increasing for $r \in [0, \infty)$. Additionally with $\rho(0) = 0$ verified, it can be stated that $\rho(r)$ belongs to class $\mathcal{K}$~\citep{khalil2002nonlinear}.
     We conclude that
     \begin{equation}
         \dot{V}_\mu(\tilde{y}_\mathrm{w}, u(t)) \leq - \alpha_3 \left (\lVert \tilde{y}_\mathrm{w} \rVert_2^2 \right ),
@@ -488,7 +488,7 @@ In the following, we will first state two auxiliary Lemmas and subsequently prov
 
     \textbf{Step 3:} Conclusions.
 
-    As a result of Steps 1 and 2, the system is input-to-state stable, and with that, the solution $\tilde{y}_\mathrm{t}$ satisfies~\cite{khalil2002nonlinear}
+    As a result of Steps 1 and 2, the system is input-to-state stable, and with that, the solution $\tilde{y}_\mathrm{t}$ satisfies~\citep{khalil2002nonlinear}
     \begin{equation}
         \lVert \tilde{y}_\mathrm{w} \rVert_2 \leq \beta \left (\lVert \tilde{y}_\mathrm{w}(t_0) \rVert_2, t-t_0 \right ) + \gamma \left ( \sup_{t_0 \leq t' \leq t} \lVert g(u(t')) \rVert_2 \right ),
     \end{equation}
@@ -496,5 +496,5 @@ In the following, we will first state two auxiliary Lemmas and subsequently prov
     \begin{equation}
         \gamma(r) = \alpha_1^{-1} \circ \alpha_2 \circ \rho(r) = \sqrt{\frac{(1+\mu^2) \, \lambda_\mathrm{M}(P_\mathrm{V}) \, r^2 + 4 \, \theta \, \sqrt{n} \, \sqrt{1+\mu^2} \, \lambda_\mathrm{m}(P_{\dot{\mathrm{V}}}) \, r}{\theta^2 \, \lambda_\mathrm{m}(P_\mathrm{V}) \, \lambda_\mathrm{m}^2(P_{\dot{\mathrm{V}}})}}.
     \end{equation}
-    Indeed, based on Theorem~\ref{theorem:con:global_asymptotic_stability} and the associated proof, we can easily verify that $\gamma(r)$ is strictly increasing for $r \in [0, \infty)$ and that $\gamma(0) = 0$. As a consequence, $\gamma(r) \in \mathcal{K}$~\cite{khalil2002nonlinear}.
+    Indeed, based on Theorem~\ref{theorem:con:global_asymptotic_stability} and the associated proof, we can easily verify that $\gamma(r)$ is strictly increasing for $r \in [0, \infty)$ and that $\gamma(0) = 0$. As a consequence, $\gamma(r) \in \mathcal{K}$~\citep{khalil2002nonlinear}.
 \end{proof}

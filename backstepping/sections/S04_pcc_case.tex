@@ -4,8 +4,8 @@ This section provides an example of application of the proposed model augmentati
 
 \subsection{Model}\label{sub:backstepping:pcc_model}
 \textbf{Background - PCC dynamic model:}
-We consider a planar soft robotic arm consisting of three segments analogue to \cite{della2020model} modelled using the \gls{PCC}~\cite{jones2006kinematics} assumption, but the formulation can be easily extended to the 3D case while neglecting the torsional deformations. Alternatively, a strain-based parameterization could be employed~\cite{boyer2020dynamics}. 
-% The \gls{PCC}~\cite{jones2006kinematics} assumption stitches together segments each with constant curvature.
+We consider a planar soft robotic arm consisting of three segments analogue to \citep{della2020model} modelled using the \gls{PCC}~\citep{jones2006kinematics} assumption, but the formulation can be easily extended to the 3D case while neglecting the torsional deformations. Alternatively, a strain-based parameterization could be employed~\citep{boyer2020dynamics}. 
+% The \gls{PCC}~\citep{jones2006kinematics} assumption stitches together segments each with constant curvature.
 We assume a weight distribution of $m_i = \int_{0}^{l_i} \rho_i(s') ds'$ along the center line of the segment $i$. Gravity is acting along the vector $g \in \mathbb{R}^2$. We consider the following equations of motions with diagonal matrices $K$ and $D$:
 \begin{equation}\label{eq:backstepping:dynamics_pcc_case}
 \begin{split}

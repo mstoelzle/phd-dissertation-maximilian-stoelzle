@@ -17,18 +17,18 @@ Subsequently, we apply a Butterworth filter bank to isolate specific frequency b
 % \end{equation}
 % where $H(f)$ represents the frequency response of the filter, $f$ is the frequency of the \gls{EEG} signal, $N$ is the filter order, and $f_\mathrm{c}$ is the critical frequency (i.e., center frequency) of the desired frequency band.
 This enhances the ability to analyze \gls{EEG} data by isolating and examining different frequency band components within the \gls{EEG} signals. Once the signals are filtered in sub-bands and epoched with a duration of \SI{2}{s} and time interval of \SI{0.065}{s}, the features are extracted by the log of the power: $L_i(t) = \log\left(P_i(t)\right)$, where the power $P_i(t) = |E_i(t)|^2$ is represented by square of magnitude of the \gls{EEG} signal $E_i(t)$ at time instance $t$.
-These features are then provided to a classifier, which we select as \gls{LDA} due to its simplicity~\cite{lotte2014tutorial}.
+These features are then provided to a classifier, which we select as \gls{LDA} due to its simplicity~\citep{lotte2014tutorial}.
 
 We implement a second classifier with the same pipeline, where jaw clenching is provided as a muscle artifact that is classified v/s raw EEG data. 
 \subsubsection{Robotic system}
 % HSA robot
-We consider a robot consisting of four \gls{HSA} rods, which were 3D printed via digital projection lithography % ~\cite{truby2021recipe} 
-from the photopolymer resin Carbon FPU 50. % ~\cite{carbon:fpu50}.
+We consider a robot consisting of four \gls{HSA} rods, which were 3D printed via digital projection lithography % ~\citep{truby2021recipe} 
+from the photopolymer resin Carbon FPU 50. % ~\citep{carbon:fpu50}.
 Each \gls{HSA} rod is electrically actuated by a Dynamixel M-28 servo up to a maximum twist angle of $\phi_\mathrm{max} = \SI{3.49}{rad}$.
 % MoCap
 The robot is attached platform-down to a motion capture cage with eight Optitrack Prime X13 cameras tracking at \SI{200}{Hz} the pose of reflective markers attached to the end-effector of the \gls{HSA} robot.
 We estimate the current Cartesian-space velocity of the end-effector with a Savitzky-Golay filter. 
-Subsequently, we leverage a closed-form expression of the inverse kinematics of a \gls{CS} model~\cite{stolzle2024experimental} to compute the current configuration $q$ of the robot.
+Subsequently, we leverage a closed-form expression of the inverse kinematics of a \gls{CS} model~\citep{stolzle2024experimental} to compute the current configuration $q$ of the robot.
 % projector
 We render an image of the current shape of the robot together with the present end-effector position (white dot), the attractor planned by the user (green square), the operational workspace (grey, see also Fig.~\ref{fig:braincontrol:hsa_workspace}) and if applicable, the goal position (red dot). 
 We specify the currently active axis of movement $e_\mathrm{a}$ with a double arrow and project the resulting image onto a black screen in the background of the motion capture cage.
@@ -55,7 +55,7 @@ In the following, we will describe the protocol for collecting the motor imagery
 \subsubsection{Training protocol}
 
 The participant is given brief instructions about motor imagery signals.
-We follow the Graz-BCI~\cite{roc2021review} paradigm, which assists with training, where the display of the cue instructs the participant to perform imagination of movements: when a left arrow appears, the participant is asked to rest and not focus on motor movement. When the right arrow appears on the screen, the participant is asked to imagine the motor activity from the dominant hand (here, the right hand), such as grasping or squeezing an object. The training protocol for right-hand motor imagery v/s rest demands fifty cues per class. 
+We follow the Graz-BCI~\citep{roc2021review} paradigm, which assists with training, where the display of the cue instructs the participant to perform imagination of movements: when a left arrow appears, the participant is asked to rest and not focus on motor movement. When the right arrow appears on the screen, the participant is asked to imagine the motor activity from the dominant hand (here, the right hand), such as grasping or squeezing an object. The training protocol for right-hand motor imagery v/s rest demands fifty cues per class. 
 We similarly collect data for the second classifier by asking participants to clench their jaw, which can be detected as muscular artifacts (vs. no muscular movement) in the \gls{EEG} signals.
 At the end of the trial, we train both classifiers (see Sections~\ref{sub:braincontrol:motor_imagery_bmi} and \ref{ssub:braincontrol:eeg_pipeline} for more information) and repeat the procedure until an accuracy of \SI{75}{\percent} is obtained for right-hand motor imagery v/s rest and accuracy of \SI{85}{\percent} for jaw clench artifact v/s raw EEG.
 We evaluate the trained motor imagery classfier on the test set and report the results in Tab.~\ref{tab:braincontrol:confusion_matrix}.
@@ -133,7 +133,7 @@ Moreover, we map the outputs of the classifier into actionable commands: we init
 We randomly generate nine setpoints $x^\mathrm{d}(t) \in \mathbb{R}^2$ within the operational workspace of the robot (see Fig.~\ref{fig:braincontrol:hsa_workspace} and display them as a red circle to the user over a duration of \SI{540}{s}.
 The user can freely move the attractor to reach and keep the end-effector at the setpoint.
 In addition to the motor imagery-based control, we conduct experiments where the subject controls the robot with a keyboard.
-As a keyboard is a very efficient and precise \gls{HMI}~\cite{vasiljevic2016case, mahmud2020interface}, this represents an upper bound on the performance we could expect from the \gls{BCI}.
+As a keyboard is a very efficient and precise \gls{HMI}~\citep{vasiljevic2016case, mahmud2020interface}, this represents an upper bound on the performance we could expect from the \gls{BCI}.
 Here, the space button is used to switch that axis of movement $e_\mathrm{a}$ and positive/negative movement can be controlled via the left/right arrows.
 % Furthermore, we execute an experiment in which the computational controller has access to normally privileged information: as we substitute $x^\mathrm{at}$ with $x^\mathrm{d}$ in \eqref{eq:braincontrol:cartesian_impedance_controller}, the Cartesian impedance controller now immediately regulates the robot towards the setpoint. By excluding the \gls{BMI} from the pipeline, this provides us with a reference of the performance we can expect from the computational controller and, with that, also represents a performance upper bound.
 
@@ -156,7 +156,7 @@ Here, the space button is used to switch that axis of movement $e_\mathrm{a}$ an
 \end{figure*}
 
 \subsection{Interacting with the environment on a real-world task}\label{sub:braincontrol:experiments:adl}
-We consider the \gls{ADL} task of releasing hairspray by actuating the button of its container with the \gls{HSA} robot's end-effector (see Fig.~\ref{fig:braincontrol:cartesian_impedance_adl}). For successful execution, the end-effector must be very stiff in the normal direction of the contact. On the other hand, we might want to benefit from the physical intelligence of the system by being relatively flexible in the tangential direction. Therefore, we first define the perpendicular stiffness $k_\perp = \SI{500}{N\per\meter}$ and the tangential stiffness as $k_\parallel = \SI{50}{N \per \meter}$. We assume that the normal direction of the contact can be described by the polar angle $\theta_\perp$ (with respect to the x-axis). We envision that in the future, the user can adjust such stiffness characteristics online via a \gls{BMI} system similar to~\cite{schiatti2017soft}. In this chapter, however, we estimate by visual inspection that $\theta_\perp=\SI{1.31}{rad}$.
+We consider the \gls{ADL} task of releasing hairspray by actuating the button of its container with the \gls{HSA} robot's end-effector (see Fig.~\ref{fig:braincontrol:cartesian_impedance_adl}). For successful execution, the end-effector must be very stiff in the normal direction of the contact. On the other hand, we might want to benefit from the physical intelligence of the system by being relatively flexible in the tangential direction. Therefore, we first define the perpendicular stiffness $k_\perp = \SI{500}{N\per\meter}$ and the tangential stiffness as $k_\parallel = \SI{50}{N \per \meter}$. We assume that the normal direction of the contact can be described by the polar angle $\theta_\perp$ (with respect to the x-axis). We envision that in the future, the user can adjust such stiffness characteristics online via a \gls{BMI} system similar to~\citep{schiatti2017soft}. In this chapter, however, we estimate by visual inspection that $\theta_\perp=\SI{1.31}{rad}$.
 The Cartesian stiffness matrix in global coordinates is then given by $K_x = R(\theta_\perp) \, \mathrm{diag}(k_\perp, k_\parallel) \, R(\theta_\perp)^\mathrm{T}$
 where $R(\theta_\perp) \in SO(2)$ is the rotation matrix between global and contact frames.
 % Analog to the setpoint regulation task, the user can move the attractor freely in Cartesian space when executing the described \gls{ADL} task.
@@ -183,11 +183,11 @@ where $R(\theta_\perp) \in SO(2)$ is the rotation matrix between global and cont
 \end{figure}
 
 \subsection{Evaluation metrics}
-% Look at this paper for evaluation metrics: ~\cite{rakshit2020hybrid}
+% Look at this paper for evaluation metrics: ~\citep{rakshit2020hybrid}
 In the following, we will introduce and define a few metrics that help us assess the performance of the approach.
 
 \subsubsection{Event-Related Synchronization/De-Synchronization:}
-We apply \gls{ERD} / \gls{ERS}~\cite{pfurtscheller1999event} to demonstrate the difference between \gls{EEG} signals when the participant imagines right-hand movement vs. rest, i.e., no activity. \gls{ERD}/\gls{ERS} corresponds to a shift in power during imagination with respect to a baseline. It is defined by
+We apply \gls{ERD} / \gls{ERS}~\citep{pfurtscheller1999event} to demonstrate the difference between \gls{EEG} signals when the participant imagines right-hand movement vs. rest, i.e., no activity. \gls{ERD}/\gls{ERS} corresponds to a shift in power during imagination with respect to a baseline. It is defined by
 \begin{equation}
     \mathrm{ERD/ERS}(t, f) = \frac{P(t, f) - P_{\mathrm{base}}(f)}{P_{\mathrm{base}}(f)},
 \end{equation}

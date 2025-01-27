@@ -2,13 +2,13 @@
 In the following, we will provide some background on the \gls{PCS} kinematic model and the derivation of soft robot dynamics following a Lagrangian approach, which are two fundamental topics for this research paper.
 
 \subsection{Piecewise Constant Strain (PCS) Kinematics}\label{sec:pcsregression:pcs_model}
-% The continuous nature of soft robots, characterized by their ability to deform over a continuous space, implies that their motion is governed by a set of nonlinear Partial Differential Equations (PDEs)~\cite{gazzola2018forward, della2023model}. 
+% The continuous nature of soft robots, characterized by their ability to deform over a continuous space, implies that their motion is governed by a set of nonlinear Partial Differential Equations (PDEs)~\citep{gazzola2018forward, della2023model}. 
 % As a result, an infinite number of \gls{DOF} are required to accurately characterize their dynamics.
 % To make the modeling task tractable,
-% , in the first step, the \emph{slender rod} assumption (e.g., Cosserat rods) allows us to describe the behavior of continuum soft robots by considering the deformations of a 1D geometric curve that represents the soft robot's backbone~\cite{gazzola2018forward, della2023model}.
-% we apply the \emph{slender rod} assumption (e.g., Cosserat rods) and spatially discretize the backbone curve into $n_\mathrm{s}$ segments of constant strain, which is referred to in the literature as the \gls{DCM}~\cite{gazzola2018forward} theory, or alternatively, \gls{PCS}~\cite{renda2018discrete}.
-The \gls{PCS} model~\cite{renda2018discrete} describes the kinematics of continuum soft robots by assuming that the six elemental local backbone strains (shear, axial, bending, twist) are piecewise constant across $n_\mathrm{s}$ segments but variable in time.
-We remark that other popular kinematic models for soft robots, such as Piecewise Constant Curvature (PCC)~\cite{webster2010design}, are often times a special case of the \gls{PCS} model.
+% , in the first step, the \emph{slender rod} assumption (e.g., Cosserat rods) allows us to describe the behavior of continuum soft robots by considering the deformations of a 1D geometric curve that represents the soft robot's backbone~\citep{gazzola2018forward, della2023model}.
+% we apply the \emph{slender rod} assumption (e.g., Cosserat rods) and spatially discretize the backbone curve into $n_\mathrm{s}$ segments of constant strain, which is referred to in the literature as the \gls{DCM}~\citep{gazzola2018forward} theory, or alternatively, \gls{PCS}~\citep{renda2018discrete}.
+The \gls{PCS} model~\citep{renda2018discrete} describes the kinematics of continuum soft robots by assuming that the six elemental local backbone strains (shear, axial, bending, twist) are piecewise constant across $n_\mathrm{s}$ segments but variable in time.
+We remark that other popular kinematic models for soft robots, such as Piecewise Constant Curvature (PCC)~\citep{webster2010design}, are often times a special case of the \gls{PCS} model.
 
 % To make the modeling task tractable, several assumptions are commonly used. The first one takes advantage of the typical shape of these robots, which tend to have one physical dimension longer than the other two. The analysis of slender, elongated structures can be approximated to its central axis (backbone). The second assumption takes care of the infinite-dimensional problem by approximating the continuous deformation through a space discretization along the backbone. \gls{PCS} models are built upon both of these. The backbone is discretized into a few segments, and the local strains (bending, shear, axial and torsion) are considered constant in space, but variable in time, in each of the segments. Local strains are associated with either a pure translation or rotation along one of the axis of the reference frame attached to the end of a segment. Therefore, an analogy can be drawn between joint states in rigid robots and local strains in continuum robots: just like the pose of a rigid link is dependent on the previous joint variables, the pose at a certain point of the soft robot is dependent on the local strains of all the previous segments.   %At the end of each segment is attached a reference frame $\{S_i\}$ and its configuration is defined relative to the frame of the previous one, $\{S_{i-1}\}$.
 
@@ -20,7 +20,7 @@ For the planar case, the configuration of the $i$th segment is referred to as
 \end{equation}
 where $\kappa_{\mathrm{be},i}, \sigma_{\mathrm{sh},i}, \sigma_{\mathrm{ax},i}$ are the bending, shear, and axial strains, respectively, and $i \in \{1, \dots, n_\mathrm{s} \}$. 
 Therefore, the configuration of the entire soft robot is defined as $q \in \mathbb{R}^{n_\mathrm{q}}$, where $n_\mathrm{q} = 3 n_\mathrm{s}$.
-We also have access to closed-form expressions for the forward and inverse kinematics of a single constant strain segment~\cite{stolzle2024experimental}.
+We also have access to closed-form expressions for the forward and inverse kinematics of a single constant strain segment~\citep{stolzle2024experimental}.
 As a consequence, forward and inverse kinematics for the entire planar \gls{PCS} soft robot can be implemented using an iterative procedure starting at the proximal end without having to resort to differential (inverse) kinematic techniques.
 Namely, the forward kinematics $\pi: \mathbb{R}^{n_\mathrm{q}} \to SE(2)$ allow us to compute the pose $\chi_j = \begin{bmatrix}
     p_{\mathrm{x},j} & p_{\mathrm{y},j} & \theta_j
@@ -35,7 +35,7 @@ Given $N$ poses along the backbone, we can also define the inverse kinematic map
 % \end{figure}
 
 % \subsubsection{Forward Kinematics}
-% Subsequently, we can leverage to kinematic model to determine the homogeneous transformation $T_{i-1}^{i}(q_i) \in SE(2)$ between the proximal and the distal segment of the $i$th segment~\cite{stolzle2024experimental}
+% Subsequently, we can leverage to kinematic model to determine the homogeneous transformation $T_{i-1}^{i}(q_i) \in SE(2)$ between the proximal and the distal segment of the $i$th segment~\citep{stolzle2024experimental}
 % \begin{equation}
 % \begin{split}
 %     T_{i-1}^{i} =& \: \begin{bmatrix}
@@ -54,7 +54,7 @@ Given $N$ poses along the backbone, we can also define the inverse kinematic map
 % Here, we assume that the distal end of the $i-1$th segment coincides with the proximal end of the $i$th segment. In the following, we will refer to $\chi_i \in \mathbb{R}^3$ as the pose of the tip of the $i$th segment in inertial coordinates which can be computed iteratively using the robot's forward kinematics $\vartheta_i: \mathbb{R}^{3i} \to \mathbb{R}^3$ as $\chi_i = \chi_0^{i} = \vartheta_i(q_{1:i})$, where $q_{1:i}$ are the concatenated configurations of the first $i$ segments and the corresponding homogeneous transformation from the base of the robot to the tip of the $i$th segment is given as $T_{0}^i = \Vartheta_{j=1}^{i} T_{j-1}^{j}(q_j)$.
 
 % \subsubsection{Inverse Kinematics}
-% Assuming that the pose of the distal end of each segment is known, also a closed-form solution to the inverse kinematics exists~\cite{stolzle2024experimental}, in which the configuration of each segment is iteratively determined as
+% Assuming that the pose of the distal end of each segment is known, also a closed-form solution to the inverse kinematics exists~\citep{stolzle2024experimental}, in which the configuration of each segment is iteratively determined as
 
 % \begin{equation}
 % \begin{split}
@@ -70,7 +70,7 @@ Given $N$ poses along the backbone, we can also define the inverse kinematic map
 % We denote with the operation \textcolor{red}{TODO}
 % Here, $\varrho_i: \mathbb{R}^3 \times $ describes the inverse kinematics that identifies the configuration of the $i$th segment as a function of the inertial pose of the tip of the $i$th segment $\chi_0^i$ and the configuration of the more proximal segments $q_{1:i-1} \in \mathbb{R}^{3(i-1)}$.
 
-% This configuration vector fully specifies the shape of the robot. Given $s \in [0,L_{0,i}]$ the coordinate along the backbone, the angle of the central axis along the segment $i$ can be determined by integration of the curvature \cite{webster2010design} via 
+% This configuration vector fully specifies the shape of the robot. Given $s \in [0,L_{0,i}]$ the coordinate along the backbone, the angle of the central axis along the segment $i$ can be determined by integration of the curvature \citep{webster2010design} via 
 % \begin{align}
 %     \theta_i = \int_{0}^{s} \kappa_{\text{be},i} \,dv = \kappa_{\text{be},i} s \,.
 % \end{align}
@@ -89,7 +89,7 @@ Given $N$ poses along the backbone, we can also define the inverse kinematic map
 %     \end{bmatrix} \,dv .
 % \end{align}
 
-% Knowing the above relations, the forward and inverse kinematics relating the segment's pose $\chi_i=[p_{x,i},p_{y,i},\theta_i]$ and configuration $q_i$ can be written in closed form \cite{stolzle2024experimental} as
+% Knowing the above relations, the forward and inverse kinematics relating the segment's pose $\chi_i=[p_{x,i},p_{y,i},\theta_i]$ and configuration $q_i$ can be written in closed form \citep{stolzle2024experimental} as
 % \begin{align} 
 %     \chi_i=\begin{bmatrix}
 %         p_{x,i}\\
@@ -115,7 +115,7 @@ Given $N$ poses along the backbone, we can also define the inverse kinematic map
 %     \sigma_{sh} s & (1+\sigma_{ax})s & 0
 % \end{bmatrix}^{\top}$ and $\begin{bmatrix}
 %     0 & p_{x,i}/s & -1+p_{y,i}/s
-% \end{bmatrix}^{\top}$, respectively. However, some numerical instabilities might arise in practice \cite{della2023model}. 
+% \end{bmatrix}^{\top}$, respectively. However, some numerical instabilities might arise in practice \citep{della2023model}. 
 
 \subsection{Lagrangian Dynamics}\label{sub:pcsregression:lagr_dynamics}
 The Lagrangian of a mechanical system as a function of the configuration $q \in \mathbb{R}^{n_\mathrm{q}}$ and the corresponding time derivative $\dot{q} \in \mathbb{R}^{n_\mathrm{q}}$ can be expressed as
@@ -123,7 +123,7 @@ The Lagrangian of a mechanical system as a function of the configuration $q \in 
     \mathcal{L}(q, \dot{q}) = \mathcal{T}(q, \dot{q}) - \mathcal{U}(q) = \underbrace{\frac{1}{2}\dot{q}^\top \, M(q) \, \dot{q}}_{\mathcal{T}(q, \dot{q})} - \underbrace{\frac{1}{2} q^\top K q - \int G(q) \: \mathrm{d}q}_{\mathcal{U}(q)},
 \end{equation}
 where $\mathcal{T}(q, \dot{q})$, $\mathcal{U}(q)$ are the kinetic and potential energy of the system, respectively, and $M(q) \succ 0 \in \mathbb{R}^{n_\mathrm{q} \times n_\mathrm{q}}$ is referred to as the mass matrix. $G(q) \in \mathbb{R}^{n_\mathrm{q}}$ contribute the gravitational forces and $K \in \mathbb{R}^{n_\mathrm{q} \times n_\mathrm{q}}$ represents the linear elastic stiffness of the system.
-Subsequently, the Euler-Lagrangian equation can be leveraged to derive the \gls{EOM} of continuum soft robots as~\cite{della2023model, liu2024physics}
+Subsequently, the Euler-Lagrangian equation can be leveraged to derive the \gls{EOM} of continuum soft robots as~\citep{della2023model, liu2024physics}
 \begin{equation}
     \diffp[2]{\mathcal{L}}{{\dot{q}}}\ddot{q} + \diffp{\mathcal{L}}{{q}{\dot{q}}}\dot{q} - \diffp{\mathcal{L}}{{q}} + D\dot{q} = \tau
 \end{equation}
@@ -143,7 +143,7 @@ In this work, we assume, without loss of generality, that both the stiffness mat
     \label{fig:pcsregression:overall_diag}
 \end{figure}
 
-% The dynamics of a soft robot, irrespective of the kinematic model that is chosen, can be expressed in Euler-Lagrangian fashion as a function of the configuration $q \in \mathbb{R}^{n_\mathrm{q}}$ and the corresponding time derivative $\dot{q} \in \mathbb{R}^{n_\mathrm{q}}$~\cite{della2023model}
+% The dynamics of a soft robot, irrespective of the kinematic model that is chosen, can be expressed in Euler-Lagrangian fashion as a function of the configuration $q \in \mathbb{R}^{n_\mathrm{q}}$ and the corresponding time derivative $\dot{q} \in \mathbb{R}^{n_\mathrm{q}}$~\citep{della2023model}
 % \begin{equation}
 %     M(q) \, \ddot{q} + C(q, \dot{q}) \, \dot{q} + G(q) + K q + Dq = A(q),
 % \end{equation}
@@ -173,7 +173,7 @@ In this work, we assume, without loss of generality, that both the stiffness mat
 % %     G(q)=\diffp{V_G}{{q}} ,\,\, K(q)=\diffp{V_K}{{q}} .
 % %\end{align}
 
-% This dynamic formulation can be derived for a \gls{PCS} soft robot parametrization by combining its kinematic model with the inertial and impedance properties of its structure. The details for the derivations of each of these terms can be found in \cite{della2023model}.%Appendix \ref{ap:dynamics_pcs}.
+% This dynamic formulation can be derived for a \gls{PCS} soft robot parametrization by combining its kinematic model with the inertial and impedance properties of its structure. The details for the derivations of each of these terms can be found in \citep{della2023model}.%Appendix \ref{ap:dynamics_pcs}.
 
 % \begin{figure*}[ht]
 %     \center

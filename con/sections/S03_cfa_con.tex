@@ -2,7 +2,7 @@
 
 \subsection{Approach}\label{sub:con:cfa:approach}
 To predict future system states, we need to integrate the ODE in Eq.~\eqref{eq:con:con_dynamics}, with the solution given by $y(t_{k+1}) = y_{t_k} + \int_{t_k}^{t_{k+1}} f(y(t'), u(t')) \, \mathrm{d}t'$.
-Unfortunately, a closed-form solution for the nonlinear dynamics $f(y, u)$ does not (yet) exist. Therefore, we traditionally need to revert to (high-order) numerical \gls{ODE} solvers that are computationally very expensive and introduce additional memory overhead~\cite{kidger2021neural}. This considerably increases the training time of models involving such continuous-time dynamics.
+Unfortunately, a closed-form solution for the nonlinear dynamics $f(y, u)$ does not (yet) exist. Therefore, we traditionally need to revert to (high-order) numerical \gls{ODE} solvers that are computationally very expensive and introduce additional memory overhead~\citep{kidger2021neural}. This considerably increases the training time of models involving such continuous-time dynamics.
 While the computational time can be reduced by increasing the (minimum) time step of the integrator, this comes at the expense of an integration error, and we lose (part of) the theoretical guarantees and practical characteristics that the nominal \gls{ODE} provides.
 In this work, we take an alternative approach by splitting the problem into (i) decoupled linear dynamics that can be cheaply and precisely integrated using a closed-form solution and (ii) the residual, coupled nonlinear dynamics, which we integrate numerically at a slower time scale:
 
@@ -20,7 +20,7 @@ For a short-time-interval $\delta t$, we now approximate \eqref{eq:con:con_split
     F(t_k) =  -f_{\ddot{x}, \mathrm{nld}}(y(t_k), u(t_k)).
     % f_\mathrm{ext}(t_k) = -g(u(t_k))-(K-\kappa) x(t_k) - (D-d) \, \dot{x}(t_k) - \tanh(W \, x(t_k) + b)
 \end{equation}
-For a scalar \nth{2}-order, linear \gls{ODE} of form $\dot{y}_i = f_{\mathrm{ld},i}(x(t'), F(t_k))$, a well-known, closed-form solution~\cite{Pas2023damped} exists.
+For a scalar \nth{2}-order, linear \gls{ODE} of form $\dot{y}_i = f_{\mathrm{ld},i}(x(t'), F(t_k))$, a well-known, closed-form solution~\citep{Pas2023damped} exists.
 We exploit this characteristic by formulating the approximate solution as 
 \begin{equation}\label{eq:con:cfa_con}
     y(t_k + \delta t) \approx \, f_\mathrm{CFA-CON}(y(t_k), u(t_k)) =  y(t_k) + \int_{t_k}^{t_k + \delta t} f_{\mathrm{ld}}(y(t'), F(t_k)) \, \mathrm{d}t'
@@ -57,7 +57,7 @@ As introduced in \eqref{eq:con:harmonic_oscillator}, we consider the linear dyna
 \end{equation}
 where $F_i(t) \in \mathbb{R}$ is the externally applied force acting on the oscillator.
 
-The characteristic equation for the unforced dynamics (i.e., $F_i(t) = 0)$ can be stated as~\cite{Pas2023damped}
+The characteristic equation for the unforced dynamics (i.e., $F_i(t) = 0)$ can be stated as~\citep{Pas2023damped}
 \begin{equation}
     \lambda^2 + 2 \, \zeta_i \, \omega_{\mathrm{n},i}  \, \lambda + \omega_{\mathrm{n},i}^2 = 0,
     \qquad
@@ -67,7 +67,7 @@ The characteristic equation for the unforced dynamics (i.e., $F_i(t) = 0)$ can b
  where $\omega_{\mathrm{n},i} = \sqrt{\kappa_i}$ and $\zeta_i = \frac{d_i}{2 \, \sqrt{\kappa_i}}$ are the natural frequency and the damping factor of the $i$th homogeneous oscillator, respectively.
  This harmonic oscillator exhibits three regimes: underdamped ($\zeta_i < 1$), critically damped ($\zeta_i = 1$), and overdamped regime ($\zeta_i > 1$).
 
- We approximate the forcing using the Heavyside function $H(t)$: $F_i(t) = F_{i}(t_k) \, H(t)$, where $F_{i}(t_k)$ is the constant external forcing as computed by \eqref{eq:con:con_approx}. The solution for $\zeta_i \neq 1$ is given by~\cite{Pas2023damped}
+ We approximate the forcing using the Heavyside function $H(t)$: $F_i(t) = F_{i}(t_k) \, H(t)$, where $F_{i}(t_k)$ is the constant external forcing as computed by \eqref{eq:con:con_approx}. The solution for $\zeta_i \neq 1$ is given by~\citep{Pas2023damped}
 \begin{equation}\label{eq:con:harmonic_oscillator_closed_form}
     y_i (t_{k+1}) 
     = \begin{bmatrix}

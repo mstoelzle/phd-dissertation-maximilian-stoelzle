@@ -1,5 +1,5 @@
 \section{Experiments} \label{sec:srslam:experiments}
-We confirm the simulation results in a preliminary experimental study by mounting a Raspberry Pi camera to the tip of a soft segment~\cite{katzschmann2019dynamic}. The robotic segment is guided to follow three trajectories similar to the ones tested in simulation (see Section~\ref{sub:srslam:trajectories}). % in 3D space by pneumatically actuating its segment with a pressure regulator. 
+We confirm the simulation results in a preliminary experimental study by mounting a Raspberry Pi camera to the tip of a soft segment~\citep{katzschmann2019dynamic}. The robotic segment is guided to follow three trajectories similar to the ones tested in simulation (see Section~\ref{sub:srslam:trajectories}). % in 3D space by pneumatically actuating its segment with a pressure regulator. 
 A motion capture setup is employed to gather an accurate ground truth on the shape of the segment.
 
 \begin{figure*}
@@ -13,14 +13,14 @@ A motion capture setup is employed to gather an accurate ground truth on the sha
 % Segment and manufacturing
 We show the experimental setup in Figure~\ref{fig:srslam:experimental_setup}.
 We consider a soft robotic silicone segment consisting of four independently inflatable cavities. The segment has a cylindrical shape with a length $L_{0,1}$ of \SI{11}{cm} and a radius $d_1$ of \SI{21}{mm}. 
-% We follow the fabrication procedure by Marchese et al.~\cite{marchese2015recipe} by casting Silicone into 3D-printed molds and block any silicon-flow into the air chambers with bees wax.
+% We follow the fabrication procedure by Marchese et al.~\citep{marchese2015recipe} by casting Silicone into 3D-printed molds and block any silicon-flow into the air chambers with bees wax.
 A 3D-printed ring with four motion capture markers is located near the tip of the segment.
 %
 % Camera and its attachment to the segment
 We mount a Raspberry Pi camera module v2.0 to the tip of the segment.
 This camera has a \SI{8}{MP} sensor and records frames at a sampling rate of \SI{30}{Hz} and a resolution of 1080p.
 The focal length is \SI{3.04}{mm} and the field of view is $\SI{62.2}{\degree} \times \SI{48.8}{\degree}$.
-The camera module is attached to a Raspberry Pi 3B+ single-board computer, which saves the frames for later processing by the ORB-SLAM~\cite{mur2017orb} algorithm.
+The camera module is attached to a Raspberry Pi 3B+ single-board computer, which saves the frames for later processing by the ORB-SLAM~\citep{mur2017orb} algorithm.
 The camera is screwed onto a custom 3D-printed holder, which in turn is glued with the tip plane of the segment.
 %
 % Actuation motion terminal, communication, commanding of pressures

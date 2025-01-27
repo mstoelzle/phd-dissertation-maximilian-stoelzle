@@ -1,12 +1,12 @@
 \section{Affine Curvature Simulations}\label{sec:promasens:ac_simulations}
 To demonstrate the efficacy of the proposed method for higher-order kinematic models than \gls{PCC}, we also conduct simulations of an affine curvature soft robot.
-The affine curvature kinematic parametrization~\cite{della2020soft} has been shown capable of representing the shape of soft tentacles~\cite{stella2022experimental, stella2023piecewise} and provides a continuous function $\kappa = \kappa_0 + \kappa_1 \: v$ to describe the curvature of the soft robot, where $\kappa_0$, $\kappa_1$ are two configuration variables and $v \in [0, 1]$ is the backbone coordinate. We allow for movement in 3D space by also specifying an azimuth bending angle $\phi$ and the elongation $\delta L$.
+The affine curvature kinematic parametrization~\citep{della2020soft} has been shown capable of representing the shape of soft tentacles~\citep{stella2022experimental, stella2023piecewise} and provides a continuous function $\kappa = \kappa_0 + \kappa_1 \: v$ to describe the curvature of the soft robot, where $\kappa_0$, $\kappa_1$ are two configuration variables and $v \in [0, 1]$ is the backbone coordinate. We allow for movement in 3D space by also specifying an azimuth bending angle $\phi$ and the elongation $\delta L$.
 Please refer to Appendix~\ref{sub:promasens:kinematic_model_ac} for more implementation details about the affine curvature model.
 
 
 \subsection{Simulation setup}\label{sub:promasens:ac_simulations:simulation_setup}
 We use the same simulation setup as described in Section~\ref{sub:promasens:pcc_simulations:simulation_setup}. 
-Therefore, we report in the following only the implemented modifications to simulate an affine curvature soft robot in Magpylib~\cite{magpylib2020}.
+Therefore, we report in the following only the implemented modifications to simulate an affine curvature soft robot in Magpylib~\citep{magpylib2020}.
 Namely, we consider one affine curvature segment of length $L_{0,i} = \SI{200}{mm}$ with in total $n_\mathrm{s} = 9$ magnetic sensors. 
 The sensors are placed on three separate cylindrical planes at distances $d_{\mathrm{s}_\mathrm{a}}$ of \SI{0}{mm}, \SI{100}{mm}, and \SI{200}{mm} from the base of the robot. In each plane, the three sensors are spaced at an angle of \SI{120}{\degree} and at a radial distance $d_{\mathrm{s}_\mathrm{r}} = \SI{13}{mm}$ from the backbone, as it can be seen in Fig.~\ref{fig:promasens:ac_simulations:inference_sequences}.
 Two ring magnets are positioned at a distance of \SI{50}{mm} and \SI{150}{mm} from the robot's base respectively.
@@ -40,7 +40,7 @@ Two ring magnets are positioned at a distance of \SI{50}{mm} and \SI{150}{mm} fr
 We simulate \SI{120000}{} random configurations of the affine curvature robot to generate the training set. For this purpose, we sample the configuration variables from uniform distributions: the affine curvature parameters $\kappa_0 \in \mathcal{U}(0, \SI{0.942}{rad \per m})$, $\kappa_1 \in \mathcal{U}(0, \SI{3.770}{rad \per m^2})$, the azimuth angle $\phi \in \mathcal{U}(0, 2 \pi \: \si{rad})$, and the elongation $\delta L \in \mathcal{U}(0, \SI{6.6}{mm})$.
 Before training, we randomly split off \SI{30}{\percent} of the training set for validation purposes.
 We train a specialized neural network $f_{\pi_j(\xi_j)}$ for each sensor and use the same neural network architecture as in Section~\ref{sub:promasens:pcc_simulations:neural_network} with the exception of the addition of a final layer $y(x) = \mathrm{sign}(x) \: e^{|x|}$. 
-The training runs for in total $250$ epochs and uses the SWA~\cite{izmailov2018averaging} strategy with a learning rate of $0.01$. 
+The training runs for in total $250$ epochs and uses the SWA~\citep{izmailov2018averaging} strategy with a learning rate of $0.01$. 
 All other training hyperparameters are the same as in Section~\ref{sub:promasens:pcc_simulations:neural_network}.
 
 The four configuration variables are optimized to minimize the loss between the predictions and simulated measurements of the nine sensors as defined in \ref{eq:promasens:proprioception_loss}.

@@ -2,9 +2,9 @@
 In this section, we present a control-oriented, compact kinematic and dynamic model for planar \gls{HSA} robots. We first introduce the kinematic model of the robot and then derive the dynamic model in Euler-Lagrangian form. We then verify the predictive capabilities of the dynamic model on unseen trajectories.
 
 \subsection{Kinematic model}\label{sub:hsamodel:planar_hsa_robot_model:kinematics}
-Following the discrete Cosserat approach~\cite{renda2018discrete}, we characterize the configuration space of the virtual backbone by assuming a \gls{CS} model
+Following the discrete Cosserat approach~\citep{renda2018discrete}, we characterize the configuration space of the virtual backbone by assuming a \gls{CS} model
 $\presub{\mathcal{V}}{\xi}(t) = \begin{bmatrix}\presub{{\mathcal{V}}}{\kappa}_\mathrm{be} & \presub{{\mathcal{V}}}{\kappa}_\mathrm{sh} & \presub{{\mathcal{V}}}{\sigma}_\mathrm{ax}\end{bmatrix}^\mathrm{T} = \mathbb{I}_3 \, q(t) \in \mathbb{R}^3$, where $\kappa_\mathrm{be}$, $\sigma_\mathrm{sh}$, and $\sigma_\mathrm{ax}$ denote the bending, shear, and axial strain respectively.
-% We describe the configuration $q$ of the virtual backbone using a planar constant strain model~\cite{renda2018discrete} with $q(t) = \presub{\mathcal{V}}{\xi}(t) = \begin{bmatrix}\presub{\mathcal{V}}{\kappa}_\mathrm{be} & \presub{\mathcal{V}}{\kappa}_\mathrm{sh} & \presub{\mathcal{V}}{\sigma}_\mathrm{ax}\end{bmatrix}^\mathrm{T}$ consisting of bending, shear, and axial strains.  
+% We describe the configuration $q$ of the virtual backbone using a planar constant strain model~\citep{renda2018discrete} with $q(t) = \presub{\mathcal{V}}{\xi}(t) = \begin{bmatrix}\presub{\mathcal{V}}{\kappa}_\mathrm{be} & \presub{\mathcal{V}}{\kappa}_\mathrm{sh} & \presub{\mathcal{V}}{\sigma}_\mathrm{ax}\end{bmatrix}^\mathrm{T}$ consisting of bending, shear, and axial strains.  
 % The $\presub{\mathcal{V}}{\text{subscript}}$ denotes variables corresponding to the virtual backbone. 
 % (denoted with a $\presub{\mathcal{P}}{\text{subscript}}$)
 Given $q$, the pose $\chi = \begin{bmatrix}
@@ -44,7 +44,7 @@ where $M(q),C(q,\dot{q}),K,D \in \mathbb{R}^{3 \times 3}$ are the inertia, Corio
 The state of the robot at time $t$ can be therefore described by $x(t) = \begin{bmatrix}
     q^\mathrm{T}(t) & \dot{q}^\mathrm{T}
 \end{bmatrix}^\mathrm{T} \in \mathbb{R}^6$.
-The inertia matrix is found by following the standard procedure of integrating mass and rotational inertia along the \gls{HSA} rods~\cite{della2023model}. Additionally, we consider the inertial contribution of the platform mounted to the distal end of the robot.
+The inertia matrix is found by following the standard procedure of integrating mass and rotational inertia along the \gls{HSA} rods~\citep{della2023model}. Additionally, we consider the inertial contribution of the platform mounted to the distal end of the robot.
 % The Coriolis matrix can then be derived using Christoffel symbols.
 % Next, we consider the elasticity of the robot. 
 Under the small strain assumption, the elastic forces of the $i$th \gls{HSA} rod can be modeled as
@@ -67,7 +67,7 @@ Under the small strain assumption, the elastic forces of the $i$th \gls{HSA} rod
     \end{bmatrix} \right ),
 \end{equation}
 where $\presub{\mathcal{P}_i}{\xi}^0 = \begin{bmatrix}\kappa_\mathrm{be}^0 & \sigma_\mathrm{sh}^0 & \sigma_\mathrm{ax}^0\end{bmatrix}^\mathrm{T}$ denotes the rest strain,
-$S_{\mathrm{be},i}(\phi_i)$, $S_{\mathrm{sh},i}(\phi_i)$, $S_{\mathrm{ax},i}(\phi_i)$ are the bending, shear, and axial stiffnesses which are defined as linear functions with respect to the twist angle of the rod $\phi_i$~\cite{good2022expanding, stolzle2023modelling}:
+$S_{\mathrm{be},i}(\phi_i)$, $S_{\mathrm{sh},i}(\phi_i)$, $S_{\mathrm{ax},i}(\phi_i)$ are the bending, shear, and axial stiffnesses which are defined as linear functions with respect to the twist angle of the rod $\phi_i$~\citep{good2022expanding, stolzle2023modelling}:
 \begin{equation}
     S_{\mathrm{be},i}(\phi_i) = \hat{S}_{\mathrm{be}} + C_{\mathrm{S}_\mathrm{be}} \, \phi_{i}^+,
     \quad
@@ -76,7 +76,7 @@ $S_{\mathrm{be},i}(\phi_i)$, $S_{\mathrm{sh},i}(\phi_i)$, $S_{\mathrm{ax},i}(\ph
     S_{\mathrm{ax},i}(\phi_i) = \hat{S}_{\mathrm{ax}} + C_{\mathrm{S}_\mathrm{ax}} \, \phi_{i}^+.
 \end{equation}
 The coefficient $S_{\mathrm{be},\mathrm{sh}}$ accounts for the elastic coupling between the bending and the shear strain. 
-% and $A$, $\mathcal{I}_\mathrm{be}$ the cross-sectional area and the second area moment of inertia respectively. The elastic modulus of closed \glspl{HSA} can be modeled with a linear function of the twist strain: $E_i(\phi_i) = E^0 + C_\mathrm{E} h_i \frac{\phi_i}{l_i^0}$~\cite{good2022expanding, stolzle2023modelling}. $G_i(\phi_i)$ is formulated in an analog fashion.
+% and $A$, $\mathcal{I}_\mathrm{be}$ the cross-sectional area and the second area moment of inertia respectively. The elastic modulus of closed \glspl{HSA} can be modeled with a linear function of the twist strain: $E_i(\phi_i) = E^0 + C_\mathrm{E} h_i \frac{\phi_i}{l_i^0}$~\citep{good2022expanding, stolzle2023modelling}. $G_i(\phi_i)$ is formulated in an analog fashion.
 Subsequently, we project the forces into the virtual backbone by premultiplying with $J_\beta^\mathrm{T} = \frac{\partial \beta}{\partial q}^\mathrm{T}$ and then sum the contribution of all rods.
 Finally, we group all terms depending on the control input $\phi$ in $\alpha(q,\phi)$ and everything else in $K$.
 After modeling the dissipative forces in each \gls{HSA} as $\mathrm{diag}(\zeta_\mathrm{be}, \zeta_{\mathrm{sh}}, \zeta_{\mathrm{ax}}) \, \presub{\mathcal{P}_i}{\dot{\xi}}$, we derive the damping matrix in configuration space as $D = \sum_{i=1}^{2} J_{\beta,i}^\mathrm{T} \, \mathrm{diag}(\zeta_\mathrm{be}, \zeta_{\mathrm{sh}}, \zeta_{\mathrm{ax}}) \, J_{\beta,i} = 2 \, \mathrm{diag}\left ( (\zeta_\mathrm{be} + r_\mathrm{off}^2 \, \zeta_\mathrm{ax} ), \zeta_{\mathrm{sh}}, \zeta_{\mathrm{ax}} \right)$.
@@ -103,19 +103,19 @@ We open-source the derivation of the Euler-Lagrangian dynamics and a JAX impleme
 
 \subsubsection{Experimental setup}\label{ssub:hsamodel:planar_hsa_robot_model:model_verification:experimental_setup}
 We evaluate the planar \gls{HSA} model experimentally.
-The material choice of the \gls{HSA} is crucial and has a significant influence on the resulting mechanical characteristics of the robot  (e.g., blocked force, holding torque, bending stiffness, etc.)~\cite{truby2021recipe}. Furthermore, specific material requirements are dictated by the nature of the design of the \gls{HSA} rod. The structure of the metamaterial is made of struts connected by living hinges. These living hinges must be thin, flexible, and accommodate high strains~\cite{truby2021recipe}.
-In order to ensure that the system model is effective and suitable for a range of different materials, we decided to conduct the experimental verification on \glspl{HSA} 3D-printed via digital projection lithography either using the photopolymer resin Carbon FPU 50~\cite{carbon:fpu50} (stiffer) or the elastomeric polyurethane EPU 40 resin~\cite{carbon:epu40} (softer).
+The material choice of the \gls{HSA} is crucial and has a significant influence on the resulting mechanical characteristics of the robot  (e.g., blocked force, holding torque, bending stiffness, etc.)~\citep{truby2021recipe}. Furthermore, specific material requirements are dictated by the nature of the design of the \gls{HSA} rod. The structure of the metamaterial is made of struts connected by living hinges. These living hinges must be thin, flexible, and accommodate high strains~\citep{truby2021recipe}.
+In order to ensure that the system model is effective and suitable for a range of different materials, we decided to conduct the experimental verification on \glspl{HSA} 3D-printed via digital projection lithography either using the photopolymer resin Carbon FPU 50~\citep{carbon:fpu50} (stiffer) or the elastomeric polyurethane EPU 40 resin~\citep{carbon:epu40} (softer).
 
 The Dynamixel MX-28 servo motor are set to use position control mode. % which runs a cascaded PID control loop on the motor current.
 % The robot is mounted platform-down on a cage on which we have also attached eight Optitrack PrimeX 13 cameras. The motion capture system can track the SE(3) pose of both the base and the platform at a sampling rate of \SI{200}{Hz}. 
 The robot is mounted platform-down on a cage with an Optitrack motion capture system, which measures the SE(3) pose of the platform at \SI{200}{Hz}.
-Our algorithms run within a ROS2 framework\footnote{\url{https://github.com/tud-phi/ros2-hsa}}. % First, we project the pose measurements into the plane of actuation. Then, we evaluate the coordinate transformation between platform and base and run the closed-form inverse kinematics introduced in \eqref{eq:hsamodel:planar_hsa_robot_model:kinematics}. We store in memory the last \textcolor{orange}{ten} configuration measurements, fit a cubic spline to each configuration variable using the \emph{Derivative} package~\cite{kaptanoglu2022pysindy}, and then differentiate the spline function to gather $\dot{q}(t)$.
+Our algorithms run within a ROS2 framework\footnote{\url{https://github.com/tud-phi/ros2-hsa}}. % First, we project the pose measurements into the plane of actuation. Then, we evaluate the coordinate transformation between platform and base and run the closed-form inverse kinematics introduced in \eqref{eq:hsamodel:planar_hsa_robot_model:kinematics}. We store in memory the last \textcolor{orange}{ten} configuration measurements, fit a cubic spline to each configuration variable using the \emph{Derivative} package~\citep{kaptanoglu2022pysindy}, and then differentiate the spline function to gather $\dot{q}(t)$.
 % ~\footnote{\url{https://github.com/tud-phi/ros2-hsa}}
-% ~\cite{kaptanoglu2022pysindy}
+% ~\citep{kaptanoglu2022pysindy}
 % Our algorithms run within a ROS2 framework. 
 The pose measurements are first projected into the plane of actuation and serve as an input to the closed-form inverse kinematics introduced in \eqref{eq:hsamodel:planar_hsa_robot_model:kinematics}. 
 % We use a Savitzky-Golay filter with a window duration of $\SI{0.1}{s}$ to numerically differentiate $\chi_\mathrm{ee}(t)$, $q(t)$ and gather with that $\dot{\chi}_\mathrm{ee}(t)$ and $\dot{q}(t)$.
-% We fit a cubic spline to the last $16$ configuration measurements and differentiate~\cite{kaptanoglu2022pysindy} to gather $\dot{q}(t)$.
+% We fit a cubic spline to the last $16$ configuration measurements and differentiate~\citep{kaptanoglu2022pysindy} to gather $\dot{q}(t)$.
 
 \subsubsection{System identification}\label{ssub:hsamodel:planar_hsa_robot_model:model_verification:system_identification}
 Next, we strive to identify the parameters used in our dynamic model.
@@ -128,7 +128,7 @@ Finally, we identify the axial rest strain $\sigma_\mathrm{ax}^0$ before the sta
 We notice that the EPU-based HSA robot is approximately one order of magnitude more flexible than the FPU-based robot.
 
 \subsubsection{Results}\label{ssub:hsamodel:planar_hsa_robot_model:model_verification:results}
-We verify the accuracy of the proposed system model and the identified parameters on trajectories unseen during system identification. We generate the trajectories by actuating the robot with a \gls{GBN}~\cite{tulleken1990generalized} sequence with a settling time of \SI{0.5}{s} and at each time step $k$ randomly sample $\phi(k) \sim \mathcal{U}(0, \phi_\mathrm{max})$.
+We verify the accuracy of the proposed system model and the identified parameters on trajectories unseen during system identification. We generate the trajectories by actuating the robot with a \gls{GBN}~\citep{tulleken1990generalized} sequence with a settling time of \SI{0.5}{s} and at each time step $k$ randomly sample $\phi(k) \sim \mathcal{U}(0, \phi_\mathrm{max})$.
 We simulate the model evolution with a Dormand-Prince 5(4) integrator and a time step of \SI{0.1}{ms}.
 Fig.~\ref{fig:hsamodel:planar_hsa_robot_model:model_verification:fpu:chiee} shows the model exhibiting excellent accuracy for representing the behavior of FPU-based \gls{HSA} robots.
-We observe more significant errors in the shear estimate for EPU-based \gls{HSA} robots in Fig.\ref{fig:hsamodel:planar_hsa_robot_model:model_verification:epu:q}. Specifically, the \gls{CS} model no longer seems sufficient for capturing the robot's shape, particularly for larger bending angles. Therefore, we suggest for future work to employ kinematic models with more \gls{DOF} such as \gls{PCS} as proposed, for example, in Sec.~\ref{sec:hsamodel:hsa_rod_kinematics} or \cite{renda2018discrete}.
+We observe more significant errors in the shear estimate for EPU-based \gls{HSA} robots in Fig.\ref{fig:hsamodel:planar_hsa_robot_model:model_verification:epu:q}. Specifically, the \gls{CS} model no longer seems sufficient for capturing the robot's shape, particularly for larger bending angles. Therefore, we suggest for future work to employ kinematic models with more \gls{DOF} such as \gls{PCS} as proposed, for example, in Sec.~\ref{sec:hsamodel:hsa_rod_kinematics} or \citep{renda2018discrete}.

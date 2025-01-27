@@ -5,9 +5,9 @@ We consider the problem setting of guiding the system towards a desired observat
 A relatively simple way would be to encode the desired observation into latent space $z^\mathrm{d} = \Phi(o^\mathrm{d})$ and then to design a feedback controller (e.g., PID) in latent space: $g(u) = \mathrm{PID}(z^\mathrm{d}-z(t), -\dot{z})$.
 Unfortunately, several challenges appear: first, it is not clear how the latent-space force $\tau = g(u)$ can be mapped back to an actual input $u(t)$ as the inverse input-to-forcing mapping $g^{-1}$ is generally not known.
 Furthermore, relying entirely on a PID controller has several well-known drawbacks, such as poor and slow transient behavior, steady-state errors (in case the integral gain is chosen to be zero), and instability for high proportional and integral gains.
-% Another option would be to formulate a \gls{MPC} optimization problem~\cite{lenz2015deepmpc, hafner2019learning, hewing2020learning, alora2023robust} and find the optimal input sequence on the chosen horizon to guide the system towards $o^\mathrm{d}$. This has disadvantages, too, as the computational requirements are considerable, and it can be difficult to tune cost functions in latent space.
+% Another option would be to formulate a \gls{MPC} optimization problem~\citep{lenz2015deepmpc, hafner2019learning, hewing2020learning, alora2023robust} and find the optimal input sequence on the chosen horizon to guide the system towards $o^\mathrm{d}$. This has disadvantages, too, as the computational requirements are considerable, and it can be difficult to tune cost functions in latent space.
 % In this work, we propose a control strategy that can solve or sidestep all the challenges mentioned above.
-We take inspiration from potential shaping strategies~\cite{bloch2001controlled, ortega2021pid}, which are widely used for effectively controlling (elastic) robots, and, therefore, combine a feedforward term compensating the latent-space potential forces with an integral-saturated, PID-like feedback term. For mapping the desired forcing $\tau$ back to an input $u(t)$, we train an forcing decoder $\eta: \mathbb{R}^{n} \to \mathbb{R}^{m}$ that approximates $g^{-1}$. Specifically, we consider here the structure $u = \eta(\tau) = E(\tau) \, \tau$, where $E \in \mathbb{R}^{m \times n}$ is parameterized by an \gls{MLP}.
+We take inspiration from potential shaping strategies~\citep{bloch2001controlled, ortega2021pid}, which are widely used for effectively controlling (elastic) robots, and, therefore, combine a feedforward term compensating the latent-space potential forces with an integral-saturated, PID-like feedback term. For mapping the desired forcing $\tau$ back to an input $u(t)$, we train an forcing decoder $\eta: \mathbb{R}^{n} \to \mathbb{R}^{m}$ that approximates $g^{-1}$. Specifically, we consider here the structure $u = \eta(\tau) = E(\tau) \, \tau$, where $E \in \mathbb{R}^{m \times n}$ is parameterized by an \gls{MLP}.
 
 \subsection{Control strategy}
 The latent-space control law is given by
@@ -15,7 +15,7 @@ The latent-space control law is given by
     \tau(t) = g(u) = \underbrace{K_\mathrm{w} \, z^\mathrm{d} + \tanh(z^\mathrm{d} + b)}_{\substack{\text{Feedforward term:}\\ \text{compensation of potential forces}}} + \underbrace{K_\mathrm{p} \, (z^\mathrm{d} - z) - K_\mathrm{d} \, \dot{z} + K_\mathrm{i} \int_0^t \tanh(\upsilon (z^\mathrm{d}(t') - z(t')))\mathrm{d}t'}_{\text{Feedback term: P-satI-D}}
 \end{equation}
 where $K_\mathrm{p}, K_\mathrm{i}, K_\mathrm{d} \in \mathbb{R}^{n \times n}$ are the proportional, integral, and derivative control gains, respectively.
-As integral terms can often lead to instability when applied to nonlinear systems~\cite{stolzle2024experimental}, we adopt an integral term saturation~\cite{pustina2022p} with the associated dimensionless gain $\upsilon \in \mathbb{R}$, which ensures that the integral error added at each time step is bounded to the interval $(-1, 1)$.
+As integral terms can often lead to instability when applied to nonlinear systems~\citep{stolzle2024experimental}, we adopt an integral term saturation~\citep{pustina2022p} with the associated dimensionless gain $\upsilon \in \mathbb{R}$, which ensures that the integral error added at each time step is bounded to the interval $(-1, 1)$.
 % 
 Subsequently, $\tau$ is  decoded to the input as $u(t) = \eta(\tau) = E(\tau) \, \tau$.
 For training this decoder, we add a reconstruction loss to \eqref{eq:training_loss}: $\mathcal{L}_{\mathrm{u}}(t_k) = \lambda_{\mathrm{u}} \, \mathrm{MSE}(u(t_k), \hat{u}(t_k)) = \lambda_{\mathrm{u}} \, \mathrm{MSE} \left (u(t_k), \eta(g(u(t_k))) \right )$.
@@ -25,7 +25,7 @@ For training this decoder, we add a reconstruction loss to \eqref{eq:training_lo
     \subfigure[Samples of used datasets]{\includegraphics[width=0.27\linewidth]{con/figures/datasets_visualization/datatsets_visualization_v2_cropped_compressed.pdf}\label{fig:con:datasets_visualization}}
     \hfill
     \subfigure[Blockscheme of model-based control in latent space]{\includegraphics[width=0.69\linewidth]{con/figures/control/blockdiagram_latent_space_control_v1_cropped.pdf}\label{fig:con:blockdiagram_latent_space_control}}
-    \caption{\textbf{Panel (a):} Samples of some of the datasets used as part of the experimental verification, specifically for the results reported in Tab.~\ref{tab:con:latent_dynamics_results}. The real-world Reaction-Diffusion image is adopted from~\cite{epstein2016reaction}. \textbf{Panel (b):} Model-based control in latent space by exploiting the physical structure of the CON model.}
+    \caption{\textbf{Panel (a):} Samples of some of the datasets used as part of the experimental verification, specifically for the results reported in Tab.~\ref{tab:con:latent_dynamics_results}. The real-world Reaction-Diffusion image is adopted from~\citep{epstein2016reaction}. \textbf{Panel (b):} Model-based control in latent space by exploiting the physical structure of the CON model.}
 \end{figure}
 
 \subsection{Implementation of closed-loop control}
@@ -131,7 +131,7 @@ When leveraging (learned) dynamical models for setpoint regulation, it is essent
 In Fig.~\ref{fig:con:control:pcc_ns-2:potential_energy_landscape_z}, we can see how \gls{CON} contains a single, isolated, and globally asymptotically stable equilibrium as proven in Section~\ref{sec:con:con}, respectively. 
 % 
 Furthermore, we want to verify that the learned potential corresponds to the actual potential energy of the simulated system.
-An autonomous continuum soft robot with the tip pointing downwards in a straight configuration exhibits an isolated, globally asymptotically stable equilibrium at $q = 0$ (i.e., zero strains)~\cite{stolzle2021piston}.
+An autonomous continuum soft robot with the tip pointing downwards in a straight configuration exhibits an isolated, globally asymptotically stable equilibrium at $q = 0$ (i.e., zero strains)~\citep{stolzle2021piston}.
 For this purpose, we can compare the learned potential energy field in Fig.~\ref{fig:con:control:pcc_ns-2:potential_energy_landscape_q} with the ground-truth potential energy field in Fig.~\ref{fig:con:control:pcc_ns-2:potential_energy_landscape_q_gt}.
 We confirm, based on Fig.~\ref{fig:con:control:pcc_ns-2:potential_energy_landscape_q}, that, indeed, the learned potential also has its minimum close to/at $q=0$. Although the field is shaped slightly differently, the potential forces are clearly pointing inwards towards the global attractor.
 
@@ -180,7 +180,7 @@ We confirm, based on Fig.~\ref{fig:con:control:pcc_ns-2:potential_energy_landsca
 \subsubsection{Results} 
 % We report the mean and standard deviation over three different model initializations in the following.
 As an evaluation metric, we consider the \gls{RMSE} between the actual and the reference trajectory.
-% settling time~\cite{tay2012high} required to reach and remain within \SI{20}{\percent} of the step averaged across all setpoints
+% settling time~\citep{tay2012high} required to reach and remain within \SI{20}{\percent} of the step averaged across all setpoints
 The \emph{P-satI-D} applied to the \emph{MECH-NODE} model (baseline) achieves an \gls{RMSE} of \SI{2.88}{rad \per m} w.r.t. to the desired configuration $q^\mathrm{d}$ (but unknown to the algorithm).
 The \emph{P-satI-D} \gls{CON} controller, which does not exploit the learned latent dynamics for control, exhibits an \gls{RMSE} of \SI{4.08}{rad \per m} w.r.t. to the desired configuration $q^\mathrm{d}$.
 The \emph{P-satI-D+FF} controller exhibits an \gls{RMSE} of \SI{2.12}{rad \per m} w.r.t. to the desired configuration $q^\mathrm{d}$.

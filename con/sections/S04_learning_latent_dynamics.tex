@@ -13,7 +13,7 @@ We now move towards learning latent dynamical models based on \gls{CON} and \gls
 We assume to have access to observations in the form of images $o \in \mathbb{R}^{h_\mathrm{o} \times w_\mathrm{o} \times c_\mathrm{o}}$, where $c_\mathrm{o}$ denotes the number of channels. Please note that this could also be other high-dimensional observations such as LiDAR scans, point clouds, etc.
 We now leverage an encoder-decoder architecture to map these high-dimensional observations into a compressed latent space: % parametrized by $z^\mathrm{T} & \dot{z}^\mathrm{T} \end{bmatrix}^\mathrm{T} \in \mathbb{R}^{2n_z}$.
 The encoder $\Phi: \mathbb{R}^{h_\mathrm{o} \times w_\mathrm{o} \times c_\mathrm{o}} \to \mathbb{R}^{n_z} $ with $n_z \ll h_\mathrm{o} \,  w_\mathrm{o}$ identifies a low-dimensional latent representation $z \in \mathbb{R}^{n_z}$ of the images. The decoder $\Psi: \mathbb{R}^{n_z} \to \mathbb{R}^{h_\mathrm{o} \times w_\mathrm{o} \times c_\mathrm{o}}$ approximates the inverse operation by reconstructing an image $\hat{o} \in \mathbb{R}^{h_\mathrm{o} \times w_\mathrm{o} \times c_\mathrm{o}}$ based on the latent representation.
-To promote the learning of a smooth and monotonic mapping into latent space, we specifically choose to implement the autoencoder here as a $\beta$-\gls{VAE}~\cite{kingma2014auto, higgins2017beta}.
+To promote the learning of a smooth and monotonic mapping into latent space, we specifically choose to implement the autoencoder here as a $\beta$-\gls{VAE}~\citep{kingma2014auto, higgins2017beta}.
 Instead of just statically reconstructing the image $\hat{o}(t_k)$, we are interested in predicting future observations $\hat{o}(t_{k+l})$, where $l \in 1 \dots N$. For this, we train a \nth{2}-order dynamical model that is, when integrated, able to predict future latent representations $z(t_{k+l})$.
 This requires us to define a latent state $\xi(t) = \begin{bmatrix}
     z^\mathrm{T}(t) & \dot{z}^\mathrm{T}(t)
@@ -60,9 +60,9 @@ Please refer to Appendix~\ref{sec:apx-con:experimental_setup} for more implement
          % \textbf{Model parameters} $\downarrow$ & \textbf{Training} $\frac{\mathbf{\text{steps}}}{\mathbf{\text{second}}}$ $\uparrow$ $\downarrow$
          \midrule
          RNN & $0.2739 \pm 0.0057$ & $0.2378 \pm 0.0352$ & $0.1694 \pm 0.0004$ & $\mathbf{0.1011 \pm 0.0009}$ & $0.1373 \pm 0.0185$ & $0.2232 \pm 0.0075$ & $0.3763 \pm 0.0374$\\
-         GRU~\cite{cho2014learning} & $0.0267 \pm 0.0033$ & $0.1457 \pm 0.0078$ & $0.1329 \pm 0.0005$ & $0.1125 \pm 0.0100$ & $\mathbf{0.0951 \pm 0.0021}$ & $0.2148 \pm 0.0196$ & $0.3232 \pm 0.0368$\\
-         coRNN~\cite{rusch2020coupled} & $\mathbf{0.0265 \pm 0.0002}$ & $0.1333 \pm 0.0044$ & $0.1324 \pm 0.0016$ & $0.2537 \pm 0.0018$ & $0.2504 \pm 0.0899$ & $0.2474 \pm 0.0018$ & $\mathbf{0.0741 \pm 0.0001}$\\
-         NODE~\cite{chen2018neural} & $\mathbf{0.0264 \pm 0.0010}$ & $\mathbf{0.1260 \pm 0.0013}$ & $0.1324 \pm 0.0024$ & $0.2415 \pm 0.0021$ & $0.1867 \pm 0.0561$ & $0.3373 \pm 0.0565$ & $\mathbf{0.0738 \pm 0.0007}$\\
+         GRU~\citep{cho2014learning} & $0.0267 \pm 0.0033$ & $0.1457 \pm 0.0078$ & $0.1329 \pm 0.0005$ & $0.1125 \pm 0.0100$ & $\mathbf{0.0951 \pm 0.0021}$ & $0.2148 \pm 0.0196$ & $0.3232 \pm 0.0368$\\
+         coRNN~\citep{rusch2020coupled} & $\mathbf{0.0265 \pm 0.0002}$ & $0.1333 \pm 0.0044$ & $0.1324 \pm 0.0016$ & $0.2537 \pm 0.0018$ & $0.2504 \pm 0.0899$ & $0.2474 \pm 0.0018$ & $\mathbf{0.0741 \pm 0.0001}$\\
+         NODE~\citep{chen2018neural} & $\mathbf{0.0264 \pm 0.0010}$ & $\mathbf{0.1260 \pm 0.0013}$ & $0.1324 \pm 0.0024$ & $0.2415 \pm 0.0021$ & $0.1867 \pm 0.0561$ & $0.3373 \pm 0.0565$ & $\mathbf{0.0738 \pm 0.0007}$\\
          MECH-NODE & $0.0328 \pm 0.0034$ & $0.1650 \pm 0.0205$ & $0.1710 \pm 0.0111$ & $0.2494 \pm 0.0028$ & $0.1035 \pm 0.0012$ & $0.1900 \pm 0.0024$ & N/A\\
          CON-S (our) & $0.0303 \pm 0.0053$ & $0.1303 \pm 0.0064$ & $0.1323 \pm 0.0018$ & $0.1993 \pm 0.0646$ & $0.0996 \pm 0.0012$ & $0.1792 \pm 0.0038$ & $0.1110 \pm 0.0160$\\
          CON-M (our) & $0.0303 \pm 0.0053$ & $0.1303 \pm 0.0064$ & $0.1323 \pm 0.0018$ & $0.1063 \pm 0.0027$ & $0.1008 \pm 0.0006$ & $\mathbf{0.1785 \pm 0.0023}$ & $0.1110 \pm 0.0160$\\
@@ -71,7 +71,7 @@ Please refer to Appendix~\ref{sec:apx-con:experimental_setup} for more implement
     \end{tabular}
     \end{small}
     \caption{Benchmarking of \gls{CON} and \gls{CFA-CON} at learning latent dynamics against baseline methods. 
-    The first three datasets, based on ~\cite{botev2021priors}, contain samples of a mass-spring with friction (\emph{M-SP + F}), a single pendulum with friction (\emph{S-P + F}), and a double pendulum with friction (\emph{D-P + F}) (all without system inputs).
+    The first three datasets, based on ~\citep{botev2021priors}, contain samples of a mass-spring with friction (\emph{M-SP + F}), a single pendulum with friction (\emph{S-P + F}), and a double pendulum with friction (\emph{D-P + F}) (all without system inputs).
     The \emph{CS} dataset considers a continuum soft robot consisting of one segment with three constant planar strains. The \emph{PCC-NS-2} and \emph{PCC-NS-3} datasets contain trajectories of a continuum soft robot made of two and three piecewise constant curvature segments, respectively.
     We choose the latent dimensions of the models as $n_z = 4$, $n_z = 4$, and $n_z = 12$ for the \emph{M-SP + F}, \emph{S-P + F}, and \emph{D-P + F} datasets, and  $n_z = 8$, $n_z = 12$, and $n_z = 12$ for the \emph{PCC-NS-2}, \emph{PCC-NS-3}, and \emph{CS} soft robotic datasets.
     % For the \glspl{RNN}, this corresponds to a hidden state dimension of $n_z=16$ and $n_z = 24$.
@@ -86,15 +86,15 @@ Please refer to Appendix~\ref{sec:apx-con:experimental_setup} for more implement
     \setlength\tabcolsep{2.5pt}
     \begin{tabular}{c|c|c|c|c|c|c|c|c|c}
         \toprule
-        \textbf{Dataset} & $\mathbf{n_z}$ & \textbf{RNN} & \textbf{GRU}~\cite{cho2014learning} & \textbf{coRNN}~\cite{rusch2020coupled} & \textbf{NODE}~\cite{chen2018neural} & \textbf{MECH-NODE} & \textbf{CON-S (our)} & \textbf{CON-M (our)} & \textbf{CFA-CON (our)}\\
+        \textbf{Dataset} & $\mathbf{n_z}$ & \textbf{RNN} & \textbf{GRU}~\citep{cho2014learning} & \textbf{coRNN}~\citep{rusch2020coupled} & \textbf{NODE}~\citep{chen2018neural} & \textbf{MECH-NODE} & \textbf{CON-S (our)} & \textbf{CON-M (our)} & \textbf{CFA-CON (our)}\\
         \midrule
-        M-SP+F~\cite{botev2021priors} & $4$ & $88$ & $248$ & $40$ & $3368$ & $3244$ & $\mathbf{34}$ & $\mathbf{34}$ & $\mathbf{34}$\\
-        S-P+F~\cite{botev2021priors} & $4$ & $88$ & $248$ & $40$ & $3368$ & $3244$ & $\mathbf{34}$ & $\mathbf{34}$ & $\mathbf{34}$\\
-        D-P+F~\cite{botev2021priors} & $12$ & $672$ & $1968$ & $348$ & $4404$ & $4032$ & $\mathbf{246}$ & $\mathbf{246}$ & $\mathbf{246}$\\
+        M-SP+F~\citep{botev2021priors} & $4$ & $88$ & $248$ & $40$ & $3368$ & $3244$ & $\mathbf{34}$ & $\mathbf{34}$ & $\mathbf{34}$\\
+        S-P+F~\citep{botev2021priors} & $4$ & $88$ & $248$ & $40$ & $3368$ & $3244$ & $\mathbf{34}$ & $\mathbf{34}$ & $\mathbf{34}$\\
+        D-P+F~\citep{botev2021priors} & $12$ & $672$ & $1968$ & $348$ & $4404$ & $4032$ & $\mathbf{246}$ & $\mathbf{246}$ & $\mathbf{246}$\\
         CS & $12$ & $696$ & $2040$ & $\mathbf{336}$ & $4374$ & $4002$ & $1386$ & $8568$ & $8568$\\
         PCC-NS-2 & $8$ & $320$ & $928$ & $\mathbf{152}$ & $3856$ & $3062$ & $676$ & $7048$ & $7048$\\
         PCC-NS-3 & $12$ & $696$ & $2040$ & $\mathbf{336}$ & $4374$ & $4002$ & $1386$ & $8568$ & $8568$\\
-        R-D~\cite{champion2019data} & $4$ & $\mathbf{20}$ & $52$ & $\mathbf{20}$ & $3064$ & - & $24$ & $24$ & $24$\\
+        R-D~\citep{champion2019data} & $4$ & $\mathbf{20}$ & $52$ & $\mathbf{20}$ & $3064$ & - & $24$ & $24$ & $24$\\
         \bottomrule
     \end{tabular}
     \end{small}
@@ -111,7 +111,7 @@ Please refer to Appendix~\ref{sec:apx-con:experimental_setup} for more implement
 \end{figure}
 
 \subsection{Training} 
-It is important to remember that because we are using a $\beta$-\gls{VAE}~\cite{kingma2014auto, higgins2017beta}, the image encoding becomes stochastic, and the encoder neural network actually outputs $\mu_z(o), 2 \, \log(\sigma_z)(o) \in \mathbb{R}^{n_z}$. After executing the reparametrization trick as $z(t_k) \sim \mathcal{N}(\mu_z(t_k), \sigma_z^2(t_k))$, we formulate the loss function, evaluated on each trajectory consisting of $N$ time-steps, as
+It is important to remember that because we are using a $\beta$-\gls{VAE}~\citep{kingma2014auto, higgins2017beta}, the image encoding becomes stochastic, and the encoder neural network actually outputs $\mu_z(o), 2 \, \log(\sigma_z)(o) \in \mathbb{R}^{n_z}$. After executing the reparametrization trick as $z(t_k) \sim \mathcal{N}(\mu_z(t_k), \sigma_z^2(t_k))$, we formulate the loss function, evaluated on each trajectory consisting of $N$ time-steps, as
 \begin{equation}\label{eq:training_loss}
 \begin{split}
     \mathcal{L} =& \: \sum_{k=0}^{N} \left ( \underbrace{\frac{\mathrm{MSE}(o(t_k), \Psi(z(t_k)))}{N+1}}_{\text{Static image reconstruction loss}} + \beta \underbrace{\frac{\mathcal{D}_\mathrm{KL} \left ( (\mu_z(t_k), \sigma_z(t_k) \right )}{N+1}}_{\text{Kullback–Leibler divergence}} \right )\\
@@ -134,19 +134,19 @@ We train the \gls{CON} with the input-to-forcing mapping $g(u) = B(u) \, u$, whe
 against several popular latent space model architectures:
 The \gls{NODE} model uses a \gls{MLP} with an hyperbolic activation functions and predicts $\dot{\xi}(t) = f_\mathrm{NODE}(\xi(t), u(t))$. To make the comparison fair, we parametrize the NODE's \gls{MLP} in the same fashion as for \emph{CON-M}. The \emph{MECH-NODE} integrates prior knowledge towards learning \nth{2}-order mechanical \glspl{ODE} and, therefore, predicts $\ddot{z}(t) = f_\mathrm{MECH-NODE}(\xi(t), u(t))$. 
 Furthermore, we consider multiple autoregressive models: \gls{RNN}, \gls{GRU}, and \gls{coRNN} and let them parameterize the following transition function: $\xi(t_{k+1}) = f_\mathrm{ar}(\xi(t_k), u(t_k))$
-As common in the relevant literature~\cite{botev2021priors}, we allow the autoregressive models to perform multiple time step transitions before predicting the next sample.
+As common in the relevant literature~\citep{botev2021priors}, we allow the autoregressive models to perform multiple time step transitions before predicting the next sample.
 For the autoencoder, we use a vanilla \gls{CNN}. More details can be found in Appendix~\ref{sec:apx-con:experimental_setup}.
 
 \subsection{Datasets} 
-We consider in total seven datasets that are based on simulations of unactuated mechanical systems, actuated continuum soft robots, and the reaction-diffusion dynamics. The first three, mechanical dataset are based on the work of Botev et al.~\cite{botev2021priors} and contain video sequences of a mass-spring system with friction (\emph{M-SP+F}), a single pendulum with friction (\emph{S-P+F}), and a double pendulum with friction (\emph{D-P+F}).
-Continuum soft robots have theoretically infinite \gls{DOF}, evolve with highly nonlinear and often time-dependent dynamical behaviors, and are notoriously difficult to model from first principles~\cite{armanini2023soft}. For that reason, it is a very interesting proposition if we could learn latent-space dynamical models directly from video~\cite{thuruthel2023multi} and later leverage them for control~\cite{almanzor2023static}. 
+We consider in total seven datasets that are based on simulations of unactuated mechanical systems, actuated continuum soft robots, and the reaction-diffusion dynamics. The first three, mechanical dataset are based on the work of Botev et al.~\citep{botev2021priors} and contain video sequences of a mass-spring system with friction (\emph{M-SP+F}), a single pendulum with friction (\emph{S-P+F}), and a double pendulum with friction (\emph{D-P+F}).
+Continuum soft robots have theoretically infinite \gls{DOF}, evolve with highly nonlinear and often time-dependent dynamical behaviors, and are notoriously difficult to model from first principles~\citep{armanini2023soft}. For that reason, it is a very interesting proposition if we could learn latent-space dynamical models directly from video~\citep{thuruthel2023multi} and later leverage them for control~\citep{almanzor2023static}. 
 Therefore, we generate three datasets based on the \gls{PCS} soft robot model. \emph{CS} considers one segment with constant strain and is modeled using three configuration variables. \emph{PCC-NS-2} and \emph{PCC-NS-3} only consider bending deformations and contain soft robots with two and three segments, respectively. 
-As all previous examples exampled \glspl{ODE}, we strive to test the proposed approach also on a system that is governed by \glspl{PDE}. Specifically, we consider the Reaction-diffusion (\emph{R-D}) dataset as included in the SINDy Autoencoder paper~\cite{champion2019data}.
+As all previous examples exampled \glspl{ODE}, we strive to test the proposed approach also on a system that is governed by \glspl{PDE}. Specifically, we consider the Reaction-diffusion (\emph{R-D}) dataset as included in the SINDy Autoencoder paper~\citep{champion2019data}.
 For all datasets, we generate images of size $32 \times 32 \mathrm{px}$ and subsequently normalize the pixels to the interval $[-1, 1]$. 
-% We tune all hyperparameters for each model and dataset separately using Optuna~\cite{akiba2019optuna}.
+% We tune all hyperparameters for each model and dataset separately using Optuna~\citep{akiba2019optuna}.
 
 \subsubsection{Unactuated mechanical datasets}
-We consider multiple mechanical datasets based on a standard implementation included in the \emph{Toy Physics} category of the \emph{NeurIPS 2021 Track on Datasets and Benchmarks} publication by Botev et al.~\cite{botev2021priors}:  mass-spring with friction (M-SP+F), a single pendulum with friction (S-P+F), and a double pendulum with friction (D-P+F).
+We consider multiple mechanical datasets based on a standard implementation included in the \emph{Toy Physics} category of the \emph{NeurIPS 2021 Track on Datasets and Benchmarks} publication by Botev et al.~\citep{botev2021priors}:  mass-spring with friction (M-SP+F), a single pendulum with friction (S-P+F), and a double pendulum with friction (D-P+F).
 All datasets contain $5000$ system trajectories in the training set and $1000$ trajectories each in the validation and test set.
 Each trajectory is generated by first randomly initializing the system, then rolling it out for $\SI{3}{s}$ using an Euler integrator with a time step size of $\SI{5}{ms}$. Samples are recorded at a rate of \SI{20}{Hz}  (i.e., a time step of \SI{0.05}{s}). As a result, each trajectory contains $60$ images of the system's state.
 As all of these datasets are unactuated, we can deactivate the input-to-forcing mapping component from all models (e.g., set $g(u) = 0$ for the \gls{CON} model).
@@ -158,8 +158,8 @@ Similarly to the \emph{M-SP+F} dataset, both the sign and the absolute value of 
 The position of each mass is rendered with a filled circle. For the single-link pendulum, this is done in grayscale, and for the double pendulum, each mass is rendered with a different color (i.e., blue and red).
 
 \subsubsection{Actuated continuum soft robot datasets}\label{ssub:con:soft_robot_dataset}
-The shape of slender and deformable rods can be approximated by considering the deformations along the 1D curve of the backbone~\cite{gazzola2018forward}. While this curve is still infinite-dimensional, it is possible to discretize the backbone into (many) segments with piecewise constant strain~\cite{renda2016discrete, gazzola2018forward}.
-Accordingly, we describe the kinematics of a planar continuum soft robot consisting of $n_\mathrm{b}$ segments with the \gls{PCS} model~\cite{renda2016discrete}. We assume each segment has a length of \SI{100}{mm} and a diameter of \SI{20}{mm}.
+The shape of slender and deformable rods can be approximated by considering the deformations along the 1D curve of the backbone~\citep{gazzola2018forward}. While this curve is still infinite-dimensional, it is possible to discretize the backbone into (many) segments with piecewise constant strain~\citep{renda2016discrete, gazzola2018forward}.
+Accordingly, we describe the kinematics of a planar continuum soft robot consisting of $n_\mathrm{b}$ segments with the \gls{PCS} model~\citep{renda2016discrete}. We assume each segment has a length of \SI{100}{mm} and a diameter of \SI{20}{mm}.
 The \gls{PCS} model assumes each segment to have constant strain. In the planar case, this means that the shape of the $i$th segment can be parametrized by $\xi_i = \begin{bmatrix}
     \kappa_{\mathrm{be},i} & \sigma_{\mathrm{sh},i} & \sigma_{\mathrm{ax},i}
 \end{bmatrix}^\mathrm{T} \in \mathbb{R}^{3}$ where $\kappa_{\mathrm{be},i}$ is the bending strain (i.e., the curvature) in the unit \si{rad \per \meter}, $\sigma_{\mathrm{sh},i}$ is the shear strain  (dimensionless), and $\sigma_{\mathrm{ax},i}$ is the axial elongation strain (dimensionless).
@@ -167,7 +167,7 @@ The robot's configuration is then defined as $q = \begin{bmatrix}
     \xi_1^\mathrm{T} & \cdots & \xi_i^\mathrm{T} & \cdots & \xi_{n_\mathrm{b}}^\mathrm{T}
 \end{bmatrix}^\mathrm{T}$.
 In the case of \gls{PCC}, only the bending strain is active as shear strains and axial strains are neglected, and the configuration is now $q \in \mathbb{R}^{n_\mathrm{b}}$.
-The \gls{PCS} model generates \gls{EOM} in the form of~\cite{della2023model}
+The \gls{PCS} model generates \gls{EOM} in the form of~\citep{della2023model}
 \begin{equation}
     B(q) \, \ddot{q} + C(q,\dot{q}) \, \dot{q} + G(q) + K_\mathrm{q} \, q + D_\mathrm{q} \, \dot{q} = u(t),
 \end{equation}
@@ -177,23 +177,23 @@ $u(t) \in \mathbb{R}^{n_\mathrm{b}}$ is an external force acting on the generali
 % \begin{figure}
 %     \centering
 %     \includegraphics[width=0.5\columnwidth]{figures/soft_robot/katzschmann_planar_soft_robot.png}
-%     \caption{A planar soft robot, consisting of six segments, that deforms with piecewise constant curvature. The behavior of the simulated robots included in datasets \emph{PCC-NS-2} and \emph{PCC-NS-3} resembles this pneumatically actuated robot. The source of the image is (Della Santina et al., 2020)~\cite{della2020model}.}
+%     \caption{A planar soft robot, consisting of six segments, that deforms with piecewise constant curvature. The behavior of the simulated robots included in datasets \emph{PCC-NS-2} and \emph{PCC-NS-3} resembles this pneumatically actuated robot. The source of the image is (Della Santina et al., 2020)~\citep{della2020model}.}
 %     \label{fig:enter-label}
 % \end{figure}
 
 We derive the corresponding dynamics for a continuum soft robot of material density $\SI{600}{kg \per \meter^3}$, elastic modulus of \SI{20000}{Pa}, shear modulus of \SI{10000}{Pa}, and damping coefficients of \SI{0.00001}{Nm^2s} for bending strains, \SI{0.01}{Ns} for shear strains, and \SI{0.01}{Ns} for axial strains, respectively.
 Gravity is pointing downwards.
-The implementation of the dynamics in JAX~\cite{jax2018github} is based on the \emph{JSRM} library~\cite{stolzle2024experimental, stolzle2024guiding}, and we simulate the robot using a constant integration time step of \SI{0.1}{ms}.
-We render grayscale images of the robot with a size of $32 \times 32 \mathrm{px}$ at a rate of \SI{50}{Hz} using OpenCV~\cite{opencv_library}. 
+The implementation of the dynamics in JAX~\citep{jax2018github} is based on the \emph{JSRM} library~\citep{stolzle2024experimental, stolzle2024guiding}, and we simulate the robot using a constant integration time step of \SI{0.1}{ms}.
+We render grayscale images of the robot with a size of $32 \times 32 \mathrm{px}$ at a rate of \SI{50}{Hz} using OpenCV~\citep{opencv_library}. 
 We generate $10000$ trajectories, each of duration \SI{2.0}{s} and a sampling time-step of $\SI{0.02}{s}$. We use \SI{60}{\percent} training, \SI{20}{\percent} validation, and \SI{20}{\percent} test split.
 For each trajectory, we randomly sample a constant actuation/input $u \sim \mathcal{U}(-u_\mathrm{max}, u_\mathrm{max})$. We choose the maximum actuation magnitude to be equal to the sum of the contribution of the potential forces (i.e., elastic and gravitational forces): $u_\mathrm{max} = G(q_\mathrm{max}) + K \, q_\mathrm{max}$ with $q_{\mathrm{max},i} = \begin{bmatrix}
     5 \, \pi~\si{rad \per m}, 0.2, 0.2
 \end{bmatrix}^\mathrm{T}$.
 
-We generate three datasets based on this continuum soft robot model: in the \emph{CS} dataset, we consider one segment with all three planar strains active (i.e., bending, shear, and elongation). This results in three \gls{DOF} and six-state variables in the dynamical model. In the case of the \emph{PCC-NS-2} and \emph{PCC-NS-3} datasets, we base the dataset on a simulated system consisting of two planar bending segments, respectively. Each segment is parametrized using \gls{CC}~\cite{webster2010design, rosi2022sensing}, which results in two configuration variables and a state dimension of four.
+We generate three datasets based on this continuum soft robot model: in the \emph{CS} dataset, we consider one segment with all three planar strains active (i.e., bending, shear, and elongation). This results in three \gls{DOF} and six-state variables in the dynamical model. In the case of the \emph{PCC-NS-2} and \emph{PCC-NS-3} datasets, we base the dataset on a simulated system consisting of two planar bending segments, respectively. Each segment is parametrized using \gls{CC}~\citep{webster2010design, rosi2022sensing}, which results in two configuration variables and a state dimension of four.
 
 \subsubsection{Unactuated PDE reaction-diffusion dataset}\label{ssub:con:reaction_diffusion_dataset}
- We consider the \nth{1}-order Reaction-diffusion (\emph{R-D}) \gls{PDE} on which (Champion et al, 2019)~\cite{champion2019data} evaluated their SINDy Autoencoder on. The \gls{PDE} of the high-dimensional lambda-omega reaction-diffusion system is defined as
+ We consider the \nth{1}-order Reaction-diffusion (\emph{R-D}) \gls{PDE} on which (Champion et al, 2019)~\citep{champion2019data} evaluated their SINDy Autoencoder on. The \gls{PDE} of the high-dimensional lambda-omega reaction-diffusion system is defined as
 \begin{equation}
 \begin{split}
     \frac{\partial u}{\partial t} =& \: \left ( 1 - (u^2 + v^2) \right ) u + \beta \, (u^2 + v^2) \, v + d_1 \left ( \frac{\partial^2 u}{\partial q_1^2} + \frac{\partial^2 u}{\partial q_2^2} \right ),\\
@@ -201,7 +201,7 @@ We generate three datasets based on this continuum soft robot model: in the \emp
 \end{split}
 \end{equation}
 where $u(t,q): \mathbb{R} \times \mathbb{R}^2 \to \mathbb{R}$ and $v(t,q): \mathbb{R} \times \mathbb{R}^2 \to \mathbb{R}$ are time-dependent two vector fields defined over the spatial domain $q \in \mathbb{R}^2$.
-We choose the same system parameters and initial condition as Champion et al.~\cite{champion2019data}: $d_1, d_2 = 0.1$, and $\beta = 1$ and 
+We choose the same system parameters and initial condition as Champion et al.~\citep{champion2019data}: $d_1, d_2 = 0.1$, and $\beta = 1$ and 
 \begin{equation}
 \begin{split}
     u(0,q) = \tanh \left ( \sqrt{q_1^2 + q_2^2} \, \cos \left ( \angle (q_1 + i q_2) - \sqrt{q_1^2 + q_2^2} \right ) \right ),\\
@@ -210,7 +210,7 @@ We choose the same system parameters and initial condition as Champion et al.~\c
 \end{equation}
 
 After discretizing the spatial domain into $32$ points along each dimension, we solve the \gls{PDE} with a MATLAB ODE45 solver the solution of $u(t,q)$ and $v(t,q)$ at each time step and grid point.
-Subsequently, the solution is multiplied with a Gaussian centered at the origin~\cite{champion2019data}
+Subsequently, the solution is multiplied with a Gaussian centered at the origin~\citep{champion2019data}
 \begin{equation}
 \begin{split}
     \bar{u}(t,q) =& \: \exp(-0.01 \, (q_1^2 + q_2^2)) \, \bar{u}(t,q),\\
@@ -260,7 +260,7 @@ Still, these initial results show that, for a comparable number of model paramet
     \subfigure[t=\SI{1.65}{s}]{\includegraphics[width=0.160\columnwidth]{con/figures/results/latent_dynamics/m-sp+f/sequence_of_stills/rollout_3_pred_1.65.png}}
     \subfigure[t=\SI{2.20}{s}]{\includegraphics[width=0.160\columnwidth]{con/figures/results/latent_dynamics/m-sp+f/sequence_of_stills/rollout_3_pred_2.20.png}}
     \subfigure[t=\SI{2.75}{s}]{\includegraphics[width=0.160\columnwidth]{con/figures/results/latent_dynamics/m-sp+f/sequence_of_stills/rollout_3_pred_2.75.png}}
-    \caption{Prediction sequence of a \gls{CON} model with latent dimension $n_z=4$ trained on the damped harmonic oscillator (\emph{M-SP+F}) dataset~\cite{botev2021priors}. 
+    \caption{Prediction sequence of a \gls{CON} model with latent dimension $n_z=4$ trained on the damped harmonic oscillator (\emph{M-SP+F}) dataset~\citep{botev2021priors}. 
     \textbf{Top row:} Ground-truth evolution of the system. \textbf{Bottom row:} Predictions of the \emph{CON} model. \newline
     The prediction model is given three images centered around $t=0$ for encoding the initial latent $z(0)$ and estimation of the initial latent velocity $\dot{z}(0)$. Subsequently, we roll out the autonomous network dynamics (i.e., unforced) and compare the decoded predictions with the ground-truth evolution of the system.  
     }\label{fig:con:latent_dynamics:sequence_of_stills:m-sp+f:rollout3}
@@ -282,7 +282,7 @@ Still, these initial results show that, for a comparable number of model paramet
     \subfigure[t=\SI{1.65}{s}]{\includegraphics[width=0.160\columnwidth]{con/figures/results/latent_dynamics/d-p+f/sequence_of_stills/rollout_7_pred_1.65.png}}
     \subfigure[t=\SI{2.20}{s}]{\includegraphics[width=0.160\columnwidth]{con/figures/results/latent_dynamics/d-p+f/sequence_of_stills/rollout_7_pred_2.20.png}}
     \subfigure[t=\SI{2.75}{s}]{\includegraphics[width=0.160\columnwidth]{con/figures/results/latent_dynamics/d-p+f/sequence_of_stills/rollout_7_pred_2.75.png}}
-    \caption{Prediction sequence of a \gls{CON} model with latent dimension $n_z=12$ trained on the double pendulum with friction (\emph{D-P+F}) dataset~\cite{botev2021priors}. 
+    \caption{Prediction sequence of a \gls{CON} model with latent dimension $n_z=12$ trained on the double pendulum with friction (\emph{D-P+F}) dataset~\citep{botev2021priors}. 
     \textbf{Top row:} ground-truth evolution of the system. \textbf{Bottom row:} predictions of the \emph{CON} model. \newline
     The prediction model is given three images centered around $t=0$ for encoding the initial latent $z(0)$ and estimation of the initial latent velocity $\dot{z}(0)$. Subsequently, we roll out the autonomous network dynamics (i.e., unforced) and compare the decoded predictions with the ground-truth evolution of the system.  
     }\label{fig:con:latent_dynamics:sequence_of_stills:d-p+f:rollout7}
