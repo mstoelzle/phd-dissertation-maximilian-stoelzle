@@ -17,15 +17,17 @@
     We verify the proposed approach extensively in simulations based on \gls{PCC}- \& \gls{PAC}-parametrized soft robots (Section~\ref{sec:promasens:pcc_simulations} \& \ref{sec:promasens:ac_simulations}), and experimentally in Section~\ref{sec:promasens:experiments} on a one-segment soft robot moving in 3D space.
 \end{foreword}
 
-\blfootnote{This chapter is partly based on \faFileTextO~\emph{T. Baaij*, M. K. Holkenborg*, \textbf{M. Stölzle}*, D. van der Tuin*, J. Naaktgeboren, R. Babuška, and C. Della Santina (2023). Learning 3D shape proprioception for continuum soft robots with multiple magnetic sensors. Soft Matter, 19(1), 44-56}~\citep{baaij2023learning}.
-}
-
 
 \pagebreak
 
 \begin{abstract}
     Sensing the shape of continuum soft robots without obstructing their movements and modifying their natural softness requires innovative solutions. This chapter proposes to use magnetic sensors that are fully integrated into the robot to achieve proprioception. Magnetic sensors are compact, sensitive, and easy to integrate into a soft robot. We also propose a neural architecture to make sense of the highly nonlinear relationship between the perceived intensity of the magnetic field and the shape of the robot. By injecting a priori knowledge from the kinematic model, we obtain an effective yet data-efficient learning strategy. We first demonstrate in simulation the value of this kinematic prior by investigating the proprioception behavior when varying the sensor configuration, which does not require us to re-train the neural network. We validate our approach in experiments involving one soft segment containing a cylindrical magnet and three magnetoresistive sensors. During the experiments, we achieve mean relative errors of 4.5\%.
 \end{abstract}
+
+\blfootnote{This chapter is partly based on \faFileTextO~\emph{T. Baaij*, M. K. Holkenborg*, \textbf{M. Stölzle}*, D. van der Tuin*, J. Naaktgeboren, R. Babuška, and C. Della Santina (2023). Learning 3D shape proprioception for continuum soft robots with multiple magnetic sensors. Soft Matter, 19(1), 44-56}~\citep{baaij2023learning}.
+
+\nth{1}-author contributions: M. Stölzle conceived and implemented the methodology, conducted all simulations, and wrote the paper. T. Baaij, M. K. Holkenborg, and D. van der Tuin developed the physical soft segment prototype, which included a strategy for embedding sensors and magnets into the robot and a pipeline for processing the experimental data.
+}
 
 %% Start the actual chapter on a new page.
 \newpage

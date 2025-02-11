@@ -14,14 +14,17 @@ This principal \gls{RQ} investigates how we can develop (dynamical) models for s
 
 \begin{researchquestion}\label{rq:soft_robotic_safety}
     % What makes soft robots safer than rigid robots, and when are they safe enough?
-    What makes soft robots safer than rigid robots, and under what conditions can they considered safe enough?
+    % What makes soft robots safer than rigid robots, and under what conditions can they considered safe enough?
+    How do we quantify safety in soft robotics?
 \end{researchquestion}
 % As referenced in Sec.~\ref{sec:introduction:motivation}, one of the key motivators behind soft robotics is that their passive compliance would increase/guarantee safety, which is crucial for deploying soft robots in human-centric environments.
 % While a few papers argue this connection between material softness and safety using toy models, such as the Timoshenko beam~\citep{abidi2017intrinsic}, the safety of soft robots has been so far neither a) quantified with a safety metric, b) analyzed in thorough experimental user studies, and c) compared to rigid robots in a quantitative fashion.
 % Therefore, we argue that in order to justify the continued investment into soft robotics research, the community needs to start quantifying the added safety of soft robots.
 % Or framed differently, quantifying the safety of soft robots would allow us to certify that they meet the safety requirements for specific human-centric applications.
 % This \gls{RQ}, which we investigate in Chapter~\ref{chp:safetymetric}, connects to the principal \gls{RQ} by analyzing the safety of the closed-loop system.
-As highlighted in Sec.\ref{sec:introduction:motivation}, a key driver of soft robotics is the belief that their passive compliance enhances or guarantees safety, a critical factor for deploying soft robots in human-centric environments~\citep{rus2015design, mengaldo2022concise}. While some studies link material softness to safety using simplified models, such as the Timoshenko beam\citep{abidi2017intrinsic}, the safety of soft robots has yet to be: a) quantified using a safety metric, b) rigorously evaluated through comprehensive experimental user studies, or c) compared quantitatively to rigid robots.
+As highlighted in Sec.\ref{sec:introduction:motivation}, a key driver of soft robotics is the belief that their passive compliance enhances or guarantees safety, a critical factor for deploying soft robots in human-centric environments~\citep{rus2015design, mengaldo2022concise}. While some studies link material softness to safety using simplified models, such as the Timoshenko beam\citep{abidi2017intrinsic}, the safety of soft robots has yet to be: a) quantified using a safety metric, 
+% b) rigorously evaluated through comprehensive experimental user studies, 
+or b) compared quantitatively to rigid robots.
 To justify continued investment in soft robotics research, we argue that the field must begin quantifying the safety benefits of soft robots. Alternatively, framing the issue differently, quantifying safety would allow us to certify that soft robots meet the safety requirements for specific human-centric applications.
 This \gls{RQ}, which we explore in Chapter~\ref{chp:safetymetric}, ties into the primary \gls{RQ} by evaluating the safety of the closed-loop system.
 
@@ -41,7 +44,7 @@ For these reasons, Chapters~\ref{chp:srslam} \& \ref{chp:promasens} investigate 
 
 \begin{researchquestion}\label{rq:actuation_models}
     % Which advanced actuation models are required for exploiting the dynamic behavior of soft robots, and how can we leverage them for control? 
-    Which advanced actuation models are necessary for exploiting the dynamic behavior of soft robots, and how can they be utilized for control?
+    An aspect of the physical priors that needed a closer look: Which advanced actuation models are necessary for exploiting the dynamic behavior of soft robots, and how can they be utilized for control?
 \end{researchquestion}
 % Over the last decade, there has been tremendous progress on the modeling~\citep{armanini2023soft} and the control~\citep{della2023model} of soft robots.
 % To this day, most of the research has focused on identifying expressive and, at the same, low-dimensional, kinematic, and dynamic models that accurately capture the behavior of the soft robot's backbone shape. Such control-oriented models have proven to be key for improving the performance and effectiveness of model-based controllers.
@@ -76,7 +79,7 @@ Recent research has taken steps toward incorporating physical structure into lea
 
 
 \begin{researchquestion}\label{rq:compliant_motion_behaviors}
-    How can we generate compliant motion behaviors for soft robots?
+    How can we generate compliant and precise motion behaviors for soft robots?
 \end{researchquestion}
 % A compliant structure (provided by the material softness) and a compliant low-level controller (e.g., an impedance controller) alone are not sufficient for generating safe and compliant motions around humans as the high-level motion policy providing references and setpoints to the low-level controller can also instill unstable, unnatural/unexpected, or unsafe behavior into the soft robotic system.
 % Adding on to this point, motion policies/planning tailored towards soft robots is an underexplored topic in general.
