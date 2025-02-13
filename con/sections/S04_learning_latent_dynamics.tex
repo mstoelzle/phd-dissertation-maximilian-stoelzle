@@ -52,7 +52,7 @@ Please refer to Appendix~\ref{sec:apx-con:experimental_setup} for more implement
 \begin{landscape}
 \begin{table}
     \centering
-    \begin{small}
+    \begin{scriptsize}
     \setlength\tabcolsep{2pt}
     \begin{tabular}{c c c c c c c c}
          \toprule
@@ -69,7 +69,7 @@ Please refer to Appendix~\ref{sec:apx-con:experimental_setup} for more implement
          CFA-CON (our) & $0.0313 \pm 0.0026$ & $0.1352 \pm 0.0073$ & $\mathbf{0.1307 \pm 0.0012}$ & $0.1462 \pm 0.0211$ & $0.1124 \pm 0.0025$ & $0.1803 \pm 0.0003$ & $0.1068 \pm 0.0059$\\
          \bottomrule
     \end{tabular}
-    \end{small}
+    \end{scriptsize}
     \caption{Benchmarking of \gls{CON} and \gls{CFA-CON} at learning latent dynamics against baseline methods. 
     The first three datasets, based on ~\citep{botev2021priors}, contain samples of a mass-spring with friction (\emph{M-SP + F}), a single pendulum with friction (\emph{S-P + F}), and a double pendulum with friction (\emph{D-P + F}) (all without system inputs).
     The \emph{CS} dataset considers a continuum soft robot consisting of one segment with three constant planar strains. The \emph{PCC-NS-2} and \emph{PCC-NS-3} datasets contain trajectories of a continuum soft robot made of two and three piecewise constant curvature segments, respectively.
@@ -82,7 +82,7 @@ Please refer to Appendix~\ref{sec:apx-con:experimental_setup} for more implement
 
 \begin{table}
     \centering
-    \begin{small}
+    \begin{scriptsize}
     \setlength\tabcolsep{2.5pt}
     \begin{tabular}{c|c|c|c|c|c|c|c|c|c}
         \toprule
@@ -97,7 +97,7 @@ Please refer to Appendix~\ref{sec:apx-con:experimental_setup} for more implement
         R-D~\citep{champion2019data} & $4$ & $\mathbf{20}$ & $52$ & $\mathbf{20}$ & $3064$ & - & $24$ & $24$ & $24$\\
         \bottomrule
     \end{tabular}
-    \end{small}
+    \end{scriptsize}
     \caption{Number of trainable parameters for the each latent dynamic models depending on the respective dataset: mass-spring with friction (\emph{M-SP+F}), single pendulum with friction (\emph{S-P+F}), double pendulum with friction (\emph{D-P+F}), a constant strain soft robot (\emph{CS}), a piecewise constant curvature with two segments (\emph{PCC-NS-2}, a piecewise constant curvature soft robot with three segments (\emph{PCC-NS-3}, and reaction-diffusion (\emph{R-D}).}
     \label{tab:con:latent_dynamics_number_of_parameters}
 \end{table}
@@ -184,7 +184,7 @@ $u(t) \in \mathbb{R}^{n_\mathrm{b}}$ is an external force acting on the generali
 We derive the corresponding dynamics for a continuum soft robot of material density $\SI{600}{kg \per \meter^3}$, elastic modulus of \SI{20000}{Pa}, shear modulus of \SI{10000}{Pa}, and damping coefficients of \SI{0.00001}{Nm^2s} for bending strains, \SI{0.01}{Ns} for shear strains, and \SI{0.01}{Ns} for axial strains, respectively.
 Gravity is pointing downwards.
 The implementation of the dynamics in JAX~\citep{jax2018github} is based on the \emph{JSRM} library~\citep{stolzle2024experimental, stolzle2024guiding}, and we simulate the robot using a constant integration time step of \SI{0.1}{ms}.
-We render grayscale images of the robot with a size of $32 \times 32 \mathrm{px}$ at a rate of \SI{50}{Hz} using OpenCV~\citep{opencv_library}. 
+We render grayscale images of the robot with a size of $32 \times 32 \mathrm{px}$ at a rate of \SI{50}{Hz} using OpenCV~\citep{bradski2000opencv}. 
 We generate $10000$ trajectories, each of duration \SI{2.0}{s} and a sampling time-step of $\SI{0.02}{s}$. We use \SI{60}{\percent} training, \SI{20}{\percent} validation, and \SI{20}{\percent} test split.
 For each trajectory, we randomly sample a constant actuation/input $u \sim \mathcal{U}(-u_\mathrm{max}, u_\mathrm{max})$. We choose the maximum actuation magnitude to be equal to the sum of the contribution of the potential forces (i.e., elastic and gravitational forces): $u_\mathrm{max} = G(q_\mathrm{max}) + K \, q_\mathrm{max}$ with $q_{\mathrm{max},i} = \begin{bmatrix}
     5 \, \pi~\si{rad \per m}, 0.2, 0.2

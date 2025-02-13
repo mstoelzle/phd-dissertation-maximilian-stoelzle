@@ -52,12 +52,7 @@
 \thumbtrue
 
 \include{introduction/introduction}
-
-\chapter{Background on Modeling and Control of Soft Robots}\label{chp:background}
-\section{Kinematic Parametrizations}
-\section{Dynamic Modeling}
-\section{Model-Based Controllers}
-
+\include{background/background}
 \include{safetymetric/safetymetric}
 
 
@@ -84,21 +79,9 @@
 %% Use letters for the chapter numbers of the appendices.
 \part{Appendices and Supplementary Material}
 \appendix
-
 \include{appendix-con/appendix-con}
-
-\chapter{How Holistic Co-Design Will Enable the Societal Uptake of Soft Robots}\label{chp:apx:towardscodesign}
-\section{Existing Soft Robotic Co-Design Approaches}
-\section{A Framework for Holistic Co-Design}
-\section{Reduced-order Design Parametrizations}
-\section{Co-Designing Physical Intelligence}
-\section{Exploiting Safety vs. Performance Trade-off with Multi-objective Optimization}
-
-\chapter{Software Libraries \& Lab Infrastructure}
-\section{Motion Capture System}
-\section{Pressure Regulator}
-\section{Soft Robot Models in JAX}
-\section{HSA ROS2 Ecosystem}
+\include{appendix-towardscodesign/appendix-towardscodesign}
+\include{appendix-infrastructure/appendix-infrastructure}
 
 % turn off the part
 \bookmarksetup{startatroot}% this is it

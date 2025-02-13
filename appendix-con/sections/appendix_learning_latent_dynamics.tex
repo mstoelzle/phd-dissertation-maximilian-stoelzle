@@ -5,10 +5,10 @@ In Figs.~\ref{fig:apx-con:latent_dynamics:sequence_of_stills:s-p+f:rollout6}-~\r
 
 \begin{table}[ht]
     \centering
-    \begin{small}
+    \begin{scriptsize}
     \begin{tabular}{c c c c c}
          \toprule
-         \textbf{Model} & \textbf{RMSE} $\downarrow$ & \textbf{PSNR} $\uparrow$ & \textbf{SSIM} $\uparrow$ & \textbf{\# Parameters} $\downarrow$ \\
+         \textbf{Model} & \textbf{RMSE} $\downarrow$ & \textbf{PSNR} $\uparrow$ & \textbf{SSIM} $\uparrow$ & \textbf{\# Params.} $\downarrow$ \\
          \midrule
          RNN & $0.2739 \pm 0.0057$ & $4.16 \pm 0.02$ & $0.6958 \pm 0.0122$ & $88$\\
          GRU~\citep{cho2014learning} & $0.0267 \pm 0.0033$ & $\mathbf{6.13 \pm 0.09}$ & $0.9861 \pm 0.0022$ & $248$\\
@@ -19,7 +19,7 @@ In Figs.~\ref{fig:apx-con:latent_dynamics:sequence_of_stills:s-p+f:rollout6}-~\r
          CFA-CON (our) & $0.0313 \pm 0.0026$ & $6.02 \pm 0.06$ & $0.9843 \pm 0.0008$ & $\mathbf{34}$\\
          \bottomrule
     \end{tabular}
-    \end{small}
+    \end{scriptsize}
     \vspace{0.5cm}
     \caption{Benchmarking of \gls{CON} and \gls{CFA-CON} at learning latent dynamics on the \textbf{\emph{M-SP+F} (mass-spring with friction) dataset}. For all models, a latent dimension of $n_z=4$ is chosen.
     % Therefore, the input mapping of CON/CFA-CON is a constant matrix and there is not difference w.r.t. input mapping capacity (e.g, \emph{CON-S} vs. \emph{CON-M}). 
@@ -31,10 +31,10 @@ In Figs.~\ref{fig:apx-con:latent_dynamics:sequence_of_stills:s-p+f:rollout6}-~\r
 
 \begin{table}[ht]
     \centering
-    \begin{small}
+    \begin{scriptsize}
     \begin{tabular}{c c c c c}
          \toprule
-         \textbf{Model} & \textbf{RMSE} $\downarrow$ & \textbf{PSNR} $\uparrow$ & \textbf{SSIM} $\uparrow$ & \textbf{\# Parameters} $\downarrow$ \\
+         \textbf{Model} & \textbf{RMSE} $\downarrow$ & \textbf{PSNR} $\uparrow$ & \textbf{SSIM} $\uparrow$ & \textbf{\# Params.} $\downarrow$ \\
          \midrule
          RNN & $0.2378 \pm 0.0352$ & $4.31 \pm 0.15$ & $0.7568 \pm 0.0350$ & $88$\\
          GRU~\citep{cho2014learning} & $0.1457 \pm 0.0078$ & $4.78 \pm 0.05$ & $0.9168 \pm 0.0093$ & $248$\\
@@ -45,7 +45,7 @@ In Figs.~\ref{fig:apx-con:latent_dynamics:sequence_of_stills:s-p+f:rollout6}-~\r
          CFA-CON (our) & $0.1352 \pm 0.0073$ & $4.85 \pm 0.05$ & $0.9133 \pm 0.0052$ & $\mathbf{34}$\\
          \bottomrule
     \end{tabular}
-    \end{small}
+    \end{scriptsize}
     \vspace{0.5cm}
     \caption{Benchmarking of \gls{CON} and \gls{CFA-CON} at learning latent dynamics on the \textbf{\emph{S-P+F} (single pendulum with friction) dataset}. For all models, a latent dimension of $n_z=4$ is chosen. 
     % This dataset does not contain inputs. Therefore, the input mapping of CON/CFA-CON is a constant matrix and there is not difference w.r.t. input mapping capacity (e.g, \emph{CON-S} vs. \emph{CON-M}). 
@@ -57,10 +57,10 @@ In Figs.~\ref{fig:apx-con:latent_dynamics:sequence_of_stills:s-p+f:rollout6}-~\r
 
 \begin{table}[ht]
     \centering
-    \begin{small}
+    \begin{scriptsize}
     \begin{tabular}{c c c c c}
          \toprule
-         \textbf{Model} & \textbf{RMSE} $\downarrow$ & \textbf{PSNR} $\uparrow$ & \textbf{SSIM} $\uparrow$ & \textbf{\# Parameters} $\downarrow$ \\
+         \textbf{Model} & \textbf{RMSE} $\downarrow$ & \textbf{PSNR} $\uparrow$ & \textbf{SSIM} $\uparrow$ & \textbf{\# Params.} $\downarrow$ \\
          \midrule
          RNN & $0.1694 \pm 0.0004$ & $4.631 \pm 0.002$ & $0.7082 \pm 0.0032$ & $672$\\
          GRU~\citep{cho2014learning} & $0.1329 \pm 0.0005$ & $4.858 \pm 0.003$ & $\mathbf{0.8340 \pm 0.0021}$ & $1968$\\
@@ -71,7 +71,7 @@ In Figs.~\ref{fig:apx-con:latent_dynamics:sequence_of_stills:s-p+f:rollout6}-~\r
          CFA-CON (our) & $\mathbf{0.1307 \pm 0.0012}$ & $\mathbf{4.873 \pm 0.008}$ & $0.8147 \pm 0.0034$ & $\mathbf{246}$\\
          \bottomrule
     \end{tabular}
-    \end{small}
+    \end{scriptsize}
     \vspace{0.5cm}
     \caption{Benchmarking of \gls{CON} and \gls{CFA-CON} at learning latent dynamics on the \textbf{\emph{D-P+F} (double pendulum with friction) dataset}. For all models, a latent dimension of $n_z=12$ is chosen. 
     % This dataset does not contain inputs. Therefore, the input mapping of CON/CFA-CON is a constant matrix and there is not difference w.r.t. input mapping capacity (e.g, \emph{CON-S} vs. \emph{CON-M}). 
@@ -83,10 +83,10 @@ In Figs.~\ref{fig:apx-con:latent_dynamics:sequence_of_stills:s-p+f:rollout6}-~\r
 
 \begin{table}[ht]
     \centering
-    \begin{small}
+    \begin{scriptsize}
     \begin{tabular}{c c c c c}
          \toprule
-         \textbf{Model} & \textbf{RMSE} $\downarrow$ & \textbf{PSNR} $\uparrow$ & \textbf{SSIM} $\uparrow$ & \textbf{\# Parameters} $\downarrow$ \\
+         \textbf{Model} & \textbf{RMSE} $\downarrow$ & \textbf{PSNR} $\uparrow$ & \textbf{SSIM} $\uparrow$ & \textbf{\# Params.} $\downarrow$ \\
          \midrule
          RNN & $\mathbf{0.1011 \pm 0.0009}$ & $\mathbf{25.92 \pm 0.08}$ & $\mathbf{0.9777 \pm 0.0004}$ & $696$\\
          GRU~\citep{cho2014learning} & $0.1125 \pm 0.0100$ & $24.99 \pm 0.74$ & $0.9730 \pm 0.0040$ & $2040$\\
@@ -98,7 +98,7 @@ In Figs.~\ref{fig:apx-con:latent_dynamics:sequence_of_stills:s-p+f:rollout6}-~\r
          CFA-CON (our) & $0.1462 \pm 0.0211$ & $22.72 \pm 1.17$ & $0.9573 \pm 0.0103$ & $8568$\\
          \bottomrule
     \end{tabular}
-    \end{small}
+    \end{scriptsize}
     \vspace{0.5cm}
     \caption{Benchmarking of \gls{CON} and \gls{CFA-CON} at learning latent dynamics on the \textbf{\emph{CS} (soft robot with one constant strain segment) dataset}. For all models, a latent dimension of $n_z=12$ is chosen. \emph{CON-S} and \emph{CON-M} are small and medium-sized versions of the \gls{CON} model, respectively. \emph{MECH-NODE} is a \gls{NODE} with prior knowledge about the mechanical structure of the system (i.e., $\frac{\mathrm{d}x}{\mathrm{d}t} = \dot{x}$). We report the mean and standard deviation over three different random seeds and the number of parameters of each latent dynamics model.
 }
@@ -111,7 +111,7 @@ In Figs.~\ref{fig:apx-con:latent_dynamics:sequence_of_stills:s-p+f:rollout6}-~\r
     \setlength\tabcolsep{2.0pt}
     \begin{tabular}{c c c c c c c c}
          \toprule
-         \textbf{Model} & \textbf{RMSE} $\downarrow$ & \textbf{PSNR} $\uparrow$ & \textbf{SSIM} $\uparrow$ & \textbf{\# Parameters} $\downarrow$ & $\mathbf{\frac{\text{Train. steps}}{\text{second}}}$ $\uparrow$ & \textbf{Inf. time} [ms] $\uparrow$\\
+         \textbf{Model} & \textbf{RMSE} $\downarrow$ & \textbf{PSNR} $\uparrow$ & \textbf{SSIM} $\uparrow$ & \textbf{\# Params.} $\downarrow$ & $\mathbf{\frac{\text{Train. steps}}{\text{second}}}$ $\uparrow$ & \textbf{Inf. time} [ms] $\uparrow$\\
          \midrule
          RNN & $0.1373 \pm 0.0185$ & $23.27 \pm 1.10$ & $0.9643 \pm 0.0077$ & $320$ & $1.87$ & $02.6$\\
          GRU~\citep{cho2014learning} & $0.0951 \pm 0.0021$ & $\mathbf{26.45 \pm 0.19}$ & $0.9730 \pm 0.0040$ & $928$ & $1.83$ & $03.2$\\
@@ -132,10 +132,10 @@ In Figs.~\ref{fig:apx-con:latent_dynamics:sequence_of_stills:s-p+f:rollout6}-~\r
 
 \begin{table}[ht]
     \centering
-    \begin{small}
+    \begin{scriptsize}
     \begin{tabular}{c c c c c}
          \toprule
-         \textbf{Model} & \textbf{RMSE} $\downarrow$ & \textbf{PSNR} $\uparrow$ & \textbf{SSIM} $\uparrow$ & \textbf{\# Parameters} $\downarrow$ \\
+         \textbf{Model} & \textbf{RMSE} $\downarrow$ & \textbf{PSNR} $\uparrow$ & \textbf{SSIM} $\uparrow$ & \textbf{\# Params.} $\downarrow$ \\
          \midrule
          RNN & $0.2232 \pm 0.0075$ & $19.05 \pm 0.29$ & $0.8955 \pm 0.0083$ & $696$\\
          GRU~\citep{cho2014learning} & $0.2148 \pm 0.0196$ & $19.38 \pm 0.76$ & $0.9039 \pm 0.0223$ & $2040$\\
@@ -147,7 +147,7 @@ In Figs.~\ref{fig:apx-con:latent_dynamics:sequence_of_stills:s-p+f:rollout6}-~\r
          CFA-CON (our) & $0.1803 \pm 0.0003$ & $20.90 \pm 0.01$ & $0.9366 \pm 0.0004$ & $8568$\\
          \bottomrule
     \end{tabular}
-    \end{small}
+    \end{scriptsize}
     \vspace{0.5cm}
     \caption{Benchmarking of \gls{CON} and \gls{CFA-CON} at learning latent dynamics on the \textbf{\emph{PCC-NS-3} (soft robot with three constant curvature segments) dataset}. For all models, a latent dimension of $n_z=12$ is chosen. \emph{CON-S} and \emph{CON-M} are small and medium-sized versions of the \gls{CON} model, respectively. \emph{MECH-NODE} is a \gls{NODE} with prior knowledge about the mechanical structure of the system (i.e., $\frac{\mathrm{d}x}{\mathrm{d}t} = \dot{x}$). We report the mean and standard deviation over three different random seeds and the number of parameters of each latent dynamics model.
 }
@@ -156,10 +156,10 @@ In Figs.~\ref{fig:apx-con:latent_dynamics:sequence_of_stills:s-p+f:rollout6}-~\r
 
 \begin{table}[ht]
     \centering
-    \begin{small}
+    \begin{scriptsize}
     \begin{tabular}{c c c c c}
          \toprule
-         \textbf{Model} & \textbf{RMSE} $\downarrow$ & \textbf{PSNR} $\uparrow$ & \textbf{SSIM} $\uparrow$ & \textbf{\# Parameters} $\downarrow$ \\
+         \textbf{Model} & \textbf{RMSE} $\downarrow$ & \textbf{PSNR} $\uparrow$ & \textbf{SSIM} $\uparrow$ & \textbf{\# Params.} $\downarrow$ \\
          \midrule
          RNN & $0.3763 \pm 0.0374$ & $3.82 \pm 0.12$ & $0.4463 \pm 0.1358$ & $\mathbf{20}$\\
          GRU~\citep{cho2014learning} & $0.3232 \pm 0.0368$ & $\mathbf{3.99 \pm 0.13}$ & $0.6798 \pm 0.0949$ & $52$\\
@@ -169,7 +169,7 @@ In Figs.~\ref{fig:apx-con:latent_dynamics:sequence_of_stills:s-p+f:rollout6}-~\r
          CFA-CON (our) & $0.1068 \pm 0.0059$ & $5.05 \pm 0.05$ & $0.9418 \pm 0.0026$ & $24$\\
          \bottomrule
     \end{tabular}
-    \end{small}
+    \end{scriptsize}
     \vspace{0.5cm}
     \caption{Benchmarking of \gls{CON} and \gls{CFA-CON} at learning latent dynamics on the \textbf{\emph{R-D} (reaction-diffusion) dataset}. For all models, a latent dimension of $n_z=4$ is chosen.
     % Therefore, the input mapping of CON/CFA-CON is a constant matrix and there is not difference w.r.t. input mapping capacity (e.g, \emph{CON-S} vs. \emph{CON-M}). 
