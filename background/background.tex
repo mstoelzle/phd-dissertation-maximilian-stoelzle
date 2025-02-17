@@ -1,23 +1,5 @@
 \chapter{Background on Modeling and Control of Soft Robots}\label{chp:background}
-\section{Kinematics}
-\section{Dynamics}
-Irrespective of the specific chosen kinematic parameterization, the Euler-Lagrange dynamics of a soft can be usually stated in the following form~\citep{della2023model}:
-\begin{equation}
-    M(q) \, \ddot{q} + C(q, \dot{q}) \, \dot{q} + K(q) + G(q) + D \, \dot{q} = \alpha(q,\tau) = A(q) \, \tau,
-\end{equation}
-where the mass matrix $M(q) \in \mathbb{R}^{n \times n}$
-% \footnote{Note that in some chapters of this thesis, we also use the symbol $M(q)$ to refer to the mass matrix $B(q)$.} 
-captures the inertia of the robot, $C(q,\dot{q}) \in \mathbb{R}^{n \times n}$ integrates the Coriolis and centrifugal effects, $K(q), G(q) \in \mathbb{R}^{n}$ contribute elastic and gravitational forces, respectively, and $D \succeq 0$ is the damping matrix.
-We assume that the soft robot is driven by $m$ actuators through the term $\alpha: q \times \tau \mapsto A(q) \, \tau$, where $A(q) \in \mathbb{R}^{n \times m}$.
-\footnote{We note while this control-affine formulation with a configuration-dependent actuation matrix $A(q)$ can capture the characteristics of most currently existing soft robots actuation methods, such as pneumatic or tendon-driven actuation, the actuation can also become a more general nonlinear function $\alpha(q,\tau)$, such as it is the case for the \gls{HSA} robot actuation model presented in Chapter~\ref{chp:hsamodel}. Furthermore, when additionally considering the actuator dynamics, as in Chapter~\ref{chp:backstepping} for pneumatic pistons, the generalized actuation torque is possibly also a function of the actuator's state $(\mu,\dot{\mu})$.}
 
-
-
-
-\subsection{Operational-space Dynamics}
-
-\subsection{Actuation-space Dynamics}
-
-\section{Model-Based Controllers}
-For simplicity, we refer in the following to the fully actuated case and specifically the case of an identified actuation matrix $A = \mathbb{I}_n$.
-For an extended discussion on the control in the underactuated setting (i.e., $m < n$), we refer the interested reader to \citet{pustina2025analysis}.
+\input{background/sections/S01_kinematics}
+\input{background/sections/S02_dynamics}
+\input{background/sections/S03_model_based_control}

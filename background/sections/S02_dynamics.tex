@@ -1,0 +1,27 @@
+\section{Dynamics}\label{sec:background:dynamics}
+Irrespective of the specific chosen kinematic parameterization, the Euler-Lagrange dynamics of a soft can be usually stated in the following form~\citep{della2023model}:
+\begin{equation}
+    M(q) \, \ddot{q} + C(q, \dot{q}) \, \dot{q} + K(q) + G(q) + D \, \dot{q} = \alpha(q,\tau) = A(q) \, \tau,
+\end{equation}
+where the mass matrix $M(q) \in \mathbb{R}^{n \times n}$
+% \footnote{Note that in some chapters of this thesis, we also use the symbol $M(q)$ to refer to the mass matrix $B(q)$.} 
+captures the inertia of the robot, $C(q,\dot{q}) \in \mathbb{R}^{n \times n}$ integrates the Coriolis and centrifugal effects, $K(q), G(q) \in \mathbb{R}^{n}$ contribute elastic and gravitational forces, respectively, and $D \succeq 0$ is the damping matrix.
+We assume that the soft robot is driven by $m$ actuators through the term $\alpha: q \times \tau \mapsto A(q) \, \tau$, where $A(q) \in \mathbb{R}^{n \times m}$.
+\footnote{We note while this control-affine formulation with a configuration-dependent actuation matrix $A(q)$ can capture the characteristics of most currently existing soft robots actuation methods, such as pneumatic or tendon-driven actuation, the actuation can also become a more general nonlinear function $\alpha(q,\tau)$, such as it is the case for the \gls{HSA} robot actuation model presented in Chapter~\ref{chp:hsamodel}. Furthermore, when additionally considering the actuator dynamics, as in Chapter~\ref{chp:backstepping} for pneumatic pistons, the generalized actuation torque is possibly also a function of the actuator's state $(\mu,\dot{\mu})$.}
+
+\subsection{System Energy}
+Usually, we can derive analytically the kinetic and potential energy of the system
+\begin{equation}
+    \mathcal{T}(q,\dot{q}) = \frac{1}{2} \dot{q}^\top S \, \dot{q},
+\end{equation}
+where $\mathcal{T}(q,\dot{q}) \geq 0$ is the kinetic and $\mathcal{U}(q)$ the potential energy consisting of elastic and gravitational terms $\mathcal{U}_\mathrm{K}(q)$, $\mathcal{U}_\mathrm{G}(q)$.
+which results in $K(q) + G(q) = \frac{\partial \mathcal{U}}{\partial q}$. 
+With linear elasticity $K(q) = S \, q$, where $S \in \mathbb{R}^{n \times n}$ is the stiffness of the generalized coordinates, the elastic potential energy becomes $\mathcal{U}_\mathrm{K}(q) = \frac{1}{2} q^\top S \, q$.
+
+
+As seen in \citet{della2020model, della2023model}, Chapters~\ref{chp:backstepping} \& \ref{chp:con}, this energy field can serve as a starting point for analyzing the stability of the open- and closed-loop system using Lyapunov arguments~\citep{khalil2002nonlinear}.
+
+
+\subsection{Operational-space Dynamics}
+
+\subsection{Actuation-space Dynamics}
