@@ -3,11 +3,13 @@
 \section{Dynamics}
 Irrespective of the specific chosen kinematic parameterization, the Euler-Lagrange dynamics of a soft can be usually stated in the following form~\citep{della2023model}:
 \begin{equation}
-    B(q) \, \ddot{q} + C(q, \dot{q}) \, \dot{q} + K(q) + G(q) + D \, \dot{q} = A(q) \, \tau,
+    M(q) \, \ddot{q} + C(q, \dot{q}) \, \dot{q} + K(q) + G(q) + D \, \dot{q} = \alpha(q,\tau) = A(q) \, \tau,
 \end{equation}
-where the mass matrix $B(q) \in \mathbb{R}^{n \times n}$\footnote{Note that in some chapters of this thesis, we also use the symbol $M(q)$ to refer to the mass matrix $B(q)$.} captures the inertia of the robot, $C(q,\dot{q}) \in \mathbb{R}^{n \times n}$ integrates the Coriolis and centrifugal effects, $K(q)$ .
-We assume that the soft robot is actuated through the term $A(q) \, \tau$, where $A(q) $.
-\footnote{We note while this control-affine formulation with a configuration-dependent actuation matrix $A(q)$ can capture the characteristics of most currently existing soft robots actuation methods, such as pneumatic or tendon-driven actuation, the actuation }
+where the mass matrix $M(q) \in \mathbb{R}^{n \times n}$
+% \footnote{Note that in some chapters of this thesis, we also use the symbol $M(q)$ to refer to the mass matrix $B(q)$.} 
+captures the inertia of the robot, $C(q,\dot{q}) \in \mathbb{R}^{n \times n}$ integrates the Coriolis and centrifugal effects, $K(q), G(q) \in \mathbb{R}^{n}$ contribute elastic and gravitational forces, respectively, and $D \succeq 0$ is the damping matrix.
+We assume that the soft robot is driven by $m$ actuators through the term $\alpha: q \times \tau \mapsto A(q) \, \tau$, where $A(q) \in \mathbb{R}^{n \times m}$.
+\footnote{We note while this control-affine formulation with a configuration-dependent actuation matrix $A(q)$ can capture the characteristics of most currently existing soft robots actuation methods, such as pneumatic or tendon-driven actuation, the actuation can also become a more general nonlinear function $\alpha(q,\tau)$, such as it is the case for the \gls{HSA} robot actuation model presented in Chapter~\ref{chp:hsamodel}. Furthermore, when additionally considering the actuator dynamics, as in Chapter~\ref{chp:backstepping} for pneumatic pistons, the generalized actuation torque is possibly also a function of the actuator's state $(\mu,\dot{\mu})$.}
 
 
 
