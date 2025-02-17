@@ -1,10 +1,10 @@
 \section{Shape Regulation under PCC Approximation}
 %
-This section provides an example of application of the proposed model augmentation and model-based control strategy for the setpoint regulation of a pneumatically actuated planar soft robot, modeled through \gls{PCC} approximation with acting gravity forces. 
+This section provides an example of the application of the proposed model augmentation and model-based control strategy for the setpoint regulation of a pneumatically actuated planar soft robot, modeled through \gls{PCC} approximation with acting gravity forces. 
 
 \subsection{Model}\label{sub:backstepping:pcc_model}
 \textbf{Background - PCC dynamic model:}
-We consider a planar soft robotic arm consisting of three segments analogue to \citep{della2020model} modelled using the \gls{PCC}~\citep{jones2006kinematics} assumption, but the formulation can be easily extended to the 3D case while neglecting the torsional deformations. Alternatively, a strain-based parameterization could be employed~\citep{boyer2020dynamics}. 
+We consider a planar soft robotic arm consisting of three segments analog to \citep{della2020model} modeled using the \gls{PCC}~\citep{jones2006kinematics} assumption, but the formulation can be easily extended to the 3D case while neglecting the torsional deformations. Alternatively, a strain-based parameterization could be employed~\citep{boyer2020dynamics}. 
 % The \gls{PCC}~\citep{jones2006kinematics} assumption stitches together segments each with constant curvature.
 We assume a weight distribution of $m_i = \int_{0}^{l_i} \rho_i(s') ds'$ along the center line of the segment $i$. Gravity is acting along the vector $g \in \mathbb{R}^2$. We consider the following equations of motions with diagonal matrices $K$ and $D$:
 \begin{equation}\label{eq:backstepping:dynamics_pcc_case}
@@ -34,7 +34,7 @@ The function $l_i(d'_\mathrm{C})$ is derived by the properties of constant curva
 %     l_i(d'_\mathrm{C}) = \frac{r_i-d'_\mathrm{C}}{r_i} l_{0,i} = l_{0,i} - q_i d'_\mathrm{C}.
 % \end{equation}
 % We can use this expression to analytically integrate along $d_\mathrm{C}'$. 
-The integration inherits an opposite sign for the change of volume with $q_i$ for the left and right chamber respectively for an inner and outer chamber wall radius of $0 < d_{\mathrm{C},\mathrm{a}} < d_{\mathrm{C},\mathrm{b}} < d_i$ and a continuum segment of radius $d_i$:
+The integration inherits an opposite sign for the change of volume with $q_i$ for the left and right chamber, respectively for an inner and outer chamber wall radius of $0 < d_{\mathrm{C},\mathrm{a}} < d_{\mathrm{C},\mathrm{b}} < d_i$ and a continuum segment of radius $d_i$:
 %for the volume from an inner wall radial coordinate $d_{\mathrm{C},\mathrm{a},j}$ to an outer wall radial coordinate $d_{\mathrm{C},\mathrm{b},j}$:
 \begin{equation}
 \begin{split}
@@ -81,7 +81,7 @@ The partial derivative $\partial_{q} V_{\mathrm{C}}$ is determined as
   \subfigure[Coupling-aware PID]{\includegraphics[width=0.49\textwidth, trim={0.75cm 0.0cm 0.75cm 0cm}]{backstepping/figures/time_series_plot_actuation_force_coupling_aware_PID_v2.eps}}\\
   % Backstepping
   \subfigure[Backstepping controller]{\includegraphics[width=0.49\textwidth, trim={0.75cm 0cm 0.75cm 0cm}]{backstepping/figures/time_series_plot_actuation_force_backstepping_v2.eps}}\\
-  \caption{Simulation of posture regulation under \gls{PCC} approximation comparing the control input (i.e., the piston actuation force $f_\mathrm{p}$]) of an end-to-end PID baseline controller, of a coupling-aware PID controller and the nonlinear backstepping controller.}
+  \caption{Simulation of posture regulation under \gls{PCC} approximation comparing the control input (i.e., the piston actuation force $f_\mathrm{p}$]) of an end-to-end PID baseline controller of a coupling-aware PID controller and the nonlinear backstepping controller.}
   \label{fig:backstepping:time_series_plots_actuation_force}
 \end{figure}
 
@@ -103,7 +103,7 @@ where $\Bar{\tau} \in \mathbb{R}^{n_\mathrm{q}}$ is the torque in configuration 
 Asymptotic stability of the equilibrium $\Bar{q}$ is proven through the Lyapunov function $H(q, \dot{q}) = \dot{q}^{\mathrm{T}} B(q) \dot{q}/2 + q^\mathrm{T} K q/2$, which yields the time derivative $\dot{H} = -\dot{q}^\mathrm{T} D \dot{q}/2 \leq 0$.
 
 \textbf{Mapping from configuration to actuation space with force balance:}
-Our backstepping controller requires access to $\Gamma(q,\dot{q})$ which returns a desired piston $\bar{\mu}_\mathrm{p}$ given the desired torque $\bar{\tau}$ and the current state of the soft system $(q,\dot{q})$. In the planar case with inextensible segments, there exist a redundancy in actuating the pistons controlling the pressure in the left and right chambers of a segment to trigger $\bar{\tau}$ on the segment. Thus, we decide to solve this redundancy by equally attributing the desired torque to both pistons.
+Our backstepping controller requires access to $\Gamma(q,\dot{q})$ which returns a desired piston $\bar{\mu}_\mathrm{p}$ given the desired torque $\bar{\tau}$ and the current state of the soft system $(q,\dot{q})$. In the planar case with inextensible segments, there exists a redundancy in actuating the pistons controlling the pressure in the left and right chambers of a segment to trigger $\bar{\tau}$ on the segment. Thus, we decide to solve this redundancy by equally attributing the desired torque to both pistons.
 
 We assume that the system is calibrated at a straight configuration $q_{\mathrm{t}0} = 0$ with pistons preloaded at position $\mu_{p,t0} \in \mathbb{R}^{n_{\mu_\mathrm{p}}}$ leading to a fluidic volume of
  \begin{equation}
@@ -134,7 +134,7 @@ The force applied by the fluid in the left and right chambers on the system is
 \begin{equation}
     G_{\mathrm{P}}^q(q, \mu_p) =  G_{\mathrm{P},\mathrm{L}}^q + G_{\mathrm{P},\mathrm{R}}^q = \Delta G_{\mathrm{P},\mathrm{L}}^q + \Delta G_{\mathrm{P},\mathrm{R}}^q .
 \end{equation}
-We re-arrange to find an expression for the desired conservative force offsets which equally distribute a commanded torque $\Bar{\tau}$ to the fluid in both chambers. Setting
+We re-arrange to find an expression for the desired conservative force offsets, which equally distribute a commanded torque $\Bar{\tau}$ to the fluid in both chambers. Setting
 $\Delta \Bar{G}_{\mathrm{P},\mathrm{L}}^{\Bar{q}} =  \Delta \Bar{G}_{\mathrm{P},\mathrm{R}}^{\Bar{q}} = 0.5 \, \Bar{\tau}(q, \Bar{q})$
 % \begin{equation}
 %      \Delta \Bar{G}_{\mathrm{P},\mathrm{L}}^{\Bar{q}} =  \Delta \Bar{G}_{\mathrm{P},\mathrm{R}}^{\Bar{q}} = 

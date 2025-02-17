@@ -1,13 +1,13 @@
 \section{Dynamic Model}\label{sec:backstepping:dynamic_model}
 
-We consider the robot made by a sequence of $n_{\mathrm{S}}$ segments. Each segment is described with $n_{\mathrm{D}}$ configuration variables by using one of the many modeling techniques are being developed in the state of the art~\citep{faure2012sofa, grazioso2018geometrically, sadati2019TMTDyn, boyer2020dynamics}.
+We consider the robot made by a sequence of $n_{\mathrm{S}}$ segments. Each segment is described with $n_{\mathrm{D}}$ configuration variables by using one of the many modeling techniques being developed in the state-of the-art~\citep {faure2012sofa, grazioso2019geometrically, sadati2021tmtdyn, boyer2020dynamics}.
 %
 We denote with $n_{\mathrm{q}} = n_{\mathrm{S}} n_{\mathrm{D}}$ the total number of configuration variables, which also represents the approximated DoFs of the soft arm.
 %
 Although we show planar kinematic relations for the \gls{PCC}-case in Figure~\ref{fig:backstepping:pcc_case_overview} as an example, the dynamic model derived in this section is agnostic to the chosen kinematic approximation.
 %
 
-All of kinematic modeling techniques produce multi\--body dynamics of the unactuated soft robot as follows~\citep{della2023model}
+All kinematic modeling techniques produce multi-body dynamics of the unactuated soft robot as follows~\citep{della2023model}
 %
 \begin{equation}
 	B(q)\ddot{q} + C(q,\dot{q}) \dot{q} + G(q) + K(q) + D(q, \dot{q}) = 0,
@@ -18,17 +18,17 @@ where $q \in \mathbb{R}^{n_{\mathrm{q}}}$ describes the configuration of the rob
 %
 Each segment is actuated through a set of $n_{\mathrm{C}}$ dedicated chambers.
 %
-Adapting the pressure in a chamber will lead to to a different chamber volume and ultimately resulting in a changed configuration of the segment.
+Adapting the pressure in a chamber will lead to a different chamber volume ultimately resulting in a changed configuration of the segment.
 %
-Each chamber is connected to a dedicated piston as shown in Figure~\ref{fig:backstepping:pcc_case_overview}. If more than one chamber is connected to a same piston, it can be considered to be the same chamber for the sake of this chapter.
+Each chamber is connected to a dedicated piston, as shown in Figure~\ref{fig:backstepping:pcc_case_overview}. If more than one chamber is connected to the same piston, it can be considered to be the same chamber for the sake of this chapter.
 %
-These hypotheses are not paramount, but they are instrumental to maintain the notation easier.
+These hypotheses are not paramount, but they are instrumental in making the notation easier.
 %
 Accordingly, the total number of pistons is described with $n_{\mu_\mathrm{p}} = n_{\mathrm{S}} n_{\mathrm{C}}$.
 %
 Please note that if $n_\mathrm{C} = n_\mathrm{D}$, the model of the soft robot is fully-actuated, if $n_\mathrm{C} > n_\mathrm{D}$ it is over-actuated, and with $n_\mathrm{C} < n_\mathrm{D}$ under-actuated respectively.
 %
-The dynamics of the piston when not interacting with the fluid can be easily written as being
+The dynamics of the piston, when not interacting with the fluid, can be easily written as being
 %
 \begin{equation}
 M_\mathrm{p} \ddot{\mu}_\mathrm{p} + D_\mathrm{p} \dot{\mu}_\mathrm{p} + G_{\mathrm{P}}^{\mu_p} = f_\mathrm{p},
@@ -40,17 +40,17 @@ As the piston system is fixed to the ground and connected via tubing to the robo
 \begin{figure}[ht]
   \centering
   \includegraphics[width=0.5\columnwidth]{backstepping/figures/backstepping_graphics_fluidic_drive_cylinder_v4.pdf}
-  \caption{Fluidic drive cylinder parameters for a piston of mass $m_\mathrm{p}$, length $l_\mathrm{p}$ and cross-sectional area $A_\mathrm{p}$: $f_\mathrm{p}$ describes the actuation force while $G_\mathrm{P}^{\mu_\mathrm{p}}$ is the conservative force applied by the compressed fluid on the cylinder. $\mu_\mathrm{p}$ represents the actuators' state variable. These pneumatic pistons could be for example actuated by current-controlled DC motors or linear electric actuators~\citep{marchese2014design}.}\label{fig:backstepping:fluidic_drive_cylinder}
+  \caption{Fluidic drive cylinder parameters for a piston of mass $m_\mathrm{p}$, length $l_\mathrm{p}$ and cross-sectional area $A_\mathrm{p}$: $f_\mathrm{p}$ describes the actuation force while $G_\mathrm{P}^{\mu_\mathrm{p}}$ is the conservative force applied by the compressed fluid on the cylinder. $\mu_\mathrm{p}$ represents the actuators' state variable. These pneumatic pistons could be, for example, actuated by current-controlled DC motors or linear electric actuators~\citep{marchese2014design}.}\label{fig:backstepping:fluidic_drive_cylinder}
 \end{figure}
 
 \begin{figure}[ht]
   \centering
   \includegraphics[width=0.9\columnwidth]{backstepping/figures/backstepping_graphics_pcc_case_overview_v4_cropped.pdf}
-  \caption{Shape regulation under \gls{PCC} approximation - \textbf{Left:} A planar soft robot consisting of three segments each modelled to have constant curvature \textbf{Right:} Model parameters for fluidic volume in soft segment chambers. Each chamber is actuated independently by a fluidic drive cylinder connected through tubing.}\label{fig:backstepping:pcc_case_overview}
+  \caption{Shape regulation under \gls{PCC} approximation - \textbf{Left:} A planar soft robot consisting of three segments each modeled to have constant curvature \textbf{Right:} Model parameters for fluidic volume in soft segment chambers. Each chamber is actuated independently by a fluidic drive cylinder connected through tubing.}\label{fig:backstepping:pcc_case_overview}
 \end{figure}
 
 
-In first approximation, we model the compressible fluid (typically air) as an ideal gas. Furthermore, we consider the process to be isothermal and that no exchange of fluid with the external world is happening. We neglect the volume of fluid in any tubes connecting the pistons with the chambers.
+In first approximation, we model the compressible fluid (typically air) as an ideal gas. Furthermore, we consider the process to be isothermal, and no fluid exchange with the external world is happening. We neglect the volume of fluid in any tubes connecting the pistons with the chambers.
 %
 The overall volume of the fluid can be evaluated as %the sum of the chamber volume $V_{\mathrm{q},i}(q)$
 %
@@ -70,7 +70,7 @@ where $V(q,\mu_\mathrm{p}) \in \mathbb{R}^{n_{\mu_\mathrm{p}}}$ describes the to
 % A possibility that we do not investigate here for the sake of space is to parametrize $V_{\mathrm{C}}(q)$  w.r.t. a set of unknown quantities $\pi$, and then learn $\pi$ on\--line through adaptive control.
 %
 We will present an example of analytical derivation of $V_{\mathrm{C}}(q)$ in Section~\ref{sub:backstepping:pcc_model}.
-For now we consider it known.
+For now, we consider it known.
 
 The total energy stored in the system due to fluid compression is
 %
@@ -82,7 +82,7 @@ The total energy stored in the system due to fluid compression is
 \end{split}
 \end{equation}
 %
-where $V_j(q_i, \mu_{\mathrm{p},j}) = \frac{\alpha_{\mathrm{air},j}}{p_j(q_i, \mu_{\mathrm{p},j})}$ represents the total fluidic volume in the system of chamber and piston $j$ in segment $i$. We assume that this fluid system is filled with air at atmospheric pressure $p_\mathrm{atm}$ with an initial volume of $V_{j,0} = V_j(0, l_\mathrm{p})$ (e.g. straight robot configuration and with fully extended pistons). 
+where $V_j(q_i, \mu_{\mathrm{p},j}) = \frac{\alpha_{\mathrm{air},j}}{p_j(q_i, \mu_{\mathrm{p},j})}$ represents the total fluidic volume in the system of chamber and piston $j$ in segment $i$. We assume that this fluid system is filled with air at atmospheric pressure $p_\mathrm{atm}$ with an initial volume of $V_{j,0} = V_j(0, l_\mathrm{p})$ (e.g., straight robot configuration and with fully extended pistons). 
 This lets us find an expression for $\alpha_{\mathrm{air}}$:
 \begin{equation}
     \alpha_{\mathrm{air},j} = n_j R T = p_\mathrm{atm} V_{j,0} = p_{j}(q,\mu_\mathrm{p}) V_{j}(q,\mu_\mathrm{p}).
@@ -118,7 +118,7 @@ The overall dynamic model is
 \end{equation}
 which is always underactuated.
 %
-Note that this structure is similar to the one of classic flexible joint robots under Spong's approximation \citep{della2021flexible} due to the fact that the fluidic drive cylinders are fixed to the ground. Two of the major differences making the control problem harder are that that $n_{\mu_\mathrm{p}} \neq n_{\mathrm{q}}$, and that $G_{\mathrm{P}}^{\mathrm{q}}$ and $G_{\mathrm{P}}^{\mu_\mathrm{p}}$ are not linear.
+Note that this structure is similar to classic flexible joint robots under Spong's approximation \citep{della2021flexible} due to the fact that the fluidic drive cylinders are fixed to the ground. Two of the major differences making the control problem harder are that that $n_{\mu_\mathrm{p}} \neq n_{\mathrm{q}}$, and that $G_{\mathrm{P}}^{\mathrm{q}}$ and $G_{\mathrm{P}}^{\mu_\mathrm{p}}$ are not linear.
 The latter renders the feedback coupling of the outer on the inner subsystems non-affine.
 %
 In the rest of the chapter, we will use the following definitions to simplify the notation

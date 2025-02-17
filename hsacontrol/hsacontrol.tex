@@ -3,7 +3,7 @@
 
 \begin{foreword}
     In Chapter~\ref{chp:hsacontrol}, we developed kinematic and dynamical models for planar \gls{HSA} robots. However, the control of \gls{HSA} remains an unexplored area, both in our previous chapters and in the existing literature. 
-    We present in this chapter various model-based control approaches for planar \gls{HSA} robots ranging from PID (with integral saturation) + feedforward configuration-space control (Section~\ref{sec:hsacontrol:configuration_space_regulation}) to Cartesian-space impedance control (Section~\ref{sec:hsacontrol:task_space_impedance_control}). Notably, we rigorously validate and benchmark the proposed control strategies experimentally on two different \gls{HSA} robot prototypes.
+    We present in this chapter various model-based control approaches for planar \gls{HSA} robots ranging from PID (with integral saturation) + potential-shaping configuration-space control (Section~\ref{sec:hsacontrol:configuration_space_regulation}) to Cartesian-space impedance control (Section~\ref{sec:hsacontrol:task_space_impedance_control}). Notably, we rigorously validate and benchmark the proposed control strategies experimentally on two different \gls{HSA} robot prototypes.
 \end{foreword}
 
 \blfootnote{This chapter is partly based on 
@@ -32,7 +32,7 @@
 \section*{Afterword}
 This chapter presented the first control strategies in literature for \gls{HSA} robots and verified them experimentally on two \gls{HSA} robot prototypes in the planar case.
 Each of the two presented controllers offers unique advantages:
-On the one hand, the configuration-space P-satI-D + feedforward controller exhibits exceptional regulation accuracy, with minimal or no steady-state errors and exceptionally short response times.
+On the one hand, the configuration-space P-satI-D + potential shaping controller exhibits exceptional regulation accuracy, with minimal or no steady-state errors and exceptionally short response times.
 Excitingly, follow-up work by \citet{soleti2025model} has extended and adapted this control approach to underactuated dielectric elastomer soft robots.
 On the other hand, the task-space impedance controller complements the passive compliance of the soft robot with active compliance in the control strategy. It accomplishes this by eliminating integral terms that could pose potential safety hazards. Additionally, it enables us to precisely shape the stiffness of the closed-loop system in Cartesian space.
 % In this chapter, we programmatically specified the setpoints of the regulation controller. When working towards a future where soft robots assist, for example, elderly people with activities of daily living, we are lacking, however, an effective \gls{HRI} approach. A \gls{BMI} would arguably represent the most direct and barrier-free \gls{HRI} approach for assisting with activities of daily living. For that reason, we investigate in Chapter~\ref{chp:braincontrol} the guidance of the task-space impedance controller with \gls{EEG}-based motor imagery.
