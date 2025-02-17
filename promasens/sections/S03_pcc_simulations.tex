@@ -87,7 +87,7 @@ After simulating the magnetic field, we rotate the B-field into the local refere
 
 % \subsection{Magnetic field simulation \textcolor{orange}{FEM}}
 % We build on Netgen / NGSolve~\citep{netgen_ngsolve} to simulate the magnetic field behavior using \gls{FEM} by implementing the magnetostatic Maxwell equations.
-% We model a cylindrical Neodymium grade N50 ring magnet with a magnetization of $M=(0,0,\SI{1.45}{T})^\mathrm{T}$ in local z-direction and a relative permeability of $\mu_r = 1.05$. 
+% We model a cylindrical Neodymium grade N50 ring magnet with a magnetization of $M=(0,0,\SI{1.45}{T})^\top$ in local z-direction and a relative permeability of $\mu_r = 1.05$. 
 % % Additionally, we add a static B-field representing the earth's magnetic field influence along the inertial x-axis and a magnitude of \SI{65}{\micro T}. To simulate the sensor measurements, we take into account the component of the B-field pointing along the local z-axis of the sensor.
 % The remaining part of the control volume
 % We mesh the magnets and the air with a maximum mesh size of \SI{6}{mm} and \SI{220}{mm} respectively.
@@ -129,7 +129,7 @@ When the training is finished, we select the model from the epoch with the lowes
 \end{figure*}
 
 \subsection{Optimization}
-We optimize the configuration variables $\hat{q}_i = (\hat{\Delta}_{x,i}, \hat{\Delta}_{y,i}, \hat{\delta} L_{i})^\mathrm{T}$ for each segment to minimize the sensor measurement prediction loss as defined in \eqref{eq:promasens:proprioception_loss}.
+We optimize the configuration variables $\hat{q}_i = (\hat{\Delta}_{x,i}, \hat{\Delta}_{y,i}, \hat{\delta} L_{i})^\top$ for each segment to minimize the sensor measurement prediction loss as defined in \eqref{eq:promasens:proprioception_loss}.
 The optimization strategy solely relies on gradient descent and uses the best solution from the last time step $\hat{q}^*(t-1)$ as an initialization $\hat{q}_0(t)$. For the first time step of the trajectory, we initialize with the ground truth.
 We use a step size $\gamma = 3.5 \cdot 10^{-4}$, $3 \cdot 10^{-3}$, and $2 \cdot 10^{-3}$ during gradient descent for a one-segment, two-segment and three-segment robot respectively. For all robots with more than one segment, the step size is reduced by a factor of ten when optimizing the elongation. The momentum $\mu$ is $0.3$ for all trials and we perform $20$ gradient descent iterations for each time step.
 
@@ -184,14 +184,14 @@ Finally, an earth's magnetic field of magnitude \SI{0.065}{mT} is added. A separ
 % \begin{equation}
 %     t_{\mathrm{m}_k,xy}^{jk} = 
 %     \mathrm{diag}(\begin{bmatrix} 1 & 1 & 0 \end{bmatrix}) 
-%     \cdot (R_{i-1}^{\mathrm{m}_k})^{\mathrm{T}} \cdot t_{i-1}^{jk},
+%     \cdot (R_{i-1}^{\mathrm{m}_k})^{\top} \cdot t_{i-1}^{jk},
 % \end{equation}
 % which allows us to define the magnetic field vector in the frame $\{ S_{\mathrm{m}_k} \}$:
 % \begin{equation}
 %     B_{\mathrm{m}_k}^{jk} = 
 %     \begin{bmatrix}
 %         \frac{x^{t_{jk}}_{\mathrm{m}_k,xy}}{\lVert  t_{\mathrm{m}_k,xy}^{jk} \rVert} \cdot B^{r,jk} & \frac{y^{t_{jk}}_{\mathrm{m}_k,xy}}{\lVert  t_{\mathrm{m}_k,xy}^{jk} \rVert} \cdot B^{r,jk} & B^{a,jk}
-%     \end{bmatrix}^{\mathrm{T}}.
+%     \end{bmatrix}^{\top}.
 % \end{equation}
 % Next, we compute the expected sensor measurement $u_j$ using the scalar projection of the magnetic field vector $B_{i-1}^{jk}$ along the sensor measurement unit vector $\{ \hat{o}_{\mathrm{s}_j} \}_{i-1}$ with the dot product as:
 % \begin{equation}
@@ -205,5 +205,5 @@ Finally, an earth's magnetic field of magnitude \SI{0.065}{mT} is added. A separ
 %     \Bar{\xi}_{jk} = \xi_{jk} + 
 %     \begin{bmatrix}
 %     n_d & n_\theta & n_\beta
-%     \end{bmatrix}^\mathrm{T}
+%     \end{bmatrix}^\top
 % \end{equation}

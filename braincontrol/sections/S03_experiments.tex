@@ -157,7 +157,7 @@ Here, the space button is used to switch that axis of movement $e_\mathrm{a}$ an
 
 \subsection{Interacting with the environment on a real-world task}\label{sub:braincontrol:experiments:adl}
 We consider the \gls{ADL} task of releasing hairspray by actuating the button of its container with the \gls{HSA} robot's end-effector (see Fig.~\ref{fig:braincontrol:cartesian_impedance_adl}). For successful execution, the end-effector must be very stiff in the normal direction of the contact. On the other hand, we might want to benefit from the physical intelligence of the system by being relatively flexible in the tangential direction. Therefore, we first define the perpendicular stiffness $k_\perp = \SI{500}{N\per\meter}$ and the tangential stiffness as $k_\parallel = \SI{50}{N \per \meter}$. We assume that the normal direction of the contact can be described by the polar angle $\theta_\perp$ (with respect to the x-axis). We envision that in the future, the user can adjust such stiffness characteristics online via a \gls{BMI} system similar to~\citep{schiatti2017soft}. In this chapter, however, we estimate by visual inspection that $\theta_\perp=\SI{1.31}{rad}$.
-The Cartesian stiffness matrix in global coordinates is then given by $K_x = R(\theta_\perp) \, \mathrm{diag}(k_\perp, k_\parallel) \, R(\theta_\perp)^\mathrm{T}$
+The Cartesian stiffness matrix in global coordinates is then given by $K_x = R(\theta_\perp) \, \mathrm{diag}(k_\perp, k_\parallel) \, R(\theta_\perp)^\top$
 where $R(\theta_\perp) \in SO(2)$ is the rotation matrix between global and contact frames.
 % Analog to the setpoint regulation task, the user can move the attractor freely in Cartesian space when executing the described \gls{ADL} task.
 

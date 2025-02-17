@@ -122,7 +122,7 @@ Furthermore, we compare the control performance of our model-based controllers w
 For \emph{MECH-NODE}, we chose the model with the lowest validation loss (seed $0$)
 First, we utilize the same P-satI-D feedback controller as for the \gls{CON} model to generate the control action $\tau(t)$ in latent space. 
 As the MECH-NODE uses an \gls{MLP} to parameterize the function $\dot{\xi} = f_\xi(\xi, u)$, we cannot easily map $\tau(t)$ into an input $u(t)$. 
-Therefore, we linearize the latent space dynamics w.r.t to the input as $f_{\xi,\mathrm{ac}}(\xi, u) = f_\xi(\xi, 0) + A(\xi) \, u$, where $A(\xi) = \frac{\partial f_\xi}{\partial u}(\xi, 0)$ is computed using autodiff. Then, $u(t) = A^\mathrm{T}(\xi) \, \tau(t)$. After tuning the control gains, we choose  $K_\mathrm{p} = 0.001, K_\mathrm{i}=0.02, K_\mathrm{d} = \num{1e-5}, \upsilon = 1$.
+Therefore, we linearize the latent space dynamics w.r.t to the input as $f_{\xi,\mathrm{ac}}(\xi, u) = f_\xi(\xi, 0) + A(\xi) \, u$, where $A(\xi) = \frac{\partial f_\xi}{\partial u}(\xi, 0)$ is computed using autodiff. Then, $u(t) = A^\top(\xi) \, \tau(t)$. After tuning the control gains, we choose  $K_\mathrm{p} = 0.001, K_\mathrm{i}=0.02, K_\mathrm{d} = \num{1e-5}, \upsilon = 1$.
 % Therefore, we leverage auto differentiation to linearize the system dynamics w.r.t. the input $u$
 
 \subsubsection{Potential energy landscape}
@@ -142,7 +142,7 @@ We confirm, based on Fig.~\ref{fig:con:control:pcc_ns-2:potential_energy_landsca
     \subfigure[Ground-truth potential energy as a function of $q$]{\includegraphics[width=0.49\columnwidth, trim={20, 10, 20, 20}]{con/figures/results/control/pcc_ns-2/potential_energy_landscape/potential_energy_landscape_q_gt.pdf}\label{fig:con:control:pcc_ns-2:potential_energy_landscape_q_gt}}
     \caption{Potential energy landscapes of a \gls{CON} with $n_z=2$ trained to learn the latent space dynamics of a continuum soft robots (simulated with two \gls{PCC} segments). \textbf{Panel (a):} Here, we visualize the learned potential energy of \gls{CON} using the color scale as a function of the latent representation $z = x_\mathrm{w} \in \mathbb{R}^2$. The arrows denote the gradient of the potential field $\frac{\partial \mathcal{U}}{\partial z}$ (i.e., the potential force), with the magnitude of the gradient expressed as the length of the arrow. \textbf{Panel (b):} Again, we display the learned potential energy of \gls{CON} using the color scale, but in this case, as a function of the configuration $q \in \mathbb{R}$ of the robot (that is hidden from the model). First, we render an image $o$ of the shape of the robot for each configuration $q = \begin{bmatrix}
         q_1 & q_2
-    \end{bmatrix}^\mathrm{T} \in \mathbb{R}^2$. Then, we encode the image into latent space as $z = \Phi(o)$. This allows us then to compute the potential energy $\mathcal{U}(z)$ of the \gls{CON} latent dynamics model. \textbf{Panel (c):} Here, we display the potential energy and its associated potential forces of the actual (i.e., simulated) system.}
+    \end{bmatrix}^\top \in \mathbb{R}^2$. Then, we encode the image into latent space as $z = \Phi(o)$. This allows us then to compute the potential energy $\mathcal{U}(z)$ of the \gls{CON} latent dynamics model. \textbf{Panel (c):} Here, we display the potential energy and its associated potential forces of the actual (i.e., simulated) system.}
 \end{figure}
 
 \begin{figure}[ht]

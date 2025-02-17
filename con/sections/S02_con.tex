@@ -10,7 +10,7 @@
 \subsection{Formulation} 
 The integral component to (coupled) oscillatory \glspl{RNN}~\citep{rusch2020coupled, rusch2021unicornn, ceni2024random, lanthaler2024neural} are one-dimensional, potentially damped, harmonic oscillators, which are described by their state $y_i = \begin{bmatrix}
     x_i & \dot{x}_i
-\end{bmatrix}^\mathrm{T} \in \mathbb{R}^2$, where $x_i$ and $\dot{x}_i$ are the position and velocity of the oscillator, respectively. Then, the oscillator's dynamics are defined by the following \gls{EOM}
+\end{bmatrix}^\top \in \mathbb{R}^2$, where $x_i$ and $\dot{x}_i$ are the position and velocity of the oscillator, respectively. Then, the oscillator's dynamics are defined by the following \gls{EOM}
 \begin{equation}\label{eq:con:harmonic_oscillator}
     m_i \, \ddot{x}_i(t) + d_i \, \dot{x}_i(t) + \kappa_i \, x_i(t) = F_i(t),
     \qquad
@@ -24,8 +24,8 @@ Furthermore, as (damped) harmonic oscillators are omnipresent in nature (and esp
 In this work, we will exploit some of these properties and knowledge to learn stable (latent) dynamics efficiently.
 
 By intercoupling damped harmonic oscillators, we can drastically increase the expressiveness of the dynamical system~\citep{rusch2020coupled, ceni2024random, lanthaler2024neural} while preserving some of the intuition and understanding we have for these systems. In this work, we propose a \gls{ISS}-stable \gls{CON} consisting of $n$ damped harmonic oscillators that are coupled through both linear and nonlinear terms. The networks' state is defined as $y = \begin{bmatrix}
-    x^\mathrm{T} & \dot{x}^\mathrm{T}
-\end{bmatrix}^\mathrm{T} \in \mathbb{R}^{2n}$ and its dynamics can be formulated as a \nth{2}-order \gls{ODE}
+    x^\top & \dot{x}^\top
+\end{bmatrix}^\top \in \mathbb{R}^{2n}$ and its dynamics can be formulated as a \nth{2}-order \gls{ODE}
 \begin{equation}\label{eq:con:con_dynamics}
     \dot{y}(t) = \begin{bmatrix}
         \frac{\mathrm{d}x}{\mathrm{d}t}\\
@@ -86,19 +86,19 @@ A difference of this formulation compared to prior work~\citep{rusch2020coupled,
     \begin{equation}
         H_{\mathcal{U}_\mathrm{w}}(\tilde{x}_\mathrm{w}) = \frac{\partial^2 \mathcal{U}_\mathrm{w}}{\partial \tilde{x}_\mathrm{w}^2} = \frac{\partial \tilde{f}_{\mathcal{U}_\mathrm{w}}}{\partial \tilde{x}_\mathrm{w}}  = K_\mathrm{w} + S_\mathrm{sech}^{2}(\tilde{x}_\mathrm{w}) \in \mathbb{R}^{n \times n}.
     \end{equation}
-    As $K_\mathrm{w} \succ 0 \Rightarrow K_\mathrm{w} = K_\mathrm{w}^\mathrm{T}$, we can easily show that the potential force is symmetric:
+    As $K_\mathrm{w} \succ 0 \Rightarrow K_\mathrm{w} = K_\mathrm{w}^\top$, we can easily show that the potential force is symmetric:
     \begin{equation}
-        H_{\mathcal{U}_\mathrm{w}}^\mathrm{T} = K_\mathrm{w}^\mathrm{T}  + S_\mathrm{sech}^{2}(\tilde{x}_\mathrm{w})^\mathrm{T} = K_\mathrm{w} + S_\mathrm{sech}^{2}(\tilde{x}_\mathrm{w}) = H_{\mathcal{U}_\mathrm{w}}.
+        H_{\mathcal{U}_\mathrm{w}}^\top = K_\mathrm{w}^\top  + S_\mathrm{sech}^{2}(\tilde{x}_\mathrm{w})^\top = K_\mathrm{w} + S_\mathrm{sech}^{2}(\tilde{x}_\mathrm{w}) = H_{\mathcal{U}_\mathrm{w}}.
     \end{equation}
 \end{proof}
 
 The equilibria $\bar{y}_\mathrm{w} = \begin{bmatrix}
-    \bar{x}_\mathrm{w}^\mathrm{T} & 0^\mathrm{T}
-\end{bmatrix}^\mathrm{T} \in \mathbb{R}^{2n}$ of the unforced network are given by the roots of the characteristic equation $\tanh(\bar{x}_\mathrm{w} + b) + K_\mathrm{w} \, \bar{x}_\mathrm{w} = 0$.%  The following Lemma states that the network exhibits a single, isolated equilibrium when $K_\mathrm{w}$ is positive-definite.
+    \bar{x}_\mathrm{w}^\top & 0^\top
+\end{bmatrix}^\top \in \mathbb{R}^{2n}$ of the unforced network are given by the roots of the characteristic equation $\tanh(\bar{x}_\mathrm{w} + b) + K_\mathrm{w} \, \bar{x}_\mathrm{w} = 0$.%  The following Lemma states that the network exhibits a single, isolated equilibrium when $K_\mathrm{w}$ is positive-definite.
 \begin{lemma}\label{lemma:con:conw_single_equilbrium}
     Let $K_\mathrm{w} \succ 0$. Then, the dynamics defined in \eqref{eq:con:conw_dynamics} have a single, isolated equilibrium $\bar{y}_\mathrm{w} = \begin{bmatrix}
-        \bar{x}_\mathrm{w}^\mathrm{T} & 0^\mathrm{T}
-    \end{bmatrix}^\mathrm{T}$.
+        \bar{x}_\mathrm{w}^\top & 0^\top
+    \end{bmatrix}^\top$.
 \end{lemma}
 \begin{proof}
     We regard the characteristic equation as a function: $h_\mathrm{eq}(x_\mathrm{w}) = \tanh(x_\mathrm{w} + b) + K_\mathrm{w} \, x_\mathrm{w}$. For there to exist multiple equilibria, $h_\mathrm{eq}(\bar{x}_\mathrm{w}) = 0$ would need to be true for multiple $\bar{x}$. However, we take the partial derivative of $h_\mathrm{eq}(x_\mathrm{w})$ w.r.t. $x_\mathrm{w}$ and see that
@@ -135,11 +135,11 @@ For this, we need to first identify a valid, (strict) Lyapunov function and subs
 We propose a strict Lyapunov candidate with skewed level sets~\citep{wu2022passive}
 \begin{equation}\label{eq:con:conw_lyapunov_function}
 \begin{split}
-    V_\mu(\tilde{y}_\mathrm{w}) =& \: \frac{1}{2} \, \tilde{y}_\mathrm{w}^\mathrm{T} \, P_\mathrm{V} \, \tilde{y}_\mathrm{w} + \sum_{i=1}^n \int_{0}^{\tilde{x}_{\mathrm{w},i}} \tanh(\bar{x}_{\mathrm{w},i}+\sigma+b_i) \, \mathrm{d} \sigma - \sum_{i=1}^n \int_{0}^{\tilde{x}_{\mathrm{w},i}} \tanh(\bar{x}_{\mathrm{w},i}+b_i) \, \mathrm{d} \sigma,\\
-    =& \: \frac{1}{2} \, \tilde{y}_\mathrm{w}^\mathrm{T} \, P_\mathrm{V} \, \tilde{y}_\mathrm{w} + \sum_{i=1}^n \left ( \mathrm{lcosh}(\bar{x}_{\mathrm{w},i} + \tilde{x}_{\mathrm{w},i}+b_i)-\mathrm{lcosh}(\bar{x}_{\mathrm{w},i}+b_i)-\tanh(\bar{x}_{\mathrm{w},i}+b_i) \, \tilde{x}_{\mathrm{w},i} \right ),\\
+    V_\mu(\tilde{y}_\mathrm{w}) =& \: \frac{1}{2} \, \tilde{y}_\mathrm{w}^\top \, P_\mathrm{V} \, \tilde{y}_\mathrm{w} + \sum_{i=1}^n \int_{0}^{\tilde{x}_{\mathrm{w},i}} \tanh(\bar{x}_{\mathrm{w},i}+\sigma+b_i) \, \mathrm{d} \sigma - \sum_{i=1}^n \int_{0}^{\tilde{x}_{\mathrm{w},i}} \tanh(\bar{x}_{\mathrm{w},i}+b_i) \, \mathrm{d} \sigma,\\
+    =& \: \frac{1}{2} \, \tilde{y}_\mathrm{w}^\top \, P_\mathrm{V} \, \tilde{y}_\mathrm{w} + \sum_{i=1}^n \left ( \mathrm{lcosh}(\bar{x}_{\mathrm{w},i} + \tilde{x}_{\mathrm{w},i}+b_i)-\mathrm{lcosh}(\bar{x}_{\mathrm{w},i}+b_i)-\tanh(\bar{x}_{\mathrm{w},i}+b_i) \, \tilde{x}_{\mathrm{w},i} \right ),\\
     \text{with } P_\mathrm{V} =& \: \begin{bmatrix}
         K_\mathrm{w} & \mu \, M_\mathrm{w}\\
-        \mu \, M_\mathrm{w}^\mathrm{T} & M_\mathrm{w}
+        \mu \, M_\mathrm{w}^\top & M_\mathrm{w}
     \end{bmatrix} \in \mathbb{R}^{2n \times 2n}, \qquad \mathrm{lcosh}(\cdot) = \log(\cosh(\cdot)), \qquad \text{and } \mu > 0.
 \end{split}
 \end{equation}
@@ -161,7 +161,7 @@ Next, the Hessian of the Lyapunov candidate can be derived as
 \begin{equation}\label{eq:con:V_mu_hessian}
     H_\mathrm{V}(\tilde{x}_\mathrm{w}) = \frac{\partial^2 V_\mu}{\partial \tilde{y}_\mathrm{w}^2} = \begin{bmatrix}
         K_\mathrm{w} + S_\mathrm{sech}^{2}(\tilde{x}_\mathrm{w}) & \mu \, M_\mathrm{w}\\
-        \mu \, M_\mathrm{w}^\mathrm{T} & M_\mathrm{w}
+        \mu \, M_\mathrm{w}^\top & M_\mathrm{w}
     \end{bmatrix} \in \mathbb{R}^{2n \times 2n},
 \end{equation}
 where
@@ -170,7 +170,7 @@ where
 \end{equation}
 Furthermore, the Schur complement of $P_\mathrm{V}$ is given by
 \begin{equation}\label{eq:con:P_V_Schur_complement}
-    S_{P_\mathrm{V}} = M_\mathrm{w} - \mu^2 M_\mathrm{w}^\mathrm{T} \, K_\mathrm{w} \, M_\mathrm{w}
+    S_{P_\mathrm{V}} = M_\mathrm{w} - \mu^2 M_\mathrm{w}^\top \, K_\mathrm{w} \, M_\mathrm{w}
 \end{equation}
 
 Below, we will first introduce three auxiliary Lemmas and subsequently proof Lemma~\ref{lemma:con:conw_lyapunov_candidate} that states that \eqref{eq:con:conw_lyapunov_function} is a valid Lyapunov candidate.
@@ -183,7 +183,7 @@ Below, we will first introduce three auxiliary Lemmas and subsequently proof Lem
     The minimum Eigenvalue of $S_{P_\mathrm{V}}$ is bounded by
     \begin{equation}
     \begin{split}
-        \lambda_\mathrm{m}(S_{P_\mathrm{V}}) \geq& \: \lambda_\mathrm{m}(M_\mathrm{w}) - \mu^2 \, \lVert M_\mathrm{w}^\mathrm{T} \, K_\mathrm{w} \, M_\mathrm{w} \rVert,\\
+        \lambda_\mathrm{m}(S_{P_\mathrm{V}}) \geq& \: \lambda_\mathrm{m}(M_\mathrm{w}) - \mu^2 \, \lVert M_\mathrm{w}^\top \, K_\mathrm{w} \, M_\mathrm{w} \rVert,\\
         \geq& \: \lambda_\mathrm{m}(M_\mathrm{w}) - \mu^2 \, \frac{\lVert M_\mathrm{w} \rVert^2}{\lambda_\mathrm{w} \left (K_\mathrm{w} \right )}\\
     \end{split}
     \end{equation}
@@ -268,9 +268,9 @@ Below, we will first introduce three auxiliary Lemmas and subsequently proof Lem
     \textbf{Step 4:} Proof that the Lyapunov candidate is radially unbounded: i.e., $\lVert \tilde{y}_\mathrm{w} \rVert \rightarrow \infty \Rightarrow V_\mu(\tilde{y}_\mathrm{w}) \rightarrow \infty$. Lemma~\ref{lemma:con:V_tanh_term_lower_term} is exploited for identifying a lower bound on $V_\mu(\tilde{y}_\mathrm{w})$:
     \begin{equation}
     \begin{split}
-        V_\mu(\tilde{y}_\mathrm{w}) =& \: \frac{1}{2} \, \tilde{y}_\mathrm{w}^\mathrm{T} \, P_\mathrm{V} \, \tilde{y}_\mathrm{w} + \sum_{i=1}^n \int_{0}^{\tilde{x}_{\mathrm{w},i}} \tanh(\bar{x}_{\mathrm{w},i}+\sigma+b_i) \, \mathrm{d} \sigma - \sum_{i=1}^n \int_{0}^{\tilde{x}_{\mathrm{w},i}} \tanh(\bar{x}_{\mathrm{w},i}+b_i) \, \mathrm{d} \sigma,\\
-        % =& \: \frac{1}{2} \, \tilde{y}_\mathrm{w}^\mathrm{T} \, P_\mathrm{V} \, \tilde{y}_\mathrm{w} + \sum_{i=1}^n h_\mathrm{V,th,i}(\tilde{x}_{\mathrm{w}, i}), \qquad \text{with } a_i = \bar{y}_{\mathrm{w},i} + b_i,\\
-        \geq& \: \frac{1}{2} \, \tilde{y}_\mathrm{w}^\mathrm{T} \, P_\mathrm{V} \, \tilde{y}_\mathrm{w} \: \geq \: \frac{1}{2} \, \lambda_\mathrm{m}(P_\mathrm{V}) \, \lVert \tilde{y}_\mathrm{w} \rVert^2.
+        V_\mu(\tilde{y}_\mathrm{w}) =& \: \frac{1}{2} \, \tilde{y}_\mathrm{w}^\top \, P_\mathrm{V} \, \tilde{y}_\mathrm{w} + \sum_{i=1}^n \int_{0}^{\tilde{x}_{\mathrm{w},i}} \tanh(\bar{x}_{\mathrm{w},i}+\sigma+b_i) \, \mathrm{d} \sigma - \sum_{i=1}^n \int_{0}^{\tilde{x}_{\mathrm{w},i}} \tanh(\bar{x}_{\mathrm{w},i}+b_i) \, \mathrm{d} \sigma,\\
+        % =& \: \frac{1}{2} \, \tilde{y}_\mathrm{w}^\top \, P_\mathrm{V} \, \tilde{y}_\mathrm{w} + \sum_{i=1}^n h_\mathrm{V,th,i}(\tilde{x}_{\mathrm{w}, i}), \qquad \text{with } a_i = \bar{y}_{\mathrm{w},i} + b_i,\\
+        \geq& \: \frac{1}{2} \, \tilde{y}_\mathrm{w}^\top \, P_\mathrm{V} \, \tilde{y}_\mathrm{w} \: \geq \: \frac{1}{2} \, \lambda_\mathrm{m}(P_\mathrm{V}) \, \lVert \tilde{y}_\mathrm{w} \rVert^2.
     \end{split}
     \end{equation}
     Lemma~\ref{lemma:con:P_V_positive_definite} tells us that $P_\mathrm{V} \succ 0$ and with that $\lambda_\mathrm{m}(P_\mathrm{V}) > 0$. Therefore, if $\lVert \tilde{y}_\mathrm{w} \rVert \rightarrow \infty$, it also follows that $V_\mu(\tilde{y}_\mathrm{w}) \rightarrow \infty$.
@@ -283,7 +283,7 @@ In the following, we will demonstrate how the strict Lyapunov candidate of \eqre
 \begin{lemma}\label{lemma:con:V_d_tanh_term_lower_bound}
     Suppose $\bar{x}_\mathrm{w}, \tilde{x}_\mathrm{w}, b \in \mathbb{R}^n$ and $n \in \mathbb{N}^+$. Then, the function $h_{\dot{\mathrm{V}},\mathrm{th}}(\tilde{x}_\mathrm{w})$ defined as
     \begin{equation}
-        h_{\dot{\mathrm{V}},\mathrm{th}}(\tilde{x}_\mathrm{w}) = \left ( \tanh(\bar{x}_\mathrm{w} + \tilde{x}_\mathrm{w} + b) - \tanh(\bar{x}_\mathrm{w} + b) \right )^\mathrm{T} \, \tilde{x}_\mathrm{w},
+        h_{\dot{\mathrm{V}},\mathrm{th}}(\tilde{x}_\mathrm{w}) = \left ( \tanh(\bar{x}_\mathrm{w} + \tilde{x}_\mathrm{w} + b) - \tanh(\bar{x}_\mathrm{w} + b) \right )^\top \, \tilde{x}_\mathrm{w},
     \end{equation}
     is positive semi-definite.
 \end{lemma}
@@ -303,13 +303,13 @@ In the following, we will demonstrate how the strict Lyapunov candidate of \eqre
     Let $M_\mathrm{w} \succ 0$, $K_\mathrm{w} \succ 0$, and $D_\mathrm{w} \succ 0$. Also, let $\mu \in \mathbb{R}^+$ be chosen such that $0 < \mu < \frac{\lambda_\mathrm{m}(D_\mathrm{w})}{\lambda_\mathrm{m}(M_\mathrm{w}) + \frac{\lVert D_\mathrm{w} \rVert^2}{4 \lambda_\mathrm{m} (K_\mathrm{w})}} \coloneqq \mu_{\dot{\mathrm{V}}}$.
     Then, the matrix $P_{\dot{V}} = \begin{bmatrix}
         \mu K_\mathrm{w} & \frac{1}{2} \mu D_\mathrm{w}\\
-        \frac{1}{2} \mu D_\mathrm{w}^\mathrm{T} & D_\mathrm{w} - \mu M_\mathrm{w}
+        \frac{1}{2} \mu D_\mathrm{w}^\top & D_\mathrm{w} - \mu M_\mathrm{w}
     \end{bmatrix} \in \mathbb{R}^{n}$ is positive definite.
 \end{lemma}
 \begin{proof}
     The Schur complement of $P_{\dot{V}}$ is given by
     \begin{equation}
-        S_{P_{\dot{V}}} = D_\mathrm{w} - \mu M_\mathrm{w} - \frac{1}{4} \, \mu D_\mathrm{w}^\mathrm{T} \, K_\mathrm{w}^{-1} \, D_\mathrm{w}.
+        S_{P_{\dot{V}}} = D_\mathrm{w} - \mu M_\mathrm{w} - \frac{1}{4} \, \mu D_\mathrm{w}^\top \, K_\mathrm{w}^{-1} \, D_\mathrm{w}.
     \end{equation}
     The lower bound on the smallest Eigenvalue of $S_{P_{\dot{V}}}$ can be identified as
     \begin{equation}
@@ -352,13 +352,13 @@ In the following, we will demonstrate how the strict Lyapunov candidate of \eqre
     \begin{split}
         \dot{V}_\mu(\tilde{y}_\mathrm{w}) =& \: \frac{\partial V_\mu}{\partial \tilde{y}_\mathrm{w}} \, \dot{\tilde{y}}_\mathrm{w} = \frac{\partial V_\mu}{\partial \tilde{y}_\mathrm{w}} \, \tilde{f}_\mathrm{w}(\tilde{y}_\mathrm{w}) 
         % = \frac{\partial \dot{V}_\mu}{\partial \tilde{x}_\mathrm{w}} \, \tilde{\dot{x}}_\mathrm{w} + \frac{\partial \dot{V}_\mu}{\partial \tilde{\dot{x}}_\mathrm{w}} \, \tilde{f}_{\mathrm{w}, \ddot{\tilde{x}}_\mathrm{w}}(\tilde{y}_\mathrm{w}) 
-        = \tilde{y}_\mathrm{w}^\mathrm{T} \, P_\mathrm{V} \, \dot{\tilde{y}}_\mathrm{w} + \left (\tanh(\bar{x}_\mathrm{w} + \tilde{x}_\mathrm{w} + b) - \tanh(\bar{x}_\mathrm{w} + b)\right )^\mathrm{T} \, \dot{\tilde{x}}_\mathrm{w}\\
-        =& \: -\tilde{y}_\mathrm{w}^\mathrm{T} \, \underbrace{\begin{bmatrix}
+        = \tilde{y}_\mathrm{w}^\top \, P_\mathrm{V} \, \dot{\tilde{y}}_\mathrm{w} + \left (\tanh(\bar{x}_\mathrm{w} + \tilde{x}_\mathrm{w} + b) - \tanh(\bar{x}_\mathrm{w} + b)\right )^\top \, \dot{\tilde{x}}_\mathrm{w}\\
+        =& \: -\tilde{y}_\mathrm{w}^\top \, \underbrace{\begin{bmatrix}
             \mu \, K_\mathrm{w} & \frac{1}{2} \, \mu \, D_\mathrm{w}\\
-            \frac{1}{2} \, \mu \, D_\mathrm{w}^\mathrm{T} & D_\mathrm{w} - \mu \, M_\mathrm{w}
-        \end{bmatrix}}_{P_{\dot{\mathrm{V}}}} \, \tilde{y}_\mathrm{w} - \mu \left ( \tanh(\bar{x}_\mathrm{w} + \tilde{x}_\mathrm{w} + b)^\mathrm{T} + \tilde{x}_\mathrm{w}^\mathrm{T} \, K_\mathrm{w} \right ) \tilde{x}_\mathrm{w},\\
-        =& \: -\tilde{y}_\mathrm{w}^\mathrm{T} \, P_{\dot{\mathrm{V}}} \, \tilde{y}_\mathrm{w} - \mu \, \left ( \tanh(\bar{x}_\mathrm{w} + \tilde{x}_\mathrm{w} + b) - \tanh(\bar{x}_\mathrm{w} + b) \right )^\mathrm{T} \tilde{x}_\mathrm{w},\\
-        \leq& \: -\tilde{y}_\mathrm{w}^\mathrm{T} \, P_{\dot{\mathrm{V}}} \, \tilde{y}_\mathrm{w} 
+            \frac{1}{2} \, \mu \, D_\mathrm{w}^\top & D_\mathrm{w} - \mu \, M_\mathrm{w}
+        \end{bmatrix}}_{P_{\dot{\mathrm{V}}}} \, \tilde{y}_\mathrm{w} - \mu \left ( \tanh(\bar{x}_\mathrm{w} + \tilde{x}_\mathrm{w} + b)^\top + \tilde{x}_\mathrm{w}^\top \, K_\mathrm{w} \right ) \tilde{x}_\mathrm{w},\\
+        =& \: -\tilde{y}_\mathrm{w}^\top \, P_{\dot{\mathrm{V}}} \, \tilde{y}_\mathrm{w} - \mu \, \left ( \tanh(\bar{x}_\mathrm{w} + \tilde{x}_\mathrm{w} + b) - \tanh(\bar{x}_\mathrm{w} + b) \right )^\top \tilde{x}_\mathrm{w},\\
+        \leq& \: -\tilde{y}_\mathrm{w}^\top \, P_{\dot{\mathrm{V}}} \, \tilde{y}_\mathrm{w} 
         \: \leq \: -\lambda_\mathrm{m}\left(P_{\dot{\mathrm{V}}} \right) \, \lVert \tilde{y}_\mathrm{w} \rVert_2^2,
     \end{split}
     \end{equation}
@@ -406,9 +406,9 @@ In the following, we will first state two auxiliary Lemmas and subsequently prov
     We first identify the lower bound of $V_\mu(\tilde{y}_\mathrm{w})$ by leveraging Lemma~\ref{lemma:con:V_tanh_term_lower_term}:
     \begin{equation}
     \begin{split}
-        V_\mu(\tilde{y}_\mathrm{w}) =& \: \frac{1}{2} \, \tilde{y}_\mathrm{w}^\mathrm{T} \, P_\mathrm{V} \, \tilde{y}_\mathrm{w} + \sum_{i=1}^n \int_{0}^{\tilde{x}_{\mathrm{w},i}} \tanh(\bar{x}_{\mathrm{w},i}+\sigma+b_i) \, \mathrm{d} \sigma - \sum_{i=1}^n \int_{0}^{\tilde{x}_{\mathrm{w},i}} \tanh(\bar{x}_{\mathrm{w},i}+b_i) \, \mathrm{d} \sigma,\\
-        =& \: \frac{1}{2} \, \tilde{y}_\mathrm{w}^\mathrm{T} \, P_\mathrm{V} \, \tilde{y}_\mathrm{w} + h_{\mathrm{V},\mathrm{th}}(\tilde{x}_\mathrm{w}),\\
-        \geq& \: \frac{1}{2} \, \tilde{y}_\mathrm{w}^\mathrm{T} \, P_\mathrm{V} \, \tilde{y}_\mathrm{w}
+        V_\mu(\tilde{y}_\mathrm{w}) =& \: \frac{1}{2} \, \tilde{y}_\mathrm{w}^\top \, P_\mathrm{V} \, \tilde{y}_\mathrm{w} + \sum_{i=1}^n \int_{0}^{\tilde{x}_{\mathrm{w},i}} \tanh(\bar{x}_{\mathrm{w},i}+\sigma+b_i) \, \mathrm{d} \sigma - \sum_{i=1}^n \int_{0}^{\tilde{x}_{\mathrm{w},i}} \tanh(\bar{x}_{\mathrm{w},i}+b_i) \, \mathrm{d} \sigma,\\
+        =& \: \frac{1}{2} \, \tilde{y}_\mathrm{w}^\top \, P_\mathrm{V} \, \tilde{y}_\mathrm{w} + h_{\mathrm{V},\mathrm{th}}(\tilde{x}_\mathrm{w}),\\
+        \geq& \: \frac{1}{2} \, \tilde{y}_\mathrm{w}^\top \, P_\mathrm{V} \, \tilde{y}_\mathrm{w}
         \: \geq \: \frac{1}{2} \, \lambda_\mathrm{m}(P_\mathrm{V}) \, \lVert \tilde{y}_\mathrm{w} \rVert_2^2
         \: = \: \alpha_1(\lVert \tilde{y}_\mathrm{w} \rVert_2).
     \end{split}
@@ -416,7 +416,7 @@ In the following, we will first state two auxiliary Lemmas and subsequently prov
     Similarly, we derive an upper bound for $V_\mu(\tilde{y}_\mathrm{w})$ exploiting Lemma~\ref{lemma:con:V_tanh_term_upper_bound}.
     \begin{equation}
     \begin{split}
-        V_\mu(\tilde{y}_\mathrm{w}) =& \frac{1}{2} \, \tilde{y}_\mathrm{w}^\mathrm{T} \, P_\mathrm{V} \, \tilde{y}_\mathrm{w} + \sum_{i=1}^n \int_{0}^{\tilde{x}_{\mathrm{w},i}} \tanh(\bar{x}_{\mathrm{w},i}+\sigma+b_i) \, \mathrm{d} \sigma - \sum_{i=1}^n \int_{0}^{\tilde{x}_{\mathrm{w},i}} \tanh(\bar{x}_{\mathrm{w},i}+b_i) \, \mathrm{d} \sigma\\
+        V_\mu(\tilde{y}_\mathrm{w}) =& \frac{1}{2} \, \tilde{y}_\mathrm{w}^\top \, P_\mathrm{V} \, \tilde{y}_\mathrm{w} + \sum_{i=1}^n \int_{0}^{\tilde{x}_{\mathrm{w},i}} \tanh(\bar{x}_{\mathrm{w},i}+\sigma+b_i) \, \mathrm{d} \sigma - \sum_{i=1}^n \int_{0}^{\tilde{x}_{\mathrm{w},i}} \tanh(\bar{x}_{\mathrm{w},i}+b_i) \, \mathrm{d} \sigma\\
         \leq& \: \frac{1}{2} \, \lambda_\mathrm{M}(P_\mathrm{V}) \, \lVert \tilde{y}_\mathrm{w} \rVert_2^2 + 2 \, \lVert\tilde{x}_\mathrm{w}\rVert_1
         \: \leq \: \frac{1}{2} \, \lambda_\mathrm{M}(P_\mathrm{V}) \, \lVert \tilde{y}_\mathrm{w} \rVert_2^2 + 2 \, \sqrt{n} \, \lVert\tilde{x}_\mathrm{w}\rVert_2\\
         \leq& \: \frac{1}{2} \, \lambda_\mathrm{M}(P_\mathrm{V}) \, \lVert \tilde{y}_\mathrm{w} \rVert_2^2 + 2 \, \sqrt{n} \, \lVert\tilde{y}_\mathrm{w}\rVert_2 = \alpha_2(\lVert\tilde{y}_\mathrm{w}\rVert_2).
@@ -454,11 +454,11 @@ In the following, we will first state two auxiliary Lemmas and subsequently prov
     \begin{equation}
     \begin{split}
         \dot{V}_\mu(\tilde{y}_\mathrm{w}, u(t)) =& \: % \frac{\partial V_\mu}{\partial \tilde{y}_\mathrm{w}} \, \tilde{f}_\mathrm{w}(\tilde{y}_\mathrm{w}, u(t)) = 
-        -\tilde{y}_\mathrm{w}^\mathrm{T} \, P_{\dot{\mathrm{V}}} \, \tilde{y}_\mathrm{w} - \mu \, \left ( \tanh(\bar{x}_\mathrm{w} + \tilde{x}_\mathrm{w} + b) - \tanh(\bar{x}_\mathrm{w} + b) \right )^\mathrm{T} \tilde{x}_\mathrm{w} + \tilde{y}_\mathrm{w}^\mathrm{T} \begin{bmatrix}
+        -\tilde{y}_\mathrm{w}^\top \, P_{\dot{\mathrm{V}}} \, \tilde{y}_\mathrm{w} - \mu \, \left ( \tanh(\bar{x}_\mathrm{w} + \tilde{x}_\mathrm{w} + b) - \tanh(\bar{x}_\mathrm{w} + b) \right )^\top \tilde{x}_\mathrm{w} + \tilde{y}_\mathrm{w}^\top \begin{bmatrix}
             \mu \, g(u(t))\\
             g(u(t))
         \end{bmatrix},\\
-        \leq& \: -\lambda_\mathrm{m}\left(P_{\dot{\mathrm{V}}} \right) \, \lVert \tilde{y}_\mathrm{w} \rVert_2^2 + \left \lVert \tilde{y}_\mathrm{w}^\mathrm{T}\begin{bmatrix}\mu \, g(u(t))\\ g(u(t)) \end{bmatrix} \right \rVert_1,\\
+        \leq& \: -\lambda_\mathrm{m}\left(P_{\dot{\mathrm{V}}} \right) \, \lVert \tilde{y}_\mathrm{w} \rVert_2^2 + \left \lVert \tilde{y}_\mathrm{w}^\top\begin{bmatrix}\mu \, g(u(t))\\ g(u(t)) \end{bmatrix} \right \rVert_1,\\
         \leq& \: -\lambda_\mathrm{m}\left(P_{\dot{\mathrm{V}}} \right) \, \lVert \tilde{y}_\mathrm{w} \rVert_2^2 +  \lVert \tilde{y}_\mathrm{w} \rVert_2 \left \lVert \begin{bmatrix}\mu \, g(u(t))\\ g(u(t)) \end{bmatrix} \right \rVert_2,\\
         \leq& \: -\lambda_\mathrm{m}\left(P_{\dot{\mathrm{V}}} \right) \, \lVert \tilde{y}_\mathrm{w} \rVert_2^2 + \sqrt{1+\mu^2} \, \lVert \tilde{y}_\mathrm{w} \rVert_2 \lVert g(u(t)) \rVert_2,
     \end{split}

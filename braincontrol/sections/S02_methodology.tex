@@ -37,7 +37,7 @@ As detailed further in Sec.~\ref{sub:braincontrol:bmi_protocol}, we leverage the
 % where $\Delta_\mathrm{x}$ is a tunable constant influencing the velocity of the attractor.
 
 \subsection{Planning attractors with brain signals}\label{sub:braincontrol:planning_attractors_switching}
-Our brain signal processing pipeline provides us with two pieces of information at each time step $k$: i) the unit vector $e_\mathrm{a}(k) \in \{ [1, 0]^\mathrm{T}, [0, 1]^\mathrm{T} \}$ corresponding to the current active axis of movement % with $\lVert e^\mathrm{at} \rVert = 1$
+Our brain signal processing pipeline provides us with two pieces of information at each time step $k$: i) the unit vector $e_\mathrm{a}(k) \in \{ [1, 0]^\top, [0, 1]^\top \}$ corresponding to the current active axis of movement % with $\lVert e^\mathrm{at} \rVert = 1$
 and ii) the sign of movement $s(k) \in \{ -1, 1 \}$. We use $e_\mathrm{a}(k)$ and $s(k)$ to incrementally steer a virtual attractor defined in operational space $x^\mathrm{at} \in \mathbb{R}^2$ as follows
 %
 %The following policy is used to update the attractor at each time step $k$:
@@ -60,8 +60,8 @@ Later, we will shape the potential field with a computational controller such th
 We adopt the Cartesian impedance controller from Sec.~\ref{sub:hsacontrol:task_space_impedance_control:control_strategy} to shape the potential field with a computational controller such that the attractor $x^\mathrm{at}$ becomes a globally asymptotically stable equilibrium
 \begin{equation}\label{eq:braincontrol:cartesian_impedance_controller}
 \begin{split}
-    \tau =& \: J^\mathrm{T}(q) \, \left (K_x \, (x^\mathrm{at} - x) - D_x \, \dot{x} \right ) + G(q) + K \, (q-q^0)\\
-    & \: + J^\mathrm{T}(q) \, J_\mathrm{B}^{+\mathrm{T}}(q) \, D \, \dot{q} + J^\mathrm{T}(q) \, \mu(q,\dot{q}) \left ( I_3 - J_\mathrm{B}^+(q) J(q) \right )\dot{q}.
+    \tau =& \: J^\top(q) \, \left (K_x \, (x^\mathrm{at} - x) - D_x \, \dot{x} \right ) + G(q) + K \, (q-q^0)\\
+    & \: + J^\top(q) \, J_\mathrm{B}^{+\top}(q) \, D \, \dot{q} + J^\top(q) \, \mu(q,\dot{q}) \left ( I_3 - J_\mathrm{B}^+(q) J(q) \right )\dot{q}.
 \end{split}
 \end{equation}
 

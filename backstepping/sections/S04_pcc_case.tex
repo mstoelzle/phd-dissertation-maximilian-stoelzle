@@ -100,7 +100,7 @@ where $\Bar{\tau} \in \mathbb{R}^{n_\mathrm{q}}$ is the torque in configuration 
 %      M(q) \Ddot{q} + C(q, \dot{q}) \dot{q} = K (\Bar{q} - q) + D (-\dot{q}),
 % \end{equation}
 % which is essentially a PD controller with gravity compensation. 
-Asymptotic stability of the equilibrium $\Bar{q}$ is proven through the Lyapunov function $H(q, \dot{q}) = \dot{q}^{\mathrm{T}} M(q) \dot{q}/2 + q^\mathrm{T} K q/2$, which yields the time derivative $\dot{H} = -\dot{q}^\mathrm{T} D \dot{q}/2 \leq 0$.
+Asymptotic stability of the equilibrium $\Bar{q}$ is proven through the Lyapunov function $H(q, \dot{q}) = \dot{q}^{\top} M(q) \dot{q}/2 + q^\top K q/2$, which yields the time derivative $\dot{H} = -\dot{q}^\top D \dot{q}/2 \leq 0$.
 
 \textbf{Mapping from configuration to actuation space with force balance:}
 Our backstepping controller requires access to $\Gamma(q,\dot{q})$ which returns a desired piston $\bar{\mu}_\mathrm{p}$ given the desired torque $\bar{\tau}$ and the current state of the soft system $(q,\dot{q})$. In the planar case with inextensible segments, there exists a redundancy in actuating the pistons controlling the pressure in the left and right chambers of a segment to trigger $\bar{\tau}$ on the segment. Thus, we decide to solve this redundancy by equally attributing the desired torque to both pistons.
@@ -152,10 +152,10 @@ results for the chosen setpoint controller $\Bar{\tau}$ and a diagonal elastic m
     \Gamma_j(q, \Bar{q}) = \frac{1}{A_{\mathrm{p},j}} \left ( \frac{\alpha_{\mathrm{air},j} \, \partial_{q_i} V_{\mathrm{C},j}}{p_\mathrm{atm} \, \partial_{q_i} V_{\mathrm{C},j} - \Bar{G}_{\mathrm{P},j}^{\Bar{q}}(q, \Bar{q})} - V_{\mathrm{C},j}(q) \right ).
 \end{equation}
 \textbf{Backstepping:}
-The system is now in the form of \eqref{eq:backstepping:reduced_sys}, so Theorem~1 can be invoked and a specialized version of \eqref{eq:backstepping:pi_psi} can be derived for the \gls{PCC}-case and our chosen set-point controller of \eqref{eq:backstepping:high_level_regulation}. The partial derivative of the Lyapunov function of the soft system controller evaluates to $ \partial_{\dot{q}} H(q, \dot{q}) = \dot{q}^\mathrm{T} M(q)$, which allows to re-formulate \eqref{eq:backstepping:pi_psi} into:
+The system is now in the form of \eqref{eq:backstepping:reduced_sys}, so Theorem~1 can be invoked and a specialized version of \eqref{eq:backstepping:pi_psi} can be derived for the \gls{PCC}-case and our chosen set-point controller of \eqref{eq:backstepping:high_level_regulation}. The partial derivative of the Lyapunov function of the soft system controller evaluates to $ \partial_{\dot{q}} H(q, \dot{q}) = \dot{q}^\top M(q)$, which allows to re-formulate \eqref{eq:backstepping:pi_psi} into:
 \begin{equation}
 \begin{split}
-    \Pi &= \dot{\Gamma} - K_1 (\mu_p - \Gamma) + S^\mathrm{T} \dot{q},\\
+    \Pi &= \dot{\Gamma} - K_1 (\mu_p - \Gamma) + S^\top \dot{q},\\
     \Psi &= G_{\mathrm{P}}^{\mu_\mathrm{p}} + D_\mathrm{p} \, \Pi + M_\mathrm{p} \, \dot{\Pi} - K_2 \, (\dot{\mu}_\mathrm{p} - \Pi) - (\mu_\mathrm{p} - \Gamma).
 \end{split}
 \end{equation}
@@ -166,9 +166,9 @@ The system is now in the form of \eqref{eq:backstepping:reduced_sys}, so Theorem
 %     \dot{\Gamma}_j = \frac{1}{A_{\mathrm{p},j}} \left ( \frac{\alpha_{\mathrm{air},j} \partial_{q_i} V_{\mathrm{C},j} \partial_{q} \Bar{G}_{\mathrm{P},j}^{\Bar{q}}}{\left ( p_\mathrm{atm} \partial_{q_i} V_{\mathrm{C},j} - \Bar{G}_{\mathrm{P},j}^{\Bar{q}} (q, \Bar{q}) \right )^2} - \partial_{q} V_{\mathrm{C},j} \right ) \dot{q}.
 % \end{equation}
 % For the proposed setpoint controller, we can subsequently also determine the partial derivative of the commanded force $\partial_q \Bar{G}_{\mathrm{P},j}^{\Bar{q}}(q, \Bar{q}) = - 0.5 \, \partial_q G_i(q)$.
-% The partial derivative of the Lyapunov function of the soft system controller evaluates to $ \partial_{\dot{q}} H(q, \dot{q}) = \dot{q}^\mathrm{T} M(q)$, which allows us to re-formulate \eqref{eq:backstepping:pi_psi}:
+% The partial derivative of the Lyapunov function of the soft system controller evaluates to $ \partial_{\dot{q}} H(q, \dot{q}) = \dot{q}^\top M(q)$, which allows us to re-formulate \eqref{eq:backstepping:pi_psi}:
 % \begin{equation}\label{eq:backstepping:pi_pcc_set_point}
-%     \Pi(q, \Bar{q}, \dot{q}, \mu_\mathrm{p}) = \dot{\Gamma} - K_1 (\mu_p - \Gamma) + S^\mathrm{T} \dot{q}.
+%     \Pi(q, \Bar{q}, \dot{q}, \mu_\mathrm{p}) = \dot{\Gamma} - K_1 (\mu_p - \Gamma) + S^\top \dot{q}.
 % \end{equation}
 % \textbf{Backstepping to piston force:}
 % We require access to the time derivative of the controller $\Pi(q, \dot{q})$:
@@ -178,8 +178,8 @@ The system is now in the form of \eqref{eq:backstepping:reduced_sys}, so Theorem
 % and substitute $\Ddot{q} = f(q, \dot{q}) + g(q, \mu_\mathrm{p})$ as accelerations are hard to measure in reality
 % \begin{equation}
 % \begin{split}
-%     \dot{\Pi} = & -K_1 \left ( \dot{\mu}_\mathrm{p} - \dot{\Gamma}(q, \Bar{q}, \dot{q}) \right ) + \left ( \partial_q \dot{\Gamma} + \dot{S}^\mathrm{T} \right ) \dot{q}\\
-%     & + \left ( \partial_{\dot{q}} \dot{\Gamma} + S^\mathrm{T} \right ) \left ( f(q,\dot{q}) + g(q,\mu_\mathrm{p}) \right ) .
+%     \dot{\Pi} = & -K_1 \left ( \dot{\mu}_\mathrm{p} - \dot{\Gamma}(q, \Bar{q}, \dot{q}) \right ) + \left ( \partial_q \dot{\Gamma} + \dot{S}^\top \right ) \dot{q}\\
+%     & + \left ( \partial_{\dot{q}} \dot{\Gamma} + S^\top \right ) \left ( f(q,\dot{q}) + g(q,\mu_\mathrm{p}) \right ) .
 % \end{split}
 % \end{equation}
 % We define the final controller of the required piston force $\Bar{f}_\mathrm{p}$

@@ -56,18 +56,18 @@ Thus, even if the robot side of the dynamics \eqref{eq:backstepping:complete_dyn
 %	\begin{equation}
 %		\begin{split}
 %%			\tau &= G_{\mathrm{P}}^{\mathrm{l}} + J  \ddot{\Gamma} + (JK_1 + K_2) (\dot{l} - \dot{\Gamma}) + (K_2 K_1 - I) (l - \Gamma)\\
-%%			&- J\frac{\mathrm{d}}{\mathrm{d} t}\left(M^{\mathrm{T}}(q,l,\Gamma)B^{-\mathrm{T}}(q)\partial_{\dot{q}} H^{\mathrm{T}}\right) \\
-%%			&- K_2 M^{\mathrm{T}}(q,l,\Gamma)B^{-\mathrm{T}}(q)\partial_{\dot{q}} H^{\mathrm{T}}) \\
+%%			&- J\frac{\mathrm{d}}{\mathrm{d} t}\left(M^{\top}(q,l,\Gamma)B^{-\top}(q)\partial_{\dot{q}} H^{\top}\right) \\
+%%			&- K_2 M^{\top}(q,l,\Gamma)B^{-\top}(q)\partial_{\dot{q}} H^{\top}) \\
 %			\tau &= G_{\mathrm{P}}^{\mathrm{l}} + J \ddot{\Gamma} + (J + I) (\dot{l} - \dot{\Gamma})  \\
-%			&- \frac{\mathrm{d}}{\mathrm{d} t}\left(M^{\mathrm{T}}(q,l,\Gamma)B^{-\mathrm{T}}(q)\partial_{\dot{q}} H^{\mathrm{T}}\right) \\
-%			&- M^{\mathrm{T}}(q,l,\Gamma)B^{-\mathrm{T}}(q)\partial_{\dot{q}} H^{\mathrm{T}}
+%			&- \frac{\mathrm{d}}{\mathrm{d} t}\left(M^{\top}(q,l,\Gamma)B^{-\top}(q)\partial_{\dot{q}} H^{\top}\right) \\
+%			&- M^{\top}(q,l,\Gamma)B^{-\top}(q)\partial_{\dot{q}} H^{\top}
 %		\end{split}
 %	\end{equation}
 	\begin{equation}\label{eq:backstepping:pi_psi}
 		\begin{split}
 			f_\mathrm{p} &= \Psi = G_{\mathrm{P}}^{\mu_\mathrm{p}} + D_\mathrm{p} \Pi + M_\mathrm{p} \dot{\Pi} - K_2 (\dot{\mu}_\mathrm{p} - \Pi) - (\mu_\mathrm{p} - \Gamma),\\
 			\Pi &= \dot{\Gamma} - K_1 (\mu_\mathrm{p} - \Gamma) 
-			+ S^{\mathrm{T}}(q,\mu_\mathrm{p},\Gamma)B^{-1}(q)\partial_{\dot{q}} H^{\mathrm{T}},
+			+ S^{\top}(q,\mu_\mathrm{p},\Gamma)B^{-1}(q)\partial_{\dot{q}} H^{\top},
 		\end{split}
 	\end{equation}
 	%
@@ -87,17 +87,17 @@ Thus, even if the robot side of the dynamics \eqref{eq:backstepping:complete_dyn
 	We introduce the following control Lyapunov candidate
 	%
 	\begin{equation}
-		W(q,\dot{q},\mu_\mathrm{p}) = H(q,\dot{q}) + \frac{1}{2}(\mu_\mathrm{p} - \Gamma)^{\mathrm{T}}(\mu_\mathrm{p} - \Gamma)\;,
+		W(q,\dot{q},\mu_\mathrm{p}) = H(q,\dot{q}) + \frac{1}{2}(\mu_\mathrm{p} - \Gamma)^{\top}(\mu_\mathrm{p} - \Gamma)\;,
 	\end{equation}
 	%
 	which can thus be differentiated obtaining
 	%
 	\begin{equation}
 		\begin{split}
-			\dot{W}(q,\dot{q},\mu_\mathrm{p}) =& \: \dot{H} + (\mu_\mathrm{p} - \Gamma)^{\mathrm{T}}(v_\mathrm{p} - \dot\Gamma)\\
-			=&  \: \partial_{q} H \dot{q} + \partial_{\dot{q}} H (f(q,\dot{q}) + g(q,\mu_\mathrm{p})) + (\mu_\mathrm{p} - \Gamma)^{\mathrm{T}}(v_\mathrm{p} - \dot\Gamma) \\
+			\dot{W}(q,\dot{q},\mu_\mathrm{p}) =& \: \dot{H} + (\mu_\mathrm{p} - \Gamma)^{\top}(v_\mathrm{p} - \dot\Gamma)\\
+			=&  \: \partial_{q} H \dot{q} + \partial_{\dot{q}} H (f(q,\dot{q}) + g(q,\mu_\mathrm{p})) + (\mu_\mathrm{p} - \Gamma)^{\top}(v_\mathrm{p} - \dot\Gamma) \\
 			=& \: \partial_{q} H \dot{q} + \partial_{\dot{q}} H (f(q,\dot{q}) + g(q,\Gamma(q,\dot{q}))) \\
-			& \: + \partial_{\dot{q}} H (g(q,\mu_\mathrm{p}) - g(q,\Gamma(q,\dot{q}))) + (\mu_\mathrm{p} - \Gamma)^{\mathrm{T}} (v_\mathrm{p} - \dot\Gamma)\;,
+			& \: + \partial_{\dot{q}} H (g(q,\mu_\mathrm{p}) - g(q,\Gamma(q,\dot{q}))) + (\mu_\mathrm{p} - \Gamma)^{\top} (v_\mathrm{p} - \dot\Gamma)\;,
 		\end{split}
 	\end{equation}
 	%
@@ -107,7 +107,7 @@ Thus, even if the robot side of the dynamics \eqref{eq:backstepping:complete_dyn
 	%
 	\begin{equation*}
 		\begin{split}
-			\Pi(q,\dot{q},\mu_\mathrm{p}) &= \dot{\Gamma} - K_1 (\mu_\mathrm{p} - \Gamma) + S^{\mathrm{T}}(q,\mu_\mathrm{p},\Gamma)B^{-\mathrm{T}}(q)\partial_{\dot{q}} H^{\mathrm{T}}.
+			\Pi(q,\dot{q},\mu_\mathrm{p}) &= \dot{\Gamma} - K_1 (\mu_\mathrm{p} - \Gamma) + S^{\top}(q,\mu_\mathrm{p},\Gamma)B^{-\top}(q)\partial_{\dot{q}} H^{\top}.
 		\end{split}
 	\end{equation*}
 	%
@@ -116,7 +116,7 @@ Thus, even if the robot side of the dynamics \eqref{eq:backstepping:complete_dyn
 	\begin{equation*}
 	\begin{split}
 	\dot{W}(q,\dot{q},\mu_\mathrm{p}) =& \: \partial_{q} H \dot{q} + \partial_{\dot{q}} H (f(q,\dot{q}) + g(q,\Gamma(q,\dot{q}))) \\
-	&\: + \partial_{\dot{q}} H (g(q,\mu_\mathrm{p}) - g(q,\Gamma(q,\dot{q}))) - (\mu_\mathrm{p} - \Gamma)^{\mathrm{T}}K_1(\mu_\mathrm{p} - \Gamma) \\
+	&\: + \partial_{\dot{q}} H (g(q,\mu_\mathrm{p}) - g(q,\Gamma(q,\dot{q}))) - (\mu_\mathrm{p} - \Gamma)^{\top}K_1(\mu_\mathrm{p} - \Gamma) \\
 	&\: +  \partial_{\dot{q}} H B^{-1}(q) S(q,\mu_\mathrm{p},\Gamma) (\mu_\mathrm{p} - \Gamma)\;,
 	\end{split}
 	\end{equation*}
@@ -126,7 +126,7 @@ Thus, even if the robot side of the dynamics \eqref{eq:backstepping:complete_dyn
 	\begin{equation}
 	\begin{split}
 	\dot{W}(q,\dot{q},\mu_\mathrm{p}) &=  \partial_{q} H \dot{q} + \partial_{\dot{q}} H (f(q,\dot{q}) + g(q,\Gamma(q,\dot{q}))) \\
-	&\quad - (\mu_\mathrm{p} - \Gamma)^{\mathrm{T}}K_1(\mu_\mathrm{p} - \Gamma).
+	&\quad - (\mu_\mathrm{p} - \Gamma)^{\top}K_1(\mu_\mathrm{p} - \Gamma).
 	\end{split}
 	\end{equation}
 	%
@@ -145,15 +145,15 @@ Thus, even if the robot side of the dynamics \eqref{eq:backstepping:complete_dyn
 	The complete Lyapunov candidate that we propose is
 	%
 	\begin{equation}
-		Q = W + \frac{1}{2}(\dot{\mu}_\mathrm{p} - \Pi)^{\mathrm{T}} M_\mathrm{p} (\dot{\mu}_\mathrm{p} - \Pi),
+		Q = W + \frac{1}{2}(\dot{\mu}_\mathrm{p} - \Pi)^{\top} M_\mathrm{p} (\dot{\mu}_\mathrm{p} - \Pi),
 	\end{equation}
 	%
 	with time derivative
 	%
 	\begin{equation*}
 		\begin{split}
-			\dot{Q} &= \dot{W} + (\dot{\mu}_\mathrm{p} - \Pi)^{\mathrm{T}} (\Psi - G_{\mathrm{P}}^{\mu_\mathrm{p}} - M_\mathrm{p} \dot{\Pi}) \\
-			 &= \partial_{q} W \dot{q} + \partial_{\dot{q}} W \ddot{q} + \partial_{\mu_\mathrm{p}} W \dot{\mu}_p + (\dot{\mu}_\mathrm{p} - \Pi)^{\mathrm{T}} (\Psi - G_{\mathrm{P}}^{\mu_\mathrm{p}} - D_\mathrm{p} \dot{\mu}_\mathrm{p} - M_\mathrm{p} \dot{\Pi}) .
+			\dot{Q} &= \dot{W} + (\dot{\mu}_\mathrm{p} - \Pi)^{\top} (\Psi - G_{\mathrm{P}}^{\mu_\mathrm{p}} - M_\mathrm{p} \dot{\Pi}) \\
+			 &= \partial_{q} W \dot{q} + \partial_{\dot{q}} W \ddot{q} + \partial_{\mu_\mathrm{p}} W \dot{\mu}_p + (\dot{\mu}_\mathrm{p} - \Pi)^{\top} (\Psi - G_{\mathrm{P}}^{\mu_\mathrm{p}} - D_\mathrm{p} \dot{\mu}_\mathrm{p} - M_\mathrm{p} \dot{\Pi}) .
 		\end{split}
 	\end{equation*}
 	%
@@ -162,8 +162,8 @@ Thus, even if the robot side of the dynamics \eqref{eq:backstepping:complete_dyn
 	\begin{equation}\label{eq:backstepping:final_controller_1}
 	%\begin{split}
 	    \Psi(q, \dot{q}, \mu_\mathrm{p}, \dot{\mu}_\mathrm{p}) = G_{\mathrm{P}}^{\mu_\mathrm{p}} + D_\mathrm{p} \Pi + M_\mathrm{p} \dot{\Pi} - K_2 (\dot{\mu}_\mathrm{p} - \Pi) 
-	    - \partial_{\mu_\mathrm{p}} W^{\mathrm{T}}\!,
-	    %(\dot{\mu}_\mathrm{p}^\mathrm{T} – \Pi^\mathrm{T})^{-1} \Pi^\mathrm{T} D_\mathrm{p} \dot{\mu}_\mathrm{p},
+	    - \partial_{\mu_\mathrm{p}} W^{\top}\!,
+	    %(\dot{\mu}_\mathrm{p}^\top – \Pi^\top)^{-1} \Pi^\top D_\mathrm{p} \dot{\mu}_\mathrm{p},
 	%\end{split}
 	\end{equation}
 	%
@@ -172,32 +172,32 @@ Thus, even if the robot side of the dynamics \eqref{eq:backstepping:complete_dyn
 	\begin{equation}
 	    \begin{split}
 			\dot{Q} =& \partial_{q} W \dot{q} + \partial_{\dot{q}} W \ddot{q} + \partial_{\mu_\mathrm{p}} W \Pi \\
-			&\: - (\dot{\mu}_\mathrm{p} - \Pi)^{\mathrm{T}} (K_2 + D_\mathrm{p}) (\dot{\mu}_\mathrm{p} - \Pi)
-			%& \quad -\dot{\mu}_\mathrm{p}^\mathrm{T} M_\mathrm{p} D_\mathrm{p} \dot{\mu}_\mathrm{p}  
+			&\: - (\dot{\mu}_\mathrm{p} - \Pi)^{\top} (K_2 + D_\mathrm{p}) (\dot{\mu}_\mathrm{p} - \Pi)
+			%& \quad -\dot{\mu}_\mathrm{p}^\top M_\mathrm{p} D_\mathrm{p} \dot{\mu}_\mathrm{p}  
 			< 0,
 	    \end{split}
 	\end{equation}
 	%
-	where we exploit that $W$ is a Lyapunov function for the previous system when $\dot{\mu}_\mathrm{p} \equiv \Pi$. This assures the asymptotic stability of the closed loop system when \eqref{eq:backstepping:final_controller_1} is used. The Theorem follows considering that $\partial_{\mu_\mathrm{p}} W^{\mathrm{T}} = (\mu_\mathrm{p} - \Gamma)$.
+	where we exploit that $W$ is a Lyapunov function for the previous system when $\dot{\mu}_\mathrm{p} \equiv \Pi$. This assures the asymptotic stability of the closed loop system when \eqref{eq:backstepping:final_controller_1} is used. The Theorem follows considering that $\partial_{\mu_\mathrm{p}} W^{\top} = (\mu_\mathrm{p} - \Gamma)$.
 	
 %	The Theorem follows considering that
 %	%
 %	%\begin{equation}
 %	%	\begin{split}
-%			$\dot{\Pi} =  \ddot{\Gamma} + P^{-1} K_1 (\dot{l} - \dot{\Gamma}) - P^{-1}\frac{\mathrm{d}}{\mathrm{d} t}\left(M^{\mathrm{T}}(q,l,\Gamma)B^{-\mathrm{T}}(q)\partial_{\dot{q}} H^{\mathrm{T}}\right)$, 
-%			$\partial_{l} W^{\mathrm{T}} = (l - \Gamma)$.
+%			$\dot{\Pi} =  \ddot{\Gamma} + P^{-1} K_1 (\dot{l} - \dot{\Gamma}) - P^{-1}\frac{\mathrm{d}}{\mathrm{d} t}\left(M^{\top}(q,l,\Gamma)B^{-\top}(q)\partial_{\dot{q}} H^{\top}\right)$, 
+%			$\partial_{l} W^{\top} = (l - \Gamma)$.
 %	%	\end{split}
 %	%\end{equation}
 %	%
 %	\begin{equation}
 %	\begin{split}
 %	%			\tau &= G_{\mathrm{P}}^{\mathrm{l}} + J  \ddot{\Gamma} + (JK_1 + K_2) (\dot{l} - \dot{\Gamma}) + (K_2 K_1 - I) (l - \Gamma)\\
-%	%			&- J\frac{\mathrm{d}}{\mathrm{d} t}\left(M^{\mathrm{T}}(q,l,\Gamma)B^{-\mathrm{T}}(q)\partial_{\dot{q}} H^{\mathrm{T}}\right) \\
-%	%			&- K_2 M^{\mathrm{T}}(q,l,\Gamma)B^{-\mathrm{T}}(q)\partial_{\dot{q}} H^{\mathrm{T}}) \\
+%	%			&- J\frac{\mathrm{d}}{\mathrm{d} t}\left(M^{\top}(q,l,\Gamma)B^{-\top}(q)\partial_{\dot{q}} H^{\top}\right) \\
+%	%			&- K_2 M^{\top}(q,l,\Gamma)B^{-\top}(q)\partial_{\dot{q}} H^{\top}) \\
 %	\tau &= G_{\mathrm{P}}^{\mathrm{l}} + J \ddot{\Gamma} \\
 %	&+ (J P^{-1} K_1 + K_2) (\dot{l} - \dot{\Gamma})  + (K_2 P^{-1} K_1 - I) (l - \Gamma) \\
-%	&- J P^{-1}\frac{\mathrm{d}}{\mathrm{d} t}\left(M^{\mathrm{T}}(q,l,\Gamma)B^{-\mathrm{T}}(q)\partial_{\dot{q}} H^{\mathrm{T}}\right) \\
-%	&- K_2 P^{-1}M^{\mathrm{T}}(q,l,\Gamma)B^{-\mathrm{T}}(q)\partial_{\dot{q}} H^{\mathrm{T}}
+%	&- J P^{-1}\frac{\mathrm{d}}{\mathrm{d} t}\left(M^{\top}(q,l,\Gamma)B^{-\top}(q)\partial_{\dot{q}} H^{\top}\right) \\
+%	&- K_2 P^{-1}M^{\top}(q,l,\Gamma)B^{-\top}(q)\partial_{\dot{q}} H^{\top}
 %	\end{split}
 %	\end{equation}
 %	

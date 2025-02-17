@@ -18,13 +18,13 @@ When a rod of unstretched length $\hat{L}$ is at rest, each link has a length of
 The circumflex accent will denote quantities in the rest configuration of the rod.
 When the rod is in a deformed state, $l$ describes the current edge length and
 % In contrast to the Kirchoff-Love theory, which does not allow for shear and extension to occur, the Cosserat rod theory accounts for all six deformation modes. 
-the shear and axial strains are considered in the vector $\sigma = \begin{pmatrix} \sigma_x & \sigma_y & \sigma_z \end{pmatrix}^\mathrm{T}$. The curvature vector $\kappa_{\mathcal{L}} = \begin{pmatrix} \kappa_x & \kappa_y & \kappa_z \end{pmatrix}^\mathrm{T}$ captures the bending and twist strains.
+the shear and axial strains are considered in the vector $\sigma = \begin{pmatrix} \sigma_x & \sigma_y & \sigma_z \end{pmatrix}^\top$. The curvature vector $\kappa_{\mathcal{L}} = \begin{pmatrix} \kappa_x & \kappa_y & \kappa_z \end{pmatrix}^\top$ captures the bending and twist strains.
 All strains are defined with respect to the rest length of the link $\hat{l}_i$, and the dilation factor $e_i = \frac{l_i}{\hat{l}_i}$ denotes the deviation from that rest length.
 The shear and stretch stiffness is specified through the diagonal matrix $S = \mathrm{diag}(E I_{xx}, E I_{yy}, G I_{zz}) \in \mathbb{R}^{3 \times 3}$, where $E$, $G$ are the elastic and shear modulus respectively, and $I \in \mathbb{R}^{3 \times 3}$ is the second area moment of inertia. Analogue, the bending and twist rigidity is stored in $B = \mathrm{diag}(B_x, B_y, B_z) \in \mathbb{R}^{3 \times 3}$.
 For conciseness, we include only the equation for the translational accelerations below. We refer the interested reader to \citep{gazzola2018forward} for the equation on rotational accelerations and more complimentary details about the \gls{DCM}.
 % The translational and rotational accelerations are then given as part of the governing equations as
 \begin{align}
-    m_i \frac{\partial v_i}{\partial t} =& \Delta^h \left ( \frac{Q_i^\mathrm{T} \hat{S}_i \sigma^i_{\mathcal{L}}}{e_i} \right ) + F_i, \quad i\in \{1,\dots,n_\mathrm{v}+1\},
+    m_i \frac{\partial v_i}{\partial t} =& \Delta^h \left ( \frac{Q_i^\top \hat{S}_i \sigma^i_{\mathcal{L}}}{e_i} \right ) + F_i, \quad i\in \{1,\dots,n_\mathrm{v}+1\},
     %\frac{\hat{J}_i}{e_i} \frac{\partial\omega_{\mathcal{L}}^i}{\partial t} =& \Delta^h \left ( \frac{\hat{B}_i \hat{\kappa}_{\mathcal{L}}^i}{\epsilon^3_i} \right ) + \mathcal{A}^h \left ( \frac{\hat{\kappa}_{\mathcal{L}}^i \times \hat{B}_i \hat{\kappa}^i_{\mathcal{L}}}{\epsilon^3_i} \right )\notag\\
     %&+ (Q_i t_i \times \hat{S}_i \sigma_{\mathcal{L}}^i)\hat{l}_i + \left ( \hat{J}_i \frac{\omega^i_{\mathcal{L}}}{e_i} \right ) \times \ \omega_{\mathcal{L}}^i\notag\\
     % &+\frac{\hat{J}_i \omega^i_{\mathcal{L}}}{e_i^2} \frac{\partial e_i}{\partial t} + \tau_{\mathcal{L}}^i, \quad i=[1,n_\mathrm{v}],
@@ -56,11 +56,11 @@ $C_{\varepsilon}$ is the extension factor, which needs to be tuned with respect 
 The minimum and maximum extension $\varepsilon_\mathrm{min}$, $\varepsilon_\mathrm{max}$ are the limits of the auxetic trajectory and depend on the \gls{HSA} type: for example, closed \glspl{HSA} can only exhibit positive elongations~\citep{good2022expanding}. % Contrarily, semi-open \glspl{HSA} can both contract and elongate~\citep{good2022expanding}.
 After the rest length is adjusted, the axial stiffness of the rod will guide the current edge length $l_i$ towards the (target) edge rest length. % $\hat{l}_i \neq \bar{l}_i$
 % This strategy allows us to keep the axial deformability in tact, while adjusting the length of the rod according to the auxetic trajectory.
-Furthermore, we recall the definition of bend/twist strains: $\kappa_{\mathcal{L}}^i = \frac{\log(Q_{i+1} \: Q_i^\mathrm{T})}{\hat{\mathcal{D}}_i}$. 
+Furthermore, we recall the definition of bend/twist strains: $\kappa_{\mathcal{L}}^i = \frac{\log(Q_{i+1} \: Q_i^\top)}{\hat{\mathcal{D}}_i}$. 
 % As the rest length is changed while traversing the auxetic trajectory, the Voronoi rest length $\hat{\mathcal{D}}_i$ and therefore the twist strain $\kappa_{\mathcal{L}}^i$ would change as well. 
 To keep the twist strain constant across the entire auxetic trajectory, we define the twist strain with respect to the initial Voronoi length $\bar{\mathcal{D}}_i = \frac{\bar{l}_{i+1} - \bar{l}_i}{2}$:
 \begin{equation}
-    \kappa_{\mathcal{L},z}^i = \frac{\log(Q_{i+1} \: Q_i^\mathrm{T})}{\bar{\mathcal{D}}_i}, \quad i\in \{1,\dots,n_\mathrm{v}+1\}
+    \kappa_{\mathcal{L},z}^i = \frac{\log(Q_{i+1} \: Q_i^\top)}{\bar{\mathcal{D}}_i}, \quad i\in \{1,\dots,n_\mathrm{v}+1\}
 \end{equation}
 
 \begin{table}[hbt]
@@ -126,7 +126,7 @@ The results show that the proposed simulator can accurately represent the steady
 We discuss here how to combine a platform and multiple \glspl{HSA} to form a \gls{HSA} robot.  Assume to have $n_\mathrm{HSA}$ rods equally distributed along a circle of radius $R_\mathrm{cHSA}$ in the x-y plane with the rods pointing towards the positive z-direction in a straight configuration.
 %
 We need boundary conditions for the proximal ends of the rods to generate the parallel structure. The positions of the proximal nodes are constrained to remain at their initial position $\bar{r}_{0}$.
-% $\bar{r}_{0} = \begin{pmatrix} \cos(\varphi) R_\mathrm{cHSA} & \sin(\varphi)R_\mathrm{cHSA} & 0 \end{pmatrix}^\mathrm{T}$, where $\varphi$ is the azimuth angle. 
+% $\bar{r}_{0} = \begin{pmatrix} \cos(\varphi) R_\mathrm{cHSA} & \sin(\varphi)R_\mathrm{cHSA} & 0 \end{pmatrix}^\top$, where $\varphi$ is the azimuth angle. 
 For the same purpose, the translational rates, e.g., $v_0$, are set to zero at each time step. 
 
 In our plug-in to Elastica, we provide the user with two options for actuating the \glspl{HSA}. (a) The orientation of the proximal link $Q_{0}$ is moved to a desired orientation $Q_{0}^\mathrm{d}$. In this case, the twist angle $\phi_0^\mathrm{d}$ of the proximal end is controlled. Again, the rotational rates $\omega_0$ are set to zero. 
@@ -140,7 +140,7 @@ where $k_F$ is the translational joint stiffness, and $\nu_F$ the translational 
 
 Similarly to the contact force, a contact torque $\tau_\mathrm{c}$ is computed to reduce any error in the orientation and angular velocity between the two systems
 \begin{equation}
-    \tau_\mathrm{c} = k_\tau \, (Q_\mathrm{p}^\mathrm{T} \log(Q_\mathrm{p} \, Q_{n_\mathrm{v}}^\mathrm{T})) + \nu_\tau \, (Q_\mathrm{p}^\mathrm{T} \omega_\mathrm{p}^j - Q_{n_\mathrm{v}}^\mathrm{T} \omega_{n_\mathrm{v}})
+    \tau_\mathrm{c} = k_\tau \, (Q_\mathrm{p}^\top \log(Q_\mathrm{p} \, Q_{n_\mathrm{v}}^\top)) + \nu_\tau \, (Q_\mathrm{p}^\top \omega_\mathrm{p}^j - Q_{n_\mathrm{v}}^\top \omega_{n_\mathrm{v}})
 \end{equation}
 where the $\log(\cdot): \mathbb{R}^{3 \times 3} \rightarrow $ operator computes the rotation vector from the rotation matrix~\citep{gazzola2018forward}, and $Q_\mathrm{p}$ is the material frame of the platform.
 

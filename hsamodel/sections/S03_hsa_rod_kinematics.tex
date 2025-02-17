@@ -15,37 +15,37 @@ This parametrization can be combined with the results in Sec.~\ref{sec:hsamodel:
 
 First, we define that 
 \begin{equation}
-    \xi(q,s) = \begin{pmatrix} \kappa_x & \kappa_y & \kappa_z & \sigma_x & \sigma_y & \sigma_z \end{pmatrix}^\mathrm{T} \in \mathbb{R}^6
+    \xi(q,s) = \begin{pmatrix} \kappa_x & \kappa_y & \kappa_z & \sigma_x & \sigma_y & \sigma_z \end{pmatrix}^\top \in \mathbb{R}^6
 \end{equation}
 represents the three rotational and three linear strains present in a rod~\citep{renda2018discrete}. Subsequently, propose the following configuration vector for an \gls{HSA}
 \begin{equation}
     q = \begin{pmatrix}
-        \phi_0 & q_\mathrm{CS}^\mathrm{T} & q_{\mathrm{PCS},1}^\mathrm{T} & \cdots & q_{\mathrm{PCS},i}^\mathrm{T} & \cdots & q_{\mathrm{PCS},n_\mathrm{S}}^\mathrm{T}
-    \end{pmatrix}^\mathrm{T}% \in \mathbb{R}^{1 + n_{q,\mathrm{CS}} + n_\mathrm{S} \: n_{q,\mathrm{PCS}}},
+        \phi_0 & q_\mathrm{CS}^\top & q_{\mathrm{PCS},1}^\top & \cdots & q_{\mathrm{PCS},i}^\top & \cdots & q_{\mathrm{PCS},n_\mathrm{S}}^\top
+    \end{pmatrix}^\top% \in \mathbb{R}^{1 + n_{q,\mathrm{CS}} + n_\mathrm{S} \: n_{q,\mathrm{PCS}}},
 \end{equation}
 where $\phi_0 \in \mathbb{R}$ is the twist angle at the base and allows for the rotation of the motor actuating the \gls{HSA} rod. $q_\mathrm{CS} \in \mathbb{R}^{n_{q,\mathrm{CS}}}$ is a strain component constant along the entire rod, and $q_{\mathrm{PCS},i} \in \mathbb{R}^{n_{q,\mathrm{PCS}}}, i \in \{1, \dots, n_\mathrm{PCS}\}$ is the configuration of each \gls{PCS} segment. The $i$th segment has a initial length of $\bar{l}_i$ with its tip at the coordinate $\bar{L}_i$
 %
-The strain in the $i$th segment is then the sum of the rest strain $\hat{\xi} = \begin{pmatrix} 0 & 0 & 0 & 0 & 0 & 1\end{pmatrix}^\mathrm{T}$, $\xi_\mathrm{CS}$, and $\xi_{\mathrm{PCS},i}$:
+The strain in the $i$th segment is then the sum of the rest strain $\hat{\xi} = \begin{pmatrix} 0 & 0 & 0 & 0 & 0 & 1\end{pmatrix}^\top$, $\xi_\mathrm{CS}$, and $\xi_{\mathrm{PCS},i}$:
 \begin{equation}
     \xi_i = \hat{\xi} + B_\mathrm{CS} \: q_\mathrm{CS} + B_{\mathrm{PCS},i} \: q_{\mathrm{PCS},i}, \quad i \in \{1,\dots, n_\mathrm{S}\}.
 \end{equation}
 Analogue to the concept introduced in \citep{renda2020geometric}, $B_\mathrm{CS} \in \mathbb{R}^{6 \times n_{q,\mathrm{CS}}}$, $B_\mathrm{PCS} \in \mathbb{R}^{6 \times n_{q,\mathrm{PCS}}}$ are the strain bases of $q_\mathrm{CS}$ and $q_\mathrm{PCS}$ respectively.
 
 In this chapter, we specifically investigate a setting where the twist \& stretch strains are constant across the entire rod and the bend \& shear strains vary for each segment.
-Accordingly, we choose $q_\mathrm{CS} = \begin{pmatrix} \kappa_z & \sigma_z \end{pmatrix}^\mathrm{T}$ and $q_{\mathrm{PCS},i} = \begin{pmatrix} \kappa_{x,i} & \kappa_{y,i} & \sigma_{x,i} & \sigma_{y,i} \end{pmatrix}^\mathrm{T}$.
+Accordingly, we choose $q_\mathrm{CS} = \begin{pmatrix} \kappa_z & \sigma_z \end{pmatrix}^\top$ and $q_{\mathrm{PCS},i} = \begin{pmatrix} \kappa_{x,i} & \kappa_{y,i} & \sigma_{x,i} & \sigma_{y,i} \end{pmatrix}^\top$.
 Then, the corresponding strain bases are determined to be
 \begin{equation}
 \begin{split}
     B_\mathrm{CS} = \begin{bmatrix}
         0 & 0 & 1 & 0 & 0 & 0\\
         0 & 0 & 0 & 0 & 0 & 1\\
-    \end{bmatrix}^\mathrm{T} \in \mathbb{R}^{6 \times 2},\\
+    \end{bmatrix}^\top \in \mathbb{R}^{6 \times 2},\\
     B_{\mathrm{PCS},i} = \begin{bmatrix}
         1 & 0 & 0 & 0 & 0 & 0\\
         0 & 1 & 0 & 0 & 0 & 0\\
         0 & 0 & 0 & 1 & 0 & 0\\
         0 & 0 & 0 & 0 & 1 & 0\\
-    \end{bmatrix}^\mathrm{T} \in \mathbb{R}^{6 \times 4}.
+    \end{bmatrix}^\top \in \mathbb{R}^{6 \times 4}.
 \end{split}
 \end{equation}
 
@@ -137,13 +137,13 @@ We implemented an inverse kinematics algorithm based on the analytical Jacobian 
 \begin{equation*}
     \chi_{\mathcal{B}}^{s_i} = \begin{pmatrix}
         \varepsilon_x & \varepsilon_y & \varepsilon_z & \eta & \varepsilon_z & p_x & p_y & p_z
-    \end{pmatrix}^\mathrm{T} \in \mathbb{R}^{7},
+    \end{pmatrix}^\top \in \mathbb{R}^{7},
 \end{equation*}
-which includes rotational orientation estimates in unit quaternion representation $\mathcal{Q} = \begin{pmatrix} \varepsilon_x & \varepsilon_y & \varepsilon_z & \eta \end{pmatrix}^\mathrm{T}$ and positions in Cartesian space $p = \begin{pmatrix} p_x & p_y & p_z \end{pmatrix}^\mathrm{T}$.
+which includes rotational orientation estimates in unit quaternion representation $\mathcal{Q} = \begin{pmatrix} \varepsilon_x & \varepsilon_y & \varepsilon_z & \eta \end{pmatrix}^\top$ and positions in Cartesian space $p = \begin{pmatrix} p_x & p_y & p_z \end{pmatrix}^\top$.
 Please note that usually $\phi_0$ does not need to be found through (differential) inverse kinematics but can rather be directly read out from the encoders of the electric servos.
 All $N$ poses and Jacobians can be vertically stacked as $\chi \in \mathbb{R}^{7N}$  and $J_\mathrm{A} \in \mathbb{R}^{7N \times 6}$  respectively. This then allows us to then iteratively optimize the pose error $e_\chi = \chi_\mathrm{d} - \tilde{\chi}$ between the known pose $\chi_\mathrm{d}$ and the pose $\tilde{\chi}$ computed using the forward kinematics
 \begin{equation}
-    \tilde{q}_{\mathrm{it} + 1} = \tilde{q}_{\mathrm{it}} + \lambda \, J_\mathrm{A}^\mathrm{T}(\tilde{q}) \, \left ( \chi_\mathrm{d} - \tilde{\chi}(\tilde{q}) \right ),
+    \tilde{q}_{\mathrm{it} + 1} = \tilde{q}_{\mathrm{it}} + \lambda \, J_\mathrm{A}^\top(\tilde{q}) \, \left ( \chi_\mathrm{d} - \tilde{\chi}(\tilde{q}) \right ),
 \end{equation}
 where $\tilde{q}$ is the current configuration estimate, and $\lambda$ is the step size.
 
@@ -213,14 +213,14 @@ We first define a \gls{RMSE} for comparing each ground-truth position $p_t^i \in
 % \begin{equation}
 %     e_{\mathrm{quat}} = \sqrt{\sum_{t = 1}^{n_\mathrm{t}}  \sum_{i = 1}^{N} \frac{\left (\big\lVert \tilde{\varepsilon}_t^i - \varepsilon_t^i \big\rVert_2 \right )^2}{n_\mathrm{t} \, N}} \in \mathbb{R},
 % \end{equation}
-% where we use the Euclidean norm of the quaternion vector component $\varepsilon = \begin{pmatrix}\varepsilon_x & \varepsilon_y & \varepsilon_z \end{pmatrix}^\mathrm{T}$.
-The rotational \glspl{RMSE} $e_{\mathrm{quat}}$ is computed analogue by substituting $p$ in \eqref{eq:hsamodel:translational_rmse} with the quaternion vector component $\varepsilon = \begin{pmatrix}\varepsilon_x & \varepsilon_y & \varepsilon_z \end{pmatrix}^\mathrm{T}$.
-% Finally, we compute the relative rotation between $\tilde{R} \in \mathbb{3 \times 3}$ and $R \in \mathbb{3 \times 3}$ with $e_R = R \tilde{R}^\mathrm{T}$. 
+% where we use the Euclidean norm of the quaternion vector component $\varepsilon = \begin{pmatrix}\varepsilon_x & \varepsilon_y & \varepsilon_z \end{pmatrix}^\top$.
+The rotational \glspl{RMSE} $e_{\mathrm{quat}}$ is computed analogue by substituting $p$ in \eqref{eq:hsamodel:translational_rmse} with the quaternion vector component $\varepsilon = \begin{pmatrix}\varepsilon_x & \varepsilon_y & \varepsilon_z \end{pmatrix}^\top$.
+% Finally, we compute the relative rotation between $\tilde{R} \in \mathbb{3 \times 3}$ and $R \in \mathbb{3 \times 3}$ with $e_R = R \tilde{R}^\top$. 
 Finally, we compute the XYZ Euler angle error as 
 \begin{equation}
-    e_\mathrm{eul} = \sqrt{\sum_{t = 1}^{n_\mathrm{t}} \sum_{i = 1}^{N} \frac{\left ( f_\vartheta(R_{t,i} \, \tilde{R}_{t,i}^\mathrm{T}) \right )^2}{n_\mathrm{t} \, N}} \in \mathbb{R}^3,
+    e_\mathrm{eul} = \sqrt{\sum_{t = 1}^{n_\mathrm{t}} \sum_{i = 1}^{N} \frac{\left ( f_\vartheta(R_{t,i} \, \tilde{R}_{t,i}^\top) \right )^2}{n_\mathrm{t} \, N}} \in \mathbb{R}^3,
 \end{equation}
-where $f_\vartheta(\cdot)$ is the operator to compute the XYZ Euler angles $\vartheta = \begin{pmatrix}\alpha & \beta & \gamma \end{pmatrix}^\mathrm{T}$ from a rotation matrix $R \in SO(3)$.
+where $f_\vartheta(\cdot)$ is the operator to compute the XYZ Euler angles $\vartheta = \begin{pmatrix}\alpha & \beta & \gamma \end{pmatrix}^\top$ from a rotation matrix $R \in SO(3)$.
 
 % Relative rotation:
 % \begin{equation}

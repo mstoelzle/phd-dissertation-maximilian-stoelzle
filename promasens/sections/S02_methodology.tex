@@ -40,7 +40,7 @@ To achieve proprioception, we jointly optimize $\hat{q}$ for all sensor measurem
 
 % The state of each segment $i$ of unextended length $L_{0,i}$ and radius $d_i$ is described by
 % \begin{equation}
-%     q_i = \begin{bmatrix}\Delta_{x,i} & \Delta_{y,i} & \delta L_i \end{bmatrix}^{\mathrm{T}} \in \mathbb{R}^3
+%     q_i = \begin{bmatrix}\Delta_{x,i} & \Delta_{y,i} & \delta L_i \end{bmatrix}^{\top} \in \mathbb{R}^3
 % \end{equation}
 % where $\Delta_{x,i}$ and $\Delta_{y,i}$ represent bending into the local x- and y-directions respectively and $\delta L_i$ defines the extension of the segment.
 % The base frame of segment $i$ is referred to as $\{S_{i-1}\}$ as stated in Fig.~\ref{fig:promasens:kinematics_frames_soft_segment}. Given $q_i$, a homogeneous transformation $T_{i-1}^{i}(q_i)$ to the tip frame $\{S_{i}\}$ is available
@@ -56,7 +56,7 @@ To achieve proprioception, we jointly optimize $\hat{q}$ for all sensor measurem
 %     t_{i-1}^{i} &= \frac{d_i ( L_{0,i}+\delta L_i)}{\Delta_i^2}
 %     \begin{bmatrix}
 %         \Delta_{x,i} (1 - \mathrm{c}_i) & \Delta_{y,i} (1 - \mathrm{c}_i) & \Delta_{i} \mathrm{s}_i,
-%     \end{bmatrix}^{\mathrm{T}}
+%     \end{bmatrix}^{\top}
 % \end{split}
 % \end{equation}
 % where we substituted $\Delta_i = \sqrt{\Delta_{x,i}^2 + \Delta_{y,i}^2}$, $\mathrm{s}_i = \sin \left ( \frac{\Delta_i}{d_i} \right )$, and $\mathrm{c}_i = \cos \left ( \frac{\Delta_i}{d_i} \right )$ for conciseness.
@@ -75,7 +75,7 @@ A kinematic description provides us with the forward kinematic transformation $T
 
 Under the \gls{PCC} hypothesis, the shape of each segment $i$ of length $L_{i}$ and radius $d_i$ can be fully parameterized through three variables
 \begin{equation}
-    q_i = \begin{bmatrix}\Delta_{x,i} & \Delta_{y,i} & \delta L_{i} \end{bmatrix}^{\mathrm{T}} \in \mathbb{R}^3
+    q_i = \begin{bmatrix}\Delta_{x,i} & \Delta_{y,i} & \delta L_{i} \end{bmatrix}^{\top} \in \mathbb{R}^3
 \end{equation}
 where $\Delta_{x,i}$ and $\Delta_{y,i}$ represent bending into the local $x$ and $y$ directions respectively and $\delta L_i$ defines the elongation of the segment.
 The base frame of segment $i$ is referred to as $\{S_{i-1}\}$ as stated in Fig.~\ref{fig:promasens:kinematics_frames_soft_segment}. Given $q_i$, a homogeneous transformation $T_{i-1}^{v}(q_i, v)$ to the point frame $\{S_{v}\}$ is available
@@ -91,7 +91,7 @@ The base frame of segment $i$ is referred to as $\{S_{i-1}\}$ as stated in Fig.~
     p_{i-1}^{i}(q_i,v) &= \frac{d_i ( L_{0,i}+\delta L_i)}{v \, \Delta_i^2}
     \begin{bmatrix}
         \Delta_{x,i} (1 - \mathrm{C}_v) & \Delta_{y,i} (1 - \mathrm{C}_v) & \Delta_{i} \mathrm{S}_v,
-    \end{bmatrix}^{\mathrm{T}}
+    \end{bmatrix}^{\top}
 \end{split}
 \end{equation}
 where $R_{i-1}^{v}$, $p_{i-1}^{i}(q_i,v)$ denote the rotation matrix and translation vector respectively. We substituted $\Delta_i = \sqrt{\Delta_{x,i}^2 + \Delta_{y,i}^2}$, $\mathrm{S}_v = \sin \left (\frac{v \, \Delta_i}{d_i} \right )$, and $\mathrm{C}_v = \cos \left ( \frac{v \, \Delta_i}{d_i} \right )$ for conciseness.
@@ -102,13 +102,13 @@ Specifically, we implement the recently proposed extension to 3D environments~\c
 % We extend this parametrization as introduced by Della Santina et al.~\citep{della2019control, della2020soft} to 3D environments by specifying the azimuth angle of the bending direction $\phi(t)$ and additionally allowing for an elongation $\delta L(t)$ of the segment. 
 Accordingly, the configuration of the $i^\mathrm{th}$ segment is described at any point in time by
 \begin{equation}
-    q_i = \begin{bmatrix}\kappa_{0,i} & \kappa_{1,i} & \phi_i & \delta L_{i} \end{bmatrix}^{\mathrm{T}} \in \mathbb{R}^4.
+    q_i = \begin{bmatrix}\kappa_{0,i} & \kappa_{1,i} & \phi_i & \delta L_{i} \end{bmatrix}^{\top} \in \mathbb{R}^4.
 \end{equation}
 Now that the configuration space is defined, we aim to find a description of the forward kinematics. Firstly, the bending angle $\theta_i(q, v)$ is found by integrating the curvature
 \begin{equation}
     \theta(q,v) = \int_{v'=0}^{v} \kappa_i(q, v') \, \mathrm{d}v' = \kappa_{0,i} \, v + \kappa_{1,i} \, \frac{v^2}{2}.
 \end{equation}
-The rotation to the frame $\{S_{v}\}$ can then be easily determined with $R_{i-1}^{i}(q,v) = R_{\phi_i}(q,v) \, R_{\theta}(q,v) R_{\phi_i}^\mathrm{T}(q,v)$. After substituting $S_{\cdot} = \sin(\cdot)$, $C_{\cdot} = \cos(\cdot)$ for conciseness, we state the homogeneous transformation as
+The rotation to the frame $\{S_{v}\}$ can then be easily determined with $R_{i-1}^{i}(q,v) = R_{\phi_i}(q,v) \, R_{\theta}(q,v) R_{\phi_i}^\top(q,v)$. After substituting $S_{\cdot} = \sin(\cdot)$, $C_{\cdot} = \cos(\cdot)$ for conciseness, we state the homogeneous transformation as
 \begin{equation}\label{eq:promasens:affine_curvature_forward_kinematics}
 \begin{split}
     R_{i-1}^v(q,v) &= \begin{bmatrix}
@@ -137,12 +137,12 @@ Accordingly, $\xi_j$ is defined as
 \begin{equation}
     \xi_{j} = f_{\mathrm{\xi},j}(q) =
     \begin{pmatrix}
-        \lambda_{j} & {\xi_{j}^1}^\mathrm{T} & \cdots & {\xi_{j}^k}^\mathrm{T} & \cdots & {\xi_{j}^{n_\mathrm{m}}}^\mathrm{T}
-    \end{pmatrix}^\mathrm{T} \in \mathbb{R}^{1 + 4n_\mathrm{m}},
+        \lambda_{j} & {\xi_{j}^1}^\top & \cdots & {\xi_{j}^k}^\top & \cdots & {\xi_{j}^{n_\mathrm{m}}}^\top
+    \end{pmatrix}^\top \in \mathbb{R}^{1 + 4n_\mathrm{m}},
 \end{equation}
-with $\xi_j^{k} \in \mathbb{R}^4$ the kinematic relationship between the $j^\mathrm{th}$ sensor and the $k^\mathrm{th}$ magnet: $\xi_j^{k} = \begin{pmatrix} d_j^k & \alpha_j^k & \beta_j^k & \theta_j^k \end{pmatrix}^\mathrm{T} \in \mathbb{R}^4$. We visualize the parameters incorporated in $\xi_j^{k}$ in Fig.~\ref{fig:promasens:magnet_sensor_kinematic}.
+with $\xi_j^{k} \in \mathbb{R}^4$ the kinematic relationship between the $j^\mathrm{th}$ sensor and the $k^\mathrm{th}$ magnet: $\xi_j^{k} = \begin{pmatrix} d_j^k & \alpha_j^k & \beta_j^k & \theta_j^k \end{pmatrix}^\top \in \mathbb{R}^4$. We visualize the parameters incorporated in $\xi_j^{k}$ in Fig.~\ref{fig:promasens:magnet_sensor_kinematic}.
 % \begin{equation}
-%     \xi_j^{k} = \begin{pmatrix} d_j^k & \alpha_j^k & \beta_j^k & \theta_j^k \end{pmatrix}^\mathrm{T}.
+%     \xi_j^{k} = \begin{pmatrix} d_j^k & \alpha_j^k & \beta_j^k & \theta_j^k \end{pmatrix}^\top.
 % \end{equation}
 
 In the following, we present the derivation of all components of $\xi_j^{k}$. 
@@ -169,7 +169,7 @@ This is followed by applying the radial offset $d_{\mathrm{s}_j,\mathrm{r}}$ in 
 %     \,
 %     \begin{pmatrix}
 %         \cos{\varphi_j} & \sin{\varphi_j} & 0
-%     \end{pmatrix}^{\mathrm{T}}.
+%     \end{pmatrix}^{\top}.
 % \end{split}
 % \end{equation}
 \begin{equation}
@@ -192,19 +192,19 @@ Next, we need to express the sensor measurement direction $\{ o_{\mathrm{s}_j} \
     \{ o_{\mathrm{s}_j} \}_{0} = R_{0}^{\mathrm{s}_j}
     \begin{pmatrix}
         0 & 0 & 1
-    \end{pmatrix}^{\mathrm{T}},
+    \end{pmatrix}^{\top},
     \quad
     \{ o_{\mathrm{m}_k} \}_{0} = R_{0}^{\mathrm{m}_k}
     \begin{pmatrix}
         0 & 0 & 1
-    \end{pmatrix}^{\mathrm{T}}.
+    \end{pmatrix}^{\top}.
 \end{equation}
 % and analogue for the cylindrical axis of the magnet $\{ \hat{o}_{\mathrm{m}_k} \}_{0}$
 % \begin{equation}
 %     \{ \hat{o}_{\mathrm{m}_k} \}_{0} = R_{0}^{\mathrm{m}_k}
 %     \begin{pmatrix}
 %         0 & 0 & 1
-%     \end{pmatrix}^{\mathrm{T}}.
+%     \end{pmatrix}^{\top}.
 % \end{equation}
 %
 As the sensor measures contributions of the earth's magnetic field, we need to state the angle $\lambda_{j}$ between $\{ o_{\mathrm{s}_j} \}_0$ and the earth's magnetic field unit vector $\{ n_{\mathrm{e}} \}_{0}$. 
@@ -219,7 +219,7 @@ Similarly, we investigate the angle $\alpha_j^k$ between $\{ o_{\mathrm{s}_j} \}
 %     \{ \hat{n}_{\mathrm{e}} \}_{0} =
 %     \begin{pmatrix}
 %         \cos(\varphi_e) & \sin(\varphi_e) & 0
-%     \end{pmatrix}^{\mathrm{T}}.
+%     \end{pmatrix}^{\top}.
 % \end{equation}
 % Next, we investigate the angle $\alpha_j^k$ between the sensor measurement direction $\{ \hat{o}_{\mathrm{s}_j} \}_{0}$ and the cylindrical axis of the magnet $\{ \hat{o}_{\mathrm{m}_k} \}_{0}$
 % \begin{equation}
@@ -241,7 +241,7 @@ Building on the derivation in \eqref{eq:promasens:t_jk_and_d_jk}, we compute the
 \end{equation}
 Lastly, the kinematic descriptions for all sensors are vertically stacked as
 \begin{equation}
-    \xi = \begin{pmatrix} \xi_1^\mathrm{T} \dots \xi_j^\mathrm{T} \dots \xi_{n_\mathrm{s}}^\mathrm{T} \end{pmatrix}^\mathrm{T} \in \mathbb{R}^{n_\mathrm{s} + 4n_\mathrm{m} n_\mathrm{s}}.
+    \xi = \begin{pmatrix} \xi_1^\top \dots \xi_j^\top \dots \xi_{n_\mathrm{s}}^\top \end{pmatrix}^\top \in \mathbb{R}^{n_\mathrm{s} + 4n_\mathrm{m} n_\mathrm{s}}.
 \end{equation}
 % $\xi_j(t) \in \mathbb{R}^{1 + 4n_\mathrm{m}}$
 % $\xi(t) = f_\xi(q(t)) \in \mathbb{R}^{n_\mathrm{s} + 4n_\mathrm{m} n_\mathrm{s}}$
@@ -274,8 +274,8 @@ We will in the following refer to the mapping $f_\xi(q): q \in \mathbb{R}^{n_\ma
         \vspace{0.25em}
         \State $\hat u_{l}^{\mathrm{error}} \gets \lVert \hat{u}_{l}-u(t) \rVert_2$
         \vspace{0.25em}
-        % \STATE $\frac{\partial}{\partial \hat{q}_l} \mathcal{L}_{u}(\hat{q}_l) \gets \frac{2}{n_\mathrm{s}} \frac{\partial }{\partial {\hat{q}_l}} f_{\mathrm{\xi}}^\mathrm{T}(\hat{q}_l) \, \frac{\partial}{\partial {\hat{\xi}_l}} f_\pi^\mathrm{T}(\hat{\xi}_l) \, (\hat{u}_l - u(t))$
-        \State $b_{l+1} \gets \mu \, b_l + \frac{2}{n_\mathrm{s}} \frac{\partial }{\partial {\hat{q}_l}} f_{\mathrm{\xi}}^\mathrm{T}(\hat{q}_l) \, \frac{\partial}{\partial {\hat{\xi}_l}} f_\pi^\mathrm{T}(\hat{\xi}_l) \, (\hat{u}_l - u(t))$
+        % \STATE $\frac{\partial}{\partial \hat{q}_l} \mathcal{L}_{u}(\hat{q}_l) \gets \frac{2}{n_\mathrm{s}} \frac{\partial }{\partial {\hat{q}_l}} f_{\mathrm{\xi}}^\top(\hat{q}_l) \, \frac{\partial}{\partial {\hat{\xi}_l}} f_\pi^\top(\hat{\xi}_l) \, (\hat{u}_l - u(t))$
+        \State $b_{l+1} \gets \mu \, b_l + \frac{2}{n_\mathrm{s}} \frac{\partial }{\partial {\hat{q}_l}} f_{\mathrm{\xi}}^\top(\hat{q}_l) \, \frac{\partial}{\partial {\hat{\xi}_l}} f_\pi^\top(\hat{\xi}_l) \, (\hat{u}_l - u(t))$
         % \vspace{0.25em}
         \State $\hat{q}_{l+1} \gets \hat{q}_l - \gamma \, b_{l+1} $
         % \vspace{0.25em}
@@ -338,6 +338,6 @@ As common in literature, we optimize the state belief $\hat{q}_l$ with a step si
 \end{equation}
 We can use the chain rule to derive an analytical expression for the gradient of the loss incorporating the gradient of the magnet sensor kinematics $\partial_{\hat{q}} f_{\mathrm{\xi}}(\hat{q})$ and the gradient of the neural network $\partial_{\hat{\xi}} f_\Pi (\hat{\xi})$:
 \begin{equation}
-    \frac{\partial}{\partial \hat{q}} \mathcal{L}_{u}(\hat{q}) = \frac{2}{n_\mathrm{s}} \left ( \frac{\partial }{\partial {\hat{q}}} f_{\mathrm{\xi}}(\hat{q}) \right )^\mathrm{T} \, \left ( \frac{\partial}{\partial {\hat{\xi}}} f_\Pi(\hat{\xi}) \right )^\mathrm{T} \, (\hat{u} - u).
+    \frac{\partial}{\partial \hat{q}} \mathcal{L}_{u}(\hat{q}) = \frac{2}{n_\mathrm{s}} \left ( \frac{\partial }{\partial {\hat{q}}} f_{\mathrm{\xi}}(\hat{q}) \right )^\top \, \left ( \frac{\partial}{\partial {\hat{\xi}}} f_\Pi(\hat{\xi}) \right )^\top \, (\hat{u} - u).
 \end{equation}
 After executing the gradient descent for $n_\mathrm{it}$ iterations, we evaluate which iteration $l^*$ had the lowest loss $\mathcal{L}_{u}$ and accordingly select $\hat{q}(t) = \hat{q}_{l^*}$ as the best configuration estimate of time-step $t$.

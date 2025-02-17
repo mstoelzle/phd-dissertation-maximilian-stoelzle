@@ -11,13 +11,13 @@ We now move towards learning latent dynamical models based on \gls{CON} and \gls
 \end{figure}
 
 We assume to have access to observations in the form of images $o \in \mathbb{R}^{h_\mathrm{o} \times w_\mathrm{o} \times c_\mathrm{o}}$, where $c_\mathrm{o}$ denotes the number of channels. Please note that this could also be other high-dimensional observations such as LiDAR scans, point clouds, etc.
-We now leverage an encoder-decoder architecture to map these high-dimensional observations into a compressed latent space: % parametrized by $z^\mathrm{T} & \dot{z}^\mathrm{T} \end{bmatrix}^\mathrm{T} \in \mathbb{R}^{2n_z}$.
+We now leverage an encoder-decoder architecture to map these high-dimensional observations into a compressed latent space: % parametrized by $z^\top & \dot{z}^\top \end{bmatrix}^\top \in \mathbb{R}^{2n_z}$.
 The encoder $\Phi: \mathbb{R}^{h_\mathrm{o} \times w_\mathrm{o} \times c_\mathrm{o}} \to \mathbb{R}^{n_z} $ with $n_z \ll h_\mathrm{o} \,  w_\mathrm{o}$ identifies a low-dimensional latent representation $z \in \mathbb{R}^{n_z}$ of the images. The decoder $\Psi: \mathbb{R}^{n_z} \to \mathbb{R}^{h_\mathrm{o} \times w_\mathrm{o} \times c_\mathrm{o}}$ approximates the inverse operation by reconstructing an image $\hat{o} \in \mathbb{R}^{h_\mathrm{o} \times w_\mathrm{o} \times c_\mathrm{o}}$ based on the latent representation.
 To promote the learning of a smooth and monotonic mapping into latent space, we specifically choose to implement the autoencoder here as a $\beta$-\gls{VAE}~\citep{kingma2014auto, higgins2017beta}.
 Instead of just statically reconstructing the image $\hat{o}(t_k)$, we are interested in predicting future observations $\hat{o}(t_{k+l})$, where $l \in 1 \dots N$. For this, we train a \nth{2}-order dynamical model that is, when integrated, able to predict future latent representations $z(t_{k+l})$.
 This requires us to define a latent state $\xi(t) = \begin{bmatrix}
-    z^\mathrm{T}(t) & \dot{z}^\mathrm{T}(t)
-\end{bmatrix}^\mathrm{T} \in \mathbb{R}^{2n_z}$ consisting of the latent representation and latent velocity $\dot{z}(t) \in \mathbb{R}^{n_z}$.
+    z^\top(t) & \dot{z}^\top(t)
+\end{bmatrix}^\top \in \mathbb{R}^{2n_z}$ consisting of the latent representation and latent velocity $\dot{z}(t) \in \mathbb{R}^{n_z}$.
 
 We now rely on \gls{CON} with $n = n_z$ oscillators to provide us with the latent state derivative $\dot{\xi}= f_\mathrm{w}(z(t), u(t))$, where we defined $\xi = y_\mathrm{w}$, and $z = x_\mathrm{w}$. To ensure stability, we make use of the Cholvesky decomposition to ensure that $M_\mathrm{w}, K_\mathrm{w}$ and $D_\mathrm{w}$ always remain positive definite (see Theorem~\ref{theorem:con:iss}).
 It is important to note that we train the encoder, decoder, and dynamical model all jointly.
@@ -119,13 +119,13 @@ It is important to remember that because we are using a $\beta$-\gls{VAE}~\citep
 \end{split}
 \end{equation}
 where $\hat{z}(t_k)$ is predicted by $\hat{\xi}(t_k)  = \int_{t=t_0}^{t_k} f_\xi(\xi(t'), u(t')) \: \mathrm{d}t'$, and $\xi(t_0) = \begin{bmatrix}
-    z^\mathrm{T}(t_0) & \dot{z}^\mathrm{T}(t_0)
-\end{bmatrix}^\mathrm{T}$. Here, $z(t_0)$ is given by the encoder, and $\dot{z}(t_0)$ is approximated using finite differences in image-space. $\beta, \lambda_{\vec{o}}, \lambda_\mathrm{z} \in \mathbb{R}$ are loss weights.
+    z^\top(t_0) & \dot{z}^\top(t_0)
+\end{bmatrix}^\top$. Here, $z(t_0)$ is given by the encoder, and $\dot{z}(t_0)$ is approximated using finite differences in image-space. $\beta, \lambda_{\vec{o}}, \lambda_\mathrm{z} \in \mathbb{R}$ are loss weights.
 
 \subsubsection{Estimation of the initial latent velocity}\label{sub:con:initial_latent_velocity_estimation}
 For \nth{2}-order systems and when integrating the evolution of the latent state $\xi(t) = \begin{bmatrix}
-    z^\mathrm{T}(t) & \dot{z}^\mathrm{T}(t)
-\end{bmatrix}^\mathrm{T}$ in time, we need to have access to an initial latent velocity $\dot{z}(t_0)$ such that we can roll out the latent state $\xi(t)$ in time.
+    z^\top(t) & \dot{z}^\top(t)
+\end{bmatrix}^\top$ in time, we need to have access to an initial latent velocity $\dot{z}(t_0)$ such that we can roll out the latent state $\xi(t)$ in time.
 A naive approach to estimating such an initial latent velocity would be to encode multiple (at least two) images of the system at the start of the trajectory into latent space and then perform numerical differentiation (e.g., finite differences) in latent space. However, we found the resulting $\dot{z}(t_k)$ to be relatively noisy and susceptible to small encoding errors.
 Instead, we propose to perform numerical differentiation in image space and then map this velocity into latent space using the encoder's Jacobian. First, we estimate the image-space velocity at $t_k$ using finite differences: $\dot{o}(t_k) \approx \frac{o(t_{k+1}) - o(t_{k-1})}{t_{k+1} - t_{k-1}}$. The latent velocity is then estimated as $\dot{z}(t_k) = \frac{\partial \Phi}{\partial o} (o(t_k)) \, \dot{o}(t_k)$, where $\frac{\partial \Phi}{\partial o}$ is obtained with forward-mode automatic differentiation.
 
@@ -162,10 +162,10 @@ The shape of slender and deformable rods can be approximated by considering the 
 Accordingly, we describe the kinematics of a planar continuum soft robot consisting of $n_\mathrm{b}$ segments with the \gls{PCS} model~\citep{renda2016discrete}. We assume each segment has a length of \SI{100}{mm} and a diameter of \SI{20}{mm}.
 The \gls{PCS} model assumes each segment to have constant strain. In the planar case, this means that the shape of the $i$th segment can be parametrized by $\xi_i = \begin{bmatrix}
     \kappa_{\mathrm{be},i} & \sigma_{\mathrm{sh},i} & \sigma_{\mathrm{ax},i}
-\end{bmatrix}^\mathrm{T} \in \mathbb{R}^{3}$ where $\kappa_{\mathrm{be},i}$ is the bending strain (i.e., the curvature) in the unit \si{rad \per \meter}, $\sigma_{\mathrm{sh},i}$ is the shear strain  (dimensionless), and $\sigma_{\mathrm{ax},i}$ is the axial elongation strain (dimensionless).
+\end{bmatrix}^\top \in \mathbb{R}^{3}$ where $\kappa_{\mathrm{be},i}$ is the bending strain (i.e., the curvature) in the unit \si{rad \per \meter}, $\sigma_{\mathrm{sh},i}$ is the shear strain  (dimensionless), and $\sigma_{\mathrm{ax},i}$ is the axial elongation strain (dimensionless).
 The robot's configuration is then defined as $q = \begin{bmatrix}
-    \xi_1^\mathrm{T} & \cdots & \xi_i^\mathrm{T} & \cdots & \xi_{n_\mathrm{b}}^\mathrm{T}
-\end{bmatrix}^\mathrm{T}$.
+    \xi_1^\top & \cdots & \xi_i^\top & \cdots & \xi_{n_\mathrm{b}}^\top
+\end{bmatrix}^\top$.
 In the case of \gls{PCC}, only the bending strain is active as shear strains and axial strains are neglected, and the configuration is now $q \in \mathbb{R}^{n_\mathrm{b}}$.
 The \gls{PCS} model generates \gls{EOM} in the form of~\citep{della2023model}
 \begin{equation}
@@ -188,7 +188,7 @@ We render grayscale images of the robot with a size of $32 \times 32 \mathrm{px}
 We generate $10000$ trajectories, each of duration \SI{2.0}{s} and a sampling time-step of $\SI{0.02}{s}$. We use \SI{60}{\percent} training, \SI{20}{\percent} validation, and \SI{20}{\percent} test split.
 For each trajectory, we randomly sample a constant actuation/input $u \sim \mathcal{U}(-u_\mathrm{max}, u_\mathrm{max})$. We choose the maximum actuation magnitude to be equal to the sum of the contribution of the potential forces (i.e., elastic and gravitational forces): $u_\mathrm{max} = G(q_\mathrm{max}) + K \, q_\mathrm{max}$ with $q_{\mathrm{max},i} = \begin{bmatrix}
     5 \, \pi~\si{rad \per m}, 0.2, 0.2
-\end{bmatrix}^\mathrm{T}$.
+\end{bmatrix}^\top$.
 
 We generate three datasets based on this continuum soft robot model: in the \emph{CS} dataset, we consider one segment with all three planar strains active (i.e., bending, shear, and elongation). This results in three \gls{DOF} and six-state variables in the dynamical model. In the case of the \emph{PCC-NS-2} and \emph{PCC-NS-3} datasets, we base the dataset on a simulated system consisting of two planar bending segments, respectively. Each segment is parametrized using \gls{CC}~\citep{webster2010design, rosi2022sensing}, which results in two configuration variables and a state dimension of four.
 

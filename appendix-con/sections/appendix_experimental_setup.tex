@@ -34,7 +34,7 @@ The Cholesky decomposition demands that $\mathrm{diag}(U_{11}, \dots, U_{n_z n_z
     U_{ii} = \log \left (1+ e^{\breve{U}_{ii} + \epsilon_1} \right ) + \epsilon_2,
 \end{equation}
 where $\breve{U}$ is the learned upper triangular matrix, and $\epsilon_1 = \num{1e-6}$ and $\epsilon_2 = \num{2e-6}$ are two small, positive values.
-The positive-definite matrix $A$ is now given by $A = U^\mathrm{T} \, U \succ 0$.
+The positive-definite matrix $A$ is now given by $A = U^\top \, U \succ 0$.
 
 \subsubsection{Neural ODEs}
 We consider two kinds of Neural ODEs~\citep{chen2018neural}: the vanilla $f_\mathrm{NODE}: \xi(t) \times u(t) \mapsto \dot{\xi}(t)$ maps latent state and system actuation directly into a time derivative of the latent state. In contrast, for the \emph{MECH-NODE}, we enforce the latent dynamics to have a mechanical structure
