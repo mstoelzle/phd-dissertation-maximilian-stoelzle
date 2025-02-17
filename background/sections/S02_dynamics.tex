@@ -1,27 +1,63 @@
-\section{Dynamics}\label{sec:background:dynamics}
-Irrespective of the specific chosen kinematic parameterization, the Euler-Lagrange dynamics of a soft can be usually stated in the following form~\citep{della2023model}:
-\begin{equation}
+\section{Euler-Lagrangian Dynamics}\label{sec:background:dynamics}
+Irrespective of the specific chosen kinematic parameterization, the \gls{EOM} of a soft can in most cases be stated in Euler-Lagrangian form~\citep{della2023model}:
+\begin{equation}\label{eq:background:dynamics:eom}
     M(q) \, \ddot{q} + C(q, \dot{q}) \, \dot{q} + K(q) + G(q) + D \, \dot{q} = \alpha(q,\tau) = A(q) \, \tau,
 \end{equation}
-where the mass matrix $M(q) \in \mathbb{R}^{n \times n}$
+where the mass matrix $M(q) \succeq 0 \in \mathbb{R}^{n \times n}$
 % \footnote{Note that in some chapters of this thesis, we also use the symbol $M(q)$ to refer to the mass matrix $B(q)$.} 
 captures the inertia of the robot, $C(q,\dot{q}) \in \mathbb{R}^{n \times n}$ integrates the Coriolis and centrifugal effects, $K(q), G(q) \in \mathbb{R}^{n}$ contribute elastic and gravitational forces, respectively, and $D \succeq 0$ is the damping matrix.
-We assume that the soft robot is driven by $m$ actuators through the term $\alpha: q \times \tau \mapsto A(q) \, \tau$, where $A(q) \in \mathbb{R}^{n \times m}$.
-\footnote{We note while this control-affine formulation with a configuration-dependent actuation matrix $A(q)$ can capture the characteristics of most currently existing soft robots actuation methods, such as pneumatic or tendon-driven actuation, the actuation can also become a more general nonlinear function $\alpha(q,\tau)$, such as it is the case for the \gls{HSA} robot actuation model presented in Chapter~\ref{chp:hsamodel}. Furthermore, when additionally considering the actuator dynamics, as in Chapter~\ref{chp:backstepping} for pneumatic pistons, the generalized actuation torque is possibly also a function of the actuator's state $(\mu,\dot{\mu})$.}
+The model verifies similar properties as traditional rigid robots, such that the expression $\dot{M}(q) - 2 \, C(q,\dot{q})$ is skew-symmetric, as long as $C(q,\dot{q})$ is defined with Christoffel symbols~\citep{della2020model}.
+We assume that the soft robot is driven by $m$ actuators through the term $\alpha: q \times \tau \mapsto A(q) \, \tau$, where $A(q) \in \mathbb{R}^{n \times m}$. \footnote{We note while this control-affine formulation with a configuration-dependent actuation matrix $A(q)$ can capture the characteristics of most currently existing soft robots actuation methods, such as pneumatic or tendon-driven actuation, the actuation can also become a more general nonlinear function $\alpha(q,\tau)$, such as it is the case for the \gls{HSA} robot actuation model presented in Chapter~\ref{chp:hsamodel}. Furthermore, when additionally considering the actuator dynamics, as in Chapter~\ref{chp:backstepping} for pneumatic pistons, the generalized actuation torque is possibly also a function of the actuator's state $(\mu,\dot{\mu})$.}
+If $n=m$, the robot model is considered to be fully actuated; if $n < m$ (rather rare), the soft robot is called overactuated; and if $n > m$, the soft robot model is referred to as underactuated~\citep{pustina2025analysis}.
 
-\subsection{System Energy}
+\subsection{Formulation as an Ordinary Differential Equation (ODE)}
+After defining the state of the soft robot as $y = \begin{bmatrix}
+    q\\ \dot{q}
+\end{bmatrix} \in \mathbb{R}^{2n}$, Eq.~\ref{eq:background:dynamics:eom} can be expressed as a control-affine \gls{ODE} in nonlinear state-space representation:
+\begin{equation}
+    \dot{y} = f(y,\tau) = \begin{bmatrix}
+        \frac{\mathrm{d} q}{\mathrm{d}t}\\
+        \frac{\mathrm{d} \dot{q}}{\mathrm{d}t}\\
+    \end{bmatrix} = \begin{bmatrix}
+        \dot{q}\\
+        -M^{-1}(q) \left ( C(q,\dot{q}) \, \dot{q} + K(q) + G(q) + D \, \dot{q} \right )
+    \end{bmatrix} + \underbrace{\begin{bmatrix}
+        0^{n \times m}\\ M^{-1}(q) \, A(q)
+    \end{bmatrix}}_{B(q)} \, \tau.
+\end{equation}
+
+\subsection{Kinetic and Potential Energy}
 Usually, we can derive analytically the kinetic and potential energy of the system
 \begin{equation}
-    \mathcal{T}(q,\dot{q}) = \frac{1}{2} \dot{q}^\top S \, \dot{q},
+    \mathcal{T}(q,\dot{q}) = \frac{1}{2} \dot{q}^\top M(q) \, \dot{q},
+    \qquad
+    \mathcal{U}(q) = \mathcal{U}_\mathrm{K}(q) + \mathcal{U}_\mathrm{G}(q) = \int K(q) + G(q) \, \mathrm{d}q,
 \end{equation}
 where $\mathcal{T}(q,\dot{q}) \geq 0$ is the kinetic and $\mathcal{U}(q)$ the potential energy consisting of elastic and gravitational terms $\mathcal{U}_\mathrm{K}(q)$, $\mathcal{U}_\mathrm{G}(q)$.
 which results in $K(q) + G(q) = \frac{\partial \mathcal{U}}{\partial q}$. 
-With linear elasticity $K(q) = S \, q$, where $S \in \mathbb{R}^{n \times n}$ is the stiffness of the generalized coordinates, the elastic potential energy becomes $\mathcal{U}_\mathrm{K}(q) = \frac{1}{2} q^\top S \, q$.
+In the case of linear elasticity $K(q) = S \, q$, where $S \succ 0 \in \mathbb{R}^{n \times n}$ is the stiffness of the generalized coordinates, the elastic potential energy becomes $\mathcal{U}_\mathrm{K}(q) = \frac{1}{2} q^\top S \, q$.
+The Lagrangian then becomes $\mathcal{L}(q,\dot{q}) = \mathcal{T}(q,\dot{q}) - \mathcal{U}(q)$.
+% 
+As seen in \citet{della2020model, della2023model} and Chapters~\ref{chp:backstepping} \& \ref{chp:con}, this energy field can serve as a starting point for analyzing the stability of the open- and closed-loop system using Lyapunov arguments~\citep{khalil2002nonlinear}.
+
+\subsection{Task Space Dynamics}
+As initially proposed in the seminal work by \citet{khatib1987unified} and later adopted to soft robots by \citet{della2020model}, the dynamics of the system can be directly expressed in task space\footnote{The task space is often also referred to as operational space. As oftentimes end-effectors (e.g., grippers) are attached to the distal end of the robot, the task space is usually defined as the pose $\chi \in SE(3)$ of the end-effector.}
+Irrespective of the exact definition of the task space (e.g., end-effector pose), for the given forward kinematics $\pi: q \mapsto x$, where $x \in \mathbb{R}^o$ is the task-space coordinate with $o \leq n$, and the associated Jacobian $J(q) = \frac{\partial \pi}{\partial q} \in \mathbb{R}^{o \times n}$, Eq.~\ref{eq:background:dynamics:eom} can be equivalently expressed in task space as
+\begin{equation}
+    \Lambda(q) \, \ddot{x} + \eta(q, \dot{q}) \, \dot{x} + J_\mathrm{B}^{+\top}(q) \left ( G(q) + K(q) + D \, \dot{q} \right ) = J_\mathrm{B}^{+^\top}(q) \, A(q) \, \tau,
+\end{equation}
+where 
+\begin{equation}
+    J_\mathrm{B}^{+\top}(q) = M^{-1}(q) \, J^\top(q) \left ( J(q) \, M^{-1}(q) \, J^\top(q) \right )^{-1} \in \mathbb{R}^{n \times o}
+\end{equation}
+is the dynamically consistent pseudo-inverse~\citep{chang1995manipulator}, which can be used to map task space velocities into configuration space and generalized torques into task space,
+\begin{equation}
+    \Lambda(q) = \left ( J(q) \, M^{-1}(q) \, J^\top(q) \right )^{-1} \in \mathbb{R}^{o \times o},
+\end{equation}
+is the task space inertia matrix, and the task space Coriolis and centrifugal matrix $\eta(q, \dot{q})$\footnote{Please note that in Chapter~\ref{chp:hsacontrol} we refer to this task space as $\mu(q,\dot{q})$.} is defined as~\citep{khatib1987unified, della2020model}
+\begin{equation}
+    \eta(q, \dot{q}) = \Lambda(q) \, \left ( J(q) \, M^{-1}(q) \, C(q,\dot{q}) - \dot{J}(q,\dot{q})) \right ) \in \mathbb{R}^{o \times o}.
+\end{equation}
 
 
-As seen in \citet{della2020model, della2023model}, Chapters~\ref{chp:backstepping} \& \ref{chp:con}, this energy field can serve as a starting point for analyzing the stability of the open- and closed-loop system using Lyapunov arguments~\citep{khalil2002nonlinear}.
-
-
-\subsection{Operational-space Dynamics}
-
-\subsection{Actuation-space Dynamics}
+\subsection{Actuation Space Dynamics}
