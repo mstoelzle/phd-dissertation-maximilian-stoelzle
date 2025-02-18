@@ -44,7 +44,7 @@ Nevertheless, we add a feedback controller to compensate for any errors in $\phi
 Therefore, we perform a first-order Taylor expansion of the actuation forces with respect to $\phi$ resulting in a configuration-dependent actuation matrix $A_{\phi^\mathrm{ss}}(q) = \frac{\partial \alpha}{\partial \phi} \big|_{\phi = \phi_\mathrm{ss}} \in \mathbb{R}^{3 \times 2}$. This allows us to re-write the right side of the \gls{EOM} as $\tau_q = \alpha(q^\mathrm{ss}, \phi^\mathrm{ss}) + A_{\phi^\mathrm{ss}}(q) \, u$ where $u = \phi - \phi^\mathrm{ss}$ is the new control input.
 % We remark that $\alpha(q^\mathrm{ss}, \phi^\mathrm{ss})$ is already compensating for the gravitational and elastic forces at the desired configuration. 
 To improve the robustness of the control loop, we compute $u$ with a P-satI-D control law~\citep{pustina2022p}. However, our system is underactuated and in a non-collocated form.
-Therefore, we apply a coordinate transformation $h: q \rightarrow \varphi \in \mathbb{R}^3$ recently introduced by Pustina et al.~\citep{pustina2024input} which maps the \gls{EOM} into a form where $\phi$ applies direct forces on the actuated configuration variables. The map is given by { $h(q) = \begin{bmatrix}
+Therefore, we apply a coordinate transformation $h: q \rightarrow \varphi \in \mathbb{R}^3$ recently introduced by~\citet{pustina2024input} which maps the \gls{EOM} into a form where $\phi$ applies direct forces on the actuated configuration variables. The map is given by { $h(q) = \begin{bmatrix}
     \int_0^t \dot{q}^\top A_{\phi^\mathrm{ss}}(q) \mathrm{d}\tau, & \sigma_\mathrm{sh}
 \end{bmatrix}^\top = \begin{bmatrix}
     h_1(q), & h_2(q), & \sigma_\mathrm{sh}

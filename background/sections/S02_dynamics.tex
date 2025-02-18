@@ -8,7 +8,7 @@ where the mass matrix $M(q) \succeq 0 \in \mathbb{R}^{n \times n}$
 captures the inertia of the robot, $C(q,\dot{q}) \in \mathbb{R}^{n \times n}$ integrates the Coriolis and centrifugal effects, $K(q), G(q) \in \mathbb{R}^{n}$ contribute elastic and gravitational forces, respectively, and $D \succeq 0$ is the damping matrix.
 The model verifies similar properties as traditional rigid robots, such that the expression $\dot{M}(q) - 2 \, C(q,\dot{q})$ is skew-symmetric, as long as $C(q,\dot{q})$ is defined with Christoffel symbols~\citep{della2020model}.
 We assume that the soft robot is driven by $m$ actuators through the term $\alpha: q \times \tau \mapsto A(q) \, \tau$, where $A(q) \in \mathbb{R}^{n \times m}$. \footnote{We note while this control-affine formulation with a configuration-dependent actuation matrix $A(q)$ can capture the characteristics of most currently existing soft robots actuation methods, such as pneumatic or tendon-driven actuation, the actuation can also become a more general nonlinear function $\alpha(q,\tau)$, such as it is the case for the \gls{HSA} robot actuation model presented in Chapter~\ref{chp:hsamodel}. Furthermore, when additionally considering the actuator dynamics, as in Chapter~\ref{chp:backstepping} for pneumatic pistons, the generalized actuation torque is possibly also a function of the actuator's state $(\mu,\dot{\mu})$.}
-If $n=m$, the robot model is considered to be fully actuated; if $n < m$ (rather rare), the soft robot is called overactuated; and if $n > m$, the soft robot model is referred to as underactuated~\citep{pustina2025analysis}.
+If $n=m$, the robot model is considered to be fully actuated; if $n < m$ (rather rare), the soft robot is called overactuated~\citep{pustina2024input}; and if $n > m$, the soft robot model is referred to as underactuated~\citep{pustina2025analysis}.
 
 \subsection{Formulation as an Ordinary Differential Equation (ODE)}
 After defining the state of the soft robot as $y = \begin{bmatrix}
@@ -61,3 +61,29 @@ is the task space inertia matrix, and the task space Coriolis and centrifugal ma
 
 
 \subsection{Actuation Space Dynamics}
+\citet{pustina2024input} showed that it is often possible to directly formulate the dynamics in actuation coordinates $\varphi \in \mathbb{R}^n$ where the actuation force $\tau$ directly acts on the actuation coordinates through an identity matrix. This is particularly interesting for control applications as it allows us to very easily map a control input devised in the generalized (collocated) coordinates into an actuation $\tau$, but it can, in the future, also find use in other applications such as inverse kinematics~\citep{della2025pushing} or workspace estimation. As this mapping into collocated form is particularly useful in the underactuated setting, as later demonstrated in Chapter~\ref{chp:hsacontrol}, we will in the following focus on the setting $m \leq n$.
+
+According to \citet{pustina2024input}, there exists a transformation into collocated form when there is a function $g(q): \mathbb{R}^n \mapsto \mathbb{R}^m$ such that $frac{\partial g}{\partial q} = A^\top (q),$
+which is referred to as \emph{integrability assumption}. In practice, as shown in Sec.~\ref{sec:hsacontrol:configuration_space_regulation}), this mapping $g(q)$ is found by solving the integral $g(q) = \int_0^t \dot{q}(t')^\top \, A(q') \, \mathrm{d} t'$.
+If $m < n$, we stress that the coordinates given by $g(q)$ would not be sufficient to fully describe the dynamics of the system as there would exist a null space of dimensionality $n - m$. Therefore, we can choose which  $n-m$ coordinates from the original configuration space to keep. For example, the following transformation into actuation coordinates would be valid for a given $g(q)$~\citep{pustina2024input}
+\begin{equation}
+    \varphi = h(q) = \begin{bmatrix}
+        g(q)\\ 0^{n-m}
+    \end{bmatrix} + \begin{bmatrix}
+        0^{m \times m} & 0^{m \times (n-m)}\\
+        0^{(n-m) \times m} & \mathbb{I}^{n-m}
+    \end{bmatrix} \, q,
+    \quad
+    J_\mathrm{h}(q) = \frac{\partial h(q)}{\partial q} = \begin{bmatrix}
+        A_\mathrm{a}^\top(q) & A_\mathrm{u}^\top(q)\\
+        0^{(n-m) \times m} & \mathbb{I}^{n-m}
+    \end{bmatrix}
+\end{equation}
+where $h(q): \mathbb{R}^{n} \to \mathbb{R}^n$, $J_\mathrm{h}(q)$ is its associated Jacobian, and $A_\mathrm{a}(q) \in \mathbb{R}^{m \times m}$, $A_\mathrm{u}(q) \in \mathbb{R}^{(n-m) \times m}$ come from the following partitioning: $A(q) = \begin{bmatrix}
+    A_\mathrm{a}(q)\\ A_\mathrm{u}(q)
+\end{bmatrix}$.
+The dynamics in actuation coordinates are then given by
+\begin{equation}
+    M_\varphi(
+\end{equation}
+
