@@ -61,7 +61,7 @@ We adopt the Cartesian impedance controller from Sec.~\ref{sub:hsacontrol:task_s
 \begin{equation}\label{eq:braincontrol:cartesian_impedance_controller}
 \begin{split}
     \tau =& \: J^\top(q) \, \left (K_x \, (x^\mathrm{at} - x) - D_x \, \dot{x} \right ) + G(q) + K \, (q-q^0)\\
-    & \: + J^\top(q) \, J_\mathrm{B}^{+\top}(q) \, D \, \dot{q} + J^\top(q) \, \mu(q,\dot{q}) \left ( I_3 - J_\mathrm{B}^+(q) J(q) \right )\dot{q}.
+    & \: + J^\top(q) \, J_\mathrm{M}^{+\top}(q) \, D \, \dot{q} + J^\top(q) \, \mu(q,\dot{q}) \left ( I_3 - J_\mathrm{M}^+(q) J(q) \right )\dot{q}.
 \end{split}
 \end{equation}
 
