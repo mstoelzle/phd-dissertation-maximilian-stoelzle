@@ -36,10 +36,10 @@ This strategy may present clear limitations in terms of performance and stabilit
 % Even when PID controllers work, well %because of the mostly linear relationship between chamber pressure and robot configuration for a limited pressure range~\citep{lindenroth2016stiffness}, 
 % the gains are intricate to tune, and sensitive to changes in the robot design or actuator parameters.
 %
-% As an alternative, Gillespie et al.~\citep{gillespie2016simultaneous} propose a data-driven approach combined with an MPC controller.
+% As an alternative, \citet{gillespie2016simultaneous} propose a data-driven approach combined with an MPC controller.
 % This sometimes works reasonably well as some experiments show a mostly linear relationship between chamber pressure and robot configuration for a limited pressure range~\citep{lindenroth2016stiffness}.
 % 
-% Marchese et al.~\citep{marchese2014design, marchese2016design} models the the dynamics of a pneumatic drive cylinder and the relationship between the change in fluid pressure inside the chambers of the arm segment and the pressure in the fluidic drive cylinder as a parameter of wall resistance and the compliance of elastomeric channels. Further, they also model the force output of an electric linear actuator to drive the fluidic cylinder dependent on the input motor voltage. This model however, is not used for control purposes and their controller relies on a cascaded control feedback algorithm with an inner PID loop running at \SI{1}{kHz} to control the position of the linear actuator and an outer loop executed at \SI{20}{Hz} to control the curvature of the arm segment by adapting the demanded piston position~\citep{marchese2014design}.
+% \citet{marchese2014design, marchese2016design} models the the dynamics of a pneumatic drive cylinder and the relationship between the change in fluid pressure inside the chambers of the arm segment and the pressure in the fluidic drive cylinder as a parameter of wall resistance and the compliance of elastomeric channels. Further, they also model the force output of an electric linear actuator to drive the fluidic cylinder dependent on the input motor voltage. This model however, is not used for control purposes and their controller relies on a cascaded control feedback algorithm with an inner PID loop running at \SI{1}{kHz} to control the position of the linear actuator and an outer loop executed at \SI{20}{Hz} to control the curvature of the arm segment by adapting the demanded piston position~\citep{marchese2014design}.
 
 % sliding mode controller
 % Sliding mode controllers based on second order lumped system dynamics have been explored to control a soft pneumatic actuator through the means of solenoid valves~\citep{skorina2015feedforward}. 
@@ -53,15 +53,15 @@ This strategy may present clear limitations in terms of performance and stabilit
 
 As model-based control of soft robots becomes a mature discipline, the need for general ways of dealing with actuators' dynamics becomes more pressing. In this chapter we deal with this challenge by follow a backstepping approach - which is an established strategy to deal with dynamical systems with triangular structure. %We focus on piston-driven pneumatically-actuated soft robots.
 %
-A pneumatic model based on the ideal gas law is derived and the pneumatic actuation system is compensated in a quasi-static fashion in Falkenhahn et al.~\citep{falkenhahn2016dynamic}.
+A pneumatic model based on the ideal gas law is derived and the pneumatic actuation system is compensated in a quasi-static fashion in \citet{falkenhahn2016dynamic}.
 %
 % Seminal works have dealt with underactuated robotic systems using backstepping, as non-holonomic robots in \citep{fierro1997control}, flexible joint robots in \citep{oh1999control}, a single pneumatic muscle actuator in \citep{carbonell2001nonlinear}, variable stiffness actuated robots in \citep{petit2015backstepping}.
 %
 % For cable-driven soft continuum robots, a dynamic model based on strain-parametrization is developed in \citep{boyer2020dynamics} and subsequently used for CT control exploiting the triangular differential structure between the torques on the robot configuration and the applied cable tensions.
 % with a composite control law consisting of fast part damping the configuration dynamics around the equilibrium trajectory determined by the slow control component.
 %
-Recent work by Wang et al.~\citep{wang2019parameter} uses backstepping for control of a continuum soft bending arm. Although interesting, the work is limited because it targets a linear model of a single DoF.
-Similarily, Franco et al.~\citep{franco2021nonlinear} derive an energy-based control scheme for pneumatic manipulators while using a backstepping-based controller for comparison purposes.
+Recent work by \citet{wang2019parameter} uses backstepping for control of a continuum soft bending arm. Although interesting, the work is limited because it targets a linear model of a single DoF.
+Similarly, \citet{franco2021nonlinear} derive an energy-based control scheme for pneumatic manipulators while using a backstepping-based controller for comparison purposes.
 % 
 %{In a separate work considering the control of the \gls{BHA}, a pneumatic model based on the ideal gas law is derived and the pneumatic actuation system is controlled using a feedback-linearization controller that can compensate for the nonlinearities of the model~\citep{falkenhahn2016dynamic}.
 Both pieces of work focus on pneumatic actuation with valves and thus cannot be immediately applied to systems actuated with fluidic drive cylinders.
@@ -72,7 +72,7 @@ We provide general strategies for (i) augmenting existing dynamic models of soft
 As an example, we specialize the model to planar soft robots satisfying the \gls{PCC} assumption~\citep{della2020model} including the proposal of a kinematic model for the air volume in the chambers, and the controller to the set-point regulation of configuration. In this context, we also propose a simplified, potential coupling-aware PID-like controller. We provide simulations showing the effectiveness of both strategies.
 
 % backstepping
-% Some recent work by Wang et al.~\citep{wang2018design, wang2019parameter} uses backstepping for control of a continuum soft bending arm with one \gls{DoF} actuated by pneumatic solenoid valves. A second-order transfer function is used to describe the dynamic behaviour from the driving pneumatic pressure to the continuum soft bending arm.
+% Some recent work by \citet{wang2018design, wang2019parameter} uses backstepping for control of a continuum soft bending arm with one \gls{DoF} actuated by pneumatic solenoid valves. A second-order transfer function is used to describe the dynamic behaviour from the driving pneumatic pressure to the continuum soft bending arm.
 %\textcolor{red}{TODO: Explicitely describe how our approach is different}
 % \citep{wang2018design} and \citep{wang2019parameter} approximate the air dynamics of a pneumatic solenoid valves and identifies the parameters using least-squares fitting. A second-order transfer function is used to describe the dynamic behaviour from the driving pneumatic pressure to the continuum soft bending arm. This dynamic model of the pressure regulator is used to control a bending actuator with one degree of freedom via backstepping to the PVM signal of the valve. Experiments show a superior trajectory tracking performance compared to a PID controller.
 % Backstepping with load observation is also used to control a hydraulically controlled excavator by to compute the desired hydraulic force for motion tracking~\citep{bao2020energy}.

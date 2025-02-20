@@ -99,7 +99,7 @@ where $R_{i-1}^{v}$, $p_{i-1}^{i}(q_i,v)$ denote the rotation matrix and transla
 \subsection{Affine curvature kinematics}\label{sub:promasens:kinematic_model_ac}
 The affine curvature hypothesis~\citep{della2020soft, stella2023piecewise} models the bending of the soft segment to be conforming to the affine function $\kappa(t,v) = \kappa_0(t) + \kappa_1(t) v$, where $\kappa$ describes the local curvature of the backbone at the coordinate $v \in [0, 1]$ along the segment and $\kappa_0(t)$, $\kappa_1(t)$ are the zero-order and first-order term of the curvature polynomial respectively~\citep{della2019control}.
 Specifically, we implement the recently proposed extension to 3D environments~\citep{stella2023piecewise}, which specifies an azimuth angle of the bending direction $\phi(t)$ and additionally allows for an elongation $\delta L(t)$ of the segment.
-% We extend this parametrization as introduced by Della Santina et al.~\citep{della2019control, della2020soft} to 3D environments by specifying the azimuth angle of the bending direction $\phi(t)$ and additionally allowing for an elongation $\delta L(t)$ of the segment. 
+% We extend this parametrization as introduced by \citet{della2019control, della2020soft} to 3D environments by specifying the azimuth angle of the bending direction $\phi(t)$ and additionally allowing for an elongation $\delta L(t)$ of the segment. 
 Accordingly, the configuration of the $i^\mathrm{th}$ segment is described at any point in time by
 \begin{equation}
     q_i = \begin{bmatrix}\kappa_{0,i} & \kappa_{1,i} & \phi_i & \delta L_{i} \end{bmatrix}^{\top} \in \mathbb{R}^4.
