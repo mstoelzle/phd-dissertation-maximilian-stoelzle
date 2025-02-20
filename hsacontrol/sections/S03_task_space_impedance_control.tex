@@ -27,16 +27,16 @@ We propose the following dynamic feedback law that renders $x^\mathrm{d}$ an att
 \begin{equation}\label{eq:hsacontrol:task_space_impedance_control:cartesian_impedance_controller}
 \begin{split}
     \tau =& \: J^\top(q) \, \left (K_x \, (x^\mathrm{d} - x) - D_x \, \dot{x} \right ) + G(q) + K \, (q-q^0)\\
-    & \: + J^\top(q) \, J_\mathrm{M}^{+\top}(q) \, D \, \dot{q} + J^\top(q) \, \mu(q,\dot{q}) \left ( I_3 - J_\mathrm{M}^+(q) J(q) \right )\dot{q}
+    & \: + J^\top(q) \, J_\mathrm{M}^{+\top}(q) \, D \, \dot{q} + J^\top(q) \, \mu(q,\dot{q}) \left ( \mathbb{I}_3 - J_\mathrm{M}^+(q) J(q) \right )\dot{q}
 \end{split}
 \end{equation}
 where $\tau \in \mathbb{R}^3$ is the desired torque in configuration space, $G(q) + K \, (q-q^0)$ cancels the acting gravitational and elastic forces, and $J^\top J_\mathrm{M}^{+\top} D \, \dot{q}$ removes the natural dissipation in operational space.
 We emphasize that because the system is underactuated, we need to cancel the stiffness directly in the configuration instead of operational space as done in previous work~\citep{della2020model}.
 We can shape our desired impedance characteristics in Cartesian space with the PD term $f_\mathrm{PD} = K_x \, (x^\mathrm{d} - x) - D_x \, \dot{x} $ which is then projected into configuration space by premultiplying with $J^\top(q)$.
 
-The term $\mu(q,\dot{q}) \left ( I_3 - J_\mathrm{M}^+(q) J(q) \right )\dot{q}$ decouples the operational space dynamics from the residual of the null-space dynamics~\citep{della2020model}\cite[Ch. 4]{ott2008cartesian}.
+The term $\mu(q,\dot{q}) \left ( \mathbb{I}_3 - J_\mathrm{M}^+(q) J(q) \right )\dot{q}$ decouples the operational space dynamics from the residual of the null-space dynamics~\citep{della2020model}\cite[Ch. 4]{ott2008cartesian}.
 The identity $\dot{q} = J_\mathrm{M}^+ \, \dot{x} + Z^\top \, \nu_\mathrm{N}$, where $Z^\top \in \mathbb{R}^{3 \times 1}$ is the dynamically-consistent pseudo-inverse of the null space, allows us to formulate $\dot{q}$ as a sum of the task-space velocity $\dot{x}$ and the null-space velocity $\nu_\mathrm{N}$. Leveraging this identity, the Coriolis and centrifugal matrix $\mu(q,\dot{q})$ can be split into a term $\mu_x(q,\dot{q}) = \mu \, J_\mathrm{M}^+ \in \mathbb{R}^{2 \times 2}$ excited by $x$ and the expression $\mu_\mathrm{N}(q,\dot{q}) = \mu \, Z^\top \in \mathbb{R}^{2 \times 1}$ that is excited by the null-space coordinates resulting in $\mu(q,\dot{q}) \, \dot{q} = \mu_x(q,\dot{q}) \, \dot{x} + \mu_\mathrm{N}(q,\dot{q}) \, \nu_\mathrm{N}$.
-This allows us to cancel the term $\mu_\mathrm{N}(q,\dot{q}) \, \nu_\mathrm{N}$ through $\mu(q,\dot{q}) \left ( I_3 - J_\mathrm{M}^+(q) J(q) \right )\dot{q}$ without having to compute the null space explicitly.
+This allows us to cancel the term $\mu_\mathrm{N}(q,\dot{q}) \, \nu_\mathrm{N}$ through $\mu(q,\dot{q}) \left ( \mathbb{I}_3 - J_\mathrm{M}^+(q) J(q) \right )\dot{q}$ without having to compute the null space explicitly.
 
 
 % The first step consists of establishing a PD feedback in Cartesian space

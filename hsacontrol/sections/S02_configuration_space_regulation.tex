@@ -66,7 +66,7 @@ with
 %          \sigma_\mathrm{sh}
 %     \end{bmatrix}
 % \end{equation}
-The Jacobian $J_\mathrm{h}(q) = \frac{\partial h}{\partial q}$ is used to formulate the dynamics $M_\varphi \ddot{\varphi} + \eta(\varphi, \dot{\varphi}) + G_\varphi + K_\varphi + D_\varphi \, \dot{\varphi} = J_\mathrm{h}^\mathrm{-T}(q) \, \alpha(q^\mathrm{ss},\phi^\mathrm{ss}) + A_\varphi \, u $ in the collocated variables~\citep{khatib1987unified}, where $A_\varphi^\top = \begin{bmatrix}
+The Jacobian $J_\mathrm{h}(q) = \frac{\partial h}{\partial q}$ is used to formulate the dynamics $M_\varphi \ddot{\varphi} + \eta_\varphi(\varphi, \dot{\varphi}) \, \dot{q} + G_\varphi + K_\varphi + D_\varphi \, \dot{\varphi} = J_\mathrm{h}^\mathrm{-T}(q) \, \alpha(q^\mathrm{ss},\phi^\mathrm{ss}) + A_\varphi \, u $ in the collocated variables~\citep{khatib1987unified}, where $A_\varphi^\top = \begin{bmatrix}
     \mathbb{I}^{2} & 0^\mathrm{2 \times 1}
 \end{bmatrix}^\top$. In the following, we will denote with the subscript $a$ the first two actuated coordinates $\varphi_\mathrm{a}$.
 % 

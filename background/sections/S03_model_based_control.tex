@@ -1,3 +1,178 @@
 \section{Model-Based Control}\label{sec:background:model_based_control}
-For simplicity, we refer in the following to the fully actuated case and specifically the case of an identified actuation matrix $A = \mathbb{I}_n$.
-For an extended discussion on the control in the underactuated setting (i.e., $m < n$), we refer the interested reader to \citet{pustina2025analysis}.
+In this section, we review existing model-based controllers for soft robots whose control law is available in closed form.
+Many of these control approaches appear at various points throughout the thesis, such as the P-satI-D+potential shaping controller in Section~\ref{sec:hsacontrol:configuration_space_regulation} and Chapter~\ref{chp:pcsregression} \& \ref{chp:con}, the PD+ controller in a version additionally also considering the actuator dynamics via backstepping in Chapter~\ref{chp:backstepping} and the task-space impedance controller in Section~\ref{sec:hsacontrol:task_space_impedance_control}.
+This section only contains a top-level discussion of the most common closed-form model-based control laws that have been developed for soft robots. For a more detailed discussion of the controllers, including stability proofs using Lyapunov arguments, we point the interested reader to the respective publications~\citep{della2020model, pustina2022feedback, pustina2022p, borja2022energy, della2023model}. For an in-depth study of the control of underactuated soft robots, we recommend \citet{pustina2025analysis}.
+
+\textcolor{red}{TODO: \begin{itemize}
+    \item Better organize and rename the section heading
+    \item Add comment on why we state the controllers in actuation coordinates. Clearly state the limitations of this, the lack of mapping into actuation coordinates for some actuation matrices, the possible stability issues, and the lack of experimental verification.
+    \item actuated rows of EOM matrices
+    \item verify controllers with trajectory tracking paper from Rizello's group
+\end{itemize}}
+
+\subsection{Preliminaries}
+% For simplicity, we refer in the following to the fully actuated case and specifically the case of an identified actuation matrix $A = \mathbb{I}_n$.
+% For an extended discussion on the control in the underactuated setting (i.e., $m < n$), we refer the interested reader to \citet{pustina2025analysis}.
+
+...
+Specifically, in the case of 
+
+\subsubsection{Control Reference and Controller Type}
+Generally, a reference trajectory is defined with the tuple $(q^\mathrm{d}(t), \dot{q}^\mathrm{d}(t), \ddot{q}^\mathrm{d}(t))$ consisting of the desired configuration, configuration velocity, and configuration acceleration at the current time step.
+A controller tracking such a reference is called a \emph{trajectory tracking} controller.
+If we only care about the goal of a motion, we can simplify the problem to a \emph{setpoint regulation} scenario, where a controller regulates the system towards a desired configuration $q^\mathrm{d}$. In the setpoint regulation case, we simply set $\dot{q}^\mathrm{d} = 0$.
+
+\subsection{Objectives}
+When we devise a model-based controller, we usually pursue several, possibly competing, goals. In the following section, we will detail a selection of these criteria, making it possible to compare the tradeoffs between various model-based controllers.
+\begin{itemize}
+    \item \textbf{Control Frequency/Computational Complexity/.} In this thesis, we strive for the control law to be available in closed form, which significantly increases the computational efficiency compared to, for example, optimization-based approaches and allows for higher control frequencies, which improves performance and reduces the risk of instability for feedback controllers. When a closed-form control law is available, the computational complexity comes down to (a) the model complexity and (b) the 
+    \item \textbf{Stability.} Generally, we strive for exponential global asymptotic stability of the closed-loop system. This is best illustrated  which means that wherever the system is initialized, it will always  
+    \item \textbf{Control Effort.} To enable more energy-efficient (mobile) robots, we strive to reduce the power consumed by the actuator, consisting of the applied force/torque $\tau$ and the associated actuator velocity $\dot{\mu}$. As the required steady-state force is usually fixed by the soft robot design \& the given task, we mainly focus on reducing the control effort\footnote{In optimal control, this can be accomplished by adding a regularization term on the control input $\tau$ to the cost function.} - which is usually defined as the rate of change of $\tau$ over time, and with that, reduces the needed actuator velocity $\dot{\mu}$ and the consumed power.
+    \item \textbf{Compliance.} For augmenting the mechanical compliance of soft robots, we strive for the controller also to exhibit compliant behavior. Specifically, this means that the feedback controller should exhibit as low as possible integral gains as they reduce the stability margins and can cause safety issues, and low proportional feedback gains as they increase the stiffness of the closed-loop system - which makes the soft robot body less soft than desired.
+    \item \textbf{Robustness.} Model-based controllers exploit our knowledge about the system behavior to design smart feedback and feedforward terms and modulate the dynamics of the closed-loop system in such a way that they make control easier. However, in reality, as said beautifully by \citet{box1976science}, "All models are wrong." controllers that assume perfect model knowledge to cancel out all or most of the existing system dynamics, as one based on feedback linearization are very sensitive to modeling errors. The reason for that is that when the modeled dynamics are canceled out, the unmodelled dynamics can quickly dominate the shaped dynamics (e.g., the linear dynamics), possibly inducing instability and leading to bad system performance. On the other hand, pure model-based feedforward controllers that do not depend on the current system state are often more robust to modeling errors as they reshape the system dynamics instead of fully \emph{deleting} it and trying to reconstruct it from scratch.
+\end{itemize}
+
+\subsubsection{Coordinate Frames}
+
+\paragraph{Control in Configuration Space.}
+As introduced in Sec.~\ref{sec:background:kinematics}, the configuration space is usually defined as the kinematic variables parametrizing the backbone shape of the soft robot. Therefore, control in configuration space is also referred to as \emph{shape control}. The advantage of devising a controller in configuration space is that naturally, the robot dynamics are also defined here (see Eq.~\ref{eq:background:dynamics:eom}), which makes the controller law derivation usually simpler and easier to prove stability. Disadvantages include that (a) it can be challenging to come up with a (consistent) reference in configuration space as the actual important motion is usually defined in task space and, in particular in underactuated settings, not all configurations can actually be (statically) achieved by the actuators~\citep{della2025pushing}, and (b) the mapping of control inputs defined as generalized torques into an actuation $\tau$ can be challenging - specifically when $A(q)$ exhibits singularities or again, when the soft robot is underactuated, which requires special controllers~\citep{pustina2022feedback}.
+
+\paragraph{Control in Actuation Space.}
+To overcome the previously mentioned difficulties of mapping generalized torques into actuator signals, we can leverage the collocated dynamics~\citep{pustina2024input} presented in Sec.~\ref{sub:background:dynamics:actuation_space} to devise controllers directly in actuation space. Even in the underactuated setting, the first $m$ actuation coordinates $\varphi_\mathrm{a}$ are all directly forced by $\tau$ through an identity actuation matrix, making the derivation of controllers much easier.
+In practice, a configuration-space reference $(q^\mathrm{d},\dot{q}^\mathrm{d})$ can be transformed into an actuation-space referenced through 
+\begin{equation}
+    \varphi^\mathrm{d} = h(q^\mathrm{d}),
+    \qquad
+    \dot{\varphi}^\mathrm{d} = J_\mathrm{h}(q^\mathrm{d}) \, \dot{q},
+    \qquad
+    \ddot{\varphi}^\mathrm{d} = J_\mathrm{h}(q^\mathrm{d}) \, \ddot{q}^\mathrm{d} + \dot{J}_\mathrm{h}(q^\mathrm{d}) \, \dot{q}^\mathrm{d}.
+\end{equation}
+In addition to the simple mapping of control inputs into an actuation $\tau$, we can also easily enforce actuator limits.
+Similar to the case of control in configuration space, a challenge can be to devise a consistent actuation-space reference.
+
+\paragraph{Control in Task Space.}
+Here, the dynamics defined in Eq.~\ref{eq:background:dynamics:eom_task_space} are leveraged to directly devise a controller in task space~\citep{khatib1987unified}, where the dimensionality $o$ of the task space reference (generally) needs to fulfill the condition $o \leq n$.
+Specifically, task-space impedance controllers are popular as they allow the specification of task-space stiffness, which is directly relevant to robot-environment interactions. Furthermore, as the reference is usually directly given in task space, no complex inverse kinematics routine is necessary.
+Disadvantages include the lack of formal stability guarantees, specifically with respect to the null-space dynamics, and the integration of actuator limits being much more challenging.
+
+In the following sections, we will generally define the control law as a function of the robot configuration $q$ and its time derivative $\dot{q}$ as the mapping into task space through the forward kinematics $\chi = \pi(q,s)$ or into actuation coordinates through $\varphi = h(q)$ is usually always possible if needed. The same applies to the control reference, as discussed in the next paragraph.
+
+\subsubsection{Control Terms}
+Most controllers that we consider in this thesis can be separated into a feedforward term that leverages model knowledge and a pure feedback term. 
+Specifically, a control law $\tau(t, q, \dot{q})$ can be decomposed into
+\begin{equation}
+    \tau(t, q, \dot{q}) = \tau_\mathrm{mb}(t, q, \dot{q}) + \tau_\mathrm{fb}(t, q, \dot{q}),
+\end{equation}
+where $\tau_\mathrm{mb}(t, q, \dot{q}): \mathbb{R} \times \mathbb{R}^n \times \mathbb{R}^n \to \mathbb{R}^m$ is a model-based, not necessarily pure\footnote{A pure feedforward term would have the functional signature $\tau(t)$ as it only depends on the time-based reference $(q^\mathrm{d},\dot{q}^\mathrm{d})$ but not the current soft robot state $(q,\dot{q})$.}, feedforward term and $\tau_\mathrm{fb}(t, q, \dot{q})$ is a pure feedback term as it does not integrate any model knowledge.
+
+In the following sections, we prepare various options for model-based feedforward terms and pure feedback terms that can be mostly freely combined. Lastly, 
+
+\subsection{Pure Feedback Terms}\label{sub:background:model_based_control:feedback_terms}
+In this thesis, we consider the following formulation for a pure feedback controller
+\begin{equation}
+    \tau_\mathrm{fb} = K_\mathrm{p} \left (\varphi_\mathrm{a}^\mathrm{d}(t) - \varphi(t) \right ) + K_\mathrm{d} \left ( \dot{\varphi}_\mathrm{a}^\mathrm{d} - \dot{\varphi}_\mathrm{a} \right ) + K_\mathrm{i} \int_0^t \sigma \left ( \varphi_{\mathrm{a}}^\mathrm{d}(t')-\varphi_{\mathrm{a}}(t') \right ) \: \mathrm{d} t',
+\end{equation}
+where $K_\mathrm{p}, K_\mathrm{p}, K_\mathrm{d} \in \mathbb{R}^{m \times m}$ are control gain matrices, which we usually choose to be diagonal. $\sigma(r): \mathbb{R}^m \to \mathbb{R}^m$ is a function to transform the control error $\varphi_{\mathrm{a}}^\mathrm{d}(t)-\varphi_{\mathrm{a}}(t)$ before integrating it.
+Based on this general formulation, we can devise several specific versions, which we introduce below.
+
+\paragraph{PID Control.} A traditional PID controller can be easily recovered by setting the saturation function as the identity: $\sigma(r) = r$. We have considered such a feedback controller as a baseline in Chapters~\ref{chp:hsacontrol} \& \ref{chp:backstepping}.
+
+\paragraph{PD Control.} A PD+~\citep{kelly1997pd}, as often used for the low-level control of rigid robots, can be realized by combining a PD controller with a compensation of static forces. The PD feedback term is simply implemented by choosing $K_\mathrm{i} = 0$.
+
+\paragraph{P-satI-D Control.} \citet{pustina2022p} has proposed an integral-saturated PID for shape regulation of soft robots via feedback control. A common choice for the saturated function is $\sigma(r) = \tanh(\gamma \, r)$, where $\gamma \in \mathbb{R}_+$ is a control gain to compress the control error before saturating it. We leverage this integral-saturated PID in Section~\ref{sec:hsacontrol:configuration_space_regulation} and Chapters~\ref{chp:pcsregression} \& \ref{chp:con}.
+
+\subsection{Model-Based Terms}\label{sub:background:model_based_control:feedforward_terms}
+Please note that for all controllers we introduce below, we assume that (1) the model is accurate or alternatively sufficiently large feedback gains are chosen (see high-gain control~\citep{marino1985high}), and (2) the integrability condition~\citep{pustina2024input} and mapping into actuation coordinates can be identified.
+For the setpoint regulators, we additionally assume that (3) the setpoint $q^\mathrm{q}/\varphi^\mathrm{q}$ is an assignable equilibrium of the underactuated system~\citep{pustina2022feedback}, (4) the system is within the region of attraction of the setpoint which can always be globally accomplished in scenarios where the potential field is convex or by employing (partial) feedback linearization, or often by increasing the feedback gains, and with that, increasing the stiffness of the system. 
+
+Finally, many of these controllers formulated in actuation coordinates have not been tested in simulation, and most have not yet been experimentally verified as the mapping into actuation coordinates was only very recently proposed~\citep{pustina2024input}.
+
+\subsubsection{Setpoint Regulation with Compensation of Static Forces}
+The following regulator locally stabilizes the system around the setpoint $\varphi^\mathrm{d} = h(q^\mathrm{d})$ by shaping the potential energy of the first $m$ actuation coordinates~\citep{borja2022energy, della2023model}
+\begin{equation}\label{eq:background:model_based_control:potential_shaping_regulation}
+    \tau_\mathrm{mb}(t, q, \dot{q}) = J_{\mathrm{h},\mathrm{M},\mathrm{a}}^{+\top}(q^\mathrm{d}) \left ( G(q^\mathrm{d}) + K(q^\mathrm{d}) \right ).
+\end{equation}
+This model-based feedforward term renders the closed-loop dynamics
+\begin{equation}
+    M_\varphi(q) \, \ddot{\varphi} + \eta_\varphi(q,\dot{q}) \, \dot{q} + \begin{bmatrix}
+        \partial_{\varphi_\mathrm{a}} \mathcal{U}_\varphi(\varphi) - \partial_{\varphi_\mathrm{a}} \mathcal{U}_\varphi(\varphi^\mathrm{d})\\
+        \partial_{\varphi_\mathrm{u}} \mathcal{U}_\varphi(\varphi)
+    \end{bmatrix} + D_\varphi(q) \, \dot{q} = \begin{bmatrix}
+        \tau_\mathrm{fb}(t, q, \dot{q})\\ 0_{n-m}
+    \end{bmatrix},
+\end{equation}
+to be locally asymptotically stable.
+
+As mentioned already before, for this regulator to work, $\varphi^\mathrm{d}$ needs to be an attainable equilibrium of the system - especially as we cannot control the behavior of the unactuated coordinates $\varphi_\mathrm{u}$. 
+
+If the potential field is convex (i.e., $\frac{\partial^2}{\partial \varphi^2}  \mathcal{U}_\varphi(\varphi) \succ 0 \: \forall \varphi \in \mathbb{R}$) this controller is globally asymptotically stable - even with a deactivated feedback term $\tau_\mathrm{fb}(t,q,\dot{q})=0$. If this is not the case, the region of attraction can be increased, or the controller can even be made globally asymptotically stable by sufficiently increasing the proportional gains $K_\mathrm{p}$ of the feedback controller, which makes the robot stiffer.
+
+\subsubsection{Setpoint Regulation with Gravity Cancellation and Compensation of Elastic Forces}
+As stated previously, Eq.~\ref{eq:background:model_based_control:potential_shaping_regulation}, depending on the gravitational field and for low feedback gains, is only locally asymptotically stable 
+\begin{equation}
+    \tau_\mathrm{mb}(t, q, \dot{q}) =  J_{\mathrm{h},\mathrm{M},\mathrm{a}}^{+\top}(q) \left ( G(q) + K(q) \right ),
+\end{equation}
+leading to the closed-loop dynamics
+
+\subsubsection{Trajectory Tracking with Compensation of Static Forces}
+\begin{equation}
+    \tau_\mathrm{mb}(t, q, \dot{q}) = M_{\varphi,\mathrm{a}}(q^\mathrm{d}) \, \ddot{\varphi}^\mathrm{d} + \eta_{\varphi,\mathrm{a}}(q^\mathrm{d},\dot{q}^\mathrm{d}) \, \dot{q}^\mathrm{d} + J_{\mathrm{h},\mathrm{M},\mathrm{a}}^{+\top}(q^\mathrm{d}) \left ( G(q^\mathrm{d}) + K(q^\mathrm{d}) + D \, \dot{q}^\mathrm{d} \right )
+\end{equation}
+
+
+\subsubsection{Trajectory Tracking with Cancellation of Static Forces}
+\begin{equation}
+    \tau_\mathrm{mb}(t, q, \dot{q}) = M_{\varphi,\mathrm{a}}(q) \, \ddot{\varphi}^\mathrm{d} + \eta_{\varphi,\mathrm{a}}(q,\dot{q}) \, \dot{q}^\mathrm{d} + J_{\mathrm{h},\mathrm{M},\mathrm{a}}^{+\top}(q) \left ( G(q) + K(q) \right ),
+\end{equation}
+leading to the closed-loop dynamics
+\begin{equation}
+    M_\varphi(q) \, \ddot{\varphi} + \begin{bmatrix}
+        
+    \end{bmatrix} \eta_\varphi(q,\dot{q}) \, \dot{q} + \begin{bmatrix}
+        0^m\\ J_{\mathrm{h},\mathrm{M},\mathrm{u}}^{+\top}(q) \left ( G(q) + K(q) + D \, \dot{q} \right )
+    \end{bmatrix} = \begin{bmatrix}
+        \tau_\mathrm{fb}(t, q, \dot{q})\\ 0_{n-m}
+    \end{bmatrix}.
+\end{equation}
+
+% \subsubsection{Other Variants}
+% There exist many variants of the above-mentioned model-based controllers, such as the one proposed by \citet{della2020model} that cancels the gravitational forces and compensates the elastic and dissipative forces
+% \begin{equation}
+%     \tau_\mathrm{mb}(t, q, \dot{q}) = 
+% \end{equation}
+
+
+
+
+\subsection{Integrated Controllers}\label{sub:background:model_based_control:integrated_controllers}
+In the following, we will discuss some common closed-form model-based controllers that cannot (easily) be separated into a model-based term and a pure feedback term.
+For simplicity, we assume in the following the fully actuated case - i.e., $n=m$, $\varphi = \varphi_\mathrm{a}$, $M_{\varphi}(q) = M_{\varphi,\mathrm{a}}(q)$, etc.
+
+\subsubsection{Feedback Linearization via Computed Torque}
+The idea behind (full) feedback linearization~\citep{slotine1987on, spong2020robot} is to 
+cancel the existing dynamics of the robot and ensure that the closed-loop system exhibits linear dynamics - usually established via a PD term. A computed torque controller for soft robots exhibits the form
+\begin{equation}\small
+    \tau(t,q,\dot{q}) = M_{\varphi}(q) \, \left (K_\mathrm{p} \left (\varphi^\mathrm{d} - \varphi \right ) + K_\mathrm{d} \left (\dot{\varphi}^\mathrm{d} - \dot{\varphi} \right ) + \ddot{\varphi}^\mathrm{d}\right ) + \eta_{\varphi}(q,\dot{q}) \, \dot{q} + J_{\mathrm{h},\mathrm{M}}^{+\top}(q) \left ( G(q) + K(q) + D \, \dot{q} \right ),
+\end{equation}
+where $K_\mathrm{p}, K_\mathrm{d} \in \mathbb{R}^{m \times m}$ are proportional and derivative control gains for tracking the desired actuation coordinate and actuation velocity, respectively. 
+The closed-loop dynamics read as
+\begin{equation}\label{eq:background:model_based_control:feedback_linearization:closed_loop_dynamics}
+    M_{\varphi}(q) \left (K_\mathrm{p} \left (\varphi - \varphi^\mathrm{d} \right ) + K_\mathrm{d} \left (\dot{\varphi} - \dot{\varphi}^\mathrm{d} \right ) + \left ( \ddot{\varphi} - \ddot{\varphi}^\mathrm{d} \right ) \right ) = 0.
+\end{equation}
+After defining the control error as $e(t) = \varphi(t) - \varphi^\mathrm{d}(t)$ with $\dot{e}(t) = \dot{\varphi}(t) - \dot{\varphi}^\mathrm{d}(t)$ and $\ddot{e}(t) = \ddot{\varphi}(t) - \ddot{\varphi}^\mathrm{d}(t)$, the dynamics of Eq.~\ref{eq:background:model_based_control:feedback_linearization:closed_loop_dynamics} can be rewritten as
+\begin{equation}
+    \ddot{e}(t) + K_\mathrm{d} \, \dot{e}(t) + K_\mathrm{p} \, e(t) = 0,
+\end{equation}
+which lets us notice that now linear dynamics govern with stiffness $K_\mathrm{p}$ and damping factor $K_\mathrm{d}$ govern the closed-loop system behavior.
+If we assume scalar control gains $K_\mathrm{p}, K_\mathrm{d} \in \mathbb{R}_+$, these error dynamics converge exponentially fast to the global equilibrium $e(t) = 0$ with decay time $\frac{1}{K_\mathrm{d}}$. Specifically, we can always choose the control such that the closed-loop system exhibits a critically damped behavior $\frac{K_\mathrm{d}}{2} = \sqrt{K_\mathrm{p}}$
+\begin{equation}
+    e(t) = \left ( e_0 + \left ( \dot{e}_0 + \frac{K_\mathrm{d}}{2} \, e_0 \right ) (t-t_0) \right ) \, e^{-\frac{K_\mathrm{d}}{2} (t - t_0)},
+\end{equation}
+where $e_0, \dot{e}_0$ are the initial error and its velocity at $t_0$.
+
+As seen in this derivation, computed torque controllers exhibit very nice stability and convergence properties. However, this comes at the cost of requiring high control rates, precise actuator motion, high control effort, and, most importantly, very accurate modeling of the system dynamics. In case of modeling errors, the stability characteristics can be lost, and the unmodelled dynamics can quickly become dominant.
+So far, computed torque controllers have been verified for fully actuated soft robots in simulation~\citep{boyer2006macro, pustina2024unified}, but to the best of our knowledge, not yet experimentally.
+
+
+\subsubsection{Task Space Impedance Control}
+A task-space impedance controller leverages knowledge about the task space dynamics to devise 
