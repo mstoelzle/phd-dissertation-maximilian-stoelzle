@@ -1,1 +1,156 @@
-\section{Kinematics: From Piecewise Constant Curvature (PCC) to Geometric Variable Strain (GVS)}\label{sec:background:kinematics}
+\section{Kinematics: From Planar Constant Strain to Geometric Variable Strain}\label{sec:background:kinematics}
+
+\subsection{Preliminaries}
+The task of a kinematic model for robots~\citep{siciliano2010robotics} is to provide the forward kinematics, which allows us to map the generalized coordinates of the robot - i.e., the configuration variables, to the current kinematic shape - specifically $SE(3)$ poses for each point of the robot body.
+While for rigid manipulators, mostly the poses of the joints and of the  \glspl{COG} of the links are needed, the continuous deformability of soft robots makes it necessary to know the 3D pose of any point of the continuum soft robots. To make this problem more tractable, the community applies to continuum soft robots the \emph{slender structure} hypothesis, which means that the radius of the body is assumed to be much smaller than the length of the body: $R \ll L$.
+This enables us to apply the Cosserat rod theory~\citep{cosserat1909theorie} and only consider the 1D deformation of a geometric line representing an infinitesimally thin backbone of the continuum robots\footnote{Models that consider the full three-dimensional deformations of soft robots, similar to standard \gls{FEM}, are beyond the scope of this thesis. We refer the interested reader to \citet{faure2012sofa, coevoet2017software, armanini2023soft}.}.
+We can model the deformation of the backbone in 3D space by considering the variation of the strain field $\xi(t,s) = \begin{bmatrix}
+    \kappa_\mathrm{x} & \kappa_\mathrm{y} & \kappa_\mathrm{z} & \sigma_\mathrm{x} & \sigma_\mathrm{y} & \sigma_\mathrm{z} 
+\end{bmatrix}^\top \in \mathbb{R}^6$ across time $t$ and along the $s \in (0,L]$ is the curvelinear backbone abscissa, which defines a point along the backbone curve.
+Here, $\kappa_*$ and $\sigma_*$ represent the rotational and linear strains in the units $[\si{rad \per m}]$ and $[-]$, respectively.
+Particularly, when the backbone points along the local $z$-axis, $\kappa_\mathrm{x}, \kappa_\mathrm{y}$ capture the bending strains along the two local coordinate directions, $\kappa_\mathrm{z}$ the twist strain, $\sigma_\mathrm{x}, \sigma_\mathrm{y}$ the two shear strains, and $\sigma_\mathrm{z}$ the axial strain~\citep{della2023model}.
+The continuous strain field can then be approximated with a finite-dimensional parametrization - specifically, as $\xi(t,s) = \Psi(t,q,s)$, where $\Psi(t,q,s): \mathbb{R} \times \mathbb{R}^n \times \mathbb{R}_+ \to \mathbb{R}^6$ is the functional parameterization, $q \in \mathbb{R}^n$ is the finite-dimensional configuration and $\xi^0 \in \mathbb{R}^6$ denotes the rest strain. 
+Next, we can formalize the forward kinematics as $\pi(q,s): \mathbb{R}^n \times \mathbb{R}_+ \to SE(3)$.
+
+\subsection{Planar Constant Strain}
+Analog to Chapter~\ref{chp:hsamodel}\footnote{In Chapter~\ref{chp:hsamodel}, we leverage a planar constant strain model to describe the kinematics of planar \gls{HSA} robots.}, we first consider a planar \gls{CS} model that considers a segment that exhibits constant strain.
+In the planar case, we need to consider the following three deformations: the bending strain $\kappa_\mathrm{be}(s)$, the shear strain $\sigma_\mathrm{sh}(s)$, and the axial strain $\sigma_\mathrm{ax}(s)$. As these strains are assumed to be constant, we can state for any point $s$ along the segment, the strain field is given by $\xi(t) = \begin{bmatrix}
+    \kappa_\mathrm{be}(t) & \sigma_\mathrm{sh}(t) & \sigma_\mathrm{ax}(t)
+\end{bmatrix}^\top \in \mathbb{R}^3$.
+After defining a rest strain $\xi^0 = \begin{bmatrix}
+    0 & 0 & 1
+\end{bmatrix}^\top$, we now directly define $\xi(t) = \underbrace{\mathbb{I}_3 \, q(t)}_{\Psi(q)} + \xi^0$.
+The goal is now to determine the planar $SE(2)$ pose $\chi = \begin{bmatrix}
+    p_\mathrm{x} & p_\mathrm{y} & \theta
+\end{bmatrix}^\top \in \mathbb{R}^3$ for each $s \in (0,L]$, where $p_\mathrm{x}$ is the x-position, $p_\mathrm{y}$ the y-position, and $\theta \in \mathbb{S}^1$ the planar orientation measured as the angle with respect to the x-axis.
+Assuming that the robot backbone is aligned with the local y-axis, the infinitesimal change of pose along the backbone is given as
+\begin{equation}
+    \frac{\partial \pi(q,s)}{\partial s} = \begin{bmatrix}
+        \cos(\kappa_\mathrm{be} s) \, \sigma_\mathrm{sh} - \sin(\kappa_\mathrm{be} s) \, \sigma_\mathrm{ax}\\
+        \sin(\kappa_\mathrm{be} s) \, \sigma_\mathrm{sh} + \cos(\kappa_\mathrm{be} s) \, \sigma_\mathrm{ax}\\
+        \kappa_\mathrm{be}
+    \end{bmatrix}.
+\end{equation}
+We can now integrate the $\frac{\partial \chi}{\partial s}$ in order to obtain the forward kinematics
+\begin{equation}\label{eq:background:kinematics:planar_constant_strain:forward_kinematics}
+    \chi = \pi(q,s) = \int_{s'=0}^{s'=s} \frac{\partial \pi}{\partial s}(q,s') \: \mathrm{d}s' = \begin{bmatrix}
+        p_\mathrm{x}^0 + \sigma_\mathrm{sh} \frac{-\sin(\theta^0) + \sin(\theta^0 + \kappa_\mathrm{be} s)}{\kappa_\mathrm{be}} + \sigma_\mathrm{ax} \frac{-\cos(\theta^0) + \cos(\theta^0 + \kappa_\mathrm{be} s)}{\kappa_\mathrm{be}}\\
+        p_\mathrm{y}^0 + \sigma_\mathrm{sh} \frac{\cos(\theta^0) - \cos(\theta^0 + \kappa_\mathrm{be} s)}{\kappa_\mathrm{be}} + \sigma_\mathrm{ax} \frac{-\sin(\theta^0)+\sin(\theta^0 + \kappa_\mathrm{be} s)}{\kappa_\mathrm{be}}\\
+        \theta^0 + \kappa_\mathrm{be} \, s
+    \end{bmatrix},
+\end{equation}
+where $\chi^0 = \begin{bmatrix}
+    p_\mathrm{x}^0 & p_\mathrm{y}^0 & \theta^0
+\end{bmatrix}^\mathrm{T}$ is the $SE(2)$ pose of the base.
+The associated geometric Jacobian~\citep{siciliano2010robotics} is given as
+\begin{equation}
+    J(q,s) = \frac{\partial \pi(q,s)}{\partial q} = \begin{bmatrix}
+        \frac{\kappa_\mathrm{be} \, s \, \left ( \sigma_\mathrm{sh} c_\mathrm{be} - \sigma_\mathrm{ax} s_\mathrm{be} \right ) + \sigma_\mathrm{sh} \left ( s_{\theta^0} - s_\mathrm{be} \right ) + \sigma_\mathrm{ax} \left ( c_{\theta^0} - c_\mathrm{be} \right )}{\kappa_\mathrm{be}^2}
+        & \frac{-s_{\theta^0} + s_\mathrm{be}}{\kappa_\mathrm{be}}
+        & \frac{-c_{\theta^0} + c_\mathrm{be}}{\kappa_\mathrm{be}}
+        \\
+        \frac{\kappa_\mathrm{be} \, s \, \left ( \sigma_\mathrm{sh} s_\mathrm{be} + \sigma_\mathrm{ax} c_\mathrm{be} \right ) + \sigma_\mathrm{sh} \left ( -c_{\theta^0} + c_\mathrm{be} \right ) + \sigma_\mathrm{ax} \left ( s_{\theta^0} - s_\mathrm{be} \right )}{\kappa_\mathrm{be}^2}
+        & \frac{c_{\theta^0} - c_\mathrm{be}}{\kappa_\mathrm{be}}
+        & \frac{-s_{\theta^0} + s_\mathrm{be}}{\kappa_\mathrm{be}}
+        \\
+        s & 0 & 0
+    \end{bmatrix},
+\end{equation}
+where $s_{\theta^0} = \sin(\theta^0), c_{\theta^0} = \cos(\theta^0)$ and $s_\mathrm{be} = \sin(\theta^0+\kappa_\mathrm{be} s), c_\mathrm{be} = \cos(\theta^0+\kappa_\mathrm{be} s)$.
+As demonstrated in Chapter~\ref{chp:hsamodel}, the inverse kinematics $q = \varrho(\chi,s)$ of a planar constant strain segment is actually available in closed form
+\begin{equation}\label{eq:background:kinematics:planar_constant_strain:inverse_kinematics}
+    q = \varrho(\chi,s) = \frac{\theta-\theta^0}{2 \, s} \, \begin{bmatrix}
+        2\\
+        -\sin(\theta^0) \, p_\mathrm{x} + \cos(\theta^0) \, p_\mathrm{y} - \frac{\left (\cos(\theta^0) \, p_\mathrm{x} + \sin(\theta^0) \,  p_\mathrm{y} \right ) \sin(\theta-\theta^0)}{\cos(\theta-\theta^0)-1}\\
+        -\cos(\theta^0) \, p_\mathrm{x} - \sin(\theta^0) \, p_\mathrm{y} - \frac{\left (-\sin(\theta^0) \, p_\mathrm{x} + \cos(\theta^0) \,  p_\mathrm{y} \right ) \sin(\theta-\theta^0)}{\cos(\theta-\theta^0)-1}
+    \end{bmatrix}.
+\end{equation}
+Please note that even both the forward and inverse kinematics (Eqs. \eqref{eq:background:kinematics:planar_constant_strain:forward_kinematics} \& \eqref{eq:background:kinematics:planar_constant_strain:inverse_kinematics}) exhibit a well-defined limit for the case of no bending
+\begin{equation}
+\begin{split}
+    \lim_{\kappa_\mathrm{be} \to 0} \pi(q,s) =& \: \begin{bmatrix}
+        p_\mathrm{x}^0 + \sigma_\mathrm{sh} \, \cos(\theta^0) \, s - \sigma_\mathrm{ax} \, \sin(\theta^0) \, s\\
+        p_\mathrm{y}^0 + \sigma_\mathrm{sh} \, \sin(\theta^0) \, s + \sigma_\mathrm{ax} \, \cos(\theta^0) \, s\\
+        \theta^0
+    \end{bmatrix}, \\
+    \lim_{\theta \to \theta^0} \varrho(\chi,s) =& \: \begin{bmatrix}
+        0\\
+        \frac{\cos(\theta^0) \, p_\mathrm{x} + \sin(\theta^0) \,  p_\mathrm{y}}{s}\\
+        \frac{-\sin(\theta^0) \, p_\mathrm{x} + \cos(\theta^0) \,  p_\mathrm{y}}{s}
+    \end{bmatrix},\\
+\end{split}
+\end{equation}
+% singularity for the case of no bending (i.e., $\kappa_\mathrm{be} = \theta = 0$). 
+even though, in practice, we face numerical issues when evaluating the kinematics or the matrices of the dynamical model.
+Therefore, we found it most effective to manually modulate the configuration for the bending strain $\kappa_\mathrm{be}$ to exhibit a minimum magnitude $\epsilon$ when evaluating the kinematics or dynamics of such strain-based models, as, for example, the case for the \emph{JAX Soft Robot Modeling} package presented in Appendix~\ref{sec:apx:infrastructure:jsrm}
+\begin{equation}
+    \tilde{\kappa}_\mathrm{be} = \begin{cases}
+        \mathrm{sign}(\kappa_\mathrm{be}) \, \varepsilon, & \text{if} \: |\kappa_\mathrm{be}| < \varepsilon\\
+        \kappa_\mathrm{be}, & \text{else}
+    \end{cases},
+\end{equation}
+where $\varepsilon \approx \SI{0.01}{rad \per m}$ determines the minimum magnitude of the bending strain when evaluating the dynamical matrices.
+Therefore, $\tilde{\kappa}_\mathrm{be}$ exhibits a discontinuity at $\kappa_\mathrm{be} = 0$ when it switches from $-\varepsilon$ to $\varepsilon$ and vice-versa. Furthermore, the gradient exhibits a discontinuity at $|\kappa_\mathrm{be}| = \varepsilon$ when it transitions between a linear and a constant function.
+
+In the special case of a \gls{CC} segment~\citep{webster2010design, della2023model}, we would set $\sigma_\mathrm{sh} = 0$, $\sigma_\mathrm{ax} = 1$ and reformulate the strain field as $\xi(t) = \underbrace{\begin{bmatrix}
+    1\\ 0_{2 \times 1}
+\end{bmatrix}}_{\Phi} \, q$, where now the configuration only defines the bending strain $q = \kappa_\mathrm{be} \in \mathbb{R}$.
+
+
+\subsection{Piecewise Constant Strain}
+The \gls{PCS} model~\citep{renda2016discrete, renda2018discrete} extends the idea of planar constant strain to (i) the 3D case with six-dimensional strains and (2) multiple segments with each segment exhibiting constant strain. 
+The strain field of a $N$ segment \gls{PCS} soft robot is
+\begin{equation}
+    \xi(t,s) = \Psi(t,q,s) = \underbrace{\begin{bmatrix}
+        \Phi_1(s) & \cdots & \Phi_i(s) & \cdots & \Phi_N
+    \end{bmatrix}}_{\Phi(s)} \, q(t) + \xi^0,
+\end{equation}
+where $q \in \mathbb{R}^{6N}$ (i.e., $n=6N$) is the configuration,
+$\xi^0 \in \mathbb{R}^6$ is the rest strain, that is usually chosen as $\xi^0 = \begin{bmatrix}
+    0 & 0 & 0 & 0 & 0 & 1
+\end{bmatrix}^\top$ for the case of the backbone being aligned with the local z-axis,
+$\Phi(s): \mathbb{R_+} \to \mathbb{R}^6 \times \mathbb{R}^{6N}$ is called the strain basis~\citep{renda2020geometric, mathew2025reduced} and consists of
+$N$ discontinuous functions $\Phi_i \: \forall i \in \{ 1,\dots, N \}$ that are defined as
+\begin{equation}
+    \Phi_i = \begin{cases}
+        \mathbb{I}_{6}, & \text{if} \: \sum_{i'=1}^{i-1} l_{i'} < s \leq \sum_{i'= 1}^{i} l_{i'} \\
+        0_{6\times 6}, & \text{else}
+    \end{cases} \in \mathbb{R}^{6 \times 6} \quad \forall i \in \{ 1,\dots, N \},
+\end{equation}
+where $l_i$ is the length of each segment, therefore fulfilling the property $L = \sum_{i=1}^{N} l_i$.
+
+For the derivation of the forward kinematics, we point the reader to \citet{renda2018discrete}. In Section~\ref{sec:hsamodel:hsa_rod_kinematics}, we introduce a variation of the \gls{PCS} parametrization, named \gls{SPCS}, that allows for the selective strains to remain constant over the entire backbone length instead of just for each segment - allowing for a potential reduction of the \glspl{DOF} of the model.
+We use planar version of the \gls{PCS} model in Chapters~\ref{chp:pcsregression} \& \ref{chp:con}.
+
+
+\subsubsection{Piecewise Constant Curvature}
+In the special case of \gls{PCC}~\citep{webster2010design} - the most popular soft robot parametrization - neglects the twist and shear strains (i.e., $\kappa_\mathrm{z}, \sigma_\mathrm{x}, \sigma_\mathrm{y} = 0$), and with that, the strain basis functions are given as
+\begin{equation}
+    \Phi_i = \begin{cases}
+        \mathbb{I}_{6}, & \text{if} \: \sum_{i'=1}^{i-1} l_{i'} < s \leq \sum_{i'= 1}^{i} l_{i'} \\
+        0_{6\times 3}, & \text{else}
+    \end{cases} \in \mathbb{R}^{6 \times 6} \quad \forall i \in \{ 1,\dots, N \},
+\end{equation}.
+Even though the name of the model implies otherwise, the configuration $q=\begin{bmatrix}
+    \kappa_\mathrm{x} &\kappa_\mathrm{y} & \sigma_\mathrm{z}-1
+\end{bmatrix}^\top$ usually contains the two bending strains $\kappa_\mathrm{x}, \kappa_\mathrm{y}$ and the axial elongation strain $\sigma_\mathrm{z}$.
+
+\textcolor{red}{TODO: special case of PCC, and including other parametrization}
+The forward kinematics $\chi=\pi(q,s)$ for the \gls{PCC} model is introduced in \citet{webster2010design, della2020improved}. The inverse kinematics for up to three segments is available in closed-form~\citep{li2023kinematics}.
+
+
+\subsection{Geometric Variable Strain}
+To the best of our knowledge, \gls{GVS}~\citep{renda2020geometric, boyer2020dynamics, mathew2025reduced} is currently the most expressive kinematic parametrization for Cosserat rods. Specifically, the strain field
+\begin{equation}
+    \xi(t,s) = \Phi(t,q,s) \, q + \xi^0(s)
+\end{equation}
+consists of a, possibly discontinuous, configuration, and time-dependent, strain basis function $\Phi(t,q,s): \in \mathbb{R} \times \mathbb{R}^n \times \mathbb{R}_+ \to \mathbb{R}^{6 \times n}$ and an abscissa-dependent rest strain function $\xi^0(s): \mathbb{R}_+ \to \mathbb{R}^6$~\citep{mathew2025reduced}.
+Traditionally, $\Phi(s)$ is defined using abscissa-dependent basis functions, such as ones based on monimonial or Legendre polynomial functions~\citep{mathew2025reduced}. For example, \citet{della2019control} considers the polynomial curvature case.
+
+\subsubsection{Affine Curvature}
+A special case of variable strain is \gls{AC}~\citep{della2020soft, stella2022experimental}, later extended to multi-segment cases via \gls{PAC} by \citet{stella2023piecewise}.
+The \gls{AC} models parametrizes the 
+
+\begin{equation}
+    q_i = \begin{bmatrix}\kappa_{0,i} & \kappa_{1,i} & \phi_i & \delta L_{i} \end{bmatrix}^{\top} \in \mathbb{R}^4.
+\end{equation}

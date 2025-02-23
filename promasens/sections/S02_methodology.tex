@@ -13,14 +13,14 @@ In the commonly used \gls{PCC} kinematic state parametrization~\citep{webster201
 Please refer to Appendix~\ref{sub:promasens:kinematic_model_pcc} for more details.
 We indeed use PCC for most of our simulations and experiments.
 Note, however, that the proposed proprioception algorithm applies to any finite-dimensional kinematic description of a soft robot~\citep{armanini2023soft}.
-Indeed, we also specifically consider a robot with affine curvature~\citep{della2020soft, stella2023piecewise} with its shape described by the configuration $q \in \mathbb{R}^4$. We document this alternative kinematic model in Appendix~\ref{sub:promasens:kinematic_model_ac}.
+Indeed, we also specifically consider a robot with \gls{AC}~\citep{della2020soft, stella2023piecewise} with its shape described by the configuration $q \in \mathbb{R}^4$. We document this alternative kinematic model in Appendix~\ref{sub:promasens:kinematic_model_ac}.
 The proprioception methodology described in the remaining section is agnostic to the chosen kinematic model.
 % For the sake of clarity, we use the \gls{PCC} kinematic state parametrization as proposed by \citep{della2020improved}. We consider a continuum robot described by $n_\mathrm{b}$ \gls{CC} segments and configuration variables $q \in \mathbb{R}^{3n_\mathrm{b}}$. Note, however, that the proposed method applies to any finite-dimensional kinematic description of a soft robot~\citep{armanini2023soft}.
 
-\subsection{Proposed method at a glance}
+\subsection{Proposed Method at a Glance}
 
 %The shape of each segment can be parameterized with $q_i$.
-We integrate $n_\mathrm{m}$ axially symmetric magnets and $n_\mathrm{s}$ magnetic sensors into the robot. The magnets must be installed along the center line of the segment while the sensors can be arbitrarily placed.
+We integrate $n_\mathrm{m}$ axially symmetric magnets and $n_\mathrm{s}$ magnetic sensors into the robot. The magnets must be installed along the center line of the segment, while the sensors can be arbitrarily placed.
 %
 %To achieve proprioception of the entire robot shape, at least one magnet must be integrated into each segment.
 %
@@ -29,7 +29,7 @@ Fig.~\ref{fig:promasens:methodology} concisely describes the proposed shape-sens
 
 The goal of the algorithmic part (center of the figure) is to regress the robot shape (left) by estimating the configuration $\hat{q}$ of all segments (right),
 %$q(t) \in \mathbb{R}^{3 n_\mathrm{b}}$
-starting from the measurements of the magnetic sensors $u$ (e.g. usually the magnetic flux density).
+starting from the measurements of the magnetic sensors $u$ (e.g., usually the magnetic flux density).
 We achieve this by training a sensor measurement predictor and subsequently optimizing the configuration estimate $\hat{q}$ for the prediction $\hat{u}$ to match the actual sensor measurement $u$.
 Instead of predicting the sensor measurements end-to-end, we decouple the kinematics by explicitly describing the kinematic relationship $\hat{\xi}_j = f_{\xi,j}(\hat{q})$ between sensor $j$ and each magnet. % \hat{\xi}_j \in \mathbb{R}^{1+4 n_\mathrm{m}}
 Then, we train a neural network $f_{\pi_j}$ to predict the measurement $\hat{u}_j$ based on the input $\hat{\xi}_j$.
@@ -71,7 +71,7 @@ To achieve proprioception, we jointly optimize $\hat{q}$ for all sensor measurem
 \subsection{Background: Continuum Soft Robot Kinematics}\label{sub:promasens:kinematics}
 A kinematic description provides us with the forward kinematic transformation $T_{i-1}^s(q_i,s)$ from base frame $\{S_{i-1}\}$ at the proximal end of the $i^\mathrm{th}$ segment to the local frame $\{S_{v}\}$ at a coordinate $v \in [0,1]$ for a given configuration $q_i$. Furthermore, the tip frame of the $i^\mathrm{th}$ segment located at the coordinate $v = 1$ is denoted as $\{S_{i}\}$, as shown in Fig.~\ref{fig:promasens:kinematics_frames_soft_segment}.
 
-\subsection{Piecewise constant curvature kinematics}\label{sub:promasens:kinematic_model_pcc}
+\subsection{Piecewise Constant Curvature Kinematics}\label{sub:promasens:kinematic_model_pcc}
 
 Under the \gls{PCC} hypothesis, the shape of each segment $i$ of length $L_{i}$ and radius $d_i$ can be fully parameterized through three variables
 \begin{equation}
@@ -96,8 +96,8 @@ The base frame of segment $i$ is referred to as $\{S_{i-1}\}$ as stated in Fig.~
 \end{equation}
 where $R_{i-1}^{v}$, $p_{i-1}^{i}(q_i,v)$ denote the rotation matrix and translation vector respectively. We substituted $\Delta_i = \sqrt{\Delta_{x,i}^2 + \Delta_{y,i}^2}$, $\mathrm{S}_v = \sin \left (\frac{v \, \Delta_i}{d_i} \right )$, and $\mathrm{C}_v = \cos \left ( \frac{v \, \Delta_i}{d_i} \right )$ for conciseness.
 
-\subsection{Affine curvature kinematics}\label{sub:promasens:kinematic_model_ac}
-The affine curvature hypothesis~\citep{della2020soft, stella2023piecewise} models the bending of the soft segment to be conforming to the affine function $\kappa(t,v) = \kappa_0(t) + \kappa_1(t) v$, where $\kappa$ describes the local curvature of the backbone at the coordinate $v \in [0, 1]$ along the segment and $\kappa_0(t)$, $\kappa_1(t)$ are the zero-order and first-order term of the curvature polynomial respectively~\citep{della2019control}.
+\subsection{Affine Curvature Kinematics}\label{sub:promasens:kinematic_model_ac}
+The \gls{AC} hypothesis~\citep{della2020soft, stella2023piecewise} models the bending of the soft segment to be conforming to the affine function $\kappa(t,v) = \kappa_0(t) + \kappa_1(t) v$, where $\kappa$ describes the local curvature of the backbone at the coordinate $v \in [0, 1]$ along the segment and $\kappa_0(t)$, $\kappa_1(t)$ are the zero-order and first-order term of the curvature polynomial respectively~\citep{della2019control}.
 Specifically, we implement the recently proposed extension to 3D environments~\citep{stella2023piecewise}, which specifies an azimuth angle of the bending direction $\phi(t)$ and additionally allows for an elongation $\delta L(t)$ of the segment.
 % We extend this parametrization as introduced by \citet{della2019control, della2020soft} to 3D environments by specifying the azimuth angle of the bending direction $\phi(t)$ and additionally allowing for an elongation $\delta L(t)$ of the segment. 
 Accordingly, the configuration of the $i^\mathrm{th}$ segment is described at any point in time by
@@ -126,7 +126,7 @@ The rotation to the frame $\{S_{v}\}$ can then be easily determined with $R_{i-1
 We choose to integrate the translational terms in \eqref{eq:promasens:affine_curvature_forward_kinematics} numerically with $101$ sample points using the Torchquad~\citep{gomez2021torchquad} implementation of the Simpson's rule, which makes the forward kinematics fully and automatically differentiable.
 
 
-\subsection{Magnet sensor kinematics}\label{sub:promasens:kinematic_model_magnet_sensor_kinematics}
+\subsection{Magnet Sensor Kinematics}\label{sub:promasens:kinematic_model_magnet_sensor_kinematics}
 This subsection derives the kinematic relationship $\xi_j = f_{\xi_j}(q) \in \mathbb{R}^{1+4n_\mathrm{m}}$ between the $j^\mathrm{th}$ sensor and all $n_\mathrm{m}$ magnets as we hypothesize that we can estimate the sensor measurement $u_j$ solely based on
 a) the angle $\lambda_j \in \mathbb{R}^1$ to the earth's magnetic field,
 b) the distance $d_j^k$  between the $j^\mathrm{th}$ sensor and $k^\mathrm{th}$ magnet,
@@ -157,7 +157,7 @@ This means that the cylindrical magnet is integrated at a distance, which is mea
 
 % as in \citep{della2020improved} by substituting $\Delta_{x}^{\mathrm{m}_k} = \frac{d_{\mathrm{m}_k}}{L_{0,i}} \, \Delta_{x,i}$, $\Delta_{y}^{\mathrm{m}_k} = \frac{d_{\mathrm{m}_k}}{L_{0,i}} \, \Delta_{y,i}$ and $\Delta_{\mathrm{m}_k} = \frac{d_{\mathrm{m}_k}}{L_{0,i}} \, \Delta_{i}$. % in \eqref{eq:promasens:transform_improved_q}.
 
-Subsequently, we  describe the pose of the $j^\mathrm{th}$ sensor with respect to the base of the $i^\mathrm{th}$ segment.
+Subsequently, we describe the pose of the $j^\mathrm{th}$ sensor with respect to the base of the $i^\mathrm{th}$ segment.
 Denote with $d_{\mathrm{s}_j,\mathrm{r}}$ the radial distance of the sensor from the center line, with $\varphi_j$ the azimuth angle of the sensor in the cylindrical plane, and with $d_{\mathrm{s}_j,\mathrm{a}}$ the axial distance along the center line from the base of the $i^\mathrm{th}$ segment.
 We derive the transformation $T_{i-1}^{\mathrm{s}_j,\mathrm{r}_0}$ to the center of the cylindrical plane of the sensor % using \eqref{eq:promasens:transform_improved_q}
 analogously as for the magnets by evaluating the forward kinematics at $v = \frac{d_{\mathrm{s}_j,\mathrm{a}}}{L_{0,i}}$.
@@ -295,14 +295,14 @@ We will in the following refer to the mapping $f_\xi(q): q \in \mathbb{R}^{n_\ma
     \includegraphics[width=0.8\columnwidth]{promasens/figures/methodology/blockdiagram_gradient_descent_v6_cropped.pdf}
     \caption{% In panel (a), we visualize the scheduling of our chosen optimization strategy: global optimization involving grid search is running at a frequency $f_\mathrm{g}$. In parallel, local gradient descent is performed at a frequency $f_\mathrm{l}$. The global optimization solution arrives $\hat{q}_\mathrm{glob}^*(t-\delta)$ at the local optimization with a delay of $\delta$ and is used to initialize $\hat{q}_0$ for the gradient descent. In all other instances, the gradient descent is initialized with the locally optimized solution $\hat{q}(t-1)$ from the previous time-step. 
     % Panel (b) 
-    A block-diagram of the gradient descent as an iterative update loop for the configuration belief $\hat{q}(t)$. The gradient descent is initialized with the optimized solution $\hat{q}_0 = \hat{q}(t-1)$ from the previous time-step. Note that during the iterative loop, $\hat{q}_{l+1}$ updates $\hat{q}_{l}$ in the memory block.}\label{fig:promasens:blockdiagram_gradient_descent}
+    A block diagram of the gradient descent as an iterative update loop for the configuration belief $\hat{q}(t)$. The gradient descent is initialized with the optimized solution $\hat{q}_0 = \hat{q}(t-1)$ from the previous time-step. Note that during the iterative loop, $\hat{q}_{l+1}$ updates $\hat{q}_{l}$ in the memory block.}\label{fig:promasens:blockdiagram_gradient_descent}
 \end{figure}
 
 
-\subsection{Data-driven sensor measurement model}
+\subsection{Data-driven Sensor Measurement Model}
 \label{sub:promasens:data_driven_approach}
 We use a data-driven approach to learn the forward sensor model $\hat{u} = f_{\pi}(\xi_{j})$ for each sensor using a neural network parameterized with $\pi$.
-We note that the same neural network weights can be shared for all sensors, but oftentimes performance can be improved by training a specialized model with weights $\pi_j$ for each sensor.
+We note that the same neural network weights can be shared for all sensors, but oftentimes, performance can be improved by training a specialized model with weights $\pi_j$ for each sensor.
 During training on a dataset of length $n_\mathrm{t}$, we minimize the Mean Squared Error (MSE) error between the predicted sensor measurement $\hat{u}_j$ and the actual sensor measurement $u_j$:
 \begin{equation}
     \min_{\pi} \frac{1}{n_\mathrm{t}} \sum_{t = 0}^{n_\mathrm{t}} \left ( f_{\pi}(\xi_{j}(t)) - u_j(t) \right )^2,
@@ -312,7 +312,7 @@ Note that whenever we omit the time index in our notation, we always refer to th
 Finally, to simplify the notation, we combine each sensor measurement prediction $u_j \in \mathbb{R}$ into an array $u \in \mathbb{R}^{n_\mathrm{s}}$ and stack the neural networks as %$u = f_\pi(\xi)$
 $f_\Pi(\xi): \xi \rightarrow u$. We discuss the choice of the specific network architecture later in Section~\ref{sec:promasens:pcc_simulations}.
 
-\subsection{Proprioception by optimizing configuration estimate}
+\subsection{Proprioception via Optimization}
 \label{sub:promasens:proprioception_optimization}
 
 Now, that we are able to predict the sensor measurement $\hat{u}$ using the composition of the kinematics $f_\xi(\hat{q})$ and the neural networks $f_\Pi(\hat{\xi})$, we need to optimize the configuration estimate $\hat{q}$ for the predictions $\hat{u}$ to match the actual sensor measurements $u$ as closely as possible.

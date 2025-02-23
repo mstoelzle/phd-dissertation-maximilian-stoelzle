@@ -1,22 +1,31 @@
 \section{Euler-Lagrangian Dynamics}\label{sec:background:dynamics}
-In the following, we will introduce the form and most important characteristics of the dynamics of continuum soft robots formulated in Euler-Lagrangian form.
-For a detailed discussion on the derivation of the dynamics, we point the interested reader to several (survey) papers in literature~\citep{gazzola2018forward, armanini2023soft, alessi2024rod, della2023model}.
+% In the following, we will introduce the form and most important characteristics of the dynamics of continuum soft robots formulated in Euler-Lagrangian form.
+% For a detailed discussion on the derivation of the dynamics, we point the interested reader to several (survey) papers in literature~\citep{gazzola2018forward, armanini2023soft, alessi2024rod, della2023model}.
+In the following section, we introduce the structure and key characteristics of continuum soft robot dynamics, formulated in Euler-Lagrangian form. For a detailed derivation of these dynamics, readers are referred to several survey papers in the literature~\citep{gazzola2018forward, armanini2023soft, alessi2024rod, della2023model}.
 
-Irrespective of the specific chosen kinematic parameterization, the \gls{EOM} of a soft can, in most cases, be stated in Euler-Lagrangian form~\citep{della2023model}:
+% Irrespective of the specific chosen kinematic parameterization, the \gls{EOM} of a soft can, in most cases, be stated in Euler-Lagrangian form~\citep{della2023model}:
+% \begin{equation}\label{eq:background:dynamics:eom}
+%     M(q) \, \ddot{q} + C(q, \dot{q}) \, \dot{q} + K(q) + G(q) + D \, \dot{q} = \alpha(q,\tau) = A(q) \, \tau,
+% \end{equation}
+% where the mass matrix $M(q) \succeq 0 \in \mathbb{R}^{n \times n}$
+% % \footnote{Note that in some chapters of this thesis, we also use the symbol $M(q)$ to refer to the mass matrix $B(q)$.} 
+% captures the inertia of the robot, $C(q,\dot{q}) \in \mathbb{R}^{n \times n}$ integrates the Coriolis and centrifugal effects, $K(q), G(q) \in \mathbb{R}^{n}$ contribute elastic and gravitational forces, respectively, and $D \succeq 0$ is the damping matrix.
+% The model verifies similar properties as traditional rigid robots, such that the expression $\dot{M}(q) - 2 \, C(q,\dot{q})$ is skew-symmetric, as long as $C(q,\dot{q})$ is defined with Christoffel symbols~\citep{della2020model}.
+% We assume that the soft robot is driven by $m$ actuators through the term $\alpha: q \times \tau \mapsto A(q) \, \tau$, where $A(q) \in \mathbb{R}^{n \times m}$. \footnote{We note while this control-affine formulation with a configuration-dependent actuation matrix $A(q)$ can capture the characteristics of most currently existing soft robots actuation methods, such as pneumatic or tendon-driven actuation, the actuation can also become a more general nonlinear function $\alpha(q,\tau)$, such as it is the case for the \gls{HSA} robot actuation model presented in Chapter~\ref{chp:hsamodel}. Furthermore, when additionally considering the actuator dynamics, as in Chapter~\ref{chp:backstepping} for pneumatic pistons, the generalized actuation torque is possibly also a function of the actuator's state $(\mu,\dot{\mu})$.}
+% If $n=m$, the robot model is considered to be fully actuated; if $n < m$ (rather rare), the soft robot is called overactuated~\citep{pustina2024input}; and if $n > m$, the soft robot model is referred to as underactuated~\citep{pustina2025analysis}.
+
+Regardless of the chosen kinematic parameterization, the \glspl{EOM} for a soft robot can generally be expressed in Euler-Lagrangian form~\citep{della2023model}:
 \begin{equation}\label{eq:background:dynamics:eom}
-    M(q) \, \ddot{q} + C(q, \dot{q}) \, \dot{q} + K(q) + G(q) + D \, \dot{q} = \alpha(q,\tau) = A(q) \, \tau,
+M(q) , \ddot{q} + C(q, \dot{q}) , \dot{q} + K(q) + G(q) + D \, \dot{q} = \alpha(q,\tau) = A(q) , \tau,
 \end{equation}
-where the mass matrix $M(q) \succeq 0 \in \mathbb{R}^{n \times n}$
-% \footnote{Note that in some chapters of this thesis, we also use the symbol $M(q)$ to refer to the mass matrix $B(q)$.} 
-captures the inertia of the robot, $C(q,\dot{q}) \in \mathbb{R}^{n \times n}$ integrates the Coriolis and centrifugal effects, $K(q), G(q) \in \mathbb{R}^{n}$ contribute elastic and gravitational forces, respectively, and $D \succeq 0$ is the damping matrix.
-The model verifies similar properties as traditional rigid robots, such that the expression $\dot{M}(q) - 2 \, C(q,\dot{q})$ is skew-symmetric, as long as $C(q,\dot{q})$ is defined with Christoffel symbols~\citep{della2020model}.
-We assume that the soft robot is driven by $m$ actuators through the term $\alpha: q \times \tau \mapsto A(q) \, \tau$, where $A(q) \in \mathbb{R}^{n \times m}$. \footnote{We note while this control-affine formulation with a configuration-dependent actuation matrix $A(q)$ can capture the characteristics of most currently existing soft robots actuation methods, such as pneumatic or tendon-driven actuation, the actuation can also become a more general nonlinear function $\alpha(q,\tau)$, such as it is the case for the \gls{HSA} robot actuation model presented in Chapter~\ref{chp:hsamodel}. Furthermore, when additionally considering the actuator dynamics, as in Chapter~\ref{chp:backstepping} for pneumatic pistons, the generalized actuation torque is possibly also a function of the actuator's state $(\mu,\dot{\mu})$.}
-If $n=m$, the robot model is considered to be fully actuated; if $n < m$ (rather rare), the soft robot is called overactuated~\citep{pustina2024input}; and if $n > m$, the soft robot model is referred to as underactuated~\citep{pustina2025analysis}.
+where the mass matrix $M(q) \succ 0 \in \mathbb{R}^{n \times n}$ represents the robot’s inertia, $C(q,\dot{q}) \in \mathbb{R}^{n \times n}$ accounts for Coriolis and centrifugal effects, $K(q)$ and $G(q)$ (in $\mathbb{R}^{n}$) correspond to elastic and gravitational forces, respectively, and $D \succeq 0$ is the damping matrix. This model shares properties with traditional rigid robot dynamics, such as the skew-symmetry of $\dot{M}(q) - 2 , C(q,\dot{q})$, provided that $C(q,\dot{q})$ is defined using Christoffel symbols~\citep{della2020model}.
+
+We assume that the soft robot is actuated by $m$ actuators via the mapping $\alpha: q \times \tau \mapsto A(q) , \tau$, where $A(q) \in \mathbb{R}^{n \times m}$. \footnote{While this control-affine formulation with a configuration-dependent actuation matrix $A(q)$ captures the characteristics of most existing soft robot actuation methods—such as pneumatic or tendon-driven actuation—the actuation can also be represented as a more general nonlinear function $\alpha(q,\tau)$, as is the case for the \gls{HSA} robot actuation model presented in Chapter~\ref{chp:hsamodel}. Furthermore, when accounting for actuator dynamics, as discussed in Chapter~\ref{chp:backstepping} for pneumatic pistons, the generalized actuation torque may also depend on the actuator’s state $(\mu,\dot{\mu})$.} Depending on the relationship between $n$ and $m$, if $n=m$, the robot is fully actuated; if $n < m$ (which is less common), it is considered overactuated~\citep{pustina2024input}; and if $n > m$, the soft robot is regarded as underactuated~\citep{pustina2025analysis}.
 
 \subsection{Formulation as an Ordinary Differential Equation (ODE)}
 After defining the state of the soft robot as $y = \begin{bmatrix}
-    q\\ \dot{q}
-\end{bmatrix} \in \mathbb{R}^{2n}$, Eq.~\ref{eq:background:dynamics:eom} can be expressed as a control-affine \gls{ODE} in nonlinear state-space representation:
+    q^\top & \dot{q}^\top
+\end{bmatrix}^\top \in \mathbb{R}^{2n}$, Eq.~\ref{eq:background:dynamics:eom} can be expressed as a control-affine \gls{ODE} in nonlinear state-space representation:
 \begin{equation}
     \dot{y} = f(y,\tau) = \begin{bmatrix}
         \frac{\mathrm{d} q}{\mathrm{d}t}\\
@@ -30,7 +39,8 @@ After defining the state of the soft robot as $y = \begin{bmatrix}
 \end{equation}
 
 \subsection{Kinetic and Potential Energy}
-Usually, we can derive analytically the kinetic and potential energy of the system
+% Usually, we can derive analytically the kinetic and potential energy of the system
+Typically, we can derive analytical expressions for the system’s kinetic and potential energy:
 \begin{equation}
     \mathcal{T}(q,\dot{q}) = \frac{1}{2} \dot{q}^\top M(q) \, \dot{q},
     \qquad
@@ -39,13 +49,15 @@ Usually, we can derive analytically the kinetic and potential energy of the syst
 where $\mathcal{T}(q,\dot{q}) \geq 0$ is the kinetic and $\mathcal{U}(q)$ the potential energy consisting of elastic and gravitational terms $\mathcal{U}_\mathrm{K}(q)$, $\mathcal{U}_\mathrm{G}(q)$.
 which results in $K(q) + G(q) = \frac{\partial \mathcal{U}}{\partial q}$. 
 In the case of linear elasticity $K(q) = S \, q$, where $S \succ 0 \in \mathbb{R}^{n \times n}$ is the stiffness of the generalized coordinates, the elastic potential energy becomes $\mathcal{U}_\mathrm{K}(q) = \frac{1}{2} q^\top S \, q$.
-The Lagrangian then becomes $\mathcal{L}(q,\dot{q}) = \mathcal{T}(q,\dot{q}) - \mathcal{U}(q)$.
-% 
-As seen in \citet{della2020model, della2023model} and Chapters~\ref{chp:backstepping} \& \ref{chp:con}, this energy field can serve as a starting point for analyzing the stability of the open- and closed-loop system using Lyapunov arguments~\citep{khalil2002nonlinear}.
+Consequently, the Lagrangian is defined as $\mathcal{L}(q,\dot{q}) = \mathcal{T}(q,\dot{q}) - \mathcal{U}(q)$.
+
+% As seen in \citet{della2020model, della2023model} and Chapters~\ref{chp:backstepping} \& \ref{chp:con}, this energy field can serve as a starting point for analyzing the stability of the open- and closed-loop system using Lyapunov arguments~\citep{khalil2002nonlinear}.
+As demonstrated in \citet{della2020model, della2023model} and in Chapters~\ref{chp:backstepping} and \ref{chp:con}, these energetic expressions provide a solid foundation for analyzing the stability of both open- and closed-loop systems using Lyapunov arguments~\citep{khalil2002nonlinear}.
 
 \subsection{Task Space Dynamics}\label{sub:background:dynamics:task_space}
-As initially proposed in the seminal work by \citet{khatib1987unified} and later adopted to soft robots by \citet{della2020model}, the dynamics of the system can be directly expressed in task space\footnote{The task space is often also referred to as operational space. As oftentimes end-effectors (e.g., grippers) are attached to the distal end of the robot, the task space is usually defined as the pose $\chi \in SE(3)$ of the end-effector.}
-Irrespective of the exact definition of the task space (e.g., end-effector pose), for the given forward kinematics $\pi: q \mapsto x$, where $x \in \mathbb{R}^o$ is the task-space coordinate with $o \leq n$, and the associated Jacobian $J(q) = \frac{\partial \pi}{\partial q} \in \mathbb{R}^{o \times n}$, Eq.~\ref{eq:background:dynamics:eom} can be equivalently expressed in task space as
+% As initially proposed in the seminal work by \citet{khatib1987unified} and later adopted to soft robots by \citet{della2020model}, the dynamics of the system can be directly expressed in task space\footnote{The task space is often also referred to as operational space. As oftentimes end-effectors (e.g., grippers) are attached to the distal end of the robot, the task space is usually defined as the pose $\chi \in SE(3)$ of the end-effector.}
+% Irrespective of the exact definition of the task space (e.g., end-effector pose), for the given forward kinematics $\pi: q \mapsto x$, where $x \in \mathbb{R}^o$ is the task-space coordinate with $o \leq n$, and the associated Jacobian $J(q) = \frac{\partial \pi}{\partial q} \in \mathbb{R}^{o \times n}$, Eq.~\ref{eq:background:dynamics:eom} can be equivalently expressed in task space as
+As originally proposed in the seminal work by \citet{khatib1987unified} and later adapted for soft robots by \citet{della2020model}, the system dynamics can be directly expressed in task space\footnote{The task space is also commonly referred to as operational space. Since end-effectors (e.g., grippers) are typically attached to the distal end of the robot, the task space is often defined by the pose $\chi \in SE(3)$ of the end-effector.}. Regardless of the precise definition of task space (e.g., end-effector pose), given the forward kinematics $\pi: q \mapsto x$, where $x \in \mathbb{R}^o$ denotes the task-space coordinate with $o \leq n$, and the corresponding Jacobian $J(q) = \frac{\partial \pi}{\partial q} \in \mathbb{R}^{o \times n}$, Eq.\ref{eq:background:dynamics:eom} can equivalently be written in task space as
 \begin{equation}\label{eq:background:dynamics:eom_task_space}
     \Lambda(q) \, \ddot{x} + \eta(q, \dot{q}) \, \dot{q} + J_\mathrm{M}^{+\top}(q) \left ( G(q) + K(q) + D \, \dot{q} \right ) = J_\mathrm{M}^{+^\top}(q) \, A(q) \, \tau,
 \end{equation}
@@ -53,18 +65,21 @@ where
 \begin{equation}
     J_\mathrm{M}^{+\top}(q) = M^{-1}(q) \, J^\top(q) \left ( J(q) \, M^{-1}(q) \, J^\top(q) \right )^{-1} \in \mathbb{R}^{n \times o},
 \end{equation}
-is the dynamically consistent pseudo-inverse~\citep{chang1995manipulator}, which can be used to map task space velocities into configuration space and generalized torques into task space,
+% is the dynamically consistent pseudo-inverse~\citep{chang1995manipulator}, which can be used to map task space velocities into configuration space and generalized torques into task space,
+denotes the dynamically consistent pseudo-inverse\citep{chang1995manipulator}, which maps task space velocities to configuration space and transforms generalized torques into task space. Moreover,
 \begin{equation}
     \Lambda(q) = \left ( J(q) \, M^{-1}(q) \, J^\top(q) \right )^{-1} \in \mathbb{R}^{o \times o},
 \end{equation}
-is the task space inertia matrix, and the task space Coriolis and centrifugal matrix $\eta(q, \dot{q})$\footnote{Please note that in Chapter~\ref{chp:hsacontrol} we refer to this task space as $\mu(q,\dot{q})$.} is defined as~\citep{khatib1987unified, della2020model}
+% is the task space inertia matrix, and the task space Coriolis and centrifugal matrix $\eta(q, \dot{q})$\footnote{Please note that in Chapter~\ref{chp:hsacontrol} we refer to this task space as $\mu(q,\dot{q})$.} is defined as~\citep{khatib1987unified, della2020model}
+defines the task space inertia matrix, and the task space Coriolis and centrifugal matrix $\eta(q, \dot{q})$\footnote{Please note that in Chapter~\ref{chp:hsacontrol} this task space is denoted as $\mu(q,\dot{q})$.} is defined as~\citep{khatib1987unified, della2020model}
 \begin{equation}
     \eta(q, \dot{q}) = \Lambda(q) \, \left ( J(q) \, M^{-1}(q) \, C(q,\dot{q}) - \dot{J}(q,\dot{q})) \right ) \in \mathbb{R}^{o \times o}.
 \end{equation}
 
 
 \subsection{Actuation Space Dynamics}\label{sub:background:dynamics:actuation_space}
-\citet{pustina2024input} showed that it is often possible to directly formulate the dynamics in actuation coordinates $\varphi \in \mathbb{R}^n$ where the actuation force $\tau$ directly acts on the first $m$ actuation coordinates through an identity matrix. This is particularly interesting for control applications as it allows us to very easily map a control input devised in the generalized (collocated) coordinates into an actuation $\tau$, but it can, in the future, also find use in other applications such as inverse kinematics~\citep{della2025pushing} or workspace estimation. As this mapping into collocated form is particularly useful in the underactuated setting, as later demonstrated in Chapter~\ref{chp:hsacontrol}, we will in the following focus on the setting $m \leq n$.
+% \citet{pustina2024input} showed that it is often possible to directly formulate the dynamics in actuation coordinates $\varphi \in \mathbb{R}^n$ where the actuation force $\tau$ directly acts on the first $m$ actuation coordinates through an identity matrix. This is particularly interesting for control applications as it allows us to very easily map a control input devised in the generalized (collocated) coordinates into an actuation $\tau$, but it can, in the future, also find use in other applications such as inverse kinematics~\citep{della2025pushing} or workspace estimation. As this mapping into collocated form is particularly useful in the underactuated setting, as later demonstrated in Chapter~\ref{chp:hsacontrol}, we will in the following focus on the setting $m \leq n$.
+\citet{pustina2024input} demonstrated that it is often feasible to directly formulate the dynamics in actuation coordinates $\varphi \in \mathbb{R}^n$, where the actuation force $\tau$ acts directly on the first $m$ actuation coordinates via an identity matrix. This feature is especially appealing for control applications because it enables a straightforward mapping of a control input devised in the generalized (collocated) coordinates into an actuation $\tau$. Moreover, this approach may also be in the future useful in other applications such as inverse kinematics~\citep{della2025pushing} or workspace estimation. Since this collocated mapping is particularly beneficial in underactuated settings, as later demonstrated in Chapter~\ref{chp:hsacontrol}, we focus on the case $m \leq n$.
 
 According to \citet{pustina2024input}, there exists a transformation into collocated form when there is a function $g(q): \mathbb{R}^n \mapsto \mathbb{R}^m$ such that $\frac{\partial g}{\partial q} = A^\top (q),$
 which is referred to as \emph{integrability assumption}. In practice, as shown in Sec.~\ref{sec:hsacontrol:configuration_space_regulation}), this mapping $g(q)$ is found by solving the integral $g(q) = \int_0^t \dot{q}(t')^\top \, A(q') \, \mathrm{d} t'$.

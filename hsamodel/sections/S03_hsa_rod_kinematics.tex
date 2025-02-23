@@ -25,9 +25,9 @@ represents the three rotational and three linear strains present in a rod~\citep
 \end{equation}
 where $\phi_0 \in \mathbb{R}$ is the twist angle at the base and allows for the rotation of the motor actuating the \gls{HSA} rod. $q_\mathrm{CS} \in \mathbb{R}^{n_{q,\mathrm{CS}}}$ is a strain component constant along the entire rod, and $q_{\mathrm{PCS},i} \in \mathbb{R}^{n_{q,\mathrm{PCS}}}, i \in \{1, \dots, n_\mathrm{PCS}\}$ is the configuration of each \gls{PCS} segment. The $i$th segment has a initial length of $\bar{l}_i$ with its tip at the coordinate $\bar{L}_i$
 %
-The strain in the $i$th segment is then the sum of the rest strain $\hat{\xi} = \begin{pmatrix} 0 & 0 & 0 & 0 & 0 & 1\end{pmatrix}^\top$, $\xi_\mathrm{CS}$, and $\xi_{\mathrm{PCS},i}$:
+The strain in the $i$th segment is then the sum of the rest strain $\xi^0 = \begin{pmatrix} 0 & 0 & 0 & 0 & 0 & 1\end{pmatrix}^\top$, $\xi_\mathrm{CS}$, and $\xi_{\mathrm{PCS},i}$:
 \begin{equation}
-    \xi_i = \hat{\xi} + B_\mathrm{CS} \: q_\mathrm{CS} + B_{\mathrm{PCS},i} \: q_{\mathrm{PCS},i}, \quad i \in \{1,\dots, n_\mathrm{S}\}.
+    \xi_i = \xi^0 + B_\mathrm{CS} \: q_\mathrm{CS} + B_{\mathrm{PCS},i} \: q_{\mathrm{PCS},i}, \quad i \in \{1,\dots, n_\mathrm{S}\}.
 \end{equation}
 Analogue to the concept introduced in \citep{renda2020geometric}, $B_\mathrm{CS} \in \mathbb{R}^{6 \times n_{q,\mathrm{CS}}}$, $B_\mathrm{PCS} \in \mathbb{R}^{6 \times n_{q,\mathrm{PCS}}}$ are the strain bases of $q_\mathrm{CS}$ and $q_\mathrm{PCS}$ respectively.
 
@@ -61,7 +61,7 @@ For a point $s$ on the $i$th segment with constant strain $\xi_i$, the transform
 where $\check{\xi}_i \in \mathfrak{se}(3)$ is the strain twist vector and $\theta_i = \sqrt{\kappa_{x,i}^2 + \kappa_{y,i}^2 + \kappa_{z,i}^2}$ is the magnitude of the rotational strain.
 Therefore, the fully assembled transformation $T_{\mathcal{B}}^i(q)$ from the base frame $\{ S_{\mathcal{B}} \}$ to the tip frame of the $i$th segment can be expressed as
 \begin{equation}
-    T_{\mathcal{B}}^i(q) = T_{\mathcal{B}}^0(\phi_0) \, \Pi_{j=1}^{i} \: e^{\bar{l}_{j} \check{\xi}_{j}}(q) \in SE(3).
+    T_{\mathcal{B}}^i(q) = T_{\mathcal{B}}^0(\phi_0) \: \Pi_{j=1}^{i} \: e^{\bar{l}_{j} \check{\xi}_{j}}(q) \in SE(3).
 \end{equation}
 
 % \begingroup
