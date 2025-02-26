@@ -27,20 +27,20 @@ where $\phi_0 \in \mathbb{R}$ is the twist angle at the base and allows for the 
 %
 The strain in the $i$th segment is then the sum of the rest strain $\xi^0 = \begin{pmatrix} 0 & 0 & 0 & 0 & 0 & 1\end{pmatrix}^\top$, $\xi_\mathrm{CS}$, and $\xi_{\mathrm{PCS},i}$:
 \begin{equation}
-    \xi_i = \xi^0 + B_\mathrm{CS} \: q_\mathrm{CS} + B_{\mathrm{PCS},i} \: q_{\mathrm{PCS},i}, \quad i \in \{1,\dots, n_\mathrm{S}\}.
+    \xi_i = \xi^0 + \Phi_\mathrm{CS} \: q_\mathrm{CS} + \Phi_{\mathrm{PCS},i} \: q_{\mathrm{PCS},i}, \quad i \in \{1,\dots, n_\mathrm{S}\}.
 \end{equation}
-Analogue to the concept introduced in \citep{renda2020geometric}, $B_\mathrm{CS} \in \mathbb{R}^{6 \times n_{q,\mathrm{CS}}}$, $B_\mathrm{PCS} \in \mathbb{R}^{6 \times n_{q,\mathrm{PCS}}}$ are the strain bases of $q_\mathrm{CS}$ and $q_\mathrm{PCS}$ respectively.
+Analogue to the concept introduced in \citep{renda2020geometric}, $\Phi_\mathrm{CS} \in \mathbb{R}^{6 \times n_{q,\mathrm{CS}}}$, $\Phi_\mathrm{PCS} \in \mathbb{R}^{6 \times n_{q,\mathrm{PCS}}}$ are the strain bases of $q_\mathrm{CS}$ and $q_\mathrm{PCS}$ respectively.
 
 In this chapter, we specifically investigate a setting where the twist \& stretch strains are constant across the entire rod and the bend \& shear strains vary for each segment.
 Accordingly, we choose $q_\mathrm{CS} = \begin{pmatrix} \kappa_z & \sigma_z \end{pmatrix}^\top$ and $q_{\mathrm{PCS},i} = \begin{pmatrix} \kappa_{x,i} & \kappa_{y,i} & \sigma_{x,i} & \sigma_{y,i} \end{pmatrix}^\top$.
 Then, the corresponding strain bases are determined to be
 \begin{equation}
 \begin{split}
-    B_\mathrm{CS} = \begin{bmatrix}
+    \Phi_\mathrm{CS} = \begin{bmatrix}
         0 & 0 & 1 & 0 & 0 & 0\\
         0 & 0 & 0 & 0 & 0 & 1\\
     \end{bmatrix}^\top \in \mathbb{R}^{6 \times 2},\\
-    B_{\mathrm{PCS},i} = \begin{bmatrix}
+    \Phi_{\mathrm{PCS},i} = \begin{bmatrix}
         1 & 0 & 0 & 0 & 0 & 0\\
         0 & 1 & 0 & 0 & 0 & 0\\
         0 & 0 & 0 & 1 & 0 & 0\\

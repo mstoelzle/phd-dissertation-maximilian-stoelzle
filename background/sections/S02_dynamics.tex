@@ -59,7 +59,7 @@ As demonstrated in \citet{della2020model, della2023model} and in Chapters~\ref{c
 % Irrespective of the exact definition of the task space (e.g., end-effector pose), for the given forward kinematics $\pi: q \mapsto x$, where $x \in \mathbb{R}^o$ is the task-space coordinate with $o \leq n$, and the associated Jacobian $J(q) = \frac{\partial \pi}{\partial q} \in \mathbb{R}^{o \times n}$, Eq.~\ref{eq:background:dynamics:eom} can be equivalently expressed in task space as
 As originally proposed in the seminal work by \citet{khatib1987unified} and later adapted for soft robots by \citet{della2020model}, the system dynamics can be directly expressed in task space\footnote{The task space is also commonly referred to as operational space. Since end-effectors (e.g., grippers) are typically attached to the distal end of the robot, the task space is often defined by the pose $\chi \in SE(3)$ of the end-effector.}. Regardless of the precise definition of task space (e.g., end-effector pose), given the forward kinematics $\pi: q \mapsto x$, where $x \in \mathbb{R}^o$ denotes the task-space coordinate with $o \leq n$, and the corresponding Jacobian $J(q) = \frac{\partial \pi}{\partial q} \in \mathbb{R}^{o \times n}$, Eq.\ref{eq:background:dynamics:eom} can equivalently be written in task space as
 \begin{equation}\label{eq:background:dynamics:eom_task_space}
-    \Lambda(q) \, \ddot{x} + \eta(q, \dot{q}) \, \dot{q} + J_\mathrm{M}^{+\top}(q) \left ( G(q) + K(q) + D \, \dot{q} \right ) = J_\mathrm{M}^{+^\top}(q) \, A(q) \, \tau,
+    \Lambda_\mathrm{x}(q) \, \ddot{x} + \eta_\mathrm{x}(q, \dot{q}) \, \dot{q} + J_\mathrm{M}^{+\top}(q) \left ( G(q) + K(q) + D \, \dot{q} \right ) = J_\mathrm{M}^{+^\top}(q) \, A(q) \, \tau,
 \end{equation}
 where 
 \begin{equation}
@@ -68,18 +68,105 @@ where
 % is the dynamically consistent pseudo-inverse~\citep{chang1995manipulator}, which can be used to map task space velocities into configuration space and generalized torques into task space,
 denotes the dynamically consistent pseudo-inverse\citep{chang1995manipulator}, which maps task space velocities to configuration space and transforms generalized torques into task space. Moreover,
 \begin{equation}
-    \Lambda(q) = \left ( J(q) \, M^{-1}(q) \, J^\top(q) \right )^{-1} \in \mathbb{R}^{o \times o},
+    \Lambda_\mathrm{x}(q) = \left ( J(q) \, M^{-1}(q) \, J^\top(q) \right )^{-1} \in \mathbb{R}^{o \times o},
 \end{equation}
 % is the task space inertia matrix, and the task space Coriolis and centrifugal matrix $\eta(q, \dot{q})$\footnote{Please note that in Chapter~\ref{chp:hsacontrol} we refer to this task space as $\mu(q,\dot{q})$.} is defined as~\citep{khatib1987unified, della2020model}
 defines the task space inertia matrix, and the task space Coriolis and centrifugal matrix $\eta(q, \dot{q})$\footnote{Please note that in Chapter~\ref{chp:hsacontrol} this task space is denoted as $\mu(q,\dot{q})$.} is defined as~\citep{khatib1987unified, della2020model}
 \begin{equation}
-    \eta(q, \dot{q}) = \Lambda(q) \, \left ( J(q) \, M^{-1}(q) \, C(q,\dot{q}) - \dot{J}(q,\dot{q})) \right ) \in \mathbb{R}^{o \times o}.
+    \eta_\mathrm{x}(q, \dot{q}) = \Lambda(q) \, \left ( J(q) \, M^{-1}(q) \, C(q,\dot{q}) - \dot{J}(q,\dot{q})) \right ) \in \mathbb{R}^{o \times o}.
+\end{equation}
+
+\subsubsection{Null Space Dynamics}
+% When $o < n$, there exists $n-o$ redundant dynamics - also called the null space dynamics~\citep{siciliano2010robotics}. It is very important to also consider the characteristics of the null space dynamics to ensure, for example, the stability of the closed-loop robotic system and not just the task space movement of the end-effector.
+% In literature, various approaches exist for deriving such null space dynamics, ranging from projection- to task space augmentation methods~\citep{ott2008cartesian}.
+% In the following, we will focus on the \emph{Joint Space Decomposition Method}~\citep{ott2008cartesian}.
+When $o < n$, there are $n-o$ redundant dynamics—commonly known as the null space dynamics~\citep{siciliano2010robotics}. It is crucial to consider these null space dynamics to ensure, for instance, the stability of the closed-loop robotic system rather than focusing solely on the end-effector’s task space movement. Various approaches in the literature address the derivation of null space dynamics, ranging from projection-based methods to task space augmentation techniques~\citep{ott2008cartesian}. In the following, we focus on the \emph{Joint Space Decomposition Method}~\citep{ott2008cartesian}.
+
+% First, we introduce the additional nullspace velocities $\nu_\mathrm{n} = N(q) \, \dot{q} \in \mathbb{R}^{n-o}$, that are the time derivatives of the null space coordinates $n(t) \in \mathbb{R}^{n-o}$\footnote{Please note that we can always recover the nullspace coordinates by integration via $n(t) = \int_0^t \nu_\mathrm{n}(t') \, \mathrm{d}t'$, although they might not exhibit any geometric meaning~\cite{ott2008cartesian}.}, with a suitable choice of $N(q) \in \mathbb{R}^{(n-o= \times n}$, resulting in~\citep{ott2008cartesian, della2020model}
+First, we introduce the additional null space velocities defined as $\nu_\mathrm{n} = N(q) \, \dot{q} \in \mathbb{R}^{n-o}$, which represent the time derivatives of the null space coordinates $n(t) \in \mathbb{R}^{n-o}$ \footnote{Note that the null space coordinates can always be recovered via integration, i.e.,  $n(t) = \int_0^t \nu_\mathrm{n}(t{\prime}) \, \mathrm{d}t{\prime}$, although they may not have a direct geometric interpretation~\citep{ott2008cartesian}.}. With an appropriate choice of  $N(q) \in \mathbb{R}^{(n-o) \times n}$, this yields the formulation described in~\citep{ott2008cartesian, della2020model}.
+\begin{equation}
+    \begin{bmatrix}
+        \dot{x}\\
+        \nu_\mathrm{n}
+    \end{bmatrix} = \begin{bmatrix}
+        J(q)\\
+        N(q)
+    \end{bmatrix} \, \dot{q},
+\end{equation}
+where for the Nullspace Base matrix $Z(q) \in \mathbb{R}^{(n-o) \times n}$ we define~\citep{ott2008cartesian}
+\begin{equation}
+    N(q) = \left ( Z(q) \, M(q) \, Z(q)^\top \right )^{-1} \, Z(q) \, M(q).
+\end{equation}
+In the general case, $Z(q)$ can be constructed as~\citep{huang1991optimal, ott2008cartesian}
+\begin{equation}
+    Z(q) = \begin{bmatrix}
+        -J_\mathrm{n-o}^\top(q) \, J_\mathrm{o}^{-\top} & \mathbb{I}_{n-o}
+    \end{bmatrix},
+\end{equation}
+for which we partitioned the Jacobian $J(q)$ as 
+\begin{equation}
+    J(q) = \begin{bmatrix}
+        J_\mathrm{o} & J_\mathrm{n-o}
+    \end{bmatrix} \in \mathbb{R}^{o \times n}
+\end{equation}
+such that $J_\mathrm{o}(q) \in \mathbb{R}^{o \times o}$ is at least locally invertible.
+
+The \gls{EOM} of the combined task and null space dynamics are now given as~\citep{ott2008cartesian}
+\begin{equation}\small
+    \underbrace{\begin{bmatrix}
+        \Lambda_\mathrm{x}(q) & 0_{o \times (n-o)}\\
+        0_{(n-o) \times o} & \Lambda_\mathrm{n}(q)
+    \end{bmatrix}}_{\Lambda(q) \in \mathbb{R}^{n \times n}} \, \begin{bmatrix}
+        \ddot{x}\\
+        \dot{\nu}_\mathrm{n}
+    \end{bmatrix} + \underbrace{\begin{bmatrix}
+        \eta_\mathrm{x}(q, \dot{q})\\
+        \eta_\mathrm{n}(q, \dot{q})
+    \end{bmatrix}}_{\eta(q,\dot{q}) \in \mathbb{R}^{n \times n} } \, \dot{q} + \underbrace{\begin{bmatrix}
+        J_\mathrm{M}^{+\top}(q)\\
+        Z(q)
+    \end{bmatrix}}_{J_\mathrm{MZ}^\top(q) \in \mathbb{R}^{n \times n}} \, \left ( G(q) + K(q) + D \, \dot{q} \right ) = \begin{bmatrix}
+        f_\mathrm{x}\\ f_\mathrm{n}
+    \end{bmatrix} = J_\mathrm{MZ}^\top(q) \, A(q) \, \tau,
+\end{equation}
+where $J_\mathrm{MZ}(q)$ can be used to map task and null space velocities into configuration space~\citep{ott2008cartesian}
+\begin{equation}
+    \dot{q}(t) = \underbrace{\begin{bmatrix}
+        J_\mathrm{M}^{+}(q)\\
+        Z(q)
+    \end{bmatrix}}_{J_\mathrm{MZ}(q)} \, \begin{bmatrix}
+        \dot{x}(t)\\ \nu_\mathrm{n}(t)
+    \end{bmatrix},
+\end{equation}
+which allows us to decompose $\eta(q,\dot{q}) \, \dot{q}$ into
+\begin{equation}
+    \eta(q,\dot{q}) \, \dot{q} = \begin{bmatrix}
+        \eta_\mathrm{xx}(q,\dot{q}) & \eta_\mathrm{xn}(q,\dot{q})\\
+        \eta_\mathrm{nx}(q,\dot{q}) & \eta_\mathrm{nn}(q,\dot{q})
+    \end{bmatrix} \, \begin{bmatrix}
+        \dot{x}\\ \nu_\mathrm{n}
+    \end{bmatrix},
+\end{equation}
+where
+\begin{equation}
+\begin{split}
+    \eta_\mathrm{xx}(q,\dot{q}) = \eta_\mathrm{x}(q,\dot{q}) \, J_\mathrm{M}^{+}(q),
+    \qquad
+    \eta_\mathrm{xn}(q,\dot{q}) = \eta_\mathrm{x}(q,\dot{q}) \, Z(q),\\
+    \eta_\mathrm{nx}(q,\dot{q}) = \eta_\mathrm{n}(q,\dot{q}) \, J_\mathrm{M}^{+}(q),
+    \qquad
+    \eta_\mathrm{nn}(q,\dot{q}) = \eta_\mathrm{n}(q,\dot{q}) \, Z(q).\\
+\end{split}
+\end{equation}
+Furthermore, the null space inertia $\Lambda_\mathrm{n}(q)$ is defined as~\citep{ott2008cartesian}
+\begin{equation}
+    \Lambda_\mathrm{n}(q) = Z(q) \, M(q) \, Z(q)^\top.
 \end{equation}
 
 
 \subsection{Actuation Space Dynamics}\label{sub:background:dynamics:actuation_space}
 % \citet{pustina2024input} showed that it is often possible to directly formulate the dynamics in actuation coordinates $\varphi \in \mathbb{R}^n$ where the actuation force $\tau$ directly acts on the first $m$ actuation coordinates through an identity matrix. This is particularly interesting for control applications as it allows us to very easily map a control input devised in the generalized (collocated) coordinates into an actuation $\tau$, but it can, in the future, also find use in other applications such as inverse kinematics~\citep{della2025pushing} or workspace estimation. As this mapping into collocated form is particularly useful in the underactuated setting, as later demonstrated in Chapter~\ref{chp:hsacontrol}, we will in the following focus on the setting $m \leq n$.
-\citet{pustina2024input} demonstrated that it is often feasible to directly formulate the dynamics in actuation coordinates $\varphi \in \mathbb{R}^n$, where the actuation force $\tau$ acts directly on the first $m$ actuation coordinates via an identity matrix. This feature is especially appealing for control applications because it enables a straightforward mapping of a control input devised in the generalized (collocated) coordinates into an actuation $\tau$. Moreover, this approach may also be in the future useful in other applications such as inverse kinematics~\citep{della2025pushing} or workspace estimation. Since this collocated mapping is particularly beneficial in underactuated settings, as later demonstrated in Chapter~\ref{chp:hsacontrol}, we focus on the case $m \leq n$.
+\citet{pustina2024input} demonstrated that it is often feasible to directly formulate the dynamics in actuation coordinates $\varphi \in \mathbb{R}^n$, where the actuation force $\tau$ acts directly on the first $m$ actuation coordinates via an identity matrix. This feature is especially appealing for control applications because it enables a straightforward mapping of a control input devised in the generalized (collocated) coordinates into an actuation $\tau$. Moreover, this approach may also be in the future useful in other applications such as inverse kinematics~\citep{della2025pushing} or workspace estimation. Since this collocated mapping is particularly beneficial in underactuated settings, as later demonstrated in Chapter~\ref{chp:hsacontrol}, we focus on the case $m \leq n$, which includes both fully actuated and underactuated systems.
 
 According to \citet{pustina2024input}, there exists a transformation into collocated form when there is a function $g(q): \mathbb{R}^n \mapsto \mathbb{R}^m$ such that $\frac{\partial g}{\partial q} = A^\top (q),$
 which is referred to as \emph{integrability assumption}. In practice, as shown in Sec.~\ref{sec:hsacontrol:configuration_space_regulation}), this mapping $g(q)$ is found by solving the integral $g(q) = \int_0^t \dot{q}(t')^\top \, A(q') \, \mathrm{d} t'$.
@@ -100,6 +187,11 @@ where $\varphi_\mathrm{a} \in \mathbb{R}^m$ and $\varphi_\mathrm{u} \in \mathbb{
         A_\mathrm{a}^\top(q) & A_\mathrm{u}^\top(q)\\
         0_{(n-m) \times m} & \mathbb{I}_{n-m}
     \end{bmatrix},
+    \quad
+    J_\mathrm{h}^{-1}(q) = \frac{\partial h^{-1}(q)}{\partial q} = \begin{bmatrix}
+        A_\mathrm{a}^{-\top}(q) & -A_\mathrm{a}^{-\top}(q) \, A_\mathrm{u}^\top(q)\\
+        0_{(n-m) \times m} & \mathbb{I}_{n-m}
+    \end{bmatrix},
 \end{equation}
 and $A_\mathrm{a}(q) \in \mathbb{R}^{m \times m}$, $A_\mathrm{u}(q) \in \mathbb{R}^{(n-m) \times m}$ stem from the following partitioning: $A(q) = \begin{bmatrix}
     A_\mathrm{a}(q)\\ A_\mathrm{u}(q)
@@ -112,32 +204,77 @@ The dynamics in actuation coordinates are then given by
 \end{equation}
 where analog to the task space dynamics, the actuation space inertia is defined as~\citep{khatib1987unified}
 \begin{equation}\label{eq:background:dynamics:eom_actuation_coordinates}
-    M_\varphi(q) = \left ( J_\mathrm{h}(q) \, M^{-1}(q) \, J_\mathrm{h}^\top(q) \right )^{-1} \in \mathbb{R}^{n \times n},
+    M_\varphi(q) = \left ( J_\mathrm{h}(q) \, M^{-1}(q) \, J_\mathrm{h}^\top(q) \right )^{-1} = J_\mathrm{h}^{-\top}(q) \, M(q) \, J_\mathrm{h}^{-1}(q) \in \mathbb{R}^{n \times n},
 \end{equation}
-$J_{\mathrm{h},\mathrm{M}}^{+\top}(q)$ is the dynamically-consistent pseudo-inverse~\citep{chang1995manipulator}
+$J_{\mathrm{h},\mathrm{M}}^{+\top}(q) \in \mathbb{R}^{n \times n}$ is the dynamically-consistent pseudo-inverse~\citep{chang1995manipulator}
 \begin{equation}
-    J_{\mathrm{h},\mathrm{M}}^{+\top}(q) = M^{-1}(q) \, J_\mathrm{h}^\top(q) \left ( J_\mathrm{h}(q) \, M^{-1}(q) \, J_\mathrm{h}^\top(q) \right )^{-1} \in \mathbb{R}^{n \times n},
+\begin{split}
+    J_{\mathrm{h},\mathrm{M}}^{+\top}(q) =& \: M^{-1}(q) \, J_\mathrm{h}^\top(q) \left ( J_\mathrm{h}(q) \, M^{-1}(q) \, J_\mathrm{h}^\top(q) \right )^{-1} = J_\mathrm{h}^{-\top}(q),\\
+    =& \: \begin{bmatrix}
+        A_\mathrm{a}^{-1}(q) & 0_{m \times (n-m)}\\
+        -A_\mathrm{u}(q) \, A_\mathrm{a}^{-1}(q) & \mathbb{I}_{n-m}
+    \end{bmatrix} = \begin{bmatrix}
+        J_{\mathrm{h},\mathrm{a}}^{-\top}(q)\\
+        J_{\mathrm{h},\mathrm{u}}^{-\top}(q)
+    \end{bmatrix}
+\end{split}
 \end{equation}
-and $\eta_\varphi(q,\dot{q})$ captures the Coriolis and centrifugal effects
+which, in the case of \emph{full actuation} (i.e., $n=m$), simplifies to
+\begin{equation}
+    J_{\mathrm{h},\mathrm{M}}^{+\top}(q) = A^{-\top}(q) \in \mathbb{R}^{n \times n},
+\end{equation}
+$\eta_\varphi(q,\dot{q})$ captures the Coriolis and centrifugal effects
 \begin{equation}
     \eta_\varphi(q, \dot{q}) = M_\varphi(q) \, \left ( J_\mathrm{h}(q) \, M^{-1}(q) \, C(q,\dot{q}) - \dot{J}_\mathrm{h}(q,\dot{q})) \right ) \in \mathbb{R}^{n \times n}.
 \end{equation}
 Crucially, we now notice in Eq.~\ref{eq:background:dynamics:eom_actuation_coordinates} how $\tau$ directly acts via an identity actuation matrix on the first $m$ actuation coordinates.
 %
 We can partition the dynamics of Eq.~\ref{eq:background:dynamics:eom_actuation_coordinates} into the first $m$ (actuated) rows, and the last $n-m$ unactuated rows:
-\begin{equation}
+\begin{equation}\footnotesize
     \begin{bmatrix}
-        M_{\varphi,\mathrm{a}}(q)\\ M_{\varphi,\mathrm{u}}(q)
+        M_{\varphi,\mathrm{a}}(q)\\ 
+        M_{\varphi,\mathrm{u}}(q)
     \end{bmatrix} \, \ddot{\varphi} + \begin{bmatrix}
         \eta_{\varphi,\mathrm{a}}(q,\dot{q})\\ \eta_{\varphi,\mathrm{u}}(q,\dot{q})
-    \end{bmatrix} \, \dot{q} + \begin{bmatrix}
-        J_{\mathrm{h},\mathrm{M},\mathrm{a}}^{+\top}(q)\\
-        J_{\mathrm{h},\mathrm{M},\mathrm{u}}^{+\top}(q)
-    \end{bmatrix} \left ( G(q) + K(q) + D \, \dot{q} \right ) = \begin{bmatrix}
+    \end{bmatrix} \, \dot{q} + \underbrace{\begin{bmatrix}
+        A_\mathrm{a}^{-1}(q) & 0_{m \times (n-m)}\\
+        -A_\mathrm{u}(q) \, A_\mathrm{a}^{-1}(q) & \mathbb{I}_{n-m}
+    \end{bmatrix}}_{J_\mathrm{h}^{-\top}(q)} \left ( \begin{bmatrix}
+        G_\mathrm{a}(q)\\ G_\mathrm{u}(q)
+    \end{bmatrix} + \begin{bmatrix}
+        K_\mathrm{a}(q)\\ K_\mathrm{u}(q)
+    \end{bmatrix} + \begin{bmatrix}
+        D_\mathrm{aa}(q) & D_\mathrm{au}(q)\\ 
+        D_\mathrm{ua}(q) & D_\mathrm{uu}(q)
+    \end{bmatrix} \, \dot{q} \right ) = \begin{bmatrix}
         \tau\\ 0_{n-m}
     \end{bmatrix},
 \end{equation}
-where $\eta_{\varphi,\mathrm{a}}(q,\dot{q}), J_{\mathrm{h},\mathrm{M},\mathrm{a}}^{+\top}(q) \in \mathbb{R}^{m \times n}$, $\eta_{\varphi,\mathrm{u}}(q,\dot{q}), J_{\mathrm{h},\mathrm{M},\mathrm{u}}^{+\top}(q) \in \mathbb{R}^{(n-m) \times n}$, $M_{\varphi,\mathrm{aa}}(q) \in \mathbb{R}^{m \times m}$, $M_{\varphi,\mathrm{uu}}(q) \in \mathbb{R}^{(n-m) \times (n-m)}$, and $M_{\varphi,\mathrm{ua}}(q) \in \mathbb{R}^{(n-m) \times m}$, and $M_{\varphi,\mathrm{au}}(q) \in \mathbb{R}^{m \times (n-m)}$.
+where $\eta_{\varphi,\mathrm{a}}(q,\dot{q}), J_{\mathrm{h},\mathrm{a}}^{-\top}(q) \in \mathbb{R}^{m \times n}$, $\eta_{\varphi,\mathrm{u}}(q,\dot{q}), J_{\mathrm{h},\mathrm{u}}^{-\top}(q) \in \mathbb{R}^{(n-m) \times n}$, $M_{\varphi,\mathrm{aa}}(q) \in \mathbb{R}^{m \times m}$, $M_{\varphi,\mathrm{uu}}(q) \in \mathbb{R}^{(n-m) \times (n-m)}$, and $M_{\varphi,\mathrm{ua}}(q) \in \mathbb{R}^{(n-m) \times m}$, and $M_{\varphi,\mathrm{au}}(q) \in \mathbb{R}^{m \times (n-m)}$.
+We can simplify the expression while leveraging the structure of $J_\mathrm{h}^{-\top}$
+\begin{equation}\footnotesize
+    \begin{bmatrix}
+        M_{\varphi,\mathrm{aa}}(q) & M_{\varphi,\mathrm{au}}(q)\\ 
+        M_{\varphi,\mathrm{ua}}(q) & M_{\varphi,\mathrm{uu}}(q)
+    \end{bmatrix} \, \ddot{\varphi} + \begin{bmatrix}
+        \eta_{\varphi,\mathrm{a}}(q,\dot{q})\\ \eta_{\varphi,\mathrm{u}}(q,\dot{q})
+    \end{bmatrix} \, \dot{q} + \begin{bmatrix}
+        A_\mathrm{a}^{-1}(q) \left ( G_\mathrm{a}(q) + K_\mathrm{a}(q) \right )\\
+        -A_\mathrm{u}(q) \, A_\mathrm{a}^{-1}(q) \left ( G_\mathrm{a}(q) + K_\mathrm{a}(q) \right ) + G_\mathrm{u}(q) + K_\mathrm{u}(q)
+    \end{bmatrix} + \underbrace{\begin{bmatrix}
+        D_{\varphi,\mathrm{a}}(q)\\
+        D_{\varphi,\mathrm{u}}(q)
+    \end{bmatrix}}_{D_\varphi(q)} \, \dot{q} = \begin{bmatrix}
+        \tau\\ 0_{n-m}
+    \end{bmatrix},
+\end{equation}
+where $D_{\varphi}(q) \in \mathbb{R}^{n \times n}$ the damping matrix in actuation coordinates
+\begin{equation}
+    D_{\varphi}(q) = \begin{bmatrix}
+         A_\mathrm{a}^{-1}(q) \, D_\mathrm{aa} & A_\mathrm{a}^{-1}(q) \,  D_\mathrm{ua}\\
+         -A_\mathrm{u}(q) \, A_\mathrm{a}^{-1}(q) \, D_\mathrm{aa} + D_\mathrm{au} & -A_\mathrm{u}(q) \, A_\mathrm{a}^{-1}(q) \, D_\mathrm{ua} + D_\mathrm{uu}
+    \end{bmatrix}.
+\end{equation}
 
 Assuming access to the inverse map $q = h^{-1}(\varphi)$, we can also directly map the potential and kinetic energy of the system into the new coordinates:
 \begin{equation}
@@ -162,4 +299,14 @@ Therefore, we can write the dynamics equivalently as
         \tau\\ 0_{n-m}
     \end{bmatrix},
 \end{equation}
-with $\partial_\varphi \mathcal{U}(\varphi) = \frac{\partial }{\partial \varphi}  \mathcal{U}_\varphi(\varphi) \in \mathbb{R}^n$ the potential forces and $D_{\varphi}(q) \in \mathbb{R}^{n \times n}$ the damping matrix in actuation coordinates, respectively.
+with $\partial_\varphi \mathcal{U}(\varphi) = \frac{\partial }{\partial \varphi}  \mathcal{U}_\varphi(\varphi) \in \mathbb{R}^n$ the potential forces.
+
+\subsubsection{End-to-End Mapping from Actuation into Task Space}
+At least in the fully-actuated case with a square matrix $A(q)$, which we additionally also assume to be invertible, we can formulate an end-to-end mapping of velocities and forces between actuation and task space.
+Specifically, as $\dot{q} = J_\mathrm{h}^{-1}(q) \, \dot{\varphi} = A^{-\top}(q) \, \dot{\varphi}$~\citep{pustina2024input}, we can state
+\begin{equation}
+    \dot{x} = J(q) \, \dot{q} = \underbrace{J(q) \, J_\mathrm{h}^{-1}(q) }_{J_{\varphi \to x}(q)} \, \dot{\varphi},
+    \qquad
+    \tau = J_{\varphi \to x}^\top(q) \, f,
+\end{equation}
+where $f \in \mathbb{R}^{o}$ are forces in task space. 

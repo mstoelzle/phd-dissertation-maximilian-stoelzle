@@ -6,7 +6,7 @@ In this section, we review closed-form model-based controllers for soft robots. 
 
 \textcolor{red}{TODO: \begin{itemize}
     \item Better organize and rename the section heading
-    \item Add comment on why we state the controllers in actuation coordinates. Clearly state the limitations of this, the lack of mapping into actuation coordinates for some actuation matrices, the possible stability issues, and the lack of experimental verification.
+    \item Add comment on why we state the controllers in actuation coordinates. Clearly state the limitations of this, such as the lack of mapping into actuation coordinates for some actuation matrices, the possible stability issues, and the lack of experimental verification.
     \item actuated rows of EOM matrices
     \item verify controllers with trajectory tracking paper from Rizello's group
 \end{itemize}}
@@ -21,7 +21,16 @@ In this section, we review closed-form model-based controllers for soft robots. 
 % Now, we strive to design a \emph{trajectory tracking} controller that allows the soft robotic system to track the reference trajectory as accurately as possible while rejecting any disturbances that might act on the system.
 % If we only care about the goal of a motion, we can simplify the problem to a \emph{setpoint regulation} scenario, where a controller regulates the system towards a desired configuration $q^\mathrm{d}$. In the setpoint regulation case, we simply set $\dot{q}^\mathrm{d} = 0$.
 % Please note that such motion references, either setpoints or trajectories, can be not just specified in configuration space but given in a variety of coordinate frames. We will discuss this aspect further below in the subsection \emph{Coordinate Frames}.
-The literature on closed-form model-based controllers generally considers two problem settings~\citep{sciavicco2012modelling}: \emph{setpoint regulation} and \emph{trajectory tracking}. Typically, a reference trajectory is represented by the tuple $(q^\mathrm{d}(t), \dot{q}^\mathrm{d}(t), \ddot{q}^\mathrm{d}(t))$, which comprises the desired configuration, velocity, and acceleration at each time step. For \emph{trajectory tracking}, our objective is to design a controller that enables the soft robotic system to follow the reference trajectory, and specifically its positional references, as precisely as possible while rejecting any disturbances. Alternatively, if only the final goal of the motion is of interest, the problem can be simplified to a \emph{setpoint regulation} scenario, where the controller drives the system toward a desired configuration $q^\mathrm{d}$ (with $\dot{q}^\mathrm{d} = 0$). Note that these motion references—whether setpoints or trajectories—can be specified not only in configuration space but also in various coordinate frames, a topic we discuss further in the subsection \emph{Coordinate Frames}.
+The literature on closed-form model-based controllers generally considers two problem settings~\citep{sciavicco2012modelling}: \emph{setpoint regulation} and \emph{trajectory tracking}. Typically, a reference trajectory is represented by the tuple $(q^\mathrm{d}(t), \dot{q}^\mathrm{d}(t), \ddot{q}^\mathrm{d}(t))$, which comprises the desired configuration, velocity, and acceleration at each time step. For \emph{trajectory tracking}, our objective is to design a controller that enables the soft robotic system to follow the reference trajectory, and specifically its positional references, as precisely as possible while rejecting any disturbances
+\begin{equation}
+    \lim_{t \to \infty} = q^\mathrm{d}(t) - q(t) = 0_n.
+\end{equation}
+Alternatively, if only the final goal of the motion is of interest, the problem can be simplified to a \emph{setpoint regulation} scenario, where the controller drives the system toward a desired configuration $q^\mathrm{d}$ (with $\dot{q}^\mathrm{d} = 0$). 
+Then, we would like to design a regulator that achieves the following asymptotic convergence
+\begin{equation}
+    \lim_{t \to \infty} = q^\mathrm{d} - q(t) = 0_n.
+\end{equation}
+Note that these motion references—whether setpoints or trajectories—can be specified not only in configuration space but also in various coordinate frames, a topic we discuss further in the subsection \emph{Coordinate Frames}.
 
 
 \subsubsection{Control Design Objectives}
@@ -51,7 +60,7 @@ In the following section, we introduce several coordinate frames for designing c
 
 \paragraph{Control in Configuration Space.}
 % As introduced in Sec.~\ref{sec:background:kinematics}, the configuration space is usually defined as the kinematic variables parametrizing the backbone shape of the soft robot. Therefore, control in configuration space is also referred to as \emph{shape control}. The advantage of devising a controller in configuration space is that naturally, the robot dynamics are also defined here (see Eq.~\ref{eq:background:dynamics:eom}), which makes the controller law derivation usually simpler and easier to prove stability. Disadvantages include that (a) it can be challenging to come up with a (consistent) reference in configuration space as the actual important motion is usually defined in task space and, in particular in underactuated settings, not all configurations can actually be (statically) achieved by the actuators~\citep{della2025pushing}, and (b) the mapping of control inputs defined as generalized torques into an actuation $\tau$ can be challenging - specifically when $A(q)$ exhibits singularities or again, when the soft robot is underactuated, which requires special controllers~\citep{pustina2022feedback}.
-As introduced in Sec.\ref{sec:background:kinematics}, the configuration space is typically defined by the kinematic variables that parameterize the soft robot’s backbone shape, which is why control in this space is often referred to as \emph{shape control}. One advantage of designing a controller in configuration space is that the robot dynamics are naturally defined here (see Eq.\ref{eq:background:dynamics:eom}), making it simpler to derive the control law and prove its stability. However, there are disadvantages: (a) establishing a consistent reference in configuration space can be challenging, since the key motion is often specified in task space, and in underactuated settings, not all configurations can be statically achieved by the actuators~\citep{della2025pushing}; and (b) mapping control inputs defined as generalized torques into an actuation $\tau$ can be difficult—especially when $A(q)$ exhibits singularities or when the soft robot is underactuated, which requires specialized controllers~\citep{pustina2022feedback}.
+As introduced in Sec.\ref{sec:background:kinematics}, the configuration space is typically defined by the kinematic variables that parameterize the soft robot’s backbone shape, which is why control in this space is often referred to as \emph{shape control}. One advantage of designing a controller in configuration space is that the robot dynamics are naturally defined here (see Eq.\ref{eq:background:dynamics:eom}), making it simpler to derive the control law and prove its stability. However, there are disadvantages: (a) establishing a consistent reference in configuration space can be challenging since the key motion is often specified in task space, and in underactuated settings, not all configurations can be statically achieved by the actuators~\citep{della2025pushing}; and (b) mapping control inputs defined as generalized torques into an actuation $\tau$ can be difficult—especially when $A(q)$ exhibits singularities or when the soft robot is underactuated, which requires specialized controllers~\citep{pustina2022feedback}.
 
 
 \paragraph{Control in Actuation Space.}
@@ -73,7 +82,7 @@ This approach not only simplifies the mapping of control inputs into an actuatio
 % Here, the dynamics defined in Eq.~\ref{eq:background:dynamics:eom_task_space} are leveraged to directly devise a controller in task space~\citep{khatib1987unified}, where the dimensionality $o$ of the task space reference (generally) needs to fulfill the condition $o \leq n$.
 % Specifically, task-space impedance controllers are popular as they allow the specification of task-space stiffness, which is directly relevant to robot-environment interactions. Furthermore, as the reference is usually directly given in task space, no complex inverse kinematics routine is necessary.
 % Disadvantages include the lack of formal stability guarantees, specifically with respect to the null-space dynamics, and the integration of actuator limits being much more challenging.
-In this setting, we use the dynamics defined in Eq.\ref{eq:background:dynamics:eom_task_space} to directly design a controller in task space\citep{khatib1987unified}. Typically, the task space reference’s dimensionality $o$ must satisfy $o \leq n$. Task-space impedance controllers are particularly popular because they allow for direct specification of task-space stiffness and damping characteristics, which is crucial for robot-environment interactions. Additionally, since the reference is provided directly in task space, complex inverse kinematics routines are unnecessary. However, disadvantages include the lack of formal stability guarantees—especially regarding the null-space dynamics—and the greater difficulty in considering actuator limits.
+In this setting, we use the dynamics defined in Eq.\ref{eq:background:dynamics:eom_task_space} to directly design a controller in task space~\citep{khatib1987unified}. Typically, the task space reference’s dimensionality $o$ must satisfy $o \leq n$. Task-space impedance controllers are particularly popular because they allow for direct specification of task-space stiffness and damping characteristics, which is crucial for robot-environment interactions. Additionally, since the reference is provided directly in task space, complex inverse kinematics routines are unnecessary. However, disadvantages include the lack of formal stability guarantees—especially regarding the null-space dynamics—and the greater difficulty in considering actuator limits.
 
 % In the following sections, we will generally define the control law as a function of the robot configuration $q$ and its time derivative $\dot{q}$ as the mapping into task space through the forward kinematics $\chi = \pi(q,s)$ or into actuation coordinates through $\varphi = h(q)$ is usually always possible if needed. The same applies to the control reference, as discussed in the next paragraph.
 In the following sections, we will generally define the control law as a function of the robot configuration $q$ and its time derivative $\dot{q}$, since mapping into task space via the forward kinematics $\chi = \pi(q,s)$ or into actuation coordinates through $\varphi = h(q)$ is usually straightforward if needed. The same applies to the control reference, as discussed in the next paragraph.
@@ -104,12 +113,81 @@ Based on this general formulation, we can devise several specific versions, whic
 
 \paragraph{P-satI-D Control.} \citet{pustina2022p} has proposed an integral-saturated PID for shape regulation of soft robots via feedback control. A common choice for the saturated function is $\sigma(r) = \tanh(\gamma \, r)$, where $\gamma \in \mathbb{R}_+$ is a control gain to compress the control error before saturating it. We leverage this integral-saturated PID in Section~\ref{sec:hsacontrol:configuration_space_regulation} and Chapters~\ref{chp:pcsregression} \& \ref{chp:con}.
 
-\subsection{Model-Based Terms}\label{sub:background:model_based_control:feedforward_terms}
+\subsection{Model-Based Terms: The Fully Actuated Case}\label{sub:background:model_based_control:model_based_terms_fully_actuated}
 Please note that for all controllers we introduce below, we assume that (1) the model is accurate or alternatively sufficiently large feedback gains are chosen (see high-gain control~\citep{marino1985high}), and (2) the integrability condition~\citep{pustina2024input} and mapping into actuation coordinates can be identified.
-For the setpoint regulators, we additionally assume that (3) the setpoint $q^\mathrm{q}/\varphi^\mathrm{q}$ is an assignable equilibrium of the underactuated system~\citep{pustina2022feedback}, (4) the system is within the region of attraction of the setpoint which can always be globally accomplished in scenarios where the potential field is convex or by employing (partial) feedback linearization, or often by increasing the feedback gains, and with that, increasing the stiffness of the system. 
+For the setpoint regulators, we additionally assume that (3) the setpoint $q^\mathrm{q}/\varphi^\mathrm{q}$ is an attainable equilibrium of the underactuated system~\citep{pustina2022feedback} - which means that it fulfills the property
+\begin{equation}
+    G(q^\mathrm{d}) + K(q^\mathrm{q}) = A(q^\mathrm{q}) \, \tau^\mathrm{ss},
+\end{equation}
+for a constant control action $\tau^\mathrm{ss}$, 
+% (4) the system is within the region of attraction of the setpoint which can always be globally accomplished in scenarios where the potential field is convex - i.e., when
+(4) The system must be initialized within the setpoint’s region of attraction. This condition can be globally ensured when the potential field is convex—i.e., when
+\begin{equation}
+    \frac{\partial^2 \mathcal{U}(q)}{\partial q^2} \succ 0 \quad \forall q \in \mathbb{R}^n
+\end{equation}
+% - or by employing (partial) feedback linearization, or often by increasing the feedback gains, and with that, increasing the stiffness of the system,
+% and (5) that the actuator is sufficiently fast at tracking its reference $(\mu^\mathrm{d}, \mu^\mathrm{d})$ such that we can approximate $\tau^\mathrm{d} \approx = \tau(\mu,\dot{\mu})$, where $\tau^\mathrm{d}$ is the desired actuation/control input and $\tau(\mu,\dot{\mu})$ are the actually generated forces/torques/currents/pneumatic pressure.
+—or by applying (partial) feedback linearization, or often by increasing the feedback gains, thereby enhancing the system’s stiffness~\citep{della2017controlling, della2023model}. (5) Additionally, the actuator needs to be fast enough in tracking its reference $(\mu^\mathrm{d}, \mu^\mathrm{d})$ so that we can approximate $\tau^\mathrm{d} \approx \tau(\mu,\dot{\mu})$, where $\tau^\mathrm{d}$ denotes the desired actuation/control input and $\tau(\mu,\dot{\mu})$ represents the actual forces, torques, currents, or pneumatic pressure generated.
 
 Finally, many of these controllers formulated in actuation coordinates have not been tested in simulation, and most have not yet been experimentally verified as the mapping into actuation coordinates was only very recently proposed~\citep{pustina2024input}.
 
+We remind that in the case of full actuation, we have $n = m$.
+
+\subsubsection{Setpoint Regulation with Compensation of Static Forces}
+The following regulator locally stabilizes the system around the setpoint $\varphi^\mathrm{d} = h(q^\mathrm{d})$ by shaping the potential energy of the first $m$ actuation coordinates~\citep{borja2022energy, della2023model}
+\begin{equation}\label{eq:background:model_based_control:potential_shaping_regulation}
+    \tau_\mathrm{mb}(t, q, \dot{q}) = J_{\mathrm{h},\mathrm{M},\mathrm{a}}^{+\top}(q^\mathrm{d}) \left ( G(q^\mathrm{d}) + K(q^\mathrm{d}) \right ).
+\end{equation}
+This model-based feedforward term renders the closed-loop dynamics
+\begin{equation}
+    M_\varphi(q) \, \ddot{\varphi} + \eta_\varphi(q,\dot{q}) \, \dot{q} + \partial_{\varphi} \mathcal{U}_\varphi(\varphi) - \partial_{\varphi} \mathcal{U}_\varphi(\varphi^\mathrm{d}) + D_\varphi(q) \, \dot{q} = \tau_\mathrm{fb}(t, q, \dot{q}),
+\end{equation}
+to be locally asymptotically stable.
+
+As mentioned already before, for this regulator to work, $\varphi^\mathrm{d}$ needs to be an attainable equilibrium of the system.
+If the potential field is convex (i.e., $\frac{\partial^2}{\partial \varphi^2}  \mathcal{U}_\varphi(\varphi) \succ 0 \: \forall \varphi \in \mathbb{R}$) this controller is globally asymptotically stable - even with a deactivated feedback term $\tau_\mathrm{fb}(t,q,\dot{q})=0$. If this is not the case, the region of attraction can be increased, or the controller can even be made globally asymptotically stable by sufficiently increasing the proportional gains $K_\mathrm{p}$ of the feedback controller, which makes the system stiffer and more susceptible to instability because of measurement errors.
+
+\subsubsection{Setpoint Regulation with Gravity Cancellation and Compensation of Elastic Forces}
+As stated previously, Eq.~\ref{eq:background:model_based_control:potential_shaping_regulation}, depending on the gravitational field and for low feedback gains, is only locally asymptotically stable 
+\begin{equation}
+    \tau_\mathrm{mb}(t, q, \dot{q}) = J_{\mathrm{h},\mathrm{M},\mathrm{a}}^{+\top}(q) \big ( \underbrace{G(q)}_\text{Cancel Gravity} + \underbrace{K(q^\mathrm{d})}_\text{Comp. Elasticity} \big )
+\end{equation}
+leading to the closed-loop dynamics
+\begin{equation}
+    M_\varphi(q) \, \ddot{\varphi} + \eta_\varphi(q,\dot{q}) \, \dot{q} + A^{-\top}(q) \left ( K(q) - K(q^\mathrm{d}) \right ) + D_\varphi(q) \, \dot{q} = \tau_\mathrm{fb}(t, q, \dot{q}).
+\end{equation}
+\citet{pustina2022feedback} has 
+
+This controller is particularly interesting in the case of a constant actuation matrix $A(q) = A$, which is for example the case for many pneumatically-actuated soft robots, as then the expression becomes
+
+\subsubsection{Trajectory Tracking with Compensation of Static Forces}
+\begin{equation}
+    \tau_\mathrm{mb}(t, q, \dot{q}) = M_{\varphi,\mathrm{a}}(q^\mathrm{d}) \, \ddot{\varphi}^\mathrm{d} + \eta_{\varphi,\mathrm{a}}(q^\mathrm{d},\dot{q}^\mathrm{d}) \, \dot{q}^\mathrm{d} + J_{\mathrm{h},\mathrm{M},\mathrm{a}}^{+\top}(q^\mathrm{d}) \left ( G(q^\mathrm{d}) + K(q^\mathrm{d}) + D \, \dot{q}^\mathrm{d} \right )
+\end{equation}
+
+
+\subsubsection{Trajectory Tracking with Cancellation of Static Forces}
+\begin{equation}
+    \tau_\mathrm{mb}(t, q, \dot{q}) = M_{\varphi,\mathrm{a}}(q) \, \ddot{\varphi}^\mathrm{d} + \eta_{\varphi,\mathrm{a}}(q,\dot{q}) \, \dot{q}^\mathrm{d} + J_{\mathrm{h},\mathrm{M},\mathrm{a}}^{+\top}(q) \left ( G(q) + K(q) \right ),
+\end{equation}
+leading to the closed-loop dynamics
+\begin{equation}
+    M_\varphi(q) \, \ddot{\varphi} + \begin{bmatrix}
+        
+    \end{bmatrix} \eta_\varphi(q,\dot{q}) \, \dot{q} + \begin{bmatrix}
+        0_m\\ J_{\mathrm{h},\mathrm{M},\mathrm{u}}^{+\top}(q) \left ( G(q) + K(q) + D \, \dot{q} \right )
+    \end{bmatrix} = \begin{bmatrix}
+        \tau_\mathrm{fb}(t, q, \dot{q})\\ 0_{n-m}
+    \end{bmatrix}.
+\end{equation}
+
+% \subsubsection{Other Variants}
+% There exist many variants of the above-mentioned model-based controllers, such as the one proposed by \citet{della2020model} that cancels the gravitational forces and compensates the elastic and dissipative forces
+% \begin{equation}
+%     \tau_\mathrm{mb}(t, q, \dot{q}) = 
+% \end{equation}
+
+\subsection{Model-Based Terms: The Underactuated Case}\label{sub:background:model_based_control:model_based_terms_underactuated}
 \subsubsection{Setpoint Regulation with Compensation of Static Forces}
 The following regulator locally stabilizes the system around the setpoint $\varphi^\mathrm{d} = h(q^\mathrm{d})$ by shaping the potential energy of the first $m$ actuation coordinates~\citep{borja2022energy, della2023model}
 \begin{equation}\label{eq:background:model_based_control:potential_shaping_regulation}
@@ -133,9 +211,19 @@ If the potential field is convex (i.e., $\frac{\partial^2}{\partial \varphi^2}  
 \subsubsection{Setpoint Regulation with Gravity Cancellation and Compensation of Elastic Forces}
 As stated previously, Eq.~\ref{eq:background:model_based_control:potential_shaping_regulation}, depending on the gravitational field and for low feedback gains, is only locally asymptotically stable 
 \begin{equation}
-    \tau_\mathrm{mb}(t, q, \dot{q}) =  J_{\mathrm{h},\mathrm{M},\mathrm{a}}^{+\top}(q) \left ( G(q) + K(q) \right ),
+    % \tau_\mathrm{mb}(t, q, \dot{q}) =  J_{\mathrm{h},\mathrm{M},\mathrm{a}}^{+\top}(q) \left ( G(q) + K(q) \right ),
+    \tau_\mathrm{mb}(t, q, \dot{q}) = J_{\mathrm{h},\mathrm{M},\mathrm{a}}^{+\top}(q) \left ( \underbrace{G(q)}_\text{Cancel Gravity} + \underbrace{K(q^\mathrm{d})}_\text{Comp. Elasticity} \right )
 \end{equation}
 leading to the closed-loop dynamics
+\begin{equation}
+    M_\varphi(q) \, \ddot{\varphi} + \eta_\varphi(q,\dot{q}) \, \dot{q} + \begin{bmatrix}
+        J_{\mathrm{h},\mathrm{M},\mathrm{a}}^{+\top}(q) \left ( K(q) - K(q^\mathrm{d}) \right )\\
+        J_{\mathrm{h},\mathrm{M},\mathrm{u}}^{+\top}(q) \left ( K(q) + G(q)) \right )\\
+    \end{bmatrix} + D_\varphi(q) \, \dot{q} = \begin{bmatrix}
+        \tau_\mathrm{fb}(t, q, \dot{q})\\ 0_{n-m}
+    \end{bmatrix}.
+\end{equation}
+\citet{pustina2022feedback} has 
 
 \subsubsection{Trajectory Tracking with Compensation of Static Forces}
 \begin{equation}
@@ -152,17 +240,11 @@ leading to the closed-loop dynamics
     M_\varphi(q) \, \ddot{\varphi} + \begin{bmatrix}
         
     \end{bmatrix} \eta_\varphi(q,\dot{q}) \, \dot{q} + \begin{bmatrix}
-        0^m\\ J_{\mathrm{h},\mathrm{M},\mathrm{u}}^{+\top}(q) \left ( G(q) + K(q) + D \, \dot{q} \right )
+        0_m\\ J_{\mathrm{h},\mathrm{M},\mathrm{u}}^{+\top}(q) \left ( G(q) + K(q) + D \, \dot{q} \right )
     \end{bmatrix} = \begin{bmatrix}
         \tau_\mathrm{fb}(t, q, \dot{q})\\ 0_{n-m}
     \end{bmatrix}.
 \end{equation}
-
-% \subsubsection{Other Variants}
-% There exist many variants of the above-mentioned model-based controllers, such as the one proposed by \citet{della2020model} that cancels the gravitational forces and compensates the elastic and dissipative forces
-% \begin{equation}
-%     \tau_\mathrm{mb}(t, q, \dot{q}) = 
-% \end{equation}
 
 \subsection{Integrated Controllers}\label{sub:background:model_based_control:integrated_controllers}
 In the following, we will discuss some common closed-form model-based controllers that cannot (easily) be separated into a model-based term and a pure feedback term.
@@ -185,7 +267,7 @@ After defining the control error as $e(t) = \varphi(t) - \varphi^\mathrm{d}(t)$ 
 \end{equation}
 which lets us notice that now linear dynamics govern with stiffness $K_\mathrm{p}$ and damping factor $K_\mathrm{d}$ govern the closed-loop system behavior.
 If we assume scalar control gains $K_\mathrm{p}, K_\mathrm{d} \in \mathbb{R}_+$, these error dynamics converge exponentially fast to the global equilibrium $e(t) = 0$ with decay time $\frac{1}{K_\mathrm{d}}$. Specifically, we can always choose the control such that the closed-loop system exhibits a critically damped behavior $\frac{K_\mathrm{d}}{2} = \sqrt{K_\mathrm{p}}$
-\begin{equation}
+\begin{equation}\label{eq:background:model_based_control:feedback_linearization:error_evolution_closed_form}
     e(t) = \left ( e_0 + \left ( \dot{e}_0 + \frac{K_\mathrm{d}}{2} \, e_0 \right ) (t-t_0) \right ) \, e^{-\frac{K_\mathrm{d}}{2} (t - t_0)},
 \end{equation}
 where $e_0, \dot{e}_0$ are the initial error and its velocity at $t_0$.
@@ -195,4 +277,83 @@ So far, computed torque controllers have been verified for fully actuated soft r
 
 
 \subsubsection{Task Space Impedance Control}
-A task-space impedance controller leverages knowledge about the task space dynamics to devise 
+% A task-space impedance controller leverages the partial feedback linearization framework to cancel out the existing task dynamics and establish new linear dynamics with stiffness matrix $K_\mathrm{x} \in \mathbb{R}^{o \times o}$ and damping matrix $D_\mathrm{x} \in \mathbb{R}^{o \times o}$ that regulates the closed-loop system towards the task-space reference $x^\mathrm{d} \in \mathbb{R}^o$~\citep{khatib1987unified, della2020model}
+A task-space impedance controller uses partial feedback linearization to cancel out the original task dynamics and replace them with a new set of linear dynamics in task space. These new dynamics are defined by a stiffness matrix $K_\mathrm{x} \in \mathbb{R}^{o \times o}$ and a damping matrix $D_\mathrm{x} \in \mathbb{R}^{o \times o}$, which together drive the closed-loop system toward the desired task-space reference $x^\mathrm{d} \in \mathbb{R}^o$~\citep{khatib1987unified, della2020model}.
+\begin{equation}\small
+\begin{split}
+    \tau =& \: \underbrace{A^{-1}(q)}_{J_\mathrm{h}^{-\top}(q)} \, \big ( \underbrace{J^\top(q) \, J_\mathrm{M}^{+\top}(q) \left ( K(q) + D \, \dot{q} \right )}_\text{Cancel Elastic \& Diss. Forc. Acting on Task} + \underbrace{G(q)}_\text{Cancel Gravity} \big )\\
+    + & \: A^{-1}(q) \, \big ( \underbrace{J^\top(q) \, \eta_\mathrm{x}(q,\dot{q}) \left ( \mathbb{I}_n - J_\mathrm{M}^{+}(q) \, J(q)  \right ) \, \dot{q}}_\text{Cancel Coupling of Null-Space Coriolis Force on Task} + \underbrace{J^\top(q) \left ( K_\mathrm{x} \, (x^\mathrm{d} - x) - D_\mathrm{x} \, \dot{x} \right )}_{\text{PD for Shaping Task Space Impedance}} \big ),
+\end{split}
+\end{equation}
+% As previously already mentioned, this impedance controller assumes (a) full actuation (i.e., $n=m$), (b) that $A(q) \in \mathbb{R}{n \times n}$ is invertible~\citep{della2020model}, (c) the dimensionality of the task space with coordinates $x \in \mathrm{R}^\mathrm{o}$ is smaller than the of the configuration space (i.e., $m \leq n$), and (d) that the null-space is asymptotically stable which should generally be the case if $K(q) = S \, q$ with $S \succ 0$ and $D \succ 0$.
+As noted earlier, the impedance controller relies on several key assumptions. It presumes (a) full actuation (i.e., $n = m$), (b) that the matrix $A(q) \in \mathbb{R}^{n \times n}$ is invertible~\citep{della2020model}, (c) that the task space—characterized by coordinates $x \in \mathbb{R}^{o}$—has lower dimensionality than the configuration space (i.e., $m \leq n$), and (d) that the null space is asymptotically stable, a condition typically met when $K(q) = S \, q$ with $S \succ 0$ and $D \succ 0$.
+
+In the following, we will guide you step-by-step through the control design.
+First, we cancel the gravitational forces of the system via $\tau_\mathrm{q} = G(q)$. Please note that this immediately ensures that gravity is not acting anymore on the closed-loop null-space dynamics, which could potentially cause instability.
+Now, the updated task and null space dynamics are given by
+\begin{equation}
+    \begin{bmatrix}
+        \Lambda_\mathrm{x}(q) & 0_{o \times (n-o)}\\
+        0_{(n-o) \times o} & \Lambda_\mathrm{n}(q)
+    \end{bmatrix} \, \begin{bmatrix}
+        \ddot{x}\\
+        \dot{\nu}_\mathrm{n}
+    \end{bmatrix} + \begin{bmatrix}
+        \eta_\mathrm{xx}(q,\dot{q}) & \eta_\mathrm{xn}(q,\dot{q})\\
+        \eta_\mathrm{nx}(q,\dot{q}) & \eta_\mathrm{nn}(q,\dot{q})
+    \end{bmatrix} \, \begin{bmatrix}
+        \dot{x}\\ \nu_\mathrm{n}
+    \end{bmatrix} + \begin{bmatrix}
+        J_\mathrm{B}^{+\top}(q)\\
+        Z(q)
+    \end{bmatrix} \, \left ( K(q) + D \, \dot{q} \right ) = \begin{bmatrix}
+        f_\mathrm{x}\\ f_\mathrm{n}
+    \end{bmatrix},
+\end{equation}
+Next, we devise a force $f_\mathrm{x} \in \mathbb{R}^o$ in task space
+\begin{equation}
+    f_\mathrm{x} = \underbrace{J_\mathrm{M}^{+\top}(q) \left ( K(q) + D \, \dot{q} \right )}_{f_\mathrm{KD}}
+    + \underbrace{\eta_\mathrm{x}(q,\dot{q}) \left ( \mathbb{I}_n - J_\mathrm{M}^{+}(q) \, J(q)  \right ) \, \dot{q}}_{f_{\eta_\mathrm{xn}}}
+    + \underbrace{K_\mathrm{x} \, (x^\mathrm{d} - x) - D_\mathrm{x} \, \dot{x}}_{f_\mathrm{PD}}
+\end{equation}
+that cancels the existing task space dynamics, removes the remaining coupling from the null space dynamics, and creates new linear dynamics with a tunable impedance and an asymptotically stable equilibrium at $x^\mathrm{d}$ via a PD term. 
+Diving into more detail, the force $f_\mathrm{KD}$ cancels the existing task-space elastic and dissipative forces.
+Next, the purpose of the term $f_{\eta_\mathrm{xn}}$ is to remove the remaining coupling of the null space dynamics on the task space dynamics from the closed loop system. Specifically, the aim is to eliminate the Coriolis forces of the null space acting on the task space $\eta_\mathrm{xn}(q,\dot{q}) \, \nu_\mathrm{n}$. However, we want to avoid having to compute the null space online. We can avoid the derivation of the null space by performing the substitution~\citep{ott2008cartesian, della2020model}
+\begin{equation}
+\begin{split}
+    f_{\eta_\mathrm{xn}} =& \: \eta_\mathrm{xn}(q,\dot{q}) \, \nu_\mathrm{n} = \eta_\mathrm{x}(q,\dot{q}) \, \dot{q} - \eta_\mathrm{xx}(q,\dot{q}) \, \dot{q},\\
+    =& \: \eta_\mathrm{x}(q,\dot{q}) \, \dot{q} - \eta_\mathrm{x}(q,\dot{q}) \, J_\mathrm{M}^+(q) \, \dot{x} = \eta_\mathrm{x}(q,\dot{q}) \, \dot{q} - \eta_\mathrm{x}(q,\dot{q}) \, J_\mathrm{M}^+(q) \, J(q) \, \dot{q}\\
+    =& \: \eta_\mathrm{x}(q,\dot{q}) \left ( \mathbb{I}_n - J_\mathrm{M}^{+}(q) \, J(q)  \right ) \, \dot{q},
+\end{split}
+\end{equation}
+as $\dot{x} = J(q) \, \dot{q}$ and $\eta_\mathrm{xx}(q,\dot{q}) = \eta_\mathrm{x}(q,\dot{q}) \, J_\mathrm{M}^+(q)$.
+The removal of the existing task space dynamics allows us then to establish the desired impedance. Specifically, PD term $f_\mathrm{PD}$ creates an artificial potential field $\mathcal{U}_\mathrm{x}(x) = \frac{1}{2}x^\top \, K_\mathrm{x} \, x$ and establishes dissipation which ensures asymptotic stability of the task space dynamics.
+This forcing $f_\mathrm{x}$ results in the closed-loop task and null space dynamics
+\begin{equation}
+    \begin{bmatrix}
+        \Lambda_\mathrm{x}(q) & 0_{o \times (n-o)}\\
+        0_{(n-o) \times o} & \Lambda_\mathrm{n}(q)
+    \end{bmatrix} \, \begin{bmatrix}
+        \ddot{x}\\
+        \dot{\nu}_\mathrm{n}
+    \end{bmatrix} + \begin{bmatrix}
+        \eta_\mathrm{xx}(q,\dot{q}) & 0_{o \times (n-o)}\\
+        \eta_\mathrm{nx}(q,\dot{q}) & \eta_\mathrm{nn}(q,\dot{q})
+    \end{bmatrix} \, \begin{bmatrix}
+        \dot{x}\\ \nu_\mathrm{n}
+    \end{bmatrix} + \begin{bmatrix}
+        K_\mathrm{x} \, (x - x^\mathrm{d}) - D_\mathrm{x} \, \dot{x}\\
+        Z(q) \left ( K(q) + D \, \dot{q} \right )
+    \end{bmatrix} = 0_{n},
+\end{equation}
+We can extract several interesting observations by analyzing these closed-loop dynamics in more detail. First, the task space dynamics
+\begin{equation}
+    \Lambda_\mathrm{x}(q) \, \ddot{x} + K_\mathrm{x} \, (x - x^\mathrm{d}) - D_\mathrm{x} \, \dot{x} = 0_{o},
+\end{equation}
+now mirror the ones of coupled damped harmonic oscillators, and we can easily prove, analog to the computed torque controller, that they converge exponentially fast to the global asymptotic equilibrium $x^\mathrm{d}$.
+In the spirit of the previously introduced setpoint regulation controllers with gravity cancellation and compensation of elastic forces, we don't fully eliminate the null space dynamics but instead increase robustness against disturbances and modeling errors by preserving the natural elasticity and dissipation of the system while only removing the gravitational forces. This results in closed-loop null-space dynamics that converge in steady-state to the minimum of the task space potential field.
+
+After designing the desired forces in task space $f_\mathrm{x}$, we can easily derive the control input via configuration space. First, $f_\mathrm{x}$ is projected into configuration space, resulting in a sum between the projected task space forces and the gravity cancellation: $\tau_\mathrm{q} = J^\top(q) \, f + G(q)$ 
+Finally, the inverse of the actuation matrix can be used to devise the control input based on the desired configuration space torques $\tau = A^{-1}(q) \, \tau_\mathrm{q}$.
+
+We propose a variation of this operational space impedance controller that is specialized to Cartesian control of underactuated planar \gls{HSA} robots in Chapter~\ref{chp:hsacontrol}.
