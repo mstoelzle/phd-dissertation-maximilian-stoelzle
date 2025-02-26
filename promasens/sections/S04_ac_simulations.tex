@@ -4,7 +4,7 @@ The \gls{AC} kinematic parametrization~\citep{della2020soft} has been shown capa
 Please refer to Section~\ref{sub:promasens:kinematic_model_ac} for more implementation details about the \gls{AC} model.
 
 
-\subsection{Simulation setup}\label{sub:promasens:ac_simulations:simulation_setup}
+\subsection{Simulation Setup}\label{sub:promasens:ac_simulations:simulation_setup}
 We use the same simulation setup as described in Section~\ref{sub:promasens:pcc_simulations:simulation_setup}. 
 Therefore, we report in the following only the implemented modifications to simulate an \gls{AC} soft robot in Magpylib~\citep{magpylib2020}.
 Namely, we consider one \gls{AC} segment of length $L_{0,i} = \SI{200}{mm}$ with in total $n_\mathrm{s} = 9$ magnetic sensors. 
@@ -36,7 +36,7 @@ Two ring magnets are positioned at a distance of \SI{50}{mm} and \SI{150}{mm} fr
   \label{fig:promasens:ac_simulations:inference_sequences}
 \end{figure*}
 
-\subsection{Prediction network and optimization}\label{sub:promasens:ac_simulations:network_optimization}
+\subsection{Prediction Network and Optimization}\label{sub:promasens:ac_simulations:network_optimization}
 We simulate \SI{120000}{} random configurations of the \gls{AC} robot to generate the training set. For this purpose, we sample the configuration variables from uniform distributions: the \gls{AC} parameters $\kappa_0 \in \mathcal{U}(0, \SI{0.942}{rad \per m})$, $\kappa_1 \in \mathcal{U}(0, \SI{3.770}{rad \per m^2})$, the azimuth angle $\phi \in \mathcal{U}(0, 2 \pi \: \si{rad})$, and the elongation $\delta L \in \mathcal{U}(0, \SI{6.6}{mm})$.
 Before training, we randomly split off \SI{30}{\percent} of the training set for validation purposes.
 We train a specialized neural network $f_{\pi_j(\xi_j)}$ for each sensor and use the same neural network architecture as in Section~\ref{sub:promasens:pcc_simulations:neural_network} with the exception of the addition of a final layer $y(x) = \mathrm{sign}(x) \: e^{|x|}$. 

@@ -8,7 +8,7 @@ We introduce below a novel control strategy that addresses some limitations of t
     \label{fig:hsacontrol:task_space_impedance_control:block_scheme_closed_loop_control}
 \end{figure}
 
-\subsection{Background: Task-space dynamics}\label{sub:hsacontrol:task_space_dynamics}
+\subsection{Background: Task Space Dynamics}\label{sub:hsacontrol:task_space_dynamics}
 %
 Although this has never been done in the context of HSA robots, it is immediate to see that their dynamics \eqref{eq:hsacontrol:dynamics} can be projected into operational space yielding the form~\citep{della2019exact, della2020model} % khatib1987unified
 \begin{equation}\label{eq:hsacontrol:operational_space_dynamics}
@@ -16,12 +16,12 @@ Although this has never been done in the context of HSA robots, it is immediate 
 \end{equation}
 where $J_\mathrm{M}^+(q) = M^{-1} J^\top(J M^{-1} J^\top)^{-1} \in \mathbb{R}^{3\times2}$ is the dynamically consistent pseudo-inverse, $\Lambda(q) = (J \, M^{-1} J^\top)^{-1} \in \mathbb{R}^{2 \times 2}$ is the inertia matrix in task space, and $\mu(q, \dot{q}) = \Lambda(q) \, (J M^{-1} C - \dot{J}) \in \mathbb{R}^{2 \times 3}$ collects the Cartesian Coriolis and centrifugal terms. % ~\citep{khatib1987unified}
 
-\subsection{Control strategy}\label{sub:hsacontrol:task_space_impedance_control:control_strategy}
+\subsection{Control Strategy}\label{sub:hsacontrol:task_space_impedance_control:control_strategy}
 % In previous work~\citep{stolzle2024experimental}, we have devised a model-based control strategy for regulating a planar \gls{HSA} robot towards a desired position in task space. %We propose here a new strategy that overcomes several limitations of that previous work which are critical for the application discussed in this chapter - namely: (i) it involves a complex and computationally demanding planning procedure for identifying a suitable setpoint in configuration space, (ii) our configuration-space controller contains integral terms, making it unsafe for environment interactions, and (iii) it is based on a compensation of static forces in configuration-space thus not allowing us to shape the impedance characteristics in operational space.
 %
 We will present the control strategy in two steps: first, we will introduce the control law and derive the associated desired configuration-space torques, and second, we will discuss how to map the control inputs to the actuation $\phi$.
 
-\subsubsection{Proposed controller}
+\subsubsection{Proposed Controller}
 % We implement an operational space impedance action~\citep{ott2008cartesian, della2020model} that renders $x^\mathrm{d}$ an attractor of the closed-loop system.
 We propose the following dynamic feedback law that renders $x^\mathrm{d}$ an attractor of the closed-loop system %~\citep{ott2008cartesian, della2020model} 
 \begin{equation}\label{eq:hsacontrol:task_space_impedance_control:cartesian_impedance_controller}
@@ -56,7 +56,7 @@ In summary, the closed-loop dynamics in operational space can be stated as
 which results in $x^\mathrm{d}$ being the globally asymptotically stable equilibrium of the operational space dynamics.
 
 
-\subsubsection{Mapping to actuation}
+\subsubsection{Mapping to Actuation}
 %
 Now that we have formulated our control law $\tau$ in configuration space, we need to identify a strategy to specify the motor angles $\phi \in \mathbb{R}^2$ such that $\alpha(q,\phi) \approx \tau$. Note that, in contrast to other continuum soft robots studied in literature~\citep{della2023model}, the actuation term $\alpha(q,\phi)$ is not affine in control. %, but rather a nonlinear function with respect to the actuation coordinates $\phi$. 
 %Therefore, mapping configuration-space torques to motor commands is not straightforward.
@@ -80,7 +80,7 @@ The source code of the controller is available on GitHub\footnote{\url{https://g
     \textbf{Panel(d):} The saturated planar control inputs. }\label{fig:hsacontrol:experimental_results:task_space_impedance_control}
 \end{figure}
 
-\subsection{Experimental setup}
+\subsection{Experimental Setup}
 We use the same experimental setup as introduced in Sec.~\ref{sub:hsacontrol:configuration_space_regulation:experimental_setup}.
 Over a duration of \SI{540}{s}, we randomly generate nine setpoints $x^\mathrm{d}(t) \in \mathbb{R}^2$ within the operational workspace of the robot (see Fig.~\ref{fig:hsacontrol:kinematics:workspace}).
 We evaluate the Cartesian impedance controller using the gains $K_\mathrm{p} = \SI{300}{N \per m}$, $K_\mathrm{d} = \SI{1.5}{N s \per \meter}$ at a frequency of \SI{50}{Hz} and finally send the desired motor positions to the servos.

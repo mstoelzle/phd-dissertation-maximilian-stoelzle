@@ -3,7 +3,7 @@
 This section provides an example of the application of the proposed model augmentation and model-based control strategy for the setpoint regulation of a pneumatically actuated planar soft robot, modeled through \gls{PCC} approximation with acting gravity forces. 
 
 \subsection{Model}\label{sub:backstepping:pcc_model}
-\textbf{Background - PCC dynamic model:}
+\subsubection{Background: PCC Dynamic Model}
 We consider a planar soft robotic arm consisting of three segments analog to \citep{della2020model} modeled using the \gls{PCC}~\citep{jones2006kinematics} assumption, but the formulation can be easily extended to the 3D case while neglecting the torsional deformations. Alternatively, a strain-based parameterization could be employed~\citep{boyer2020dynamics}. 
 % The \gls{PCC}~\citep{jones2006kinematics} assumption stitches together segments each with constant curvature.
 We assume a weight distribution of $m_i = \int_{0}^{l_i} \rho_i(s') ds'$ along the center line of the segment $i$. Gravity is acting along the vector $g \in \mathbb{R}^2$. We consider the following equations of motions with diagonal matrices $K$ and $D$:
@@ -14,7 +14,7 @@ We assume a weight distribution of $m_i = \int_{0}^{l_i} \rho_i(s') ds'$ along t
 \end{split}
 \end{equation}
 
-\textbf{Fluid Volume in Chamber:}
+\subsubsection{Model for Fluid Volume in Chamber}
 A model of the fluid volume in the chambers as a function of the configuration of the segment is required to evaluate the conservative forces by the fluid as specified in \eqref{eq:backstepping:GPq} and \eqref{eq:backstepping:GPmu}. In this section, we derive a simple analytical model based on \gls{CC} kinematics.
 It is assumed that the volume of the chamber is only dependent on the curvature of the segment as we model the segment length $l_{0,i}$ to stay constant and the chambers to be inextensible in radial direction of the curvature. We visualize the model and its parameters in Figure~\ref{fig:backstepping:pcc_case_overview}. Thus, the volume of chamber $j$ part of segment $i$ is defined as:
 \begin{equation}
@@ -50,7 +50,7 @@ The partial derivative $\partial_{q} V_{\mathrm{C}}$ is determined as
 %     \partial_{q_i} V_{\mathrm{C}} = \mp 0.5 \, b_\mathrm{C} (d_{\mathrm{C},\mathrm{b}}^2-d_{\mathrm{C},\mathrm{a}}^2).
 % \end{equation}
 
-\subsection{Setpoint control}
+\subsection{Setpoint Control}
 % \begin{figure*}[ht]
 %   \centering
 %   \subfigure[Configuration $q$]{\includegraphics[width=0.33\textwidth]{figures/time_series_plot_configuration_v4.eps}\label{fig:backstepping:time_series_plot_configuration}}

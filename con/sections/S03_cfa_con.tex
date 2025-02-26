@@ -42,7 +42,7 @@ The implicit assumption behind \eqref{eq:con:con_approx} is that $f_{\ddot{x}, \
 % exists, where $\delta t = t_{k+1} - t_k$, $c_{1,i}, c_{2,i} \in \mathbb{R}$ are scalar integration constants dependent on $y_i(t_k), F_{i}(t_k)$, and $\alpha_i, \beta_i \in \mathbb{R}^+$ are real positive constants. Please refer to Appendix~\ref{apx:sec:con_cfa} for more details on the determination of the constants and the implementation.
 
 
-\subsection{Closed-form solution to a forced harmonic oscillator}
+\subsection{Closed-Form Solution to a Forced Harmonic Oscillator}
 As introduced in \eqref{eq:con:harmonic_oscillator}, we consider the linear dynamics of a 1D forced harmonic oscillator with state $y_{i} = \begin{bmatrix}
     x_i & \dot{x}_i
 \end{bmatrix} \in \mathbb{R}^2$
@@ -93,8 +93,8 @@ $\Delta \lambda_i \cong \begin{cases}
     - 2 \, \beta_i \, j & |2 \, \beta_i \, j| \geq \epsilon
 \end{cases}$, where $\epsilon \in \mathbb{R}^+ \ll 1$ is a small, positive value.
 
-\subsection{Algorithmic implementation}
-We can now leverage the closed form solution to the evolution of a single, decoupled damped harmonic oscillator of \eqref{eq:con:harmonic_oscillator_closed_form} to solve the integral in \eqref{eq:con:cfa_con}
+\subsection{Algorithmic Implementation}
+We can now leverage the closed-form solution to the evolution of a single, decoupled damped harmonic oscillator of \eqref{eq:con:harmonic_oscillator_closed_form} to solve the integral in \eqref{eq:con:cfa_con}
 \begin{equation}\label{eq:con:cfa:full_con_cfa_dynamics}
 \begin{split}
     y(t_{k+1}) \approx& \: f_\mathrm{CFA-CON}(y(t_k), u(t_k)),\\
@@ -143,7 +143,7 @@ We summarize the approach of integrating/rolling out the \gls{CFA-CON} dynamics 
 \end{algorithmic}
 \end{algorithm}
 
-\subsection{Approximation bounds for CFA-CON}
+\subsection{Approximation Bounds for CFA-CON}
 Lemma~\ref{lemma:con:con_cfa_bounds_lemma} demonstrates how, for the particular case of no external input and linearly decoupled oscillators (which we are always free to choose), we can establish bounds on the approximation error when using the closed-form solution instead of the ground-truth coupled oscillator dynamics.
 
 \begin{lemma}\label{lemma:con:con_cfa_bounds_lemma}
@@ -162,7 +162,7 @@ Lemma~\ref{lemma:con:con_cfa_bounds_lemma} demonstrates how, for the particular 
     
 \end{proof}
 
-\subsection{Empirical evaluation of approximation error}
+\subsection{Empirical Evaluation of Approximation Error}
 In Table~\ref{tab:con:cfa_evaluation}, we present a comparison of \gls{CFA-CON} with several other strategies for integrating nonlinear dynamics, such as \gls{CON}.
 Following the implicit assumption made in the concept for the closed-form approximation (i.e., Sec.~\ref{sub:con:cfa:approach}), we consider the case of $g(u) = 0$, $K = \mathrm{diag}(\kappa_1, \dots, \kappa_n)$ and $D = \mathrm{diag}(d_1, \dots, d_n)$ but with the hyperbolic coupling between the oscillators active (i.e., a full $W$ matrix).
 Integrating the dynamics at a very small time step (i.e., $\delta t = \num{5e-5}~\si{s}$) with a high-order \gls{ODE} solver would give us a very accurate solution, but this is computationally infeasible in practice. We, therefore, regard this as the upper bound on the accuracy of the solution.
@@ -186,7 +186,7 @@ Finally, by leveraging the Cholesky decomposition, we sample a $W \succ 0$  and 
 We compute the estimation error of all integrated trajectories with respect to the high-precision solution (i.e., Tsitouras' 5/4 method (Tsit5) at $\delta t = \num{5e-4}~\si{s}$).
 For this, we compute the \gls{RMSE} for each \SI{60}{s} trajectory and then take the mean and standard deviation across the $100$ different network configurations.
 
-\subsubsection{Simulation-time to real-time factor} 
+\subsubsection{Simulation-Time to Real-Time Factor} 
 The simulation vs. real-time factor is computed as the simulated rollout duration per second of computational time. For this, we let each method simulate a \SI{60}{s} trajectory for $100$ times and record the minimum run time on an Intel Core i7-10870H CPU (single core) over $10$ trials. Because of computational constraints, we simulated the trajectory  with the high-precision Tsit5 solver only $5$ times. 
 
 

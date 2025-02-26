@@ -43,7 +43,7 @@ After measuring the ground-truth pose of the tip of the segment with a motion ca
   \label{fig:promasens:trajectories}
 \end{figure*}
 
-\subsection{Robot design}\label{sub:promasens:robot_design}
+\subsection{Robot Design}\label{sub:promasens:robot_design}
 We use a cylindrical, pneumatically-actuated soft robotic silicon segment of length $L_{0}=\SI{110}{mm}$ and radius $d_1 = \SI{22}{mm}$ consisting of three independently inflatable cavities evenly spaced in the radial direction from the center line~\citep{marchese2015recipe}. 
 % The robot is pneumatically actuated by adjusting the air pressure in each chamber to make the end-effector bend in 3D Cartesian space.
 %
@@ -92,7 +92,7 @@ T5.train $\rightarrow$ T5.test & $1.60 \pm 0.10$ & $0.58 \pm 0.05$ & $0.24 \pm 0
 \end{table*}
 \endgroup
 
-\subsection{Experimental setup}
+\subsection{Experimental Setup}
 We conducted our experiments in a lab environment with the base of the soft robot segment mounted in a tip-down configuration to a cubical cage, as shown in Figure~\ref{fig:promasens:experimental_setup}.
 % Motion Capture System
 A 3D-printed ring with four reflective markers is mounted on the tip of the segment.
@@ -120,7 +120,7 @@ Furthermore, we identify the earth's magnetic field direction in the base from a
   \label{fig:promasens:results_trajectories}
 \end{figure*}
 
-\subsection{Pneumatic actuation and trajectories}
+\subsection{Pneumatic Actuation and Trajectories}
 % We consider two actuation sequence types in this chapter: a) a randomized actuation sequence consisting of steps generated with \gls{GBN}~\citep{tulleken1990generalized} primarily used for training and b) three continuous trajectories consisting of planar side bending, and the tip following half-8-shape and full 8-shapes as plotted in Fig.~\ref{fig:promasens:trajectories}.
 We consider, as visualized in Fig.~\ref{fig:promasens:trajectories}, six continuous actuation sequences in this chapter: random configuration way-points which are connected through linear interpolation (T0), planar side bending (T1), the tip following a half lemniscate (T2) and full lemniscate (T3), a spiral with constant linear velocity~\citep{carrasco2018constant} (T4) and finally a flower-shape (T5).
 We define our trajectories as wrenches  $\tau_\mathrm{xyz} = \begin{bmatrix} \tau_\mathrm{x} & \tau_\mathrm{y} \end{bmatrix}^\top$ on the tip of the segment in Cartesian space, where $\tau_\mathrm{x}$ and $\tau_\mathrm{y}$ cause bending around the local x- and y-axis of the tip respectively. % $f_\mathrm{z}$ is a force leading the segment to extend uniformly.
@@ -346,7 +346,7 @@ We split off the final \SI{20}{\percent} of all datasets as a test set.
 % The \gls{FNN} consists of an initial 1D batch norm layer followed by six blocks and is concluded with a full- connected layer at the end. Each block consists of a dropout layer, followed by a linear layer, a Rectified Linear Unit and a batch norm layer. The hidden state is first increased to 50 nodes, then to 150 and 300 nodes afterwards, the nodes are then reduced again to 150 and 50 and finally 24 nodes. It is trained with a batch size of $100$, an initial learning rate of $0.0001$, a step learning rate scheduler with step size of $30$ epochs and a decay factor of $0.99$ for $400$ epochs using the SGD~\citep{ruder2016overview} optimizer.
 
 
-\subsection{Prediction network and optimization}\label{sub:promasens:experiments_neural_network}
+\subsection{Prediction Network and Optimization}\label{sub:promasens:experiments_neural_network}
 We use the same neural network architecture and training procedure as in Section~\ref{sub:promasens:pcc_simulations:neural_network}, but with an adjusted initial learning rate of $5 \cdot 10^{-5}$ and train the model separately for each sensor on the \SI{1200}{s} long T5 / flower trajectory, which results in \SI{48000}{} training samples for each neural network.
 % When the training is finished, we select the model from the epoch with the lowest validation loss and save it for later testing.
 

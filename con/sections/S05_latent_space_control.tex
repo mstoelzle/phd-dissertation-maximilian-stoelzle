@@ -9,7 +9,7 @@ Furthermore, relying entirely on a PID controller has several well-known drawbac
 % In this work, we propose a control strategy that can solve or sidestep all the challenges mentioned above.
 We take inspiration from potential shaping strategies~\citep{bloch2001controlled, ortega2021pid}, which are widely used for effectively controlling (elastic) robots, and, therefore, combine a feedforward term compensating the latent-space potential forces with an integral-saturated, PID-like feedback term. For mapping the desired forcing $\tau$ back to an input $u(t)$, we train an forcing decoder $\eta: \mathbb{R}^{n} \to \mathbb{R}^{m}$ that approximates $g^{-1}$. Specifically, we consider here the structure $u = \eta(\tau) = E(\tau) \, \tau$, where $E \in \mathbb{R}^{m \times n}$ is parameterized by an \gls{MLP}.
 
-\subsection{Control strategy}
+\subsection{Control Strategy}
 The latent-space control law is given by
 \begin{equation}\label{eq:con:controller}
     \tau(t) = g(u) = \underbrace{K_\mathrm{w} \, z^\mathrm{d} + \tanh(z^\mathrm{d} + b)}_{\substack{\text{Feedforward term:}\\ \text{compensation of potential forces}}} + \underbrace{K_\mathrm{p} \, (z^\mathrm{d} - z) - K_\mathrm{d} \, \dot{z} + K_\mathrm{i} \int_0^t \tanh(\upsilon (z^\mathrm{d}(t') - z(t')))\mathrm{d}t'}_{\text{Feedback term: P-satI-D}}
@@ -28,7 +28,7 @@ For training this decoder, we add a reconstruction loss to \eqref{eq:training_lo
     \caption{\textbf{Panel (a):} Samples of some of the datasets used as part of the experimental verification, specifically for the results reported in Tab.~\ref{tab:con:latent_dynamics_results}. The real-world Reaction-Diffusion image is adopted from~\citep{epstein2016reaction}. \textbf{Panel (b):} Model-based control in latent space by exploiting the physical structure of the CON model.}
 \end{figure}
 
-\subsection{Implementation of closed-loop control}
+\subsection{Implementation of Closed-Loop Control}
 We generate a trajectory of $7$ setpoints, where $q^\mathrm{d}(t_j) \in \mathbb{R}^{n_\mathrm{q}}$ is a sampled configuration of the actual system.
 Then, we render an image $o^\mathrm{d}(t_j)$ that represents the target observation for the controller and encode it into latent space to retrieve $z^\mathrm{d} \in \mathbb{R}^{n_\mathrm{z}}$.
 At time step $k$, we render an image $o(t_k)$ of the robot's current configuration $q(t_k)$ and encode the image. 
@@ -36,7 +36,7 @@ At time step $k$, we render an image $o(t_k)$ of the robot's current configurati
 Subsequently, we evaluate the control law and apply the decoder $u(t_k) = \eta(\tau(t_k)))$, which is finally passed to the simulator that integrates the ground-truth dynamics to the next time-step $t_{k+1}$ considering the actuation $u(t_k)$.
 The controller runs at \SI{100}{Hz}, and we simulate the ground-truth dynamics with a \emph{Dopri5} \gls{ODE} integrator at a time-step of \num{5e-4}~\si{s}.
 
-\subsection{Latent-space control of a damped harmonic oscillator}
+\subsection{Latent Space Control of a Damped Harmonic Oscillator}
 
 We consider an actuated version of the \emph{M-SP+F} dataset (i.e., a damped harmonic oscillator) and denote it with \emph{M-SP+F+A}. All system, trajectory sampling and rendering parameters remain the same, except that for each trajectory in the dataset we randomly sample a forcing $u \sim \mathcal{U}(-\SI{1}{N}, \SI{1}{N})$.
 
@@ -96,14 +96,14 @@ Finally, we visualize the behavior of the \emph{P-satI-D+FF} controller as a seq
     }\label{fig:con:control:m-sp+f+a:con_PsatID+FF:sequence_of_stills}
 \end{figure}
 
-\subsection{Latent-space control of a two segment PCC soft robot}
+\subsection{Latent Space Control of a Two Segment PCC Soft Robot}
 
-\subsubsection{Experimental setup.}
+\subsubsection{Experimental Setup.}
 % After initializing the neural network weights with three different random seeds, 
 We train a \gls{CON} model with two latent variables ($n_z = 2$) on the \emph{PCC-NS-2} dataset.
 Analog to the input encoder mapping $B(u)$, the forcing decoder mapping $E(\tau)$ is parametrized by an \gls{MLP} consisting of five layers with hidden dimension $30$ and a hyperbolic tangent activation function.
 The \emph{CON} model achieves an \gls{RMSE} of $0.1628$ on the test set.
-\subsubsection{Model selection}
+\subsubsection{Model Selection}
 For the control experiments, we train instances of the \emph{MECH-NODE} and \emph{CON-M} models with latent dimension $n_z = 2$ and with neural network weights initialized with three different random seeds. 
 We found that model-based control does not perform as well when the latent stiffness $\Gamma_\mathrm{w}$ (as visualized in Fig.~\ref{fig:con:control:pcc_ns-2:potential_energy_landscape_z}) is significantly larger along one of the Eigenvectors than along the other one. Therefore, we evaluate the Eigenvalues of the learned stiffness matrix in $\mathcal{W}$-coordinates after training: $\lambda_{1,2}(\Gamma_\mathrm{w})$. Particularly, we choose the seed that minimizes the normalized standard deviation of the Eigenvalues: $\mathrm{seed} = \arg\min \frac{\sigma_\lambda}{\mu_\lambda}$, where
 \begin{equation}

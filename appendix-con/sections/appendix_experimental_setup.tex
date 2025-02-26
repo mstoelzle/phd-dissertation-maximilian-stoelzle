@@ -1,6 +1,6 @@
 \section{Appendix on Experimental Setup}\label{sec:apx-con:experimental_setup}
 
-\subsection{Autoencoder architecture}
+\subsection{Autoencoder Architecture}
 For the encoder and decoder, we rely on a vanilla \glspl{CNN} implemented as a $\beta$-\gls{VAE}~\citep{kingma2014auto}.
 
 \textbf{Encoder.} The encoder consists of two convolutional layers with kernel size $(3, 3)$ and stride $(1, 1)$ mapping to $16$, $32$, respectively.
@@ -12,7 +12,7 @@ We then apply two 2D transposed convolutions~\citep{dumoulin2016guide} reducing 
 Each layer (except for the last linear and last convolutional) is followed by a layer norm~\citep{ba2016layer} and a LeakyReLU nonlinearity.
 Finally, we apply a sigmoid function to clip the output into the range $[-1, 1]$.
 
-\subsection{Latent dynamic models}\label{sub:apx-con:latent_dynamic_models}
+\subsection{Latent Dynamic Models}\label{sub:apx-con:latent_dynamic_models}
 In the following section, we provide implementation details for the latent dynamic models that we evaluated as part of this work.
 
 \subsubsection{Coupled Oscillator Network (CON)}\label{ssub:apx-con:latent_space_dynamic_models:con}
@@ -96,7 +96,7 @@ where $\gamma, \varepsilon \in \mathbb{R}^+$ are positive, scalar hyperparameter
 \end{equation}
 where $f_\mathrm{CFA-CON}$ describe the autoregressive state transition by the \gls{CFA-CON} model as introduced in Eq.~\ref{eq:con:cfa_con}.
 
-\subsection{First-order variants of dynamical models}\label{sub:apx-con:1st_order_latent_dynamics}
+\subsection{First-Order Variants of Dynamical Models}\label{sub:apx-con:1st_order_latent_dynamics}
 For learning (latent) dynamics of \nth{1}-order systems (e.g., the reaction-diffusion dataset \emph{R-D}), it might be beneficial also to formulate the dynamical model to be of \nth{1}-order. 
 While this is straightforward for some dynamics that do not explicitly take the order into account (e.g., RNN, GRU, NODE), for other models such as \gls{coRNN}, \gls{CON}, and \gls{CFA-CON} more adjustments are necessary.
 Namely, we substitute the $\frac{\mathrm{d} z}{\mathrm{d}t}$ component of the \gls{ODE} with the expression for $\frac{\mathrm{d} \dot{z}}{\mathrm{d}t}$. Furthermore, we remove any terms that depend on the velocity $\dot{z}$ (e.g., damping effects).
@@ -136,7 +136,7 @@ Because of the GPU memory constraints, we limit ourselves to a batch size of $30
 We implement a learning rate schedule consisting of a warm-up (5 epochs) and a cosine annealing~\citep{loshchilov2016sgdr} period (remaining epochs). 
 We employ an AdamW optimizer~\citep{kingma2014adam, loshchilov2018decoupled} with $\beta_1 = 0.9$, $\beta_2 = 0.999$ for updating both neural network weights (e.g., encoder, decoder) and parameters of the dynamical model (e.g., $K_\mathrm{}, D_\mathrm{w}$, $M_\mathrm{w}$, etc.).
 
-\subsection{Evaluation metrics}
+\subsection{Evaluation Metrics}
 Similar to other publications in the field~\citep{liu2018image, yu2018generative, stolzle2022reconstructing}, % more citations about evaluation metrics: \citep{yi2020cosmovae, yang2017high}
 we state the \gls{RMSE}, the \gls{PSNR} and the \gls{SSIM}~\citep{wang2004image} between the ground-truth image $o \in \mathbb{R}^{h_\mathrm{o} \times w_\mathrm{o}}$ and the predicted image image $\hat{o} \in \mathbb{R}^{h_\mathrm{o} \times w_\mathrm{o}}$.
 We use the separated test set for all evaluation results.
@@ -174,7 +174,7 @@ and $k_1 = 0.01$ and $k_2 = 0.03$. The average $\mu$ and the variance $\sigma^2$
 We set the weight exponents $\alpha$, $\beta$, and $\gamma$ for the luminance, contrast, and structure comparisons all to one.
 We rely on the PIX library~\citep{deepmind2020jax} for efficiently computing the \gls{SSIM} metric.
 
-\subsection{Compute resources}\label{apx:sub:compute_resource}
+\subsection{Compute Resources}\label{apx:sub:compute_resource}
 % We train all models on a desktop workstation with a 12th-Gen i9 12900KF CPU with 16 cores, 64 GB of RAM, and an Nvidia GeForce RTX 3090 GPU with 24 GB of VRAM.
 
 We trained the models on several desktop workstations for a total duration of roughly \SI{150}{h}.

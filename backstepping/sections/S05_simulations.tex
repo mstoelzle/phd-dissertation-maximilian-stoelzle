@@ -62,7 +62,7 @@ Moving to the pistons, $A_\mathrm{p} = \SI{7.9}{cm^2}$, $m_\mathrm{p} = \SI{0.19
 We consider a damping matrix $D_\mathrm{p}$ with damping constants $d_\mathrm{p} = \SI{10}{\kilo \newton \second \per \meter}$ along the diagonal. The pistons are filled with air at $\mu_{\mathrm{p}, 0} = l_\mathrm{p}$ and $p_\mathrm{atm} = \SI{1}{bar}$ and subsequently pre-loaded to $\mu_{\mathrm{p}, \mathrm{t}0} = 0.25 \, l_\mathrm{p}$. % before the experiment is started.
 We set the backstepping gains to $K_1 = \SI{6000}{\per \second}$ and $K_2 = \SI{4.5}{\kilo \newton \per \meter}$.
 
-\subsection{End-to-end PID}
+\subsection{End-to-End PID}
 We first introduce an end-to-end PID controller, which will serve as a baseline
 %
 \begin{equation}
@@ -82,7 +82,7 @@ and are equal to $K_\mathrm{p} = \SI{200}{\newton \per \radian}$, $K_\mathrm{i} 
 % Segment 1, 2 and 3 are weighted with gain multipliers of $1.5$, $1$, and $0.5$.
 
 %
-\subsection{Coupling-aware PID}
+\subsection{Coupling-Aware PID}
 %
 % We attempted implementing a standard low-level PID with static compensation as in \citep{della2020model} for fair comparison, but we could not find a set of gains that was stable when using \eqref{eq:backstepping:high_level_regulation}.
 Next, we implement a control strategy that takes advantage of the understanding of the potential coupling and uses a PID for low-level control of the pistons

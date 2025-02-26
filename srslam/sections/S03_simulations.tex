@@ -9,7 +9,7 @@ Next, we render photo-realistic images for the camera attached to the tip of the
 We consider a soft robotic segment of diameter \SI{20}{mm} diameter and with varying lengths $L_{0,1}$ between \SI{15}{cm} and \SI{100}{cm}.
 As the camera is attached to the tip of the segment, we set $l_{\mathrm{c}_1} = L_{0,1}$ and define $T_{\check{\mathrm{c}},1}^{\mathrm{c},1} = \mathbb{I}^4$.
 
-\subsection{Trajectories and calibration sequence}\label{sub:srslam:trajectories}
+\subsection{Trajectories and Calibration Sequence}\label{sub:srslam:trajectories}
 Three different trajectories are considered for the simulated movement of the soft robotic segment and its attached virtual camera. While the first one represents a planar side bending, the second one describes an “8” shape with the tip, and the last one covers a lobe of the “8”. 
 Those trajectories were commanded in $\Delta_{x,1}$ and $\Delta_{y,1}$, with the following mathematical formulas:
 \begin{equation}\label{eq:srslam:trajectory_parametrization}
@@ -55,7 +55,7 @@ Trajectory 3: full 8-shape & 0.05 & 0.05 & 2 & 1\\
 In addition to the robot trajectory, a calibration sequence trajectory is designed to initialize the \gls{SLAM} map. 
 It is good practice to move the camera parallel to the scene captured. Accordingly, we decide to move the camera into the $x$ cardinal direction of the segment base frame with the translation distance proportional to the robot length.
 
-\subsection{Rendering of synthetic images}
+\subsection{Rendering of Synthetic Images}
 The rendering software Blender allows us, among other things, to load a 3D model of the environment, follow customized trajectories with a virtual camera, and render photo-realistic synthetic pictures of the environment from the chosen camera perspective. We use an interior scene published by \href{https://www.nextwavemultimedia.com/html/3dblendermodel.html}{Nextwave Multimedia}. We report a view of the scene in Fig. \ref{fig:srslam:interior_scene}.
 The virtual camera is set to be perspective with a focal length of \SI{30}{mm}.
 For each run, we randomly initialize the trajectory at one of seven predefined launch points in the indoor environment to diversify the coverage of the environment.

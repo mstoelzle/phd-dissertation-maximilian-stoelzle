@@ -3,7 +3,7 @@ In this Section, we derive a model-based control strategy in configuration space
 Subsequently, we present a steady-state planning procedure to identify admittable configurations and matching steady-state actuation.
 Finally, we experimentally verify the proposed control strategy in closed loop.
 
-\subsection{Background: Dynamical model}\label{sub:hsacontrol:model}
+\subsection{Background: Dynamical Model}\label{sub:hsacontrol:model}
 As introduced in Sec.~\ref{sec:hsamodel:planar_hsa_robot_model}, the state of a planar \gls{HSA} robot at time $t$ can be therefore described by $x(t) = \begin{bmatrix}
     q^\top(t) & \dot{q}^\top
 \end{bmatrix}^\top \in \mathbb{R}^6$, where $\kappa_\mathrm{be}$, $\sigma_\mathrm{sh}$, and $\sigma_\mathrm{ax}$ denote the bending, shear, and axial strain respectively.
@@ -22,7 +22,7 @@ We stress that (a) the derived dynamical model is not affine in the control inpu
     \caption{\textbf{Panel (a):} Block scheme for configuration-space regulator: we plan the steady-state behavior such that the end-effector matches the given desired position $p_\mathrm{ee}^\mathrm{d}$. The outputs of this planning are the steady-state actuation $\phi^\mathrm{ss}$ and a suitable end-effector orientation $\theta_\mathrm{ee}^\mathrm{d}$. After leveraging inverse kinematics to identify the desired and current configuration, $q$ is mapped into a collocated form where the inputs are decoupled. Finally, we use a P-satI-D feedback controller on the actuation coordinates $\varphi$. \textbf{Panel (b):} Visualization of the operational workspace of a planar HSA robot consisting of FPU rods. The colored area within the black dashed borders represents the positions the end-effector (visualized as a dot) can reach. The coloring denotes the mean magnitude of actuation (i.e., twisting of the rods). Furthermore, we plot three sample configurations: the unactuated straight configuration $q = [0, 0, 0]^\top$ (blue), maximum clockwise bending $q = [\SI{-11.2}{rad \per m}, 0.08, 0.30]^\top$ (red), and maximum counter-clockwise bending $q = [\SI{11.2}{rad \per m}, -0.08, 0.30]^\top$ (green).}
 \end{figure}
 
-\subsection{Control strategy}\label{sub:hsacontrol:configuration_space_regulation:control_strategy}
+\subsection{Control Strategy}\label{sub:hsacontrol:configuration_space_regulation:control_strategy}
 
 Our goal is to control the end-effector, which is defined as the distal surface of the platform, to a desired position in Cartesian space $p_\mathrm{ee}^\mathrm{d} \in \mathbb{R}^2$. 
 However, the mapping into configuration space is not trivial as we do not know which end-effector orientation $\theta_\mathrm{ee}$ is feasible at steady-state. 
@@ -80,7 +80,7 @@ where $K_\mathrm{p}, K_\mathrm{d}, K_\mathrm{i} \in \mathbb{R}^{2 \times 2}$ are
 \end{equation}
 The implementation of all control laws is available on GitHub\footnote{\url{https://github.com/tud-phi/hsa-planar-control}}.
 
-\subsection{Steady-state planning}\label{sub:hsacontrol:experiments:steady_state_planning}
+\subsection{Steady-State Planning}\label{sub:hsacontrol:experiments:steady_state_planning}
 Our approach, as detailed in Section~\ref{sub:hsacontrol:configuration_space_regulation:control_strategy}, requires us for a given desired end-effector position $p_\mathrm{ee}^\mathrm{d}$ to identify a statically-feasible configuration $q^\mathrm{d}$ with the matching steady-state actuation $\phi^\mathrm{ss}$.
 
 \begin{figure}[hbt]
@@ -111,7 +111,7 @@ where $\dot{x}(t) = f(x(t), \phi)$ are the nonlinear state-space dynamics based 
     \label{fig:hsacontrol:experimental_setup}
 \end{figure}
 
-\subsection{Experimental setup}\label{sub:hsacontrol:configuration_space_regulation:experimental_setup}
+\subsection{Experimental Setup}\label{sub:hsacontrol:configuration_space_regulation:experimental_setup}
 We evaluate the system model and our proposed control approach on a robot consisting of four HSA rods.
 The material choice of the \gls{HSA} is crucial and has a significant influence on the resulting mechanical characteristics of the robot  (e.g., blocked force, holding torque, bending stiffness, etc.)~\citep{truby2021recipe}. Furthermore, specific material requirements are dictated by the nature of the design of the \gls{HSA} rod. The structure of the metamaterial is made of struts connected by living hinges. These living hinges must be thin, flexible, and accommodate high strains~\citep{truby2021recipe}.
 Therefore, we decided to 3D-print the \glspl{HSA} via digital projection lithography either from the photopolymer resin Carbon FPU 50 (stiffer) or the elastomeric polyurethane EPU 40 resin (softer).
@@ -129,7 +129,7 @@ We use a Savitzky-Golay filter with a window duration of $\SI{0.1}{s}$ to numeri
 We fit a cubic spline to the last $16$ configuration measurements and differentiate~\citep{kaptanoglu2022pysindy} to gather $\dot{q}(t)$.
 
 
-\subsection{System identification}
+\subsection{System Identification}
 We follow the same system identification procedure as in Sec.~\ref{sub:hsamodel:planar_hsa_robot_model:model_verification}.
 For the FPU-based robot, we identify $C_\varepsilon^\mathrm{FPU}=\SI{0.0079}{m \per rad}$, $S_\mathrm{be}^\mathrm{FPU} = -2.5 \cdot 10^{-5} + 3.9 \cdot 10^{-7} \, \frac{\phi_i^+}{l^0} \si{Nm^2}$, $S_\mathrm{sh}^\mathrm{FPU} = 0.043 + 0.0029 \, \frac{\phi_i^+}{l^0} \si{N}$, $S_\mathrm{ax}^\mathrm{FPU} = 0.74 + 0.0098 \, \frac{\phi_i^+}{l^0} \si{N}$, and $S_\mathrm{b,sh}^\mathrm{FPU} = -5.0 \cdot 10^{-4} \si{Nm \per rad}$ where $l^0 = \SI{0.059}{m}$. 
 Furthermore, we regress $C_\varepsilon^\mathrm{EPU}=\SI{0.0098}{m \per rad}$, $S_\mathrm{be}^\mathrm{EPU} = 5.7 \cdot 10^{-4} -9.7 \cdot 10^{-6} \, \frac{\phi_i^+}{l^0} \si{Nm^2}$, $S_\mathrm{sh}^\mathrm{EPU} = 0.59 - 0.00047 \, \frac{\phi_i^+}{l^0} \si{N}$, $S_\mathrm{ax}^\mathrm{EPU} = 5.7 + 0.015 \, \frac{\phi_i^+}{l^0} \si{N}$, and $S_\mathrm{b,sh}^\mathrm{EPU} = -\SI{0.00048}{Nm \per rad}$ for the EPU \glspl{HSA} which have the same length as the FPU \glspl{HSA}.
@@ -153,7 +153,7 @@ Finally, we identify the axial rest strain $\sigma_\mathrm{ax}^0$ before the sta
     \textbf{Panel(d):} The saturated planar control inputs are visualized with solid lines and the computed steady-state actuation with dotted lines.}\label{fig:hsacontrol:experimental_results:configuration_space_regulation:fpu:baseline_pid}
 \end{figure}
 
-\subsection{Implementation of closed-loop control}
+\subsection{Implementation of Closed-Loop Control}
 Next, we implement the closed-loop control strategy laid out in Section~\ref{sub:hsacontrol:configuration_space_regulation:control_strategy}.
 After evaluating the control law at a rate of \SI{40}{Hz} and saturating the control inputs to the ranges $[0, 3.40] \, \si{rad}$ for FPU and $[0, 4.71] \, \si{rad}$ for EPU, respectively, we map $\phi \in \mathbb{R}^2$ to desired positions of the four motors. For this, we consider the handedness of the \glspl{HSA} and apply the same actuation magnitude to both rods on the same side of the virtual backbone.
 After tuning the gains for the feedback part of the model-based control laws in \eqref{eq:hsacontrol:gravity_compensation_controller} and \eqref{eq:hsacontrol:gravity_cancellation_controller}, we select $K_\mathrm{p} = \mathrm{diag}(0.3, 0.3)$, $K_\mathrm{i} = \mathrm{diag}(0.05, 0.05) \, \si{1 \per s}$, $K_\mathrm{d} = \mathrm{diag}(0.01, 0.01) \, \si{s}$, and $\gamma = \mathrm{diag}(100, 100)$. 
@@ -191,7 +191,7 @@ Here, we select $K_\mathrm{p}^\mathrm{PID} = \mathrm{diag}(10, 10) \, \si{rad \p
 We define a reference trajectory $p_\mathrm{ee}^\mathrm{d}(k), k \in \{ 1, \dots, n_k \}$ with a duration of \SI{110}{s} and consisting of eleven step functions as the reference trajectory.
 We report the \gls{RMSE} metric $\sqrt{\sum_{k=1}^{n_k} \frac{\lVert p_\mathrm{ee}^\mathrm{d}(k) - p_\mathrm{ee}(k) \rVert_2^2}{n_k}}$ for assessing the control performance, where $p_\mathrm{ee}(k)$ is the actual trajectory of the end-effector.\\
 
-\subsection{Results for controlling an FPU-based HSA robot}
+\subsection{Results for Controlling an FPU-based HSA Robot}
 The \emph{baseline PID} achieves an \gls{RMSE} of \SI{5.86}{mm} with respect to the reference trajectory. The \emph{P-satI-D} based on \eqref{eq:hsacontrol:gravity_compensation_controller} (with gravity compensation) exhibits an RMSE of \SI{4.17}{mm}. Similarly, the \emph{P-satI-D + GC} based on \eqref{eq:hsacontrol:gravity_cancellation_controller} (with gravity cancellation) displays an RMSE of \SI{4.13}{mm}.
 We present a comparison of the three different controllers for a step response in Fig.~\ref{fig:hsacontrol:experimental_results:configuration_space_regulation:fpu:step_response} and plot the entire trajectories of the \emph{baseline PID} and the \emph{P-satI-D} in Figures~\ref{fig:hsacontrol:experimental_results:configuration_space_regulation:fpu:baseline_pid} and \ref{fig:hsacontrol:experimental_results:configuration_space_regulation:fpu:p_sati_d}, respectively.
 Additionally, we discretize various continuous reference trajectories into setpoints: 
@@ -243,7 +243,7 @@ We conclude that \emph{P-satI-D} (gravity compensation) and \emph{P-satI-D + GC}
     \textbf{Panel(d):} The saturated planar control inputs are visualized with solid lines and the computed steady-state actuation with dotted lines.}\label{fig:hsacontrol:experimental_results:configuration_space_regulation:epu:p_sati_d}
 \end{figure}
 
-\subsubsection{Results for controlling an EPU-based HSA robot}
+\subsubsection{Results for Controlling an EPU-based HSA robot}
 Tracking the reference trajectory of eleven-step functions with an EPU-based robot, the \emph{baseline PID} controller has an \gls{RMSE} of \SI{4.40}{mm}. The \emph{P-satI-D} (with gravity compensation) can able to achieve an \gls{RMSE} of \SI{3.63}{mm}. The \emph{P-satI-D + GC} controller exhibits similar performance(\gls{RMSE} of \SI{3.71}{mm}).
 We visualize the step response of all three controllers in Fig.~\ref{fig:hsacontrol:experimental_results:configuration_space_regulation:epu:step_response} and the entire trajectory of the \emph{P-satI-D} controller in Fig.~\ref{fig:hsacontrol:experimental_results:configuration_space_regulation:epu:p_sati_d}.
 

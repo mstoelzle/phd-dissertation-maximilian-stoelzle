@@ -41,7 +41,7 @@ Specifically, we consider in this work a formulation where an input-dependent ma
 
 We specifically designed the network architecture such that (i) the system exhibits a unique and isolated equilibrium and (ii) we can derive expressions for the kinetic and potential energies. These two features allow us to (a) prove \gls{GAS} and \gls{ISS} stability using an established procedure based on strict Lyapunov arguments~\citep{calzolari2020exponential, wu2022passive}, and (b) implement model-based controller based on potential shaping.
 
-\subsection{Potential energy and determination of equilibria}
+\subsection{Potential Energy and Derivation of Equilibria}
 
 One key insight of this work is that in the coordinates $x(t), \dot{x}(t)$, we cannot derive a potential 
 % and subsequently use Lyapunov arguments to prove stability 
@@ -276,7 +276,7 @@ Below, we will first introduce three auxiliary Lemmas and subsequently proof Lem
     Lemma~\ref{lemma:con:P_V_positive_definite} tells us that $P_\mathrm{V} \succ 0$ and with that $\lambda_\mathrm{m}(P_\mathrm{V}) > 0$. Therefore, if $\lVert \tilde{y}_\mathrm{w} \rVert \rightarrow \infty$, it also follows that $V_\mu(\tilde{y}_\mathrm{w}) \rightarrow \infty$.
 \end{proof}
 
-\subsubsection{Proof of global asymptotic stability}
+\subsubsection{Proof of Global Asymptotic Stability}
 
 In the following, we will demonstrate how the strict Lyapunov candidate of \eqref{eq:con:conw_lyapunov_function} allows us to prove global asymptotic stability of the unforced system. We will first introduce two auxiliary Lemmas before stating Theorem~\ref{theorem:con:global_asymptotic_stability}.
 

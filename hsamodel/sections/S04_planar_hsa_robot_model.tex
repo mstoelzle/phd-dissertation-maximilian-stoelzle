@@ -1,7 +1,7 @@
 \section{Kinematic and Dynamic Modeling of Planar HSA Robots}\label{sec:hsamodel:planar_hsa_robot_model}
 In this section, we present a control-oriented, compact kinematic and dynamic model for planar \gls{HSA} robots. We first introduce the kinematic model of the robot and then derive the dynamic model in Euler-Lagrangian form. We then verify the predictive capabilities of the dynamic model on unseen trajectories.
 
-\subsection{Kinematic model}\label{sub:hsamodel:planar_hsa_robot_model:kinematics}
+\subsection{Kinematic Model}\label{sub:hsamodel:planar_hsa_robot_model:kinematics}
 Following the discrete Cosserat approach~\citep{renda2018discrete}, we characterize the configuration space of the virtual backbone by assuming a \gls{CS} model
 $\presub{\mathcal{V}}{\xi}(t) = \begin{bmatrix}\presub{{\mathcal{V}}}{\kappa}_\mathrm{be} & \presub{{\mathcal{V}}}{\kappa}_\mathrm{sh} & \presub{{\mathcal{V}}}{\sigma}_\mathrm{ax}\end{bmatrix}^\top = \mathbb{I}_3 \, q(t) \in \mathbb{R}^3$, where $\kappa_\mathrm{be}$, $\sigma_\mathrm{sh}$, and $\sigma_\mathrm{ax}$ denote the bending, shear, and axial strain respectively.
 % We describe the configuration $q$ of the virtual backbone using a planar constant strain model~\citep{renda2018discrete} with $q(t) = \presub{\mathcal{V}}{\xi}(t) = \begin{bmatrix}\presub{\mathcal{V}}{\kappa}_\mathrm{be} & \presub{\mathcal{V}}{\kappa}_\mathrm{sh} & \presub{\mathcal{V}}{\sigma}_\mathrm{ax}\end{bmatrix}^\top$ consisting of bending, shear, and axial strains.  
@@ -37,7 +37,7 @@ For a given vector of rod twist angles $\phi \in \mathbb{R}^2$ and after definin
 % The handedness $h_i \in \{-1, 1\}$ describes if positive or negative twist angles need to be applied to cause an elongation of the closed \glspl{HSA}.
 
 
-\subsection{Dynamic model}\label{sub:hsamodel:planar_hsa_robot_model:dynamics}
+\subsection{Dynamic Model}\label{sub:hsamodel:planar_hsa_robot_model:dynamics}
 We aim to devise a dynamic model in the Euler-Lagrange form
 $M(q) \Ddot{q} + C(q,\dot{q})\dot{q} + G(q) + K (q - q^0) + D \dot{q} = \alpha(q,\phi),$
 where $M(q),C(q,\dot{q}),K,D \in \mathbb{R}^{3 \times 3}$ are the inertia, Coriolis (derived with Christoffel symbols), elastic and damping matrices respectively. $q^0 \in \mathbb{R}^3$ captures the rest configuration. The terms $G(q)$ and $\alpha(q,\phi) \in \mathbb{R}^3$ describe the gravitational and actuation forces acting on the generalized coordinates.
@@ -99,9 +99,9 @@ We open-source the derivation of the Euler-Lagrangian dynamics and a JAX impleme
     \caption{Verification of the system model and the identified system parameters on an unseen trajectory with the HSA being randomly actuated through a GBN sequence: the solid line denotes the actual trajectory. In contrast, the dashed line visualizes the trajectory simulated with the system model. We report results for both FPU and EPU-based \glspl{HSA}.}\label{fig:hsamodel:planar_hsa_robot_model:model_verification}
 \end{figure}
 
-\subsection{Model verification}\label{sub:hsamodel:planar_hsa_robot_model:model_verification}
+\subsection{Model Verification}\label{sub:hsamodel:planar_hsa_robot_model:model_verification}
 
-\subsubsection{Experimental setup}\label{ssub:hsamodel:planar_hsa_robot_model:model_verification:experimental_setup}
+\subsubsection{Experimental Setup}\label{ssub:hsamodel:planar_hsa_robot_model:model_verification:experimental_setup}
 We evaluate the planar \gls{HSA} model experimentally.
 The material choice of the \gls{HSA} is crucial and has a significant influence on the resulting mechanical characteristics of the robot  (e.g., blocked force, holding torque, bending stiffness, etc.)~\citep{truby2021recipe}. Furthermore, specific material requirements are dictated by the nature of the design of the \gls{HSA} rod. The structure of the metamaterial is made of struts connected by living hinges. These living hinges must be thin, flexible, and accommodate high strains~\citep{truby2021recipe}.
 In order to ensure that the system model is effective and suitable for a range of different materials, we decided to conduct the experimental verification on \glspl{HSA} 3D-printed via digital projection lithography either using the photopolymer resin Carbon FPU 50~\citep{carbon:fpu50} (stiffer) or the elastomeric polyurethane EPU 40 resin~\citep{carbon:epu40} (softer).
@@ -117,7 +117,7 @@ The pose measurements are first projected into the plane of actuation and serve 
 % We use a Savitzky-Golay filter with a window duration of $\SI{0.1}{s}$ to numerically differentiate $\chi_\mathrm{ee}(t)$, $q(t)$ and gather with that $\dot{\chi}_\mathrm{ee}(t)$ and $\dot{q}(t)$.
 % We fit a cubic spline to the last $16$ configuration measurements and differentiate~\citep{kaptanoglu2022pysindy} to gather $\dot{q}(t)$.
 
-\subsubsection{System identification}\label{ssub:hsamodel:planar_hsa_robot_model:model_verification:system_identification}
+\subsubsection{System Identification}\label{ssub:hsamodel:planar_hsa_robot_model:model_verification:system_identification}
 Next, we strive to identify the parameters used in our dynamic model.
 We assume the robot's geometric and mass density properties to be known or easily measurable. % Therefore, we are left with having to identify the elastic and damping characteristics of the robot.
 As knowledge about the damping coefficients is not required by the control law, only the experimental identification of elongation and stiffness characteristics remains.

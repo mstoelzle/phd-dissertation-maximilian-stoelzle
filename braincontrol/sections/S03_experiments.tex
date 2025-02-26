@@ -1,9 +1,9 @@
 \section{Experiments}
 
-\subsection{Experimental setup}
+\subsection{Experimental Setup}
 In the following, we detail the \gls{EEG} data processing procedure (see also Fig.~\ref{fig:braincontrol:eeg_pipeline}) and present our experimental setup, which is annotated in Fig.~\ref{fig:braincontrol:experimental_setup}.
 
-\subsubsection{EEG data processing}\label{ssub:braincontrol:eeg_pipeline}
+\subsubsection{EEG Data Processing}\label{ssub:braincontrol:eeg_pipeline}
 We integrate the 3-channel flexEEG Neuroconcise device with the OpenVibe software
 % through a Lab Streaming Layer (LSL) 
 to acquire the EEG data and process it in real-time.
@@ -20,7 +20,7 @@ This enhances the ability to analyze \gls{EEG} data by isolating and examining d
 These features are then provided to a classifier, which we select as \gls{LDA} due to its simplicity~\citep{lotte2014tutorial}.
 
 We implement a second classifier with the same pipeline, where jaw clenching is provided as a muscle artifact that is classified v/s raw EEG data. 
-\subsubsection{Robotic system}
+\subsubsection{Robotic System}
 % HSA robot
 We consider a robot consisting of four \gls{HSA} rods, which were 3D printed via digital projection lithography % ~\citep{truby2021recipe} 
 from the photopolymer resin Carbon FPU 50. % ~\citep{carbon:fpu50}.
@@ -49,10 +49,10 @@ The robot is operated with a ROS2 software framework\footnote{\url{https://githu
 % dual-way communication works at 100Hz, so maximum delay (solely based on communication) of 10ms
 The entire control pipeline from measuring \gls{EEG} signals to sending the actuation commands to the motors exhibits a maximum latency of (i.e., is upper-bounded by)  \SI{130}{ms}.
 
-\subsection{BMI protocol}\label{sub:braincontrol:bmi_protocol}
+\subsection{BMI Protocol}\label{sub:braincontrol:bmi_protocol}
 In the following, we will describe the protocol for collecting the motor imagery dataset, training the \gls{EEG} classifiers, and mapping classifier outputs into actionable robot commands.
 
-\subsubsection{Training protocol}
+\subsubsection{Training Protocol}
 
 The participant is given brief instructions about motor imagery signals.
 We follow the Graz-BCI~\citep{roc2021review} paradigm, which assists with training, where the display of the cue instructs the participant to perform imagination of movements: when a left arrow appears, the participant is asked to rest and not focus on motor movement. When the right arrow appears on the screen, the participant is asked to imagine the motor activity from the dominant hand (here, the right hand), such as grasping or squeezing an object. The training protocol for right-hand motor imagery v/s rest demands fifty cues per class. 
@@ -123,13 +123,13 @@ We evaluate the trained motor imagery classifier on the test set and report the 
 
 
 
-\subsubsection{Online robot control}
+\subsubsection{Online Robot Control}
 Now, the participant operates the HSA robot in real-time, with both classifiers being executed online.
 Moreover, we map the outputs of the classifier into actionable commands: we initialize the x-axis as the active axis of movement (i.e., $e_\mathrm{a} = [1,0]$). When the first classifier detects jaw clenching for at least \SI{80}{\percent} of samples over a duration of \SI{2.8}{s}, we switch to the y-axis: $e_\mathrm{a} = [0,1]$ and vice-versa. If we do not detect any jaw-clenching artifacts, we evaluate the output of the second classifier in parallel: if there is motor imagery activity identified in the \gls{EEG} classifier, the attractor will be moved in the positive direction (i.e., $s=1$) along $e_\mathrm{a}$. In contrast, if the \gls{EEG} signals are classified as the participant being at rest, $s=-1$ (i.e., movement in the negative direction).
 
 % ~\footnote{\url{https://www.neuroconcise.co.uk/}}.
 
-\subsection{Setpoint regulation}\label{sub:braincontrol:experiments:setpoint_regulation}
+\subsection{Setpoint Regulation}\label{sub:braincontrol:experiments:setpoint_regulation}
 We randomly generate nine setpoints $x^\mathrm{d}(t) \in \mathbb{R}^2$ within the operational workspace of the robot (see Fig.~\ref{fig:braincontrol:hsa_workspace} and display them as a red circle to the user over a duration of \SI{540}{s}.
 The user can freely move the attractor to reach and keep the end-effector at the setpoint.
 In addition to the motor imagery-based control, we conduct experiments where the subject controls the robot with a keyboard.
@@ -155,7 +155,7 @@ Here, the space button is used to switch that axis of movement $e_\mathrm{a}$ an
     }\label{fig:braincontrol:experimental_results:adl_task:sequence_of_stills}
 \end{figure*}
 
-\subsection{Interacting with the environment on a real-world task}\label{sub:braincontrol:experiments:adl}
+\subsection{Interacting with the Environment on a Real-World Task}\label{sub:braincontrol:experiments:adl}
 We consider the \gls{ADL} task of releasing hairspray by actuating the button of its container with the \gls{HSA} robot's end-effector (see Fig.~\ref{fig:braincontrol:cartesian_impedance_adl}). For successful execution, the end-effector must be very stiff in the normal direction of the contact. On the other hand, we might want to benefit from the physical intelligence of the system by being relatively flexible in the tangential direction. Therefore, we first define the perpendicular stiffness $k_\perp = \SI{500}{N\per\meter}$ and the tangential stiffness as $k_\parallel = \SI{50}{N \per \meter}$. We assume that the normal direction of the contact can be described by the polar angle $\theta_\perp$ (with respect to the x-axis). We envision that in the future, the user can adjust such stiffness characteristics online via a \gls{BMI} system similar to~\citep{schiatti2017soft}. In this chapter, however, we estimate by visual inspection that $\theta_\perp=\SI{1.31}{rad}$.
 The Cartesian stiffness matrix in global coordinates is then given by $K_x = R(\theta_\perp) \, \mathrm{diag}(k_\perp, k_\parallel) \, R(\theta_\perp)^\top$
 where $R(\theta_\perp) \in SO(2)$ is the rotation matrix between global and contact frames.
@@ -182,7 +182,7 @@ where $R(\theta_\perp) \in SO(2)$ is the rotation matrix between global and cont
     \textbf{Panel(d):} The saturated planar control inputs. }\label{fig:braincontrol:experimental_results:adl_task:brain}
 \end{figure}
 
-\subsection{Evaluation metrics}
+\subsection{Evaluation Metrics}
 % Look at this paper for evaluation metrics: ~\citep{rakshit2020hybrid}
 In the following, we will introduce and define a few metrics that help us assess the performance of the approach.
 
@@ -193,5 +193,5 @@ We apply \gls{ERD} / \gls{ERS}~\citep{pfurtscheller1999event} to demonstrate the
 \end{equation}
 where $\mathrm{ERD/ERS}(t, f)$ represents the \gls{ERD} or \gls{ERS} at a specific time $t$ and frequency $f$, $P(t, f)$ stands for the power of brain activity during imagination, and $P_\mathrm{base}(f)$ denotes the baseline power. 
 
-\subsection{Step response metrics}
+\subsection{Step Response Metrics}
 For the task of setpoint regulation, we analyze primarily two aspects: (a) is the participant able to reach the proximity of setpoint within the (generously) allotted time of \SI{60}{s}? We define the proximity of the setpoints as $\lVert x^\mathrm{d} - x(t)\rVert_2 \leq \SI{2}{mm}$. And (b) what is the response time for reaching the proximity of the setpoint for the first time?

@@ -28,7 +28,7 @@ The motor imagery \gls{BMI} framework typically consists of four integral compon
 As detailed further in Sec.~\ref{sub:braincontrol:bmi_protocol}, we leverage the difference in signals when imagining motor actions vs. rest state to control the sign of movement. The active axis of movement can be switched by clenching the jaw. % More details about the \gls{BMI} protocol can be found in Section .
 % To demonstrate the proof of concept, in our work, we focus on Motor Imagery imagination v/s rest state which is used as a control, further described in Section \ref{sub:braincontrol:bmi_protocol}
 
-% \subsection{Planning attractors with brain signals (multi-class)}\label{sub:braincontrol:planning_attractors_multiclass}
+% \subsection{Planning Attractors with Brain Signals (Multi-Class)}\label{sub:braincontrol:planning_attractors_multiclass}
 % We classify the \gls{EEG} signals into \textcolor{orange}{four classes: move left ($u=(1, 0)$), move right ($u=(-1, 0)$), move down ($u=(0, 1)$), and move up ($u=(0, -1)$)}. More details about the procedure used to process and classify \gls{EEG} signals can be found in Section~\ref{ssub:braincontrol:eeg_pipeline}.
 % Subsequently, this information is used to manipulate an attractor position $x^\mathrm{at} \in \mathbb{R}^2$, which is later tracked by a computational controller (see Section~\ref{sub:braincontrol:computational_controller}). The following policy is used to update the attractor at each time step $k$:
 % \begin{equation}
@@ -36,7 +36,7 @@ As detailed further in Sec.~\ref{sub:braincontrol:bmi_protocol}, we leverage the
 % \end{equation}
 % where $\Delta_\mathrm{x}$ is a tunable constant influencing the velocity of the attractor.
 
-\subsection{Planning attractors with brain signals}\label{sub:braincontrol:planning_attractors_switching}
+\subsection{Planning Attractors with Brain Signals}\label{sub:braincontrol:planning_attractors_switching}
 Our brain signal processing pipeline provides us with two pieces of information at each time step $k$: i) the unit vector $e_\mathrm{a}(k) \in \{ [1, 0]^\top, [0, 1]^\top \}$ corresponding to the current active axis of movement % with $\lVert e^\mathrm{at} \rVert = 1$
 and ii) the sign of movement $s(k) \in \{ -1, 1 \}$. We use $e_\mathrm{a}(k)$ and $s(k)$ to incrementally steer a virtual attractor defined in operational space $x^\mathrm{at} \in \mathbb{R}^2$ as follows
 %
@@ -56,7 +56,7 @@ Later, we will shape the potential field with a computational controller such th
 \end{center}
 \end{figure}
 
-\subsection{Computational controller}\label{sub:braincontrol:computational_controller}
+\subsection{Computational Controller}\label{sub:braincontrol:computational_controller}
 We adopt the Cartesian impedance controller from Sec.~\ref{sub:hsacontrol:task_space_impedance_control:control_strategy} to shape the potential field with a computational controller such that the attractor $x^\mathrm{at}$ becomes a globally asymptotically stable equilibrium
 \begin{equation}\label{eq:braincontrol:cartesian_impedance_controller}
 \begin{split}
