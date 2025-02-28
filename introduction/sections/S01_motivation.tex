@@ -45,14 +45,20 @@ Therefore, we see a pressing need for novel motor control strategies for soft ro
 \begin{figure}[ht]
     \centering
     \includegraphics[width=1.0\linewidth]{introduction/figures/model_based_control_with_physical_models_v1_cropped.pdf}
-    \caption{\textbf{Existing Approach - Model-Based Control with Physical Models:} Derivation of physical models from first principles and subsequent usage within closed-form model-based control schemes, such as PID+energy-shaping~\cite{della2023model}.}
+    \caption{\textbf{Existing Approach - Model-Based Control with Physical Models:}
+    % Derivation of physical models from first principles and subsequent usage within closed-form model-based control schemes, such as PID+energy-shaping~\cite{della2023model}.
+    % Expert knowledge is needed to derive kinematic and dynamical models for soft robots from first principles. It is often possible to describe the dynamics in a control-oriented Euler-Lagrangian form. Subsequently, the model knowledge can be leveraged within closed-form controllers consisting of a feedback term (e.g., a PID-like controller) and a model-based term (e.g., an energy-shaping feedforward) that are tracking a given reference~\citep{della2023model}. Finally, the control input needs to be mapped into in an actuation that can be applied to the continuum soft robot in closed loop.
+    Expert knowledge is required to derive kinematic and dynamic models for soft robots from first principles. Often, the dynamics can be expressed in a control-oriented Euler-Lagrangian framework. This model knowledge is then integrated into closed-form controllers that combine a feedback term (e.g., a PID-like controller) with a model-based term (e.g., an energy-shaping feedforward) to track a given reference~\citep{della2023model}. Finally, the control input must be translated into an actuation that exerts forces and torques on the continuum soft robot in a closed loop.
+    }
     \label{fig:introduction:model_based_control_with_physical_models}
 \end{figure}
 
 \begin{figure}[ht]
     \centering
     \includegraphics[width=0.75\linewidth]{introduction/figures/controller_learning_v1_cropped.pdf}
-    \caption{\textbf{Existing Approach - Direct Controller Learning:} Directly learning the controller via \gls{RL}~\citep{morimoto2021model, jitosho2023reinforcement, alessi2024pushing} or \gls{ILC}~\citep{hofer2019iterative, pierallini2023provably} by interacting with the soft robotic system and optimizing the control policy based on reward/loss/error signals.}
+    \caption{\textbf{Existing Approach - Direct Controller Learning:} 
+    Directly learning the controller via \gls{RL}~\citep{morimoto2021model, jitosho2023reinforcement, alessi2024pushing} or \gls{ILC}~\citep{hofer2019iterative, pierallini2023provably} by interacting with the soft robotic system and optimizing the control policy based on reward/loss/error signals.
+    }
     \label{fig:introduction:controller_learning}
 \end{figure}
 
@@ -82,7 +88,15 @@ The high computational demand associated with \gls{MPC} limits the maximum contr
 \begin{figure}[ht]
     \centering
     \includegraphics[width=0.9\linewidth]{introduction/figures/model_based_control_with_learned_models_v2_cropped.pdf}
-    \caption{\textbf{Core Contribution of this Thesis:} Closed-form model-based control with learned models that exhibit a physical structure.}
+    \caption{\textbf{Core Contribution of this Thesis:} 
+    % Closed-form model-based control with learned models that exhibit a physical structure.
+    % The core contribution of this thesis is to combine learned models with closed-form controllers. To make this possible, we learn the dynamical models with a physical structure which makes it possible for us to derive the potential and kinetic energy of the learned system. Apart from the specific structure of the dynamical model, the model learning follows a standard approach as established in literature by predicting the future evolution of the soft robotic system, comparing the prediction with a dataset of actual motion data, and using this prediction error to optimize the free parameters of the learned dynamical model.
+    % Moving to control, we reshape the potential energy of the closed-loop system by adding a feedforward term that regulates the system towards a given reference~\citep{della2023model}. This potential shaping feedforward term is complemented by an integral-saturated PID feedback term, named P-satI-D~\citep{pustina2022p}, that rejects disturbances and compensates for modeling errors. Finally, the control input is mapped into an actuation, which is potentially also learned.
+    % The insight into the potential and kinetic energy systems enables us to analyze the stability and convergence characteristics of both open-loop and closed-loop systems using Lyapunov arguments~\citep{khalil2002nonlinear}.
+    The primary contribution of this thesis is the integration of learned models with closed-form controllers. To enable this, we learn dynamical models with a physical structure that allows us to derive the system’s potential and kinetic energy. Beyond the specific dynamical model structure, the learning process follows a well-established approach in the literature: we predict the future evolution of the soft robotic system, compare these predictions with actual motion data, and use the resulting prediction error to optimize the free parameters of the learned model.
+    % 
+    On the control side, we modify the closed-loop system’s potential energy by incorporating a feedforward term that steers the system toward a designated reference~\citep{della2023model}. This potential shaping feedforward is complemented by an integral-saturated PID feedback term, known as P-satI-D~\citep{pustina2022p}, which rejects disturbances and compensates for modeling errors. Finally, the control input is translated into an actuation signal, where this mapping may also be learned. This insight into the potential and kinetic energy permits an analysis of the stability and convergence properties of both open-loop and closed-loop systems using Lyapunov arguments~\citep{khalil2002nonlinear}.
+    }
     \label{fig:introduction:model_based_control_with_learned_models}
 \end{figure}
 

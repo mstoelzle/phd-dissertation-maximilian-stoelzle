@@ -2,7 +2,7 @@
 % In this section, we review existing model-based controllers for soft robots whose control law is available in closed form.
 % Many of these control approaches appear at various points throughout the thesis, such as the P-satI-D+potential shaping controller in Section~\ref{sec:hsacontrol:configuration_space_regulation} and Chapter~\ref{chp:pcsregression} \& \ref{chp:con}, the PD+ controller in a version additionally also considering the actuator dynamics via backstepping in Chapter~\ref{chp:backstepping} and the task-space impedance controller in Section~\ref{sec:hsacontrol:task_space_impedance_control}.
 % This section only contains a top-level discussion of the most common closed-form model-based control laws that have been developed for soft robots. For a more detailed discussion of the controllers, including stability proofs using Lyapunov arguments, we point the interested reader to the respective publications~\citep{della2020model, pustina2022feedback, pustina2022p, borja2022energy, della2023model}. For an in-depth study of the control of underactuated soft robots, we recommend \citet{pustina2025analysis}.
-In this section, we review closed-form model-based controllers for soft robots. Many of these approaches appear throughout the thesis, such as the P-satI-D+potential shaping controller in Section~\ref{sec:hsacontrol:configuration_space_regulation} and Chapters~\ref{chp:pcsregression} and \ref{chp:con}, the PD+ controller—augmented with backstepping to consider actuator dynamics—in Chapter~\ref{chp:backstepping}, and the task-space impedance controller in Section~\ref{sec:hsacontrol:task_space_impedance_control}. This section provides a high-level overview of the most common closed-form model-based control laws developed for soft robots. For a more detailed discussion of these controllers, including Lyapunov-based stability proofs, interested readers should consult the respective publications~\citep{della2020model, pustina2022feedback, pustina2022p, borja2022energy, della2023model}. For an in-depth study of controlling underactuated soft robots, we recommend \citet{pustina2025analysis}.
+In this section, we review closed-form controllers for soft robots that can leverage advanced nonlinear models\footnote{Please note that this excludes approaches relying on linear/linearized models such as \gls{LQR} and that model-based controllers that are not available in closed-form, such as \gls{MPC}, are out of scope of this thesis.}. Many of these approaches appear throughout the thesis, such as the P-satI-D+potential shaping controller in Section~\ref{sec:hsacontrol:configuration_space_regulation} and Chapters~\ref{chp:pcsregression} and \ref{chp:con}, the PD+ controller—augmented with backstepping to consider actuator dynamics—in Chapter~\ref{chp:backstepping}, and the task-space impedance controller in Section~\ref{sec:hsacontrol:task_space_impedance_control}. This section provides a high-level overview of the most common closed-form model-based control laws developed for soft robots. For a more detailed discussion of these controllers, including Lyapunov-based stability proofs, interested readers should consult the respective publications~\citep{della2020model, pustina2022feedback, pustina2022p, borja2022energy, della2023model}. For an in-depth study of controlling underactuated soft robots, we recommend \citet{pustina2025analysis}.
 
 \textcolor{red}{TODO: \begin{itemize}
     \item Better organize and rename the section heading
@@ -25,13 +25,18 @@ The literature on closed-form model-based controllers generally considers two pr
 \begin{equation}
     \lim_{t \to \infty} = q^\mathrm{d}(t) - q(t) = 0_n.
 \end{equation}
-Alternatively, if only the final goal of the motion is of interest, the problem can be simplified to a \emph{setpoint regulation} scenario, where the controller drives the system toward a desired configuration $q^\mathrm{d}$ (with $\dot{q}^\mathrm{d} = 0$). 
+Please note that we typically require both $q^\mathrm{d}(t)$ and $\dot{q}^\mathrm{d}(t)$ to be bounded. Therefore, two positive constants $\gamma_q, \gamma_{\dot{q}} > 0$ need to exist such that~\citep{della2020model}
+\begin{equation}
+    \lVert q^\mathrm{d}(t) \rVert < \gamma_q,
+    \qquad
+    \lVert \dot{q}^\mathrm{d}(t) \rVert < \gamma_{\dot{q}}.
+\end{equation}
+Alternatively, if only the final goal of the motion is of interest, the problem can be simplified to a \emph{setpoint regulation} scenario, where the controller drives the system toward a desired configuration $q^\mathrm{d}$ (with $\dot{q}^\mathrm{d} = 0$).
 Then, we would like to design a regulator that achieves the following asymptotic convergence
 \begin{equation}
     \lim_{t \to \infty} = q^\mathrm{d} - q(t) = 0_n.
 \end{equation}
 Note that these motion references—whether setpoints or trajectories—can be specified not only in configuration space but also in various coordinate frames, a topic we discuss further in the subsection \emph{Coordinate Frames}.
-
 
 \subsubsection{Control Design Objectives}
 % When we devise a model-based controller, we usually pursue several, possibly competing, goals. In the following section, we will detail a selection of these criteria, making it possible to compare the tradeoffs between various model-based controllers.
@@ -92,7 +97,7 @@ In the following sections, we will generally define the control law as a functio
 % Specifically, a control law $\tau(t, q, \dot{q})$ can be decomposed into
 Most controllers considered in this thesis consist of two components: either (a) a pure feedforward or mixed feedforward-feedback term that leverages model knowledge and (b) a pure feedback term. Specifically, a control law $\tau(t, q, \dot{q})$ can be decomposed into
 \begin{equation}
-    \tau(t, q, \dot{q}) = \tau_\mathrm{mb}(t, q, \dot{q}) + \tau_\mathrm{fb}(t, q, \dot{q}),
+    \tau(t, q, \dot{q}) = \underbrace{\tau_\mathrm{mb}(t, q, \dot{q})}_\text{Model-Based} + \underbrace{\tau_\mathrm{fb}(t, q, \dot{q})}_\text{Pure Feedback},
 \end{equation}
 % where $\tau_\mathrm{mb}(t, q, \dot{q}): \mathbb{R} \times \mathbb{R}^n \times \mathbb{R}^n \to \mathbb{R}^m$ is a model-based, not necessarily pure\footnote{A pure feedforward term would have the functional signature $\tau(t)$ as it only depends on the time-based reference $(q^\mathrm{d},\dot{q}^\mathrm{d})$ but not the current soft robot state $(q,\dot{q})$.}, feedforward term and $\tau_\mathrm{fb}(t, q, \dot{q})$ is a pure feedback term as it does not integrate any model knowledge.
 Here, $\tau_\mathrm{mb}(t, q, \dot{q}): \mathbb{R} \times \mathbb{R}^n \times \mathbb{R}^n \to \mathbb{R}^m$ denotes a model-based term—not necessarily a pure feedforward\footnote{A purely feedforward term would have the signature $\tau(t)$, as it depends solely on the time-based reference $(q^\mathrm{d},\dot{q}^\mathrm{d})$ rather than the current soft robot state $(q,\dot{q})$.}—while $\tau_\mathrm{fb}(t, q, \dot{q})$ is a pure feedback term that does not incorporate any model knowledge.
@@ -102,7 +107,7 @@ Here, $\tau_\mathrm{mb}(t, q, \dot{q}): \mathbb{R} \times \mathbb{R}^n \times \m
 \subsection{Pure Feedback Terms}\label{sub:background:model_based_control:feedback_terms}
 In this thesis, we consider the following formulation for a pure feedback controller
 \begin{equation}
-    \tau_\mathrm{fb} = K_\mathrm{p} \left (\varphi_\mathrm{a}^\mathrm{d}(t) - \varphi(t) \right ) + K_\mathrm{d} \left ( \dot{\varphi}_\mathrm{a}^\mathrm{d} - \dot{\varphi}_\mathrm{a} \right ) + K_\mathrm{i} \int_0^t \sigma \left ( \varphi_{\mathrm{a}}^\mathrm{d}(t')-\varphi_{\mathrm{a}}(t') \right ) \: \mathrm{d} t',
+    \tau_\mathrm{fb} = K_\mathrm{p} \left (\varphi_\mathrm{a}^\mathrm{d}(t) - \varphi_\mathrm{a}(t) \right ) + K_\mathrm{d} \left ( \dot{\varphi}_\mathrm{a}^\mathrm{d}(t) - \dot{\varphi}_\mathrm{a}(t) \right ) + K_\mathrm{i} \int_0^t \sigma \left ( \varphi_{\mathrm{a}}^\mathrm{d}(t')-\varphi_{\mathrm{a}}(t') \right ) \: \mathrm{d} t',
 \end{equation}
 where $K_\mathrm{p}, K_\mathrm{p}, K_\mathrm{d} \in \mathbb{R}^{m \times m}$ are control gain matrices, which we usually choose to be diagonal. $\sigma(r): \mathbb{R}^m \to \mathbb{R}^m$ is a function to transform the control error $\varphi_{\mathrm{a}}^\mathrm{d}(t)-\varphi_{\mathrm{a}}(t)$ before integrating it.
 Based on this general formulation, we can devise several specific versions, which we introduce below.
@@ -115,146 +120,273 @@ Based on this general formulation, we can devise several specific versions, whic
 
 \subsection{Model-Based Terms: The Fully Actuated Case}\label{sub:background:model_based_control:model_based_terms_fully_actuated}
 Please note that for all controllers we introduce below, we assume that (1) the model is accurate or alternatively sufficiently large feedback gains are chosen (see high-gain control~\citep{marino1985high}), and (2) the integrability condition~\citep{pustina2024input} and mapping into actuation coordinates can be identified.
-For the setpoint regulators, we additionally assume that (3) the setpoint $q^\mathrm{q}/\varphi^\mathrm{q}$ is an attainable equilibrium of the underactuated system~\citep{pustina2022feedback} - which means that it fulfills the property
+Furthermore, (3) we assume here for the square matrix $A(q) \in \mathbb{R}^{n \times n}$ to be invertible for any $q \in \mathbb{R}^n$ or at least in the relevant workspace.
+For the setpoint regulators, we additionally assume that (4) the setpoint $q^\mathrm{q}/\varphi^\mathrm{q}$ is an attainable equilibrium of the underactuated system~\citep{pustina2022feedback} - which means that it fulfills the property
 \begin{equation}
     G(q^\mathrm{d}) + K(q^\mathrm{q}) = A(q^\mathrm{q}) \, \tau^\mathrm{ss},
 \end{equation}
 for a constant control action $\tau^\mathrm{ss}$, 
 % (4) the system is within the region of attraction of the setpoint which can always be globally accomplished in scenarios where the potential field is convex - i.e., when
-(4) The system must be initialized within the setpoint’s region of attraction. This condition can be globally ensured when the potential field is convex—i.e., when
+(5) The system must be initialized within the setpoint’s region of attraction. This condition can be globally ensured when the potential field is convex—i.e., when
 \begin{equation}
     \frac{\partial^2 \mathcal{U}(q)}{\partial q^2} \succ 0 \quad \forall q \in \mathbb{R}^n
 \end{equation}
 % - or by employing (partial) feedback linearization, or often by increasing the feedback gains, and with that, increasing the stiffness of the system,
 % and (5) that the actuator is sufficiently fast at tracking its reference $(\mu^\mathrm{d}, \mu^\mathrm{d})$ such that we can approximate $\tau^\mathrm{d} \approx = \tau(\mu,\dot{\mu})$, where $\tau^\mathrm{d}$ is the desired actuation/control input and $\tau(\mu,\dot{\mu})$ are the actually generated forces/torques/currents/pneumatic pressure.
-—or by applying (partial) feedback linearization, or often by increasing the feedback gains, thereby enhancing the system’s stiffness~\citep{della2017controlling, della2023model}. (5) Additionally, the actuator needs to be fast enough in tracking its reference $(\mu^\mathrm{d}, \mu^\mathrm{d})$ so that we can approximate $\tau^\mathrm{d} \approx \tau(\mu,\dot{\mu})$, where $\tau^\mathrm{d}$ denotes the desired actuation/control input and $\tau(\mu,\dot{\mu})$ represents the actual forces, torques, currents, or pneumatic pressure generated.
+—or by applying (partial) feedback linearization, or often by increasing the feedback gains, thereby enhancing the system’s stiffness~\citep{della2017controlling, della2023model}. (6) Additionally, the actuator needs to be fast enough in tracking its reference $(\mu^\mathrm{d}, \mu^\mathrm{d})$ so that we can approximate $\tau^\mathrm{d} \approx \tau(\mu,\dot{\mu})$, where $\tau^\mathrm{d}$ denotes the desired actuation/control input and $\tau(\mu,\dot{\mu})$ represents the actual forces, torques, currents, or pneumatic pressure generated.
 
 Finally, many of these controllers formulated in actuation coordinates have not been tested in simulation, and most have not yet been experimentally verified as the mapping into actuation coordinates was only very recently proposed~\citep{pustina2024input}.
 
 We remind that in the case of full actuation, we have $n = m$.
 
-\subsubsection{Setpoint Regulation with Compensation of Static Forces}
-The following regulator locally stabilizes the system around the setpoint $\varphi^\mathrm{d} = h(q^\mathrm{d})$ by shaping the potential energy of the first $m$ actuation coordinates~\citep{borja2022energy, della2023model}
-\begin{equation}\label{eq:background:model_based_control:potential_shaping_regulation}
-    \tau_\mathrm{mb}(t, q, \dot{q}) = J_{\mathrm{h},\mathrm{M},\mathrm{a}}^{+\top}(q^\mathrm{d}) \left ( G(q^\mathrm{d}) + K(q^\mathrm{d}) \right ).
+\subsubsection{Setpoint Regulation with Feedforward Compensation}
+\textcolor{red}{TODO: cite }
+The following pure feedforward term regulates the system towards the setpoint $\varphi^\mathrm{d} = h(q^\mathrm{d})$ in actuation coordinates~\citep{kelly1994pd, borja2022energy, della2023model, pustina2025analysis}
+\begin{equation}\label{eq:background:model_based_control:fully_actuated:potential_shaping_regulation}
+    \tau_\mathrm{mb} = \partial_{\varphi} \mathcal{U}_\varphi(\varphi^\mathrm{d})  = A^{-1}(q^\mathrm{d}) \left ( G(q^\mathrm{d}) + K(q^\mathrm{d}) \right ).
 \end{equation}
-This model-based feedforward term renders the closed-loop dynamics
+We note that as the term is pure feedforward, the control input $\tau_\mathrm{mb}$ is constant.
+% It can be seen how the constant model-based control input $\tau_\mathrm{mb}$ is a pure feedforward term.
+Oftentimes, this pure feedforward term is complemented by a feedback controller that contains a PD-like term~\citep{della2023model}, e.g., $\tau_\mathrm{fb}(q,\dot{q}) = K_\mathrm{p} \left ( \varphi^\mathrm{d} - \varphi \right ) - K_\mathrm{d} \dot{\varphi}$, which renders the closed-loop dynamics to take the form
+% This model-based feedforward term renders the closed-loop dynamics
 \begin{equation}
-    M_\varphi(q) \, \ddot{\varphi} + \eta_\varphi(q,\dot{q}) \, \dot{q} + \partial_{\varphi} \mathcal{U}_\varphi(\varphi) - \partial_{\varphi} \mathcal{U}_\varphi(\varphi^\mathrm{d}) + D_\varphi(q) \, \dot{q} = \tau_\mathrm{fb}(t, q, \dot{q}),
+    M_\varphi(q) \, \ddot{\varphi} + \eta_\varphi(q,\dot{q}) \, \dot{\varphi} + \partial_{\varphi} \mathcal{U}_\varphi(\varphi) - \partial_{\varphi} \mathcal{U}_\varphi(\varphi^\mathrm{d}) + K_\mathrm{p}  \left ( \varphi - \varphi^\mathrm{d} \right ) + \left ( D_\varphi(q) + K_\mathrm{d} \right ) \, \dot{\varphi} = 0_n.
 \end{equation}
-to be locally asymptotically stable.
+% to be locally asymptotically stable for a sufficiently large proportional feedback gain $K_\mathrm{p} > 0$.
+As mentioned already before, for this regulator to be effective, $\varphi^\mathrm{d}$ needs to be an attainable equilibrium of the system.
+\textcolor{red}{...}
+This stability can be shown via the Lyapunov candidate~\citep{della2023model}
+\begin{equation}
+    V(q,
+\end{equation}
+which is a valid Lyapunov function - fulfilling the requirements $V(\varphi^\mathrm{d},0_n) = 0$ and $V(\varphi,\dot{\varphi}) > 0 \: \forall \: (\varphi, \dot{\varphi}) \in (\mathbb{R}^n, \mathbb{R}^n) \setminus \{ (\varphi^\mathrm{d}, 0_n) \}$ - if the closed-loop potential energy is local
 
-As mentioned already before, for this regulator to work, $\varphi^\mathrm{d}$ needs to be an attainable equilibrium of the system.
-If the potential field is convex (i.e., $\frac{\partial^2}{\partial \varphi^2}  \mathcal{U}_\varphi(\varphi) \succ 0 \: \forall \varphi \in \mathbb{R}$) this controller is globally asymptotically stable - even with a deactivated feedback term $\tau_\mathrm{fb}(t,q,\dot{q})=0$. If this is not the case, the region of attraction can be increased, or the controller can even be made globally asymptotically stable by sufficiently increasing the proportional gains $K_\mathrm{p}$ of the feedback controller, which makes the system stiffer and more susceptible to instability because of measurement errors.
+
+
+In the following, we will discuss the convergence guarantees in more detail.
+
+\textbf{Convex Potential Field.} If the potential field is convex (i.e., $\frac{\partial^2}{\partial \varphi^2}  \mathcal{U}_\varphi(\varphi) \succ 0 \: \forall \varphi \in \mathbb{R}$) this controller is globally asymptotically stable - even with a deactivated feedback term $\tau_\mathrm{fb}(t,q,\dot{q})=0$.
+
+\textbf{Constant Actuation Matrix and Elastic Domination.} Another interesting case is the one of a constant actuation matrix $A(q) = A$ and elastic domination with $\frac{\partial K(q)}{\partial q} + $
+
+ If this is not the case, the region of attraction can be increased, or the controller can even be made globally asymptotically stable by sufficiently increasing the proportional gains $K_\mathrm{p}$ of the feedback controller, which makes the system stiffer and more susceptible to instability because of measurement errors.
 
 \subsubsection{Setpoint Regulation with Gravity Cancellation and Compensation of Elastic Forces}
-As stated previously, Eq.~\ref{eq:background:model_based_control:potential_shaping_regulation}, depending on the gravitational field and for low feedback gains, is only locally asymptotically stable 
+In case the elastic potential is convex, but the gravitational potential renders the total potential energy to be non-convex, we can reduce the necessary (proportional) feedback gains, compared to the \emph{Setpoint Regulation with Feedforward Compensation} controller, by canceling instead of compensating the gravitational forces. The control law is then given as~\citep{della2020model}
 \begin{equation}
-    \tau_\mathrm{mb}(t, q, \dot{q}) = J_{\mathrm{h},\mathrm{M},\mathrm{a}}^{+\top}(q) \big ( \underbrace{G(q)}_\text{Cancel Gravity} + \underbrace{K(q^\mathrm{d})}_\text{Comp. Elasticity} \big )
+    \tau_\mathrm{mb}(q) =  \underbrace{A^{-1}(q) \, G(q)}_\text{Cancel Gravity} + \underbrace{A^{-1}(q^\mathrm{d}) \, K(q^\mathrm{d})}_\text{Comp. Elasticity} \big )
 \end{equation}
 leading to the closed-loop dynamics
 \begin{equation}
-    M_\varphi(q) \, \ddot{\varphi} + \eta_\varphi(q,\dot{q}) \, \dot{q} + A^{-\top}(q) \left ( K(q) - K(q^\mathrm{d}) \right ) + D_\varphi(q) \, \dot{q} = \tau_\mathrm{fb}(t, q, \dot{q}).
+    M_\varphi(q) \, \ddot{\varphi} + \eta_\varphi(q,\dot{q}) \, \dot{\varphi} + A^{-1}(q) \,  K(q) - A^{-1}(q^\mathrm{d}) \, K(q^\mathrm{d}) + D_\varphi(q) \, \dot{\varphi} = \tau_\mathrm{fb}(t, q, \dot{q}),
 \end{equation}
-\citet{pustina2022feedback} has 
-
-This controller is particularly interesting in the case of a constant actuation matrix $A(q) = A$, which is for example the case for many pneumatically-actuated soft robots, as then the expression becomes
-
-\subsubsection{Trajectory Tracking with Compensation of Static Forces}
+which we can rewrite, assuming that a PD term is part of the feedback as
+\begin{equation}\footnotesize
+    M_\varphi(q) \, \ddot{\varphi} + \eta_\varphi(q,\dot{q}) \, \dot{\varphi} + A^{-1}(h^{-1}(\varphi)) \,  K(h^{-1}(\varphi)) - A^{-1}(h^{-1}(\varphi^\mathrm{d})) \, K(h^{-1}(\varphi^\mathrm{d})) + K_\mathrm{p} \left ( \varphi-\varphi^\mathrm{d} \right ) + \left ( D_\varphi(q) + K_\mathrm{d} \right ) \, \dot{\varphi} = 0_n,
+\end{equation}
+which is asymptotically stable if the elastic potential $\mathcal{U}_{\varphi,\mathrm{K}}(\varphi)$ is locally or globally convex
+\begin{equation}\label{eq:background:model_based_control:fully_actuated:regulation_gravity_cancellation:closed_loop_potential_convexity}
+    \frac{\partial^2}{\partial \varphi^2} \mathcal{U}_{\varphi,\mathrm{K}}(\varphi) + K_\mathrm{p} = \frac{\partial}{\partial \varphi} \left (  A^{-1}(h^{-1}(\varphi)) \,  K(h^{-1}(\varphi)) \right ) + K_\mathrm{p} \succ 0.
+\end{equation}
+This can be shown via the Lyapunov function~\citep{khalil2002nonlinear, della2020model, della2023model}
 \begin{equation}
-    \tau_\mathrm{mb}(t, q, \dot{q}) = M_{\varphi,\mathrm{a}}(q^\mathrm{d}) \, \ddot{\varphi}^\mathrm{d} + \eta_{\varphi,\mathrm{a}}(q^\mathrm{d},\dot{q}^\mathrm{d}) \, \dot{q}^\mathrm{d} + J_{\mathrm{h},\mathrm{M},\mathrm{a}}^{+\top}(q^\mathrm{d}) \left ( G(q^\mathrm{d}) + K(q^\mathrm{d}) + D \, \dot{q}^\mathrm{d} \right )
+\begin{split}
+    V(\varphi, \dot{\varphi}) =& \: \underbrace{\frac{1}{2} \, \dot{\varphi}^\top \, M_\varphi(h^{-1}(\varphi)) \, \dot{\varphi}}_\text{Kinetic Energy} + \underbrace{\mathcal{U}_{\varphi,\mathrm{K}}(\varphi) - \mathcal{U}_{\varphi,\mathrm{K}}(\varphi^\mathrm{d})}_\text{Centered Elastic Potential Energy}\\
+    & \: + \underbrace{K^\top(h^{-1}(\varphi^\mathrm{d})) \, A^{-\top}(h^{-1}(\varphi^\top)) \left ( \varphi^\mathrm{d} - \varphi \right )}_\text{Correction Term} + \underbrace{\frac{1}{2} \, (\varphi^\mathrm{d} - \varphi)^\top \, K_\mathrm{p} \, (\varphi^\mathrm{d} - \varphi)}_\text{Artificial Potential Energy of Feedback},
+\end{split}
 \end{equation}
-
-
-\subsubsection{Trajectory Tracking with Cancellation of Static Forces}
+with the associated time derivative~\citep{della2023model}
 \begin{equation}
-    \tau_\mathrm{mb}(t, q, \dot{q}) = M_{\varphi,\mathrm{a}}(q) \, \ddot{\varphi}^\mathrm{d} + \eta_{\varphi,\mathrm{a}}(q,\dot{q}) \, \dot{q}^\mathrm{d} + J_{\mathrm{h},\mathrm{M},\mathrm{a}}^{+\top}(q) \left ( G(q) + K(q) \right ),
+    \dot{V}(\varphi,\dot{\varphi}) = -\dot{\varphi}^\top \, \left ( D_\varphi(h^{-1}(\varphi)) + K_\mathrm{d} \right ) \, \dot{\varphi} \leq 0 \quad \forall \: \varphi,\dot{\varphi} \in \mathbb{R}^n
 \end{equation}
-leading to the closed-loop dynamics
-\begin{equation}
-    M_\varphi(q) \, \ddot{\varphi} + \begin{bmatrix}
-        
-    \end{bmatrix} \eta_\varphi(q,\dot{q}) \, \dot{q} + \begin{bmatrix}
-        0_m\\ J_{\mathrm{h},\mathrm{M},\mathrm{u}}^{+\top}(q) \left ( G(q) + K(q) + D \, \dot{q} \right )
-    \end{bmatrix} = \begin{bmatrix}
-        \tau_\mathrm{fb}(t, q, \dot{q})\\ 0_{n-m}
-    \end{bmatrix}.
-\end{equation}
+If the condition from Eq.\ref{eq:background:model_based_control:fully_actuated:regulation_gravity_cancellation:closed_loop_potential_convexity} is locally met for $\varphi = \varphi^\mathrm{d}$, then the setpoint $\varphi^\mathrm{d}$ is locally asymptotically stable. If the convexity condition is met $\forall \: \varphi \in \mathbb{R}^n$, then the setpoint is globally asymptotically stable.
+% which are locally asymptotically stable with a sufficiently large proportional feedback gain $K_\mathrm{p} > 0$~\citep{pustina2025analysis}.
 
-% \subsubsection{Other Variants}
-% There exist many variants of the above-mentioned model-based controllers, such as the one proposed by \citet{della2020model} that cancels the gravitational forces and compensates the elastic and dissipative forces
+
+Here, it is easy to see how the proportional feedback gain makes the robot stiffer and, with that, can potentially allow for the system to be stable even when the open-loop elastic potential is non-convex. Still, this comes at the cost of decreased compliance and decreased robustness against measurement noise.
+In the case of the actuation space elastic potential being convex, i.e., $\frac{\partial}{\partial \varphi} \left (A^{-1}(h^{-1}(\varphi)) \,  K(h^{-1}(\varphi)) \right ) \succ 0$, then the proportional feedback gains are not necessary and can also be chosen as zero.
+An interesting case is also when (i) a constant actuation matrix $A(q) = A$, which is, for example, the case for many pneumatically-actuated soft robots, together with (ii) and a convex configuration space elastic potential, as for example the case for linear elasticity $K(q) = S \, q$, where $S\succ 0$. Then, the closed-loop dynamics are given by
+\begin{equation}
+    M_\varphi(q) \, \ddot{\varphi} +  \eta_\varphi(q,\dot{q}) \, \dot{\varphi} + S_\varphi ( \varphi - \varphi^\mathrm{d} ) + D_\varphi \, \dot{\varphi} = \tau_\mathrm{fb}(t, q, \dot{q}),
+\end{equation}
+which renders $\varphi^\mathrm{d}$ to be globally asymptotically stable.
+
+% This controller is particularly interesting in the case of (i) a constant actuation matrix $A(q) = A$, which is, for example, the case for many pneumatically-actuated soft robots, together with (ii) and a convex elastic potential, as for example the case for $K(q) = S \, q$, where $S\succ 0$, as then the closed-loop dynamics
 % \begin{equation}
-%     \tau_\mathrm{mb}(t, q, \dot{q}) = 
+%     M_\varphi(q) \, \ddot{\varphi} + \eta_\varphi(q,\dot{q}) \, \dot{\varphi} + A^{-1} \left ( K(q) - K(q^\mathrm{d}) \right ) + D_\varphi \, \dot{\varphi} = \tau_\mathrm{fb}(t, q, \dot{q}),
 % \end{equation}
+% exhibit a globally asymptotically stable equilibrium at the setpoint $q^\mathrm{d}$, even when the soft robot is not elastically dominated.
+
+\subsubsection{Setpoint Regulation with Cancellation of Static Forces}
+Akin to PD+~\citep{kelly1996class, kelly1998global} controllers originally developed for rigid manipulators, we can fully cancel the static, including gravitational and elastic, forces of the soft robot dynamics via nonlinear feedback and achieve setpoint regulation solely based on the potential field established by the (proportional) feedback term. The associated control law is given by~\citep{patterson2024design, pustina2025analysis}
+\begin{equation}
+    \tau_\mathrm{mb}(q) =  \underbrace{A^{-1}(q) \, G(q)}_\text{Cancel Gravity} + \underbrace{A^{-1}(q^\mathrm{d}) \, K(q^\mathrm{d})}_\text{Cancel Elasticity} \big )
+\end{equation}
+which results in the closed-loop dynamics
+\begin{equation}
+    M_\varphi(q) \, \ddot{\varphi} + \eta_\varphi(q,\dot{q}) \, \dot{\varphi} + D_\varphi(q) \, \dot{\varphi} = \tau_\mathrm{fb}(t, q, \dot{q}),
+\end{equation}
+where the potential of the system is now fully dominated by the feedback controller.
+Such a closed-loop system with a proportional feedback term, for example,
+\begin{equation}
+    M_\varphi(q) \, \ddot{\varphi} + \eta_\varphi(q,\dot{q}) \, \dot{\varphi} +  K_\mathrm{p} ( \varphi - \varphi^\mathrm{d}) + D_\varphi(q) \, \dot{\varphi} = 0_n,
+\end{equation}
+is for any positive proportional gain $K_\mathrm{p} \succ 0 \in \mathbb{R}^{n \times n}$ globally asymptotically stable - even for small gains.
+This can be proven using the Lyapunov function
+\begin{equation}
+    V(\varphi,\dot{\varphi}) = \frac{1}{2} \, \dot{\varphi}^\top \, M_\varphi(h^{-1}(\varphi)) \, \dot{\varphi} + \frac{1}{2} \, \left (\varphi - \varphi^\mathrm{d} \right )^\top \, K_\mathrm{p} \, \left (\varphi - \varphi^\mathrm{d} \right ),
+\end{equation}
+that exhibits an associated time derivative of
+\begin{equation}
+    \dot{V}(\varphi,\dot{\varphi}) = - \dot{\varphi}^\top \, D_\varphi(h^{-1}(\varphi))) \, \dot{\varphi} \leq 0 \quad \forall \varphi, \dot{\varphi} \in \mathbb{R}^n,
+\end{equation}
+as $D_\varphi \succ 0$. Via LaSalle's invariance principle, \gls{GAS} with respect to the equilibrium $\varphi^\mathrm{d}$ can be shown~\citep{khalil2002nonlinear}.
+This strength of global convergence guarantees even for configuration-dependent actuation matrices $A(q)$ comes potentially at the cost of robustness as, particularly for low feedback gains $K_\mathrm{p}$, unmodelled system dynamics could become dominant, causing steady-state errors or even instability.
+
+\subsubsection{Trajectory Tracking with Feedforward Compensation}
+In the following, we will assume the actuation matrix to be constant with $A(q) = A$. Then, we can design a trajectory tracking algorithm with feedforward compensation as~\citep{kelly1994pd, della2023model}
+\begin{equation}
+    \tau_\mathrm{mb}(t) =  \underbrace{M_\varphi(q^\mathrm{d}(t)) \, \ddot{\varphi}^\mathrm{d}(t) + \eta_\varphi(q^\mathrm{d}(t),\dot{q}^\mathrm{d}(t)) \, \dot{\varphi}^\mathrm{d}(t) + D_\varphi \, \dot{q}^\mathrm{d}(t)}_\text{Compensate Dynamic Forces} + \underbrace{ A^{-1} \big ( G(q^\mathrm{d}(t)) + K(q^\mathrm{d}(t)) \big )}_\text{Compensate Static Forces}.
+\end{equation}
+% This model-based feedforward term generates the closed-loop dynamics
+% \begin{equation}
+%     M_\varphi(q) \, \ddot{\varphi} + \eta_\varphi(q,\dot{q}) \, \dot{q} + \partial_{\varphi} \mathcal{U}_\varphi(\varphi) - \partial_{\varphi} \mathcal{U}_\varphi(\varphi^\mathrm{d}) + D_\varphi(q) \, \dot{q} = \tau_\mathrm{fb}(t, q, \dot{q}),
+% \end{equation}
+% After defining $e(t) = q^\mathrm{d}(t) - q(t)$, $e(t) = q^\mathrm{d}(t) - q(t)$
+% to be locally asymptotically stable \textcolor{orange}{for a sufficiently large proportional feedback gain $K_\mathrm{p} > 0$}.
+This controller is locally asymptotically stable, assuming sufficiently large proportional and dissipative feedback gains~\citep{della2023model}.
+
+\subsubsection{Trajectory Tracking with Mixed State Feedback}
+In the following, we will assume the actuation matrix to be constant with $A(q) = A$.
+Additionally, as this controller is particularly interesting for soft robots with convex elastic potential, we assume linear elasticity $K(q) = S \, q$ with $S \succ 0$, although the controller would also converge globally work for any convex potential field or locally for non-convex elastic potentials assuming sufficiently large feedback gains. We refer the interested reader to the section on \emph{Setpoint Regulation with Gravity Cancellation and Compensation of Elastic Forces} for an extended discussion on this topic.
+
+A trajectory tracking controller that exhibits full state feedback apart from compensating instead of canceling elastic forces is given by~\citep{kelly1996class, della2020model}
+\begin{equation}
+    \tau_\mathrm{mb}(t,q,\dot{q}) = \underbrace{M_\varphi(q(t)) \, \ddot{\varphi}^\mathrm{d}(t) + \eta_\varphi(q(t),\dot{q}(t)) \, \dot{\varphi}^\mathrm{d}(t) + A^{-1} \, G(q(t))}_\text{Rigid Manipulator Nonlinear PD/PD+} + \underbrace{S_\varphi \, \varphi^\mathrm{d}(t) + D_\varphi \, \dot{\varphi}^\mathrm{d}(t)}_\text{Shaping Soft Robot Impedance},
+\end{equation}
+where $S_\varphi = A^{-1} \, S \, A^{-\top} \succ 0 \in \mathbb{R}^{n \times n}$.
+This leads to the closed-loop dynamics
+\begin{equation}\footnotesize
+    M_\varphi(q(t)) \, \left ( \ddot{\varphi}(t) - \ddot{\varphi}^\mathrm{d}(t) \right ) + \eta_\varphi(q(t),\dot{q}(t)) \left ( \dot{\varphi}(t) - \dot{\varphi}^\mathrm{d}(t) \right ) + S_\varphi \left ( \varphi(t) - \varphi^\mathrm{d}(t) \right ) + D_\varphi \left ( \dot{\varphi}(t) - \dot{\varphi}^\mathrm{d}(t) \right ) = \tau_\mathrm{fb}(t,q,\dot{q}).
+\end{equation}
+% which we can rewrite as
+% \begin{equation}\small
+%     M_\varphi(q(t)) \, \left ( \ddot{\varphi}(t) - \ddot{\varphi}^\mathrm{d}(t) \right ) + \left ( \eta_\varphi(q(t),\dot{q}(t)) + D_\varphi \right ) \, \left ( \dot{\varphi}(t) - \dot{\varphi}^\mathrm{d}(t) \right ) + A^{-1} \left ( K(A^{-\top} \varphi(t)) - K(A^{-\top} \varphi^\mathrm{d}(t)) \right ) = \tau_\mathrm{fb}(t,q,\dot{q}).
+% \end{equation}
+The goal is now to show that the closed-loop error dynamics, which are defined as
+\begin{equation}
+    M_\varphi(q(t)) \, \ddot{e}(t) + \left ( \eta_\varphi(q(t),\dot{q}(t)) + D_\varphi \right ) \, \dot{e}(t) + S_\varphi \, e(t) = \tau_\mathrm{fb}(t,q,\dot{q}),
+\end{equation}
+with $e(t) = \varphi(t) - \varphi^\mathrm{d}(t) \in \mathbb{R}^n$, $\dot{e}(t) = \dot{\varphi} - \dot{\varphi}^\mathrm{d}(t)$, and $\ddot{e}(t) = \ddot{\varphi}(t) - \ddot{\varphi}^\mathrm{d}(t)$ asymptotically converge to zero: $\lim_{t \to \infty} e(t) = 0$.
+Even without pure feedback term (i.e., $\tau_\mathrm{fb}(t,q,\dot{q}) = 0$), the asymptotic convergence to the trajectory $(\varphi^\mathrm{d}, \dot{\varphi}^\mathrm{d}, \ddot{\varphi}^\mathrm{d})$ can be shown via the Lyapunov function
+\begin{equation}
+    V(e, \dot{e}) = \frac{1}{2} \, \dot{e}^\top \, M_\varphi(h^{-1}(\varphi^\mathrm{d}+e) \, \dot{e}(t) + \frac{1}{2} \, e^\top(t) \, \left ( S_\varphi + K_\mathrm{d} \right ) \, e(t),
+\end{equation}
+that has the time derivative
+\begin{equation}
+    \dot{V}(t,e,\dot{e}) = -\dot{e}^\top \left (D_\varphi + K_\mathrm{d} \right ) \, \dot{e} \leq 0 \quad \forall \: e,\dot{e} \in \mathbb{R}^n,
+\end{equation}
+by applying Barbalat's Lemma~\citep{slotine1991applied, della2020model}.
+Here, $K_\mathrm{p}, K_\mathrm{d} \in \mathbb{R}^{n \times n} \succeq 0$ are any PD feedback gains that are optionally applied.
+% This is locally the case for sufficiently large proportional and dissipative feedback gains $K_\mathrm{p} > 0$. Alternatively, if (a) the elastic potential is convex, which is typically the case for most soft robots, and (b) the damping matrix is in actuation coordinates . Specifically, the elastic potential needs to meet the condition $\frac{\partial^2 \mathcal{U}_\varphi (\varphi)}{\partial \varphi^2} = \frac{\partial K(A^\top \varphi)}{\partial \varphi} \succ 0$. For linear elastic systems with $K(\varphi) = S \, A^{-\top} \varphi$, this is the case when $S \, A^{-\top} \succ 0$.
+
 
 \subsection{Model-Based Terms: The Underactuated Case}\label{sub:background:model_based_control:model_based_terms_underactuated}
-\subsubsection{Setpoint Regulation with Compensation of Static Forces}
-The following regulator locally stabilizes the system around the setpoint $\varphi^\mathrm{d} = h(q^\mathrm{d})$ by shaping the potential energy of the first $m$ actuation coordinates~\citep{borja2022energy, della2023model}
-\begin{equation}\label{eq:background:model_based_control:potential_shaping_regulation}
-    \tau_\mathrm{mb}(t, q, \dot{q}) = J_{\mathrm{h},\mathrm{M},\mathrm{a}}^{+\top}(q^\mathrm{d}) \left ( G(q^\mathrm{d}) + K(q^\mathrm{d}) \right ).
-\end{equation}
-This model-based feedforward term renders the closed-loop dynamics
-\begin{equation}
-    M_\varphi(q) \, \ddot{\varphi} + \eta_\varphi(q,\dot{q}) \, \dot{q} + \begin{bmatrix}
-        \partial_{\varphi_\mathrm{a}} \mathcal{U}_\varphi(\varphi) - \partial_{\varphi_\mathrm{a}} \mathcal{U}_\varphi(\varphi^\mathrm{d})\\
-        \partial_{\varphi_\mathrm{u}} \mathcal{U}_\varphi(\varphi)
-    \end{bmatrix} + D_\varphi(q) \, \dot{q} = \begin{bmatrix}
-        \tau_\mathrm{fb}(t, q, \dot{q})\\ 0_{n-m}
-    \end{bmatrix},
-\end{equation}
-to be locally asymptotically stable.
-
-As mentioned already before, for this regulator to work, $\varphi^\mathrm{d}$ needs to be an attainable equilibrium of the system - especially as we cannot control the behavior of the unactuated coordinates $\varphi_\mathrm{u}$. 
-
-If the potential field is convex (i.e., $\frac{\partial^2}{\partial \varphi^2}  \mathcal{U}_\varphi(\varphi) \succ 0 \: \forall \varphi \in \mathbb{R}$) this controller is globally asymptotically stable - even with a deactivated feedback term $\tau_\mathrm{fb}(t,q,\dot{q})=0$. If this is not the case, the region of attraction can be increased, or the controller can even be made globally asymptotically stable by sufficiently increasing the proportional gains $K_\mathrm{p}$ of the feedback controller, which makes the robot stiffer.
-
-\subsubsection{Setpoint Regulation with Gravity Cancellation and Compensation of Elastic Forces}
-As stated previously, Eq.~\ref{eq:background:model_based_control:potential_shaping_regulation}, depending on the gravitational field and for low feedback gains, is only locally asymptotically stable 
-\begin{equation}
-    % \tau_\mathrm{mb}(t, q, \dot{q}) =  J_{\mathrm{h},\mathrm{M},\mathrm{a}}^{+\top}(q) \left ( G(q) + K(q) \right ),
-    \tau_\mathrm{mb}(t, q, \dot{q}) = J_{\mathrm{h},\mathrm{M},\mathrm{a}}^{+\top}(q) \left ( \underbrace{G(q)}_\text{Cancel Gravity} + \underbrace{K(q^\mathrm{d})}_\text{Comp. Elasticity} \right )
-\end{equation}
-leading to the closed-loop dynamics
-\begin{equation}
-    M_\varphi(q) \, \ddot{\varphi} + \eta_\varphi(q,\dot{q}) \, \dot{q} + \begin{bmatrix}
-        J_{\mathrm{h},\mathrm{M},\mathrm{a}}^{+\top}(q) \left ( K(q) - K(q^\mathrm{d}) \right )\\
-        J_{\mathrm{h},\mathrm{M},\mathrm{u}}^{+\top}(q) \left ( K(q) + G(q)) \right )\\
-    \end{bmatrix} + D_\varphi(q) \, \dot{q} = \begin{bmatrix}
-        \tau_\mathrm{fb}(t, q, \dot{q})\\ 0_{n-m}
-    \end{bmatrix}.
-\end{equation}
-\citet{pustina2022feedback} has 
-
-\subsubsection{Trajectory Tracking with Compensation of Static Forces}
-\begin{equation}
-    \tau_\mathrm{mb}(t, q, \dot{q}) = M_{\varphi,\mathrm{a}}(q^\mathrm{d}) \, \ddot{\varphi}^\mathrm{d} + \eta_{\varphi,\mathrm{a}}(q^\mathrm{d},\dot{q}^\mathrm{d}) \, \dot{q}^\mathrm{d} + J_{\mathrm{h},\mathrm{M},\mathrm{a}}^{+\top}(q^\mathrm{d}) \left ( G(q^\mathrm{d}) + K(q^\mathrm{d}) + D \, \dot{q}^\mathrm{d} \right )
-\end{equation}
+\textcolor{red}{\begin{itemize}
+    \item Feedforward regulator: Refer to \citep{pustina2025analysis}
+    \item PD+ regulator: Refer to \citep{pustina2025analysis}
+    \item Elastically decoupled soft robots: Refer to \citep{pustina2025analysis}
+    \item Elastically dominated soft robots
+\end{itemize}}
 
 
-\subsubsection{Trajectory Tracking with Cancellation of Static Forces}
-\begin{equation}
-    \tau_\mathrm{mb}(t, q, \dot{q}) = M_{\varphi,\mathrm{a}}(q) \, \ddot{\varphi}^\mathrm{d} + \eta_{\varphi,\mathrm{a}}(q,\dot{q}) \, \dot{q}^\mathrm{d} + J_{\mathrm{h},\mathrm{M},\mathrm{a}}^{+\top}(q) \left ( G(q) + K(q) \right ),
-\end{equation}
-leading to the closed-loop dynamics
-\begin{equation}
-    M_\varphi(q) \, \ddot{\varphi} + \begin{bmatrix}
+% \subsubsection{Setpoint Regulation with Compensation of Static Forces}
+% The following regulator locally stabilizes the system around the setpoint $\varphi^\mathrm{d} = h(q^\mathrm{d})$ by shaping the potential energy of the first $m$ actuation coordinates~\citep{borja2022energy, della2023model}
+% \begin{equation}\label{eq:background:model_based_control:potential_shaping_regulation}
+%     \tau_\mathrm{mb}(t, q, \dot{q}) = J_{\mathrm{h},\mathrm{M},\mathrm{a}}^{+\top}(q^\mathrm{d}) \left ( G(q^\mathrm{d}) + K(q^\mathrm{d}) \right ).
+% \end{equation}
+% This model-based feedforward term renders the closed-loop dynamics
+% \begin{equation}
+%     M_\varphi(q) \, \ddot{\varphi} + \eta_\varphi(q,\dot{q}) \, \dot{q} + \begin{bmatrix}
+%         \partial_{\varphi_\mathrm{a}} \mathcal{U}_\varphi(\varphi) - \partial_{\varphi_\mathrm{a}} \mathcal{U}_\varphi(\varphi^\mathrm{d})\\
+%         \partial_{\varphi_\mathrm{u}} \mathcal{U}_\varphi(\varphi)
+%     \end{bmatrix} + D_\varphi(q) \, \dot{q} = \begin{bmatrix}
+%         \tau_\mathrm{fb}(t, q, \dot{q})\\ 0_{n-m}
+%     \end{bmatrix},
+% \end{equation}
+% to be locally asymptotically stable.
+
+% As mentioned already before, for this regulator to work, $\varphi^\mathrm{d}$ needs to be an attainable equilibrium of the system - especially as we cannot control the behavior of the unactuated coordinates $\varphi_\mathrm{u}$. 
+
+% If the potential field is convex (i.e., $\frac{\partial^2}{\partial \varphi^2}  \mathcal{U}_\varphi(\varphi) \succ 0 \: \forall \varphi \in \mathbb{R}$) this controller is globally asymptotically stable - even with a deactivated feedback term $\tau_\mathrm{fb}(t,q,\dot{q})=0$. If this is not the case, the region of attraction can be increased, or the controller can even be made globally asymptotically stable by sufficiently increasing the proportional gains $K_\mathrm{p}$ of the feedback controller, which makes the robot stiffer.
+
+% \subsubsection{Setpoint Regulation with Gravity Cancellation and Compensation of Elastic Forces}
+% As stated previously, Eq.~\ref{eq:background:model_based_control:potential_shaping_regulation}, depending on the gravitational field and for low feedback gains, is only locally asymptotically stable 
+% \begin{equation}
+%     % \tau_\mathrm{mb}(t, q, \dot{q}) =  J_{\mathrm{h},\mathrm{M},\mathrm{a}}^{+\top}(q) \left ( G(q) + K(q) \right ),
+%     \tau_\mathrm{mb}(t, q, \dot{q}) = J_{\mathrm{h},\mathrm{M},\mathrm{a}}^{+\top}(q) \left ( \underbrace{G(q)}_\text{Cancel Gravity} + \underbrace{K(q^\mathrm{d})}_\text{Comp. Elasticity} \right )
+% \end{equation}
+% leading to the closed-loop dynamics
+% \begin{equation}
+%     M_\varphi(q) \, \ddot{\varphi} + \eta_\varphi(q,\dot{q}) \, \dot{q} + \begin{bmatrix}
+%         J_{\mathrm{h},\mathrm{M},\mathrm{a}}^{+\top}(q) \left ( K(q) - K(q^\mathrm{d}) \right )\\
+%         J_{\mathrm{h},\mathrm{M},\mathrm{u}}^{+\top}(q) \left ( K(q) + G(q)) \right )\\
+%     \end{bmatrix} + D_\varphi(q) \, \dot{q} = \begin{bmatrix}
+%         \tau_\mathrm{fb}(t, q, \dot{q})\\ 0_{n-m}
+%     \end{bmatrix}.
+% \end{equation}
+% \citet{pustina2022feedback} has 
+
+% \subsubsection{Trajectory Tracking with Compensation of Static Forces}
+% \begin{equation}
+%     \tau_\mathrm{mb}(t, q, \dot{q}) = M_{\varphi,\mathrm{a}}(q^\mathrm{d}) \, \ddot{\varphi}^\mathrm{d} + \eta_{\varphi,\mathrm{a}}(q^\mathrm{d},\dot{q}^\mathrm{d}) \, \dot{q}^\mathrm{d} + J_{\mathrm{h},\mathrm{M},\mathrm{a}}^{+\top}(q^\mathrm{d}) \left ( G(q^\mathrm{d}) + K(q^\mathrm{d}) + D \, \dot{q}^\mathrm{d} \right )
+% \end{equation}
+
+
+% \subsubsection{Trajectory Tracking with Cancellation of Static Forces}
+% \begin{equation}
+%     \tau_\mathrm{mb}(t, q, \dot{q}) = M_{\varphi,\mathrm{a}}(q) \, \ddot{\varphi}^\mathrm{d} + \eta_{\varphi,\mathrm{a}}(q,\dot{q}) \, \dot{q}^\mathrm{d} + J_{\mathrm{h},\mathrm{M},\mathrm{a}}^{+\top}(q) \left ( G(q) + K(q) \right ),
+% \end{equation}
+% leading to the closed-loop dynamics
+% \begin{equation}
+%     M_\varphi(q) \, \ddot{\varphi} + \begin{bmatrix}
         
-    \end{bmatrix} \eta_\varphi(q,\dot{q}) \, \dot{q} + \begin{bmatrix}
-        0_m\\ J_{\mathrm{h},\mathrm{M},\mathrm{u}}^{+\top}(q) \left ( G(q) + K(q) + D \, \dot{q} \right )
-    \end{bmatrix} = \begin{bmatrix}
-        \tau_\mathrm{fb}(t, q, \dot{q})\\ 0_{n-m}
-    \end{bmatrix}.
-\end{equation}
+%     \end{bmatrix} \eta_\varphi(q,\dot{q}) \, \dot{q} + \begin{bmatrix}
+%         0_m\\ J_{\mathrm{h},\mathrm{M},\mathrm{u}}^{+\top}(q) \left ( G(q) + K(q) + D \, \dot{q} \right )
+%     \end{bmatrix} = \begin{bmatrix}
+%         \tau_\mathrm{fb}(t, q, \dot{q})\\ 0_{n-m}
+%     \end{bmatrix}.
+% \end{equation}
 
 \subsection{Integrated Controllers}\label{sub:background:model_based_control:integrated_controllers}
 In the following, we will discuss some common closed-form model-based controllers that cannot (easily) be separated into a model-based term and a pure feedback term.
 For simplicity, we assume in the following the fully actuated case - i.e., $n=m$, $\varphi = \varphi_\mathrm{a}$, $M_{\varphi}(q) = M_{\varphi,\mathrm{a}}(q)$, etc.
 
+\subsubsection{P-satI-D+Potential Shaping}
+The \emph{P-satI-D+Potential Shaping} controller consists of \emph{P-satI-D} feedback term and the \emph{Setpoint Regulation with Feedforward Compensation} model-based term.
+As we frequently use this controller throughout this thesis, such as in Chapter~\ref{chp:hsacontrol} (underactuated version), and Chapter~\ref{chp:pcsregression} \& \ref{chp:con}, we will below specify the control law
+\begin{equation}
+\begin{split}
+    \tau(t,q,\dot{q}) =& \: \underbrace{A^{-1} \, \left ( G(q^\mathrm{d}) + K(q^\mathrm{d}) \right )}_\text{Model-Based Feedforward}\\
+    & \: + \underbrace{K_\mathrm{p} \left (\varphi^\mathrm{d}(t) - \varphi(t) \right ) + K_\mathrm{d} \left ( \dot{\varphi}^\mathrm{d}(t) - \dot{\varphi}(t) \right ) + K_\mathrm{i} \int_0^t \tanh \left ( \gamma \, ( \varphi^\mathrm{d}(t')-\varphi(t') ) \right ) \: \mathrm{d} t'}_\text{Model-Free Feedback Term: P-satI-D},
+\end{split}
+\end{equation}
+which generates the closed-loop dynamics
+\begin{equation}
+\begin{split}
+    M_\varphi(q) \, \ddot{\varphi} + \eta_\varphi(q,\dot{q}) \, \dot{\varphi} + A^{-1} \left ( G(q) + K(q) - G(q^\mathrm{d}) - K(q^\mathrm{d}) \right ) + D_\varphi \, \dot{\varphi}\\
+    + K_\mathrm{p} \left (\varphi(t) - \varphi^\mathrm{d}(t) \right ) + K_\mathrm{d} \left ( \dot{\varphi}(t) - \dot{\varphi}^\mathrm{d}(t) \right ) + K_\mathrm{i} \int_0^t \tanh \left ( \gamma \, ( \varphi(t')-\varphi^\mathrm{d}(t') ) \right ) \: \mathrm{d} t' = 0_n,
+\end{split}
+\end{equation}
+where we assume a constant actuation matrix $A(q) = A$.
+
+% In case of linear elasticity $K(q) = S \, q$, the closed loop dynamics simplify to 
+
 \subsubsection{Feedback Linearization via Computed Torque}
 The idea behind (full) feedback linearization~\citep{slotine1987on, spong2020robot} is to 
 cancel the existing dynamics of the robot and ensure that the closed-loop system exhibits linear dynamics - usually established via a PD term. A computed torque controller for soft robots exhibits the form
 \begin{equation}\small
-    \tau(t,q,\dot{q}) = M_{\varphi}(q) \, \left (K_\mathrm{p} \left (\varphi^\mathrm{d} - \varphi \right ) + K_\mathrm{d} \left (\dot{\varphi}^\mathrm{d} - \dot{\varphi} \right ) + \ddot{\varphi}^\mathrm{d}\right ) + \eta_{\varphi}(q,\dot{q}) \, \dot{q} + J_{\mathrm{h},\mathrm{M}}^{+\top}(q) \left ( G(q) + K(q) + D \, \dot{q} \right ),
+    \tau(t,q,\dot{q}) = M_{\varphi}(q) \, \left (K_\mathrm{p} \left (\varphi^\mathrm{d} - \varphi \right ) + K_\mathrm{d} \left (\dot{\varphi}^\mathrm{d} - \dot{\varphi} \right ) + \ddot{\varphi}^\mathrm{d}\right ) + \left ( \eta_{\varphi}(q,\dot{q}) + D_\varphi(q) \right ) \, \dot{\varphi} + A^{-1}(q) \left ( G(q) + K(q) \right ),
 \end{equation}
 where $K_\mathrm{p}, K_\mathrm{d} \in \mathbb{R}^{m \times m}$ are proportional and derivative control gains for tracking the desired actuation coordinate and actuation velocity, respectively. 
 The closed-loop dynamics read as

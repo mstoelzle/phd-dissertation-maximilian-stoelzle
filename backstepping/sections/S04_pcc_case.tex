@@ -3,7 +3,7 @@
 This section provides an example of the application of the proposed model augmentation and model-based control strategy for the setpoint regulation of a pneumatically actuated planar soft robot, modeled through \gls{PCC} approximation with acting gravity forces. 
 
 \subsection{Model}\label{sub:backstepping:pcc_model}
-\subsubection{Background: PCC Dynamic Model}
+\subsubsection{Background: PCC Dynamic Model}
 We consider a planar soft robotic arm consisting of three segments analog to \citep{della2020model} modeled using the \gls{PCC}~\citep{jones2006kinematics} assumption, but the formulation can be easily extended to the 3D case while neglecting the torsional deformations. Alternatively, a strain-based parameterization could be employed~\citep{boyer2020dynamics}. 
 % The \gls{PCC}~\citep{jones2006kinematics} assumption stitches together segments each with constant curvature.
 We assume a weight distribution of $m_i = \int_{0}^{l_i} \rho_i(s') ds'$ along the center line of the segment $i$. Gravity is acting along the vector $g \in \mathbb{R}^2$. We consider the following equations of motions with diagonal matrices $K$ and $D$:

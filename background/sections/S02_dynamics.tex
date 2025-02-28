@@ -18,11 +18,12 @@ Regardless of the chosen kinematic parameterization, the \glspl{EOM} for a soft 
 \begin{equation}\label{eq:background:dynamics:eom}
 M(q) , \ddot{q} + C(q, \dot{q}) , \dot{q} + K(q) + G(q) + D \, \dot{q} = \alpha(q,\tau) = A(q) , \tau,
 \end{equation}
-where the mass matrix $M(q) \succ 0 \in \mathbb{R}^{n \times n}$ represents the robot’s inertia, $C(q,\dot{q}) \in \mathbb{R}^{n \times n}$ accounts for Coriolis and centrifugal effects, $K(q)$ and $G(q)$ (in $\mathbb{R}^{n}$) correspond to elastic and gravitational forces, respectively, and $D \succeq 0$ is the damping matrix. This model shares properties with traditional rigid robot dynamics, such as the skew-symmetry of $\dot{M}(q) - 2 , C(q,\dot{q})$, provided that $C(q,\dot{q})$ is defined using Christoffel symbols~\citep{della2020model}.
+where the mass matrix $M(q) \succ 0 \in \mathbb{R}^{n \times n}$ represents the robot’s inertia, $C(q,\dot{q}) \in \mathbb{R}^{n \times n}$ accounts for Coriolis and centrifugal effects, $K(q)$ and $G(q)$ (in $\mathbb{R}^{n}$) correspond to elastic and gravitational forces, respectively, and $D \succ 0$ is the damping matrix. This model shares properties with traditional rigid robot dynamics, such as the skew-symmetry of $\dot{M}(q) - 2 , C(q,\dot{q})$, provided that $C(q,\dot{q})$ is defined using Christoffel symbols~\citep{della2020model}.
 
-We assume that the soft robot is actuated by $m$ actuators via the mapping $\alpha: q \times \tau \mapsto A(q) , \tau$, where $A(q) \in \mathbb{R}^{n \times m}$. \footnote{While this control-affine formulation with a configuration-dependent actuation matrix $A(q)$ captures the characteristics of most existing soft robot actuation methods—such as pneumatic or tendon-driven actuation—the actuation can also be represented as a more general nonlinear function $\alpha(q,\tau)$, as is the case for the \gls{HSA} robot actuation model presented in Chapter~\ref{chp:hsamodel}. Furthermore, when accounting for actuator dynamics, as discussed in Chapter~\ref{chp:backstepping} for pneumatic pistons, the generalized actuation torque may also depend on the actuator’s state $(\mu,\dot{\mu})$.} Depending on the relationship between $n$ and $m$, if $n=m$, the robot is fully actuated; if $n < m$ (which is less common), it is considered overactuated~\citep{pustina2024input}; and if $n > m$, the soft robot is regarded as underactuated~\citep{pustina2025analysis}.
+We assume that the soft robot is actuated by $m$ actuators via the mapping $\alpha: q \times \tau \mapsto A(q) , \tau$, where $A(q) \in \mathbb{R}^{n \times m}$\footnote{While this control-affine formulation with a configuration-dependent actuation matrix $A(q)$ captures the characteristics of most existing soft robot actuation methods—such as pneumatic or tendon-driven actuation—the actuation can also be represented as a more general nonlinear function $\alpha(q,\tau)$, as is the case for the \gls{HSA} robot actuation model presented in Chapter~\ref{chp:hsamodel}. Furthermore, when accounting for actuator dynamics, as discussed in Chapter~\ref{chp:backstepping} for pneumatic pistons, the generalized actuation torque may also depend on the actuator’s state $(\mu,\dot{\mu})$.}. 
+Depending on the relationship between $n$ and $m$, if $n=m$, the robot is fully actuated; if $n < m$ (which is less common), it is considered overactuated~\citep{pustina2024input}; and if $n > m$, the soft robot is regarded as underactuated~\citep{pustina2025analysis}.
 
-\subsection{Formulation as an Ordinary Differential Equation (ODE)}
+\subsection{Formulation as a First-Order Ordinary Differential Equation (ODE)}
 After defining the state of the soft robot as $y = \begin{bmatrix}
     q^\top & \dot{q}^\top
 \end{bmatrix}^\top \in \mathbb{R}^{2n}$, Eq.~\ref{eq:background:dynamics:eom} can be expressed as a control-affine \gls{ODE} in nonlinear state-space representation:
@@ -93,7 +94,7 @@ First, we introduce the additional null space velocities defined as $\nu_\mathrm
         N(q)
     \end{bmatrix} \, \dot{q},
 \end{equation}
-where for the Nullspace Base matrix $Z(q) \in \mathbb{R}^{(n-o) \times n}$ we define~\citep{ott2008cartesian}
+where for the nullspace base matrix $Z(q) \in \mathbb{R}^{(n-o) \times n}$ we define~\citep{ott2008cartesian}
 \begin{equation}
     N(q) = \left ( Z(q) \, M(q) \, Z(q)^\top \right )^{-1} \, Z(q) \, M(q).
 \end{equation}
@@ -167,9 +168,11 @@ Furthermore, the null space inertia $\Lambda_\mathrm{n}(q)$ is defined as~\citep
 \subsection{Actuation Space Dynamics}\label{sub:background:dynamics:actuation_space}
 % \citet{pustina2024input} showed that it is often possible to directly formulate the dynamics in actuation coordinates $\varphi \in \mathbb{R}^n$ where the actuation force $\tau$ directly acts on the first $m$ actuation coordinates through an identity matrix. This is particularly interesting for control applications as it allows us to very easily map a control input devised in the generalized (collocated) coordinates into an actuation $\tau$, but it can, in the future, also find use in other applications such as inverse kinematics~\citep{della2025pushing} or workspace estimation. As this mapping into collocated form is particularly useful in the underactuated setting, as later demonstrated in Chapter~\ref{chp:hsacontrol}, we will in the following focus on the setting $m \leq n$.
 \citet{pustina2024input} demonstrated that it is often feasible to directly formulate the dynamics in actuation coordinates $\varphi \in \mathbb{R}^n$, where the actuation force $\tau$ acts directly on the first $m$ actuation coordinates via an identity matrix. This feature is especially appealing for control applications because it enables a straightforward mapping of a control input devised in the generalized (collocated) coordinates into an actuation $\tau$. Moreover, this approach may also be in the future useful in other applications such as inverse kinematics~\citep{della2025pushing} or workspace estimation. Since this collocated mapping is particularly beneficial in underactuated settings, as later demonstrated in Chapter~\ref{chp:hsacontrol}, we focus on the case $m \leq n$, which includes both fully actuated and underactuated systems.
+In the following, we will assume for the actuation matrix $A(q)$ to be full-rank (i.e., $\mathrm{rank}(A) = m$).
 
 According to \citet{pustina2024input}, there exists a transformation into collocated form when there is a function $g(q): \mathbb{R}^n \mapsto \mathbb{R}^m$ such that $\frac{\partial g}{\partial q} = A^\top (q),$
 which is referred to as \emph{integrability assumption}. In practice, as shown in Sec.~\ref{sec:hsacontrol:configuration_space_regulation}), this mapping $g(q)$ is found by solving the integral $g(q) = \int_0^t \dot{q}(t')^\top \, A(q') \, \mathrm{d} t'$.
+If $A(q)$ is constant, the mapping is given by $g(q) = A^\top q$~\citep{pustina2024input}.
 If $m < n$, we stress that the coordinates given by $g(q)$ would not be sufficient to fully describe the dynamics of the system as there would exist a null space of dimensionality $n - m$. Therefore, we can choose which  $n-m$ coordinates from the original configuration space to keep. For example, the following transformation into actuation coordinates would be valid for a given $g(q)$~\citep{pustina2024input}
 \begin{equation}
     \varphi = \begin{bmatrix}
@@ -181,7 +184,7 @@ If $m < n$, we stress that the coordinates given by $g(q)$ would not be sufficie
         0_{(n-m) \times m} & \mathbb{I}_{n-m}
     \end{bmatrix} \, q,
 \end{equation}
-where $\varphi_\mathrm{a} \in \mathbb{R}^m$ and $\varphi_\mathrm{u} \in \mathbb{R}^{n-m}$ refer to the actuated and unactuated actuation coordinates, respectively, and the function $h(q): \mathbb{R}^{n} \to \mathbb{R}^n$ maps from configuration space into collocated form. $J_\mathrm{h}(q)$ is its associated Jacobian defined as
+where $\varphi_\mathrm{a} \in \mathbb{R}^m$ and $\varphi_\mathrm{u} \in \mathbb{R}^{n-m}$ refer to the actuated and unactuated actuation coordinates, respectively, and the function $h(q): \mathbb{R}^{n} \to \mathbb{R}^n$ maps from configuration space into collocated form. $J_\mathrm{h}(q)$ is its associated Jacobian, and it is defined together with its inverse\footnote{We assume in this Chapter for $J_\mathrm{h}(q)$ to be either invertible for all $q \in \mathbb{R}^{n}$ or at least in the relevant workspace $q \in \mathcal{Q}$ of the soft robot.}
 \begin{equation}
     J_\mathrm{h}(q) = \frac{\partial h(q)}{\partial q} = \begin{bmatrix}
         A_\mathrm{a}^\top(q) & A_\mathrm{u}^\top(q)\\
@@ -198,7 +201,7 @@ and $A_\mathrm{a}(q) \in \mathbb{R}^{m \times m}$, $A_\mathrm{u}(q) \in \mathbb{
 \end{bmatrix}$.
 The dynamics in actuation coordinates are then given by
 \begin{equation}
-    M_\varphi(q) \, \ddot{\varphi} + \eta_\varphi(q,\dot{q}) \, \dot{q} + J_{\mathrm{h},\mathrm{M}}^{+\top}(q) \left ( G(q) + K(q) + D \, \dot{q} \right ) = \begin{bmatrix}
+    M_\varphi(q) \, \ddot{\varphi} + \eta_\varphi(q,\dot{q}) \, \dot{\varphi} + J_{\mathrm{h},\mathrm{M}}^{+\top}(q) \left ( G(q) + K(q) + D \, \dot{q} \right ) = \begin{bmatrix}
         \tau\\ 0_{n-m}
     \end{bmatrix}
 \end{equation}
@@ -216,16 +219,12 @@ $J_{\mathrm{h},\mathrm{M}}^{+\top}(q) \in \mathbb{R}^{n \times n}$ is the dynami
     \end{bmatrix} = \begin{bmatrix}
         J_{\mathrm{h},\mathrm{a}}^{-\top}(q)\\
         J_{\mathrm{h},\mathrm{u}}^{-\top}(q)
-    \end{bmatrix}
+    \end{bmatrix},
 \end{split}
-\end{equation}
-which, in the case of \emph{full actuation} (i.e., $n=m$), simplifies to
-\begin{equation}
-    J_{\mathrm{h},\mathrm{M}}^{+\top}(q) = A^{-\top}(q) \in \mathbb{R}^{n \times n},
 \end{equation}
 $\eta_\varphi(q,\dot{q})$ captures the Coriolis and centrifugal effects
 \begin{equation}
-    \eta_\varphi(q, \dot{q}) = M_\varphi(q) \, \left ( J_\mathrm{h}(q) \, M^{-1}(q) \, C(q,\dot{q}) - \dot{J}_\mathrm{h}(q,\dot{q})) \right ) \in \mathbb{R}^{n \times n}.
+    \eta_\varphi(q, \dot{q}) = M_\varphi(q) \, \left ( J_\mathrm{h}(q) \, M^{-1}(q) \, C(q,\dot{q}) - \dot{J}_\mathrm{h}(q,\dot{q})) \right ) \, J_\mathrm{h}^{-1}(q) \in \mathbb{R}^{n \times n}.
 \end{equation}
 Crucially, we now notice in Eq.~\ref{eq:background:dynamics:eom_actuation_coordinates} how $\tau$ directly acts via an identity actuation matrix on the first $m$ actuation coordinates.
 %
@@ -236,7 +235,7 @@ We can partition the dynamics of Eq.~\ref{eq:background:dynamics:eom_actuation_c
         M_{\varphi,\mathrm{u}}(q)
     \end{bmatrix} \, \ddot{\varphi} + \begin{bmatrix}
         \eta_{\varphi,\mathrm{a}}(q,\dot{q})\\ \eta_{\varphi,\mathrm{u}}(q,\dot{q})
-    \end{bmatrix} \, \dot{q} + \underbrace{\begin{bmatrix}
+    \end{bmatrix} \, \dot{\varphi} + \underbrace{\begin{bmatrix}
         A_\mathrm{a}^{-1}(q) & 0_{m \times (n-m)}\\
         -A_\mathrm{u}(q) \, A_\mathrm{a}^{-1}(q) & \mathbb{I}_{n-m}
     \end{bmatrix}}_{J_\mathrm{h}^{-\top}(q)} \left ( \begin{bmatrix}
@@ -250,7 +249,7 @@ We can partition the dynamics of Eq.~\ref{eq:background:dynamics:eom_actuation_c
         \tau\\ 0_{n-m}
     \end{bmatrix},
 \end{equation}
-where $\eta_{\varphi,\mathrm{a}}(q,\dot{q}), J_{\mathrm{h},\mathrm{a}}^{-\top}(q) \in \mathbb{R}^{m \times n}$, $\eta_{\varphi,\mathrm{u}}(q,\dot{q}), J_{\mathrm{h},\mathrm{u}}^{-\top}(q) \in \mathbb{R}^{(n-m) \times n}$, $M_{\varphi,\mathrm{aa}}(q) \in \mathbb{R}^{m \times m}$, $M_{\varphi,\mathrm{uu}}(q) \in \mathbb{R}^{(n-m) \times (n-m)}$, and $M_{\varphi,\mathrm{ua}}(q) \in \mathbb{R}^{(n-m) \times m}$, and $M_{\varphi,\mathrm{au}}(q) \in \mathbb{R}^{m \times (n-m)}$.
+where $G_\mathrm{a}(q), K_\mathrm{a}(q) \in \mathbb{R}^{m}$, $G_\mathrm{u}(q), K_\mathrm{u}(q) \in \mathbb{R}^{n-m}$, and $D_\mathrm{aa} \in \mathbb{R}^{m \times m}$, $D_\mathrm{au} \in \mathbb{R}^{m \times (n-m)}$, $D_\mathrm{ua} \in \mathbb{R}^{(n-m) \times m}$, $D_\mathrm{uu} \in \mathbb{R}^{(n-m) \times (n-m)}$.
 We can simplify the expression while leveraging the structure of $J_\mathrm{h}^{-\top}$
 \begin{equation}\footnotesize
     \begin{bmatrix}
@@ -258,23 +257,27 @@ We can simplify the expression while leveraging the structure of $J_\mathrm{h}^{
         M_{\varphi,\mathrm{ua}}(q) & M_{\varphi,\mathrm{uu}}(q)
     \end{bmatrix} \, \ddot{\varphi} + \begin{bmatrix}
         \eta_{\varphi,\mathrm{a}}(q,\dot{q})\\ \eta_{\varphi,\mathrm{u}}(q,\dot{q})
-    \end{bmatrix} \, \dot{q} + \begin{bmatrix}
+    \end{bmatrix} \, \dot{\varphi} + \begin{bmatrix}
         A_\mathrm{a}^{-1}(q) \left ( G_\mathrm{a}(q) + K_\mathrm{a}(q) \right )\\
         -A_\mathrm{u}(q) \, A_\mathrm{a}^{-1}(q) \left ( G_\mathrm{a}(q) + K_\mathrm{a}(q) \right ) + G_\mathrm{u}(q) + K_\mathrm{u}(q)
     \end{bmatrix} + \underbrace{\begin{bmatrix}
         D_{\varphi,\mathrm{a}}(q)\\
         D_{\varphi,\mathrm{u}}(q)
-    \end{bmatrix}}_{D_\varphi(q)} \, \dot{q} = \begin{bmatrix}
+    \end{bmatrix}}_{D_\varphi(q)} \, \dot{\varphi} = \begin{bmatrix}
         \tau\\ 0_{n-m}
     \end{bmatrix},
 \end{equation}
-where $D_{\varphi}(q) \in \mathbb{R}^{n \times n}$ the damping matrix in actuation coordinates
-\begin{equation}
-    D_{\varphi}(q) = \begin{bmatrix}
-         A_\mathrm{a}^{-1}(q) \, D_\mathrm{aa} & A_\mathrm{a}^{-1}(q) \,  D_\mathrm{ua}\\
-         -A_\mathrm{u}(q) \, A_\mathrm{a}^{-1}(q) \, D_\mathrm{aa} + D_\mathrm{au} & -A_\mathrm{u}(q) \, A_\mathrm{a}^{-1}(q) \, D_\mathrm{ua} + D_\mathrm{uu}
-    \end{bmatrix}.
+where $D_{\varphi}(q) \succ 0 \in \mathbb{R}^{n \times n}$ is the damping matrix in actuation coordinates\footnote{As $D \succ 0$ and $\mathrm{rank}(J_\mathrm{h}^{-1}(q)) = n \: \forall q \in \mathcal{Q} $, we can conclude that $D_{\varphi}(q) \succ 0 \: \forall q \in \mathcal{Q}$, which will be crucial for the stability proof of many controllers.}
+\begin{equation}\small
+\begin{split}
+    D_{\varphi}(q) =& \: J_\mathrm{h}^{-\top}(q) \, D \, J_\mathrm{h}^{-1}(q) \succ 0,\\
+    =& \:  \begin{bmatrix}
+         A_\mathrm{a}^{-1}(q) \, D_\mathrm{aa} \, A_\mathrm{a}^{-\top}(q) & -A_\mathrm{a}^{-1}(q) \, D_\mathrm{aa} \, A_\mathrm{a}^{-\top}(q) \, A_\mathrm{u}^\top(q) + A_\mathrm{a}^{-1}(q) \,  D_\mathrm{ua}\\
+         -A_\mathrm{u}(q) \, A_\mathrm{a}^{-1}(q) \, D_\mathrm{aa} \, A_\mathrm{a}^{-\top}(q) + D_\mathrm{au} \, A_\mathrm{a}^{-\top}(q) & -A_\mathrm{u}(q) \, A_\mathrm{a}^{-1}(q) \, D_\mathrm{ua} + D_\mathrm{uu}
+    \end{bmatrix},
+\end{split}
 \end{equation}
+$\eta_{\varphi,\mathrm{a}}(q,\dot{q}) \in \mathbb{R}^{m \times n}$, $\eta_{\varphi,\mathrm{u}}(q,\dot{q}) \in \mathbb{R}^{(n-m) \times n}$, $M_{\varphi,\mathrm{aa}}(q) \in \mathbb{R}^{m \times m}$, $M_{\varphi,\mathrm{uu}}(q) \in \mathbb{R}^{(n-m) \times (n-m)}$, and $M_{\varphi,\mathrm{ua}}(q) \in \mathbb{R}^{(n-m) \times m}$, and $M_{\varphi,\mathrm{au}}(q) \in \mathbb{R}^{m \times (n-m)}$.
 
 Assuming access to the inverse map $q = h^{-1}(\varphi)$, we can also directly map the potential and kinetic energy of the system into the new coordinates:
 \begin{equation}
@@ -289,17 +292,46 @@ Therefore, we can write the dynamics equivalently as
         M_{\varphi,\mathrm{ua}}(q) & M_{\varphi,\mathrm{uu}}(q)
     \end{bmatrix} \, \ddot{\varphi} + \begin{bmatrix}
         \eta_{\varphi,\mathrm{a}}(q,\dot{q})\\ \eta_{\varphi,\mathrm{u}}(q,\dot{q})
-    \end{bmatrix} \, \dot{q} + \begin{bmatrix}
+    \end{bmatrix} \, \dot{\varphi} + \begin{bmatrix}
         \partial_{\varphi_\mathrm{a}} \mathcal{U}_\varphi(q)\\
         \partial_{\varphi_\mathrm{u}} \mathcal{U}_\varphi(q)
     \end{bmatrix} + \begin{bmatrix}
         D_{\varphi,\mathrm{a}}(q)\\
         D_{\varphi,\mathrm{u}}(q)
-    \end{bmatrix} \dot{q} = \begin{bmatrix}
+    \end{bmatrix} \dot{\varphi} = \begin{bmatrix}
         \tau\\ 0_{n-m}
     \end{bmatrix},
 \end{equation}
 with $\partial_\varphi \mathcal{U}(\varphi) = \frac{\partial }{\partial \varphi}  \mathcal{U}_\varphi(\varphi) \in \mathbb{R}^n$ the potential forces.
+
+\subsubsection{Fully Actuated Dynamics}
+Here, we note some expressions of the actuation space dynamics in the fully-actuated case (i.e., $n=m$).
+For example, we can observe that
+\begin{equation}
+    J_\mathrm{h}(q) = A^\top(q) \in \mathbb{R}^{n \times n},
+    \qquad
+    J_\mathrm{h}^{-1}(q) = A^{-\top}(q),
+    \qquad
+    J_{\mathrm{h},\mathrm{M}}^{+\top}(q) = J_\mathrm{h}^{-\top}(q) = A^{-1}(q),
+\end{equation}
+which leads to the actuation space dynamics
+\begin{equation}\small
+    \underbrace{A^{-1}(q) \, M(q) \, A^{-\top}(q)}_{M_\varphi(q) \succ 0} \, \ddot{\varphi} + n_\varphi(q,\dot{q}) \, \dot{\varphi} + A^{-1}(q) \left ( G(q) + K(q) \right ) + \underbrace{A^{-1} (q) \, D \, A^{-\top} (q)}_{D_\varphi(q) \succ 0} \, \dot{\varphi} = \tau,
+\end{equation}
+where
+\begin{equation}
+    n_\varphi(q,\dot{q}) = A^{-1}(q) \, C(q,\dot{q}) \, A^{-\top}(q) - A^{-1}(q) \, M(q) \, A^{-\top}(q) \, \dot{A}^\top(q) \, A^{-\top} (q).
+\end{equation}
+
+\paragraph{Constant Actuation Matrix.} In the case of a constant actuation matrix $A(q) = A$, the map $h(q)$ is now given by $\varphi = A^\top q$, which renders the damping matrix to not be configuration-dependent anymore: $D_\varphi \succ 0$. Furthermore, the actuation space Coriolis matrix simplifies to
+\begin{equation}
+    \eta_\varphi(q,\dot{q}) = A^{-1} \, C(q,\dot{q}) \, A^{-\top}.
+\end{equation}
+Finally, in case of linear elasticity $K(q) = S \, q$, we can define
+\begin{equation}
+    K_\varphi(\varphi) = \underbrace{A^{-1} \, S \, A^{-\top}}_{S_\varphi} \, \varphi = S_\varphi \, \varphi,
+\end{equation}
+where $S_\varphi \succ 0$ if $S \succ 0$.
 
 \subsubsection{End-to-End Mapping from Actuation into Task Space}
 At least in the fully-actuated case with a square matrix $A(q)$, which we additionally also assume to be invertible, we can formulate an end-to-end mapping of velocities and forces between actuation and task space.
