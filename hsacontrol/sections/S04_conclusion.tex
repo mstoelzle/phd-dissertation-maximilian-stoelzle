@@ -1,5 +1,5 @@
 \section{Experimental Insights}
-This chapter presented two strategies for effective, model-based regulation of planar \gls{HSA} robots: the first proposes a configuration-space controller in conjunction with steady-state planning for mapping task-space setpoints to configuration-space setpoints, and the second introduces a task-space impedance controller.
+This chapter presented two strategies for effective, model-based regulation of planar \gls{HSA} robots: the first proposes a configuration-space controller in conjunction with steady-state planning for mapping task-space setpoints to configuration-space setpoints, and the second introduces a operational space impedance controller.
 
 \subsection{Configuration Space Regulation}
 
@@ -11,7 +11,7 @@ As clearly seen in Fig.~\ref{fig:hsacontrol:experimental_results:configuration_s
 In particular, for small to medium bending and axial strains, we observe a very good agreement between the model and the actual system behavior and, therefore, excellent control performance. 
 The story slightly changes for more significant bend and twist angles. While the system identification showed that the expressiveness of the model was sufficient, we saw significant errors in our feedforward terms in some of our control experiments, which needed to be compensated by the P-satI-D feedback controller. Precisely, Fig.~\ref{fig:hsacontrol:experimental_results:configuration_space_regulation:fpu:p_sati_d:q} displays errors in the planned shear strain, which subsequently also leads to minor steady-state deviations in the x-coordinate of the end-effector as it can be seen in Fig.~\ref{fig:hsacontrol:experimental_results:configuration_space_regulation:fpu:p_sati_d:pee}. We hypothesize that these errors are mainly caused by the hysteresis characteristics of the \glspl{HSA}~\citep{good2022expanding}. This hypothesis is corroborated by the fact that we had to re-calibrate the axial rest strain $\sigma_\mathrm{ax}^0$ before the start of each experiment.
 
-\subsection{Task Space Impedance Control}
-The Cartesian impedance controller, on the other hand, is designed to regulate the end-effector position directly and allows us to shape the impedance in task space and, with that, fully preserve the softness of the robot.
+\subsection{Operational Space Impedance Control}
+The Cartesian impedance controller, on the other hand, is designed to regulate the end-effector position directly and allows us to shape the impedance in operational space and, with that, fully preserve the softness of the robot.
 It is, therefore, particularly suitable for applications where the robot interacts with the environment. For example, we will in Chapter~\ref{chp:braincontrol} demonstrate how the impedance controller can be combined with motor-imagery brain signals to guide the robot towards a desired position and how the impedance controller guarantees safety even when the setpoints are wrongly planned.
 This impedance needs to be traded off with steady-state errors. We observed that the impedance controller is particularly sensitive to the model errors, as it does not have an integral term to compensate for them.
