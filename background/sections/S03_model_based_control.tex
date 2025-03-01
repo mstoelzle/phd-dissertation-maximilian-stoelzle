@@ -2,14 +2,15 @@
 % In this section, we review existing model-based controllers for soft robots whose control law is available in closed form.
 % Many of these control approaches appear at various points throughout the thesis, such as the P-satI-D+potential shaping controller in Section~\ref{sec:hsacontrol:configuration_space_regulation} and Chapter~\ref{chp:pcsregression} \& \ref{chp:con}, the PD+ controller in a version additionally also considering the actuator dynamics via backstepping in Chapter~\ref{chp:backstepping} and the operational space impedance controller in Section~\ref{sec:hsacontrol:operational_space_impedance_control}.
 % This section only contains a top-level discussion of the most common closed-form model-based control laws that have been developed for soft robots. For a more detailed discussion of the controllers, including stability proofs using Lyapunov arguments, we point the interested reader to the respective publications~\citep{della2020model, pustina2022feedback, pustina2022p, borja2022energy, della2023model}. For an in-depth study of the control of underactuated soft robots, we recommend \citet{pustina2025analysis}.
-In this section, we review closed-form controllers for soft robots that can leverage advanced nonlinear models\footnote{Please note that this excludes approaches relying on linear/linearized models such as \gls{LQR} and that model-based controllers that are not available in closed-form, such as \gls{MPC}, are out of scope of this thesis.}. Many of these approaches appear throughout the thesis, such as the P-satI-D+potential shaping controller in Section~\ref{sec:hsacontrol:configuration_space_regulation} and Chapters~\ref{chp:pcsregression} and \ref{chp:con}, the PD+ controller—augmented with backstepping to consider actuator dynamics—in Chapter~\ref{chp:backstepping}, and the operational space impedance controller in Section~\ref{sec:hsacontrol:operational_space_impedance_control}. This section provides a high-level overview of the most common closed-form model-based control laws developed for soft robots. For a more detailed discussion of these controllers, including Lyapunov-based stability proofs, interested readers should consult the respective publications~\citep{della2020model, pustina2022feedback, pustina2022p, borja2022energy, della2023model}. For an in-depth study of controlling underactuated soft robots, we recommend \citet{pustina2025analysis}.
+In this section, we review closed-form controllers for soft robots that can leverage advanced nonlinear models\footnote{Please note that this excludes approaches relying on linear/linearized models such as \gls{LQR} and that model-based controllers that are not available in closed-form, such as \gls{MPC}, are out of scope of this thesis.}. Many of these approaches appear throughout the thesis, such as the P-satI-D+potential shaping controller in Section~\ref{sec:hsacontrol:configuration_space_regulation} and Chapters~\ref{chp:pcsregression} and \ref{chp:con}, the PD+ controller—augmented with backstepping to consider actuator dynamics—in Chapter~\ref{chp:backstepping}, and the operational space impedance controller in Section~\ref{sec:hsacontrol:operational_space_impedance_control}. This section provides a high-level overview of the most common closed-form model-based control laws developed for soft robots. For a more detailed discussion of these controllers, including Lyapunov-based stability proofs, interested readers should consult the respective publications~\citep{della2020model, pustina2022feedback, pustina2022p, borja2022energy, della2023model}. For an in-depth study of controlling underactuated soft robots, we recommend the thesis by \citet{pustina2025analysis}.
 
-\textcolor{red}{TODO: \begin{itemize}
-    \item Better organize and rename the section heading
-    \item Add comment on why we state the controllers in actuation coordinates. Clearly state the limitations of this, such as the lack of mapping into actuation coordinates for some actuation matrices, the possible stability issues, and the lack of experimental verification.
-    \item actuated rows of EOM matrices
-    \item verify controllers with trajectory tracking paper from Rizello's group
-\end{itemize}}
+% Differently from most of the existing literature that formulates the controllers in configuration space~\cite{della2020model, della2023model, caasenbrood2021energy}, we formulate most control laws directly in actuation space. The reason for that is that even for fully actuated soft robots (i.e., where the number of configuration variables is equal to the number of actuators), it greatly simplifies the design and convergence analysis of controllers, specifically for configuration-dependent actuation matrices $A(q)$, which are widespread, for example for tendon-driven soft robots.
+% The limitation of this strategy is that a mapping into actuation coordinates needs to be found in order to formulate the dynamics in actuation space, which we have shown in Section~\ref{sub:background:dynamics:actuation_space}.
+% Furthermore, the experimental verification of actuation-space controllers is currently very limited~\citep{pustina2025analysis, stolzle2024experimental}.
+Unlike much of the existing literature, which formulates controllers in configuration space~\cite{della2020model, della2023model, caasenbrood2021energy}, we develop most control laws directly in actuation space. This approach simplifies both the design and convergence analysis of controllers—even for fully actuated soft robots, where the number of configuration variables equals the number of actuators—especially when dealing with configuration-dependent actuation matrices $A(q)$ that are common in tendon-driven soft robots. 
+% The limitation of this strategy is that a mapping into actuation coordinates needs to be found in order to formulate the dynamics in actuation space, which we have shown in Section~\ref{sub:background:dynamics:actuation_space}.
+% Furthermore, the experimental verification of actuation-space controllers is currently very limited~\citep{pustina2025analysis, stolzle2024experimental}.
+The limitation of this strategy is that it requires establishing a mapping into actuation coordinates to formulate the dynamics in actuation space, as shown in Section~\ref{sub:background:dynamics:actuation_space}, which might not always possible. Additionally, experimental validation of actuation-space controllers remains very limited~\citep{pustina2025analysis, stolzle2024experimental}.
 
 \subsection{Preliminaries}
 % For simplicity, we refer in the following to the fully actuated case and specifically the case of an identified actuation matrix $A = \mathbb{I}_n$.
@@ -43,7 +44,7 @@ Note that these motion references—whether setpoints or trajectories—can be s
 When designing a model-based controller, we often balance several, sometimes conflicting, objectives. The following section outlines a selection of these criteria, enabling a comparison of the tradeoffs between various model-based controllers.
 
 \begin{itemize}
-    \item \textbf{Control Frequency/Computational Complexity/.} 
+    \item \textbf{Control Frequency/Computational Complexity.} 
     % In this thesis, we strive for the control law to be available in closed form, which significantly increases the computational efficiency compared to, for example, optimization-based approaches and allows for higher control frequencies, which improves performance and reduces the risk of instability for feedback controllers. When a closed-form control law is available, the computational complexity comes down to (a) the model complexity and (b) which terms of the models need to be evaluated for the controller. For example, a potential shaping controller only requiring access to the potential forces is computationally more efficient than a computed torque controller that requires evaluation of all dynamical matrices within the \glspl{EOM}. 
     In this thesis, we aim to derive a control law in closed form, which greatly enhances computational efficiency compared to, for example, optimization-based methods and supports higher control frequencies. This improvement not only boosts performance but also reduces the risk of instability in feedback controllers. When a closed-form control law is available, the computational complexity is determined by (a) the complexity of the model and (b) the specific model terms that must be evaluated for the controller. For instance, a potential shaping controller, which requires only knowledge about the potential forces, is computationally more efficient than a computed torque controller that necessitates evaluating all the dynamical matrices within the \glspl{EOM}.
     % \item \textbf{Stability.} Generally, we strive for exponential global asymptotic stability of the closed-loop system. This is best illustrated in the setpoint regulation scenarios, where we strive for it to converge to a given setpoint. In the case of \gls{GAS}, no matter with which state the system is initialized, it will always converge to the setpoint with an exponential rate of convergence~\citep{khalil2002nonlinear}. If exponential convergence is not possible, we strive for asymptotic stability, which still guarantees convergence but while losing lower bounds on the rate of convergence rates. In case the controller is not able to achieve \gls{GAS}, we at least strive to guarantee local asymptotic stability around the setpoint. This means that when the system state is initialized within a region of attraction around the setpoint, it will stabilize the system around this local attractive equilibrium of the system, and the system will converge to this setpoint. However, the system might exhibit other stable or unstable equilibria, which means that if the system is initialized outside the region of attraction of the setpoint, it will (likely) not converge.
@@ -93,88 +94,128 @@ In this setting, we use the dynamics defined in Eq.\ref{eq:background:dynamics:e
 In the following sections, we will generally define the control law as a function of the robot configuration $q$ and its time derivative $\dot{q}$, since mapping into operational space via the forward kinematics $\chi = \pi(q,s)$ or into actuation coordinates through $\varphi = h(q)$ is usually straightforward if needed. The same applies to the control reference, as discussed in the next paragraph.
 
 \subsubsection{Taxonomy of Control Terms}
-% Most controllers that we consider in this thesis can be separated into a feedforward term that leverages model knowledge and a pure feedback term. 
+% Most controllers that we consider in this thesis can be separated into a feedforward term that leverages model knowledge and an error-based feedback term. 
 % Specifically, a control law $\tau(t, q, \dot{q})$ can be decomposed into
-Most controllers considered in this thesis consist of two components: either (a) a pure feedforward or mixed feedforward-feedback term that leverages model knowledge and (b) a pure feedback term. Specifically, a control law $\tau(t, q, \dot{q})$ can be decomposed into
+Most controllers considered in this thesis consist of two components: either (a) a pure feedforward or mixed feedforward-feedback term that leverages model knowledge and (b) an error-based feedback term. Specifically, a control law $\tau(t, q, \dot{q})$ can be decomposed into
 \begin{equation}
-    \tau(t, q, \dot{q}) = \underbrace{\tau_\mathrm{mb}(t, q, \dot{q})}_\text{Model-Based} + \underbrace{\tau_\mathrm{fb}(t, q, \dot{q})}_\text{Pure Feedback},
+    \tau(t, q, \dot{q}) = \underbrace{\tau_\mathrm{mb}(t, q, \dot{q})}_\text{Model-Based} + \underbrace{\tau_\mathrm{fb}(t, q, \dot{q})}_\text{Error-Based Feedback},
 \end{equation}
 % where $\tau_\mathrm{mb}(t, q, \dot{q}): \mathbb{R} \times \mathbb{R}^n \times \mathbb{R}^n \to \mathbb{R}^m$ is a model-based, not necessarily pure\footnote{A pure feedforward term would have the functional signature $\tau(t)$ as it only depends on the time-based reference $(q^\mathrm{d},\dot{q}^\mathrm{d})$ but not the current soft robot state $(q,\dot{q})$.}, feedforward term and $\tau_\mathrm{fb}(t, q, \dot{q})$ is a pure feedback term as it does not integrate any model knowledge.
-Here, $\tau_\mathrm{mb}(t, q, \dot{q}): \mathbb{R} \times \mathbb{R}^n \times \mathbb{R}^n \to \mathbb{R}^m$ denotes a model-based term—not necessarily a pure feedforward\footnote{A purely feedforward term would have the signature $\tau(t)$, as it depends solely on the time-based reference $(q^\mathrm{d},\dot{q}^\mathrm{d})$ rather than the current soft robot state $(q,\dot{q})$.}—while $\tau_\mathrm{fb}(t, q, \dot{q})$ is a pure feedback term that does not incorporate any model knowledge.
+Here, $\tau_\mathrm{mb}(t, q, \dot{q}): \mathbb{R} \times \mathbb{R}^n \times \mathbb{R}^n \to \mathbb{R}^m$ denotes a model-based term—not necessarily a pure feedforward\footnote{A pure feedforward term would have the signature $\tau(t)$, as it depends solely on the time-based reference $(q^\mathrm{d},\dot{q}^\mathrm{d})$ rather than the current soft robot state $(q,\dot{q})$.}—while $\tau_\mathrm{fb}(t, q, \dot{q})$ is an error-based feedback term that does not incorporate any model knowledge.
 
-\textcolor{red}{In the following sections, we prepare various options for model-based feedforward terms and pure feedback terms that can be mostly freely combined. Lastly, }
+% In the following sections, we present various approaches for error-based feedback terms and model-based terms, respectively, that can be mostly relatively freely combined. Lastly, we showcase a few control approaches that integrate tightly the model-based terms and the feedback terms, such as a computed torque controller based on full feedback linearization and an operational space impedance controller.
+In the following sections, we introduce a range of approaches for error-based feedback and model-based terms that can be combined quite flexibly. Finally, we highlight several control strategies that closely integrate these model-based and feedback components, including a computed torque controller based on full feedback linearization and an operational space impedance controller.
 
-\subsection{Pure Feedback Terms}\label{sub:background:model_based_control:feedback_terms}
-In this thesis, we consider the following formulation for a pure feedback controller
+\subsection{Error-Based Feedback Terms}\label{sub:background:model_based_control:feedback_terms}
+In this thesis, we consider the following formulation for an error-based feedback controller
 \begin{equation}
-    \tau_\mathrm{fb} = K_\mathrm{p} \left (\varphi_\mathrm{a}^\mathrm{d}(t) - \varphi_\mathrm{a}(t) \right ) + K_\mathrm{d} \left ( \dot{\varphi}_\mathrm{a}^\mathrm{d}(t) - \dot{\varphi}_\mathrm{a}(t) \right ) + K_\mathrm{i} \int_0^t \sigma \left ( \varphi_{\mathrm{a}}^\mathrm{d}(t')-\varphi_{\mathrm{a}}(t') \right ) \: \mathrm{d} t',
+    \tau_\mathrm{fb} = K_\mathrm{p} \left (\varphi_\mathrm{a}^\mathrm{d}(t) - \varphi_\mathrm{a}(t) \right ) + K_\mathrm{i} \int_0^t \sigma \left ( \varphi_{\mathrm{a}}^\mathrm{d}(t')-\varphi_{\mathrm{a}}(t') \right ) \: \mathrm{d} t' + K_\mathrm{d} \left ( \dot{\varphi}_\mathrm{a}^\mathrm{d}(t) - \dot{\varphi}_\mathrm{a}(t) \right ),
 \end{equation}
-where $K_\mathrm{p}, K_\mathrm{p}, K_\mathrm{d} \in \mathbb{R}^{m \times m}$ are control gain matrices, which we usually choose to be diagonal. $\sigma(r): \mathbb{R}^m \to \mathbb{R}^m$ is a function to transform the control error $\varphi_{\mathrm{a}}^\mathrm{d}(t)-\varphi_{\mathrm{a}}(t)$ before integrating it.
-Based on this general formulation, we can devise several specific versions, which we introduce below.
+where $K_\mathrm{p}, K_\mathrm{p}, K_\mathrm{d} \in \mathbb{R}^{m \times m}$ are control gain matrices, which we usually choose to be diagonal. 
+% $\sigma(r): \mathbb{R}^m \to \mathbb{R}^m$ is a function to transform the control error $\varphi_{\mathrm{a}}^\mathrm{d}(t)-\varphi_{\mathrm{a}}(t)$ before integrating it.
+% Based on this general formulation, we can devise several specific versions, which we introduce below.
+$\sigma(r): \mathbb{R}^m \to \mathbb{R}^m$ is a function that transforms the control error $\varphi_{\mathrm{a}}^\mathrm{d}(t)-\varphi_{\mathrm{a}}(t)$ before integration. From this general formulation, we can derive several specific versions, which we outline below.
 
-\paragraph{PID Control.} A traditional PID controller can be easily recovered by setting the saturation function as the identity: $\sigma(r) = r$. We have considered such a feedback controller as a baseline in Chapters~\ref{chp:hsacontrol} \& \ref{chp:backstepping}.
+% \paragraph{PID Control.} A traditional PID controller can be easily recovered by setting the saturation function as the identity: $\sigma(r) = r$. We have considered such a feedback controller as a baseline in Chapters~\ref{chp:hsacontrol} \& \ref{chp:backstepping}.
+\paragraph{PID Control.} A standard PID controller is obtained by setting the saturation function as the identity, i.e., $\sigma(r) = r$. We have used this feedback controller as a baseline in Chapters~\ref{chp:hsacontrol} and \ref{chp:backstepping}.
 
-\paragraph{PD Control.} A PD+~\citep{kelly1997pd}, as often used for the low-level control of rigid robots, can be realized by combining a PD controller with a compensation of static forces. The PD feedback term is simply implemented by choosing $K_\mathrm{i} = 0$.
+% \paragraph{PD Control.} A PD+~\citep{kelly1997pd}, as often used for the low-level control of rigid robots, can be realized by combining a PD controller with a compensation of static forces. The PD feedback term is simply implemented by choosing $K_\mathrm{i} = 0$.
+\paragraph{PD Control.} The PD+ variant~\citep{kelly1997pd}, commonly employed for the low-level control of rigid robots, is realized by combining a PD controller with static force compensation. In practice, this is achieved by setting $K_\mathrm{i} = 0$.
 
-\paragraph{P-satI-D Control.} \citet{pustina2022p} has proposed an integral-saturated PID for shape regulation of soft robots via feedback control. A common choice for the saturated function is $\sigma(r) = \tanh(\gamma \, r)$, where $\gamma \in \mathbb{R}_+$ is a control gain to compress the control error before saturating it. We leverage this integral-saturated PID in Section~\ref{sec:hsacontrol:configuration_space_regulation} and Chapters~\ref{chp:pcsregression} \& \ref{chp:con}.
+% \paragraph{P-satI-D Control.} \citet{pustina2022p} has proposed an integral-saturated PID for shape regulation of soft robots via feedback control. A common choice for the saturated function is $\sigma(r) = \tanh(\gamma \, r)$, where $\gamma \in \mathbb{R}_+$ is a control gain to compress the control error before saturating it. We leverage this integral-saturated PID in Section~\ref{sec:hsacontrol:configuration_space_regulation} and Chapters~\ref{chp:pcsregression} \& \ref{chp:con}.
+\paragraph{P-satI-D Control.} \citet{pustina2022p} introduced an integral-saturated PID for the shape regulation of soft robots via error-based feedback control. A typical choice for the saturation function is $\sigma(r) = \tanh(\gamma , r)$, where $\gamma \in \mathbb{R}_+$ is a control gain that compresses the control error prior to saturation. We implement this integral-saturated PID in Section~\ref{sec:hsacontrol:configuration_space_regulation} and Chapters~\ref{chp:pcsregression} and \ref{chp:con}.
 
 \subsection{Model-Based Terms: The Fully Actuated Case}\label{sub:background:model_based_control:model_based_terms_fully_actuated}
-Please note that for all controllers we introduce below, we assume that (1) the model is accurate or alternatively sufficiently large feedback gains are chosen (see high-gain control~\citep{marino1985high}), and (2) the integrability condition~\citep{pustina2024input} and mapping into actuation coordinates can be identified.
-Furthermore, (3) we assume here for the square matrix $A(q) \in \mathbb{R}^{n \times n}$ to be invertible for any $q \in \mathbb{R}^n$ or at least in the relevant workspace.
-For the setpoint regulators, we additionally assume that (4) the setpoint $q^\mathrm{q}/\varphi^\mathrm{q}$ is an attainable equilibrium of the underactuated system~\citep{pustina2022feedback} - which means that it fulfills the property
+% First, we consider common model-based terms for the fully actuated setting (i.e., $n = m$).
+% Please note that for all controllers we introduce below, we assume that (1) the model is (reasonably) accurate or alternatively sufficiently large feedback gains are chosen (see high-gain control~\citep{marino1985high}), and (2) the integrability condition~\citep{pustina2024input} and mapping into actuation coordinates can be identified.
+% Furthermore, (3) we assume here for the square matrix $A(q) \in \mathbb{R}^{n \times n}$ to be invertible for any $q \in \mathbb{R}^n$ or at locally in the relevant workspace.
+% For the setpoint regulators, we additionally assume that (4) the setpoint $q^\mathrm{q}/\varphi^\mathrm{q}$ is an attainable equilibrium of the underactuated system~\citep{pustina2022feedback} - which means that it fulfills the property
+% \begin{equation}
+%     G(q^\mathrm{d}) + K(q^\mathrm{q}) = A(q^\mathrm{q}) \, \tau^\mathrm{ss},
+% \end{equation}
+% for a constant control action $\tau^\mathrm{ss}$, 
+% (4) The system must be initialized within the reference’s region of attraction. For controllers for which \gls{GAS} can be proven, this condition is always met as such controllers are globally attractive.
+% On the other hand, many controllers only exhibit \gls{LAS}. In this case, the region of attraction can often be enlarged by increasing the feedback gains, thereby enhancing the system’s stiffness~\citep{della2017controlling, della2023model}
+% —or instead by canceling some of the non-convex potential forces via nonlinear feedback.
+% (5) Additionally, the actuator needs to be fast enough in tracking its reference $(\mu^\mathrm{d}, \mu^\mathrm{d})$ so that we can approximate $\tau^\mathrm{d} \approx \tau(\mu,\dot{\mu})$, where $\tau^\mathrm{d}$ denotes the desired actuation/control input and $\tau(\mu,\dot{\mu})$ represents the actual forces, torques, currents, or pneumatic pressure generated.
+
+% Finally, many of these controllers formulated in actuation coordinates have not been tested in simulation, and most have not yet been experimentally verified as the mapping into actuation coordinates was only very recently proposed~\citep{pustina2024input}.
+
+First, we consider common model-based terms for the fully actuated setting (i.e., $n = m$). Please note that for all controllers introduced below, we assume that (1) the model is reasonably accurate—or that sufficiently high feedback gains are chosen (see high-gain control~\citep{marino1985high})—and (2) the integrability condition~\citep{pustina2024input} along with the mapping into actuation coordinates can be identified. Furthermore, (3) we assume that the square matrix $A(q) \in \mathbb{R}^{n \times n}$ is invertible for any $q \in \mathbb{R}^n$, at least locally within the relevant workspace.
+
+For setpoint regulators, we additionally assume that (4) the setpoint $q^\mathrm{q}/\varphi^\mathrm{q}$ is an attainable equilibrium of the underactuated system~\citep{pustina2022feedback}—meaning it satisfies
 \begin{equation}
     G(q^\mathrm{d}) + K(q^\mathrm{q}) = A(q^\mathrm{q}) \, \tau^\mathrm{ss},
 \end{equation}
-for a constant control action $\tau^\mathrm{ss}$, 
-% (4) the system is within the region of attraction of the setpoint which can always be globally accomplished in scenarios where the potential field is convex - i.e., when
-(5) The system must be initialized within the setpoint’s region of attraction. This condition can be globally ensured when the potential field is convex—i.e., when
-\begin{equation}
-    \frac{\partial^2 \mathcal{U}(q)}{\partial q^2} \succ 0 \quad \forall q \in \mathbb{R}^n
-\end{equation}
-% - or by employing (partial) feedback linearization, or often by increasing the feedback gains, and with that, increasing the stiffness of the system,
-% and (5) that the actuator is sufficiently fast at tracking its reference $(\mu^\mathrm{d}, \mu^\mathrm{d})$ such that we can approximate $\tau^\mathrm{d} \approx = \tau(\mu,\dot{\mu})$, where $\tau^\mathrm{d}$ is the desired actuation/control input and $\tau(\mu,\dot{\mu})$ are the actually generated forces/torques/currents/pneumatic pressure.
-—or by applying (partial) feedback linearization, or often by increasing the feedback gains, thereby enhancing the system’s stiffness~\citep{della2017controlling, della2023model}. (6) Additionally, the actuator needs to be fast enough in tracking its reference $(\mu^\mathrm{d}, \mu^\mathrm{d})$ so that we can approximate $\tau^\mathrm{d} \approx \tau(\mu,\dot{\mu})$, where $\tau^\mathrm{d}$ denotes the desired actuation/control input and $\tau(\mu,\dot{\mu})$ represents the actual forces, torques, currents, or pneumatic pressure generated.
+for a constant control action $\tau^\mathrm{ss}$—and that (5) the system is initialized within the reference’s region of attraction. For controllers where \gls{GAS} can be proven, this condition is inherently satisfied; however, many controllers only exhibit \gls{LAS}. In the latter case, the region of attraction can often be expanded by increasing the proportional feedback gains to enhance the system’s stiffness that comes with a loss of compliance~\citep{della2017controlling, della2023model} or by canceling some non-convex potential forces via nonlinear feedback. Additionally, (6) the actuator must be fast enough in tracking its reference $(\mu^\mathrm{d}, \mu^\mathrm{d})$ so that we can approximate $\tau^\mathrm{d} \approx \tau(\mu,\dot{\mu})$, where $\tau^\mathrm{d}$ denotes the desired actuation/control input and $\tau(\mu,\dot{\mu})$ represents the actual forces, torques, currents, or pneumatic pressure generated.
 
-Finally, many of these controllers formulated in actuation coordinates have not been tested in simulation, and most have not yet been experimentally verified as the mapping into actuation coordinates was only very recently proposed~\citep{pustina2024input}.
-
-We remind that in the case of full actuation, we have $n = m$.
+Finally, many controllers formulated in actuation coordinates have not yet been tested in simulation, and most have not been experimentally verified, as the mapping into actuation coordinates was only very recently proposed~\citep{pustina2024input}.
 
 \subsubsection{Setpoint Regulation with Feedforward Compensation}
-\textcolor{red}{TODO: cite }
 The following pure feedforward term regulates the system towards the setpoint $\varphi^\mathrm{d} = h(q^\mathrm{d})$ in actuation coordinates~\citep{kelly1994pd, borja2022energy, della2023model, pustina2025analysis}
 \begin{equation}\label{eq:background:model_based_control:fully_actuated:potential_shaping_regulation}
     \tau_\mathrm{mb} = \partial_{\varphi} \mathcal{U}_\varphi(\varphi^\mathrm{d})  = A^{-1}(q^\mathrm{d}) \left ( G(q^\mathrm{d}) + K(q^\mathrm{d}) \right ).
 \end{equation}
-We note that as the term is pure feedforward, the control input $\tau_\mathrm{mb}$ is constant.
+This controller with constant control input $\tau_\mathrm{mb}$ is often also referred to as an energy or potential shaping feedforward term~\citep{borja2022energy}.
 % It can be seen how the constant model-based control input $\tau_\mathrm{mb}$ is a pure feedforward term.
-Oftentimes, this pure feedforward term is complemented by a feedback controller that contains a PD-like term~\citep{della2023model}, e.g., $\tau_\mathrm{fb}(q,\dot{q}) = K_\mathrm{p} \left ( \varphi^\mathrm{d} - \varphi \right ) - K_\mathrm{d} \dot{\varphi}$, which renders the closed-loop dynamics to take the form
+Oftentimes, this pure feedforward term is complemented by a feedback controller that contains a PD-like term~\citep{della2023model}, e.g., $\tau_\mathrm{fb}(q,\dot{q}) = K_\mathrm{p} \left ( \varphi^\mathrm{d} - \varphi \right ) - K_\mathrm{d} \, \dot{\varphi}$, which renders the closed-loop dynamics to take the form
 % This model-based feedforward term renders the closed-loop dynamics
 \begin{equation}
     M_\varphi(q) \, \ddot{\varphi} + \eta_\varphi(q,\dot{q}) \, \dot{\varphi} + \partial_{\varphi} \mathcal{U}_\varphi(\varphi) - \partial_{\varphi} \mathcal{U}_\varphi(\varphi^\mathrm{d}) + K_\mathrm{p}  \left ( \varphi - \varphi^\mathrm{d} \right ) + \left ( D_\varphi(q) + K_\mathrm{d} \right ) \, \dot{\varphi} = 0_n.
 \end{equation}
 % to be locally asymptotically stable for a sufficiently large proportional feedback gain $K_\mathrm{p} > 0$.
 As mentioned already before, for this regulator to be effective, $\varphi^\mathrm{d}$ needs to be an attainable equilibrium of the system.
-\textcolor{red}{...}
-This stability can be shown via the Lyapunov candidate~\citep{della2023model}
-\begin{equation}
-    V(q,
+The stability of the regulator can be demonstrated via the Lyapunov candidate~\citep{della2023model}
+\begin{equation}\small
+\begin{split}
+    V(\varphi, \dot{\varphi}) =& \: \underbrace{\frac{1}{2} \, \dot{\varphi}^\top \, M_\varphi(h^{-1}(\varphi)) \, \dot{\varphi}}_\text{Kinetic Energy} + \underbrace{\mathcal{U}_{\varphi}(\varphi) - \mathcal{U}_{\varphi}(\varphi^\mathrm{d})}_\text{Centered Potential Energy}\\
+    & \: + \underbrace{\left (G(h^{-1}(\varphi^\mathrm{d})) + K(h^{-1}(\varphi^\mathrm{d})) \right )^\top \, A^{-\top}(h^{-1}(\varphi^\mathrm{d})) \left ( \varphi^\mathrm{d} - \varphi \right )}_\text{Correction Term} + \underbrace{\frac{1}{2} \, (\varphi^\mathrm{d} - \varphi)^\top \, K_\mathrm{p} \, (\varphi^\mathrm{d} - \varphi)}_\text{Artificial Potential Energy of Feedback},
+\end{split}
 \end{equation}
-which is a valid Lyapunov function - fulfilling the requirements $V(\varphi^\mathrm{d},0_n) = 0$ and $V(\varphi,\dot{\varphi}) > 0 \: \forall \: (\varphi, \dot{\varphi}) \in (\mathbb{R}^n, \mathbb{R}^n) \setminus \{ (\varphi^\mathrm{d}, 0_n) \}$ - if the closed-loop potential energy is local
+which is a valid Lyapunov function - fulfilling the requirements $V(\varphi^\mathrm{d},0_n) = 0$ and $V(\varphi,\dot{\varphi}) > 0 \: \forall \: (\varphi, \dot{\varphi}) \in (\mathbb{R}^n, \mathbb{R}^n) \setminus \{ (\varphi^\mathrm{d}, 0_n) \}$ - if the closed-loop potential energy is locally or globally convex
+\begin{equation}\small
+    \frac{\partial^2}{\partial \varphi^2} \mathcal{U}_{\varphi}(\varphi) \bigg |_\mathrm{\varphi = \varphi^\mathrm{d}} + K_\mathrm{p} = \frac{\partial}{\partial \varphi} \left (  A^{-1}(h^{-1}(\varphi)) \,  \left ( G(h^{-1}(\varphi)) + K(h^{-1}(\varphi)) \right ) \right ) \bigg |_\mathrm{\varphi = \varphi^\mathrm{d}} + K_\mathrm{p} \succ 0.
+\end{equation}
+The Lyapunov function exhibits the time derivative~\citep{della2023model}
+\begin{equation}\small
+\begin{split}
+    \dot{V}(\varphi,\dot{\varphi}) 
+    =& \: \dot{\varphi}^\top \, M_\varphi(h^{-1}(\varphi)) \, \ddot{\varphi} + \frac{1}{2} \, \dot{\varphi}^\top \, \dot{M}_\varphi(h^{-1}(\varphi)) \, \dot{\varphi} - \dot{\varphi}^\top \, \left ( \partial_{\varphi} \mathcal{U}_\varphi(\varphi) - \partial_{\varphi} \mathcal{U}_\varphi(\varphi^\mathrm{d}) + K_\mathrm{p} \left ( \varphi - \varphi^\mathrm{d} \right ) \right ),\\
+    =& \: -\dot{\varphi}^\top \, \eta_\varphi(q,\dot{q}) \, \dot{\varphi} + \frac{1}{2} \, \dot{\varphi}^\top \, \dot{M}_\varphi(q) \, \dot{\varphi} + \dot{\varphi}^\top \left ( D_\varphi(h^{-1}(\varphi)) + K_\mathrm{d} \right ) \, (-\dot{\varphi}),\\
+    =& \: -\dot{\varphi}^\top \, \left ( D_\varphi(h^{-1}(\varphi)) + K_\mathrm{d} \right ) \, \dot{\varphi} \leq 0 \quad \forall \: \varphi,\dot{\varphi} \in \mathbb{R}^n.
+\end{split}
+\end{equation}
+Finally, as $\dot{V}(\dot{\varphi}) \leq 0 \: \forall \: \varphi,\dot{\varphi}\in \mathbb{R}^n$, asymptotic stability can be proven via LaSalle's invariance theorem~\citep{khalil2002nonlinear} as $\varphi^\mathrm{d}$ is a static equilibrium of the closed-loop system.
 
+In the following, we will discuss the stability properties of the controller in more detail.
+If the open-loop potential energy of the soft robot, consisting of elastic and gravitational terms, is globally convex
+\begin{equation}
+    \frac{\partial^2}{\partial \varphi^2} \mathcal{U}_{\varphi}(\varphi) \bigg |_\mathrm{\varphi = \varphi^\mathrm{d}} = \frac{\partial}{\partial \varphi} \left (  A^{-1}(h^{-1}(\varphi)) \,  \left ( G(h^{-1}(\varphi)) + K(h^{-1}(\varphi)) \right ) \right ) \bigg |_\mathrm{\varphi = \varphi^\mathrm{d}} \succ 0, 
+\end{equation}
+what is sometimes also referred to as the soft robot being \emph{elastically dominated}~\citep{borja2022energy, della2023model, pustina2025analysis}. This means that the robot is considered to be relatively stiff and able to withstand gravity. In such case, the proportional feedback term is not strictly necessary (i.e., we can set $K_\mathrm{p} = 0_{n \times n}$, and $\varphi^\mathrm{d}$ is still an asymptotically stable equilibrium of the closed-loop system.
+In turn, when the open-loop potential energy of the soft robot is non-convex, we can still stabilize the system locally or even globally by choosing sufficiently large proportional feedback gains $K_\mathrm{p} \succ 0$.
+This, however, comes at the cost of increased system stiffness, reduced compliance, and enlarged risk of instability because of measurement noise.
+A derivative feedback term is not necessary as for soft robots generally $D\varphi(\varphi) \succ 0 \: \forall \: \varphi \in \mathbb{R}^n$. Still, we can increase dissipation by choosing $K_\mathrm{d} \succ 0$.
 
+We leverage such a potential shaping feedforward term in Chapters~\ref{chp:hsacontrol}, \ref{chp:pcsregression}-\ref{chp:con} of this thesis.
+The controller exhibits great robustness to modeling errors and measurement noise.
+Also, it is computationally extremely efficient as the controller only needs to be evaluated once per setpoint.
+However, this comes at the cost of the necessity for increased feedback gains to ensure (global) convergence. Also, exponential convergence is not guaranteed.
 
-In the following, we will discuss the convergence guarantees in more detail.
+% In the following, we will discuss the convergence guarantees in more detail.
 
-\textbf{Convex Potential Field.} If the potential field is convex (i.e., $\frac{\partial^2}{\partial \varphi^2}  \mathcal{U}_\varphi(\varphi) \succ 0 \: \forall \varphi \in \mathbb{R}$) this controller is globally asymptotically stable - even with a deactivated feedback term $\tau_\mathrm{fb}(t,q,\dot{q})=0$.
+% \textbf{Convex Potential Field.} If the potential field is convex (i.e., $\frac{\partial^2}{\partial \varphi^2}  \mathcal{U}_\varphi(\varphi) \succ 0 \: \forall \varphi \in \mathbb{R}$) this controller is globally asymptotically stable - even with a deactivated feedback term $\tau_\mathrm{fb}(t,q,\dot{q})=0$.
 
-\textbf{Constant Actuation Matrix and Elastic Domination.} Another interesting case is the one of a constant actuation matrix $A(q) = A$ and elastic domination with $\frac{\partial K(q)}{\partial q} + $
+% \textbf{Constant Actuation Matrix and Elastic Domination.} Another interesting case is the one of a constant actuation matrix $A(q) = A$ and elastic domination with $\frac{\partial K(q)}{\partial q} + $
 
- If this is not the case, the region of attraction can be increased, or the controller can even be made globally asymptotically stable by sufficiently increasing the proportional gains $K_\mathrm{p}$ of the feedback controller, which makes the system stiffer and more susceptible to instability because of measurement errors.
+%  If this is not the case, the region of attraction can be increased, or the controller can even be made globally asymptotically stable by sufficiently increasing the proportional gains $K_\mathrm{p}$ of the feedback controller, which makes the system stiffer and more susceptible to instability because of measurement errors.
 
 \subsubsection{Setpoint Regulation with Gravity Cancellation and Compensation of Elastic Forces}
-In case the elastic potential is convex, but the gravitational potential renders the total potential energy to be non-convex, we can reduce the necessary (proportional) feedback gains, compared to the \emph{Setpoint Regulation with Feedforward Compensation} controller, by canceling instead of compensating the gravitational forces. The control law is then given as~\citep{della2020model}
+% In case the elastic potential is convex, but the gravitational potential renders the total potential energy to be non-convex, we can reduce the necessary (proportional) feedback gains, compared to the \emph{Setpoint Regulation with Feedforward Compensation} controller, by canceling instead of compensating the gravitational forces. 
+When the elastic potential is convex but the gravitational potential makes the overall potential energy non-convex, we can lower the required (proportional) feedback gains—compared to the \emph{Setpoint Regulation with Feedforward Compensation} controller—by canceling rather than compensating for the gravitational forces.
+The control law is then given as~\citep{della2020model}
 \begin{equation}
-    \tau_\mathrm{mb}(q) =  \underbrace{A^{-1}(q) \, G(q)}_\text{Cancel Gravity} + \underbrace{A^{-1}(q^\mathrm{d}) \, K(q^\mathrm{d})}_\text{Comp. Elasticity} \big )
+    \tau_\mathrm{mb}(q) =  \underbrace{A^{-1}(q) \, G(q)}_\text{Cancel Gravity} + \underbrace{A^{-1}(q^\mathrm{d}) \, K(q^\mathrm{d})}_\text{Comp. Elasticity},
 \end{equation}
 leading to the closed-loop dynamics
 \begin{equation}
@@ -186,22 +227,21 @@ which we can rewrite, assuming that a PD term is part of the feedback as
 \end{equation}
 which is asymptotically stable if the elastic potential $\mathcal{U}_{\varphi,\mathrm{K}}(\varphi)$ is locally or globally convex
 \begin{equation}\label{eq:background:model_based_control:fully_actuated:regulation_gravity_cancellation:closed_loop_potential_convexity}
-    \frac{\partial^2}{\partial \varphi^2} \mathcal{U}_{\varphi,\mathrm{K}}(\varphi) + K_\mathrm{p} = \frac{\partial}{\partial \varphi} \left (  A^{-1}(h^{-1}(\varphi)) \,  K(h^{-1}(\varphi)) \right ) + K_\mathrm{p} \succ 0.
+    \frac{\partial^2}{\partial \varphi^2} \mathcal{U}_{\varphi,\mathrm{K}}(\varphi) \bigg |_\mathrm{\varphi = \varphi^\mathrm{d}} + K_\mathrm{p} = \frac{\partial}{\partial \varphi} \left (  A^{-1}(h^{-1}(\varphi)) \,  K(h^{-1}(\varphi)) \right ) \bigg |_\mathrm{\varphi = \varphi^\mathrm{d}} + K_\mathrm{p} \succ 0.
 \end{equation}
 This can be shown via the Lyapunov function~\citep{khalil2002nonlinear, della2020model, della2023model}
 \begin{equation}
 \begin{split}
     V(\varphi, \dot{\varphi}) =& \: \underbrace{\frac{1}{2} \, \dot{\varphi}^\top \, M_\varphi(h^{-1}(\varphi)) \, \dot{\varphi}}_\text{Kinetic Energy} + \underbrace{\mathcal{U}_{\varphi,\mathrm{K}}(\varphi) - \mathcal{U}_{\varphi,\mathrm{K}}(\varphi^\mathrm{d})}_\text{Centered Elastic Potential Energy}\\
-    & \: + \underbrace{K^\top(h^{-1}(\varphi^\mathrm{d})) \, A^{-\top}(h^{-1}(\varphi^\top)) \left ( \varphi^\mathrm{d} - \varphi \right )}_\text{Correction Term} + \underbrace{\frac{1}{2} \, (\varphi^\mathrm{d} - \varphi)^\top \, K_\mathrm{p} \, (\varphi^\mathrm{d} - \varphi)}_\text{Artificial Potential Energy of Feedback},
+    & \: + \underbrace{K^\top(h^{-1}(\varphi^\mathrm{d})) \, A^{-\top}(h^{-1}(\varphi^\mathrm{d})) \left ( \varphi^\mathrm{d} - \varphi \right )}_\text{Correction Term} + \underbrace{\frac{1}{2} \, (\varphi^\mathrm{d} - \varphi)^\top \, K_\mathrm{p} \, (\varphi^\mathrm{d} - \varphi)}_\text{Artificial Potential Energy of Feedback},
 \end{split}
 \end{equation}
 with the associated time derivative~\citep{della2023model}
 \begin{equation}
-    \dot{V}(\varphi,\dot{\varphi}) = -\dot{\varphi}^\top \, \left ( D_\varphi(h^{-1}(\varphi)) + K_\mathrm{d} \right ) \, \dot{\varphi} \leq 0 \quad \forall \: \varphi,\dot{\varphi} \in \mathbb{R}^n
+    \dot{V}(\varphi, \dot{\varphi}) = -\dot{\varphi}^\top \, \left ( D_\varphi(h^{-1}(\varphi)) + K_\mathrm{d} \right ) \, \dot{\varphi} \leq 0 \quad \forall \: \varphi,\dot{\varphi} \in \mathbb{R}^n
 \end{equation}
-If the condition from Eq.\ref{eq:background:model_based_control:fully_actuated:regulation_gravity_cancellation:closed_loop_potential_convexity} is locally met for $\varphi = \varphi^\mathrm{d}$, then the setpoint $\varphi^\mathrm{d}$ is locally asymptotically stable. If the convexity condition is met $\forall \: \varphi \in \mathbb{R}^n$, then the setpoint is globally asymptotically stable.
+If the condition from Eq.~\ref{eq:background:model_based_control:fully_actuated:regulation_gravity_cancellation:closed_loop_potential_convexity} is locally met for $\varphi = \varphi^\mathrm{d}$, then the setpoint $\varphi^\mathrm{d}$ is locally asymptotically stable. If the convexity condition is met $\forall \: \varphi \in \mathbb{R}^n$, then the setpoint is globally asymptotically stable.
 % which are locally asymptotically stable with a sufficiently large proportional feedback gain $K_\mathrm{p} > 0$~\citep{pustina2025analysis}.
-
 
 Here, it is easy to see how the proportional feedback gain makes the robot stiffer and, with that, can potentially allow for the system to be stable even when the open-loop elastic potential is non-convex. Still, this comes at the cost of decreased compliance and decreased robustness against measurement noise.
 In the case of the actuation space elastic potential being convex, i.e., $\frac{\partial}{\partial \varphi} \left (A^{-1}(h^{-1}(\varphi)) \,  K(h^{-1}(\varphi)) \right ) \succ 0$, then the proportional feedback gains are not necessary and can also be chosen as zero.
@@ -210,6 +250,7 @@ An interesting case is also when (i) a constant actuation matrix $A(q) = A$, whi
     M_\varphi(q) \, \ddot{\varphi} +  \eta_\varphi(q,\dot{q}) \, \dot{\varphi} + S_\varphi ( \varphi - \varphi^\mathrm{d} ) + D_\varphi \, \dot{\varphi} = \tau_\mathrm{fb}(t, q, \dot{q}),
 \end{equation}
 which renders $\varphi^\mathrm{d}$ to be globally asymptotically stable.
+We leverage such a controller in Chapter~\ref{chp:hsacontrol} of this thesis.
 
 % This controller is particularly interesting in the case of (i) a constant actuation matrix $A(q) = A$, which is, for example, the case for many pneumatically-actuated soft robots, together with (ii) and a convex elastic potential, as for example the case for $K(q) = S \, q$, where $S\succ 0$, as then the closed-loop dynamics
 % \begin{equation}
@@ -220,7 +261,7 @@ which renders $\varphi^\mathrm{d}$ to be globally asymptotically stable.
 \subsubsection{Setpoint Regulation with Cancellation of Static Forces}
 Akin to PD+~\citep{kelly1996class, kelly1998global} controllers originally developed for rigid manipulators, we can fully cancel the static, including gravitational and elastic, forces of the soft robot dynamics via nonlinear feedback and achieve setpoint regulation solely based on the potential field established by the (proportional) feedback term. The associated control law is given by~\citep{patterson2024design, pustina2025analysis}
 \begin{equation}
-    \tau_\mathrm{mb}(q) =  \underbrace{A^{-1}(q) \, G(q)}_\text{Cancel Gravity} + \underbrace{A^{-1}(q^\mathrm{d}) \, K(q^\mathrm{d})}_\text{Cancel Elasticity} \big )
+    \tau_\mathrm{mb}(q) =  \underbrace{A^{-1}(q) \, G(q)}_\text{Cancel Gravity} + \underbrace{A^{-1}(q^\mathrm{d}) \, K(q^\mathrm{d})}_\text{Cancel Elasticity}
 \end{equation}
 which results in the closed-loop dynamics
 \begin{equation}
@@ -238,13 +279,15 @@ This can be proven using the Lyapunov function
 \end{equation}
 that exhibits an associated time derivative of
 \begin{equation}
-    \dot{V}(\varphi,\dot{\varphi}) = - \dot{\varphi}^\top \, D_\varphi(h^{-1}(\varphi))) \, \dot{\varphi} \leq 0 \quad \forall \varphi, \dot{\varphi} \in \mathbb{R}^n,
+    \dot{V}(\varphi, \dot{\varphi}) = - \dot{\varphi}^\top \, D_\varphi(h^{-1}(\varphi))) \, \dot{\varphi} \leq 0 \quad \forall \varphi, \dot{\varphi} \in \mathbb{R}^n,
 \end{equation}
-as $D_\varphi \succ 0$. Via LaSalle's invariance principle, \gls{GAS} with respect to the equilibrium $\varphi^\mathrm{d}$ can be shown~\citep{khalil2002nonlinear}.
-This strength of global convergence guarantees even for configuration-dependent actuation matrices $A(q)$ comes potentially at the cost of robustness as, particularly for low feedback gains $K_\mathrm{p}$, unmodelled system dynamics could become dominant, causing steady-state errors or even instability.
+as $D_\varphi(h^{-1}(\varphi))) \succ 0 \: \forall \: \varphi \in \mathbb{R}^n$. 
+% Via LaSalle's invariance principle, \gls{GAS} with respect to the equilibrium $\varphi^\mathrm{d}$ can be shown~\citep{khalil2002nonlinear}.
+% This strength of global convergence guarantees even for configuration-dependent actuation matrices $A(q)$ comes potentially at the cost of robustness as, particularly for low feedback gains $K_\mathrm{p}$, unmodelled system dynamics could become dominant, causing steady-state errors or even instability.
+By applying LaSalle’s invariance principle, \gls{GAS} with respect to the equilibrium $\varphi^\mathrm{d}$ can be established~\citep{khalil2002nonlinear}. However, this guarantee of global convergence—even for configuration-dependent actuation matrices $A(q)$—may come at the expense of robustness. In particular, with low proportional feedback gains $K_\mathrm{p}$, unmodeled system dynamics might dominate, leading to steady-state errors or even instability.
 
 \subsubsection{Trajectory Tracking with Feedforward Compensation}
-In the following, we will assume the actuation matrix to be constant with $A(q) = A$. Then, we can design a trajectory tracking algorithm with feedforward compensation as~\citep{kelly1994pd, della2023model}
+In the following, we will assume the actuation matrix to be constant with $A(q) = A$. Then, extending the previously presented setpoint regulator with feedforward compensation, we can design a trajectory tracking algorithm with feedforward compensation as~\citep{kelly1994pd, della2023model}
 \begin{equation}
     \tau_\mathrm{mb}(t) =  \underbrace{M_\varphi(q^\mathrm{d}(t)) \, \ddot{\varphi}^\mathrm{d}(t) + \eta_\varphi(q^\mathrm{d}(t),\dot{q}^\mathrm{d}(t)) \, \dot{\varphi}^\mathrm{d}(t) + D_\varphi \, \dot{q}^\mathrm{d}(t)}_\text{Compensate Dynamic Forces} + \underbrace{ A^{-1} \big ( G(q^\mathrm{d}(t)) + K(q^\mathrm{d}(t)) \big )}_\text{Compensate Static Forces}.
 \end{equation}
@@ -254,13 +297,17 @@ In the following, we will assume the actuation matrix to be constant with $A(q) 
 % \end{equation}
 % After defining $e(t) = q^\mathrm{d}(t) - q(t)$, $e(t) = q^\mathrm{d}(t) - q(t)$
 % to be locally asymptotically stable \textcolor{orange}{for a sufficiently large proportional feedback gain $K_\mathrm{p} > 0$}.
-This controller is locally asymptotically stable, assuming sufficiently large proportional and dissipative feedback gains~\citep{della2023model}.
+This controller is locally asymptotically stable, assuming sufficiently large proportional and dissipative feedback gains $K_\mathrm{p}, K_\mathrm{d} \succ 0$.
+We refer the interested reader to \citet{kelly1994pd, della2023model} for the full proof.
+The advantages and disadvantages mirror the ones of the \emph{Setpoint Regulation with Feedforward Compensation} controller: robust against modeling errors and measurement noise and requires relatively high error-based feedback gains that come with a loss of compliance.
 
 \subsubsection{Trajectory Tracking with Mixed State Feedback}
-In the following, we will assume the actuation matrix to be constant with $A(q) = A$.
-Additionally, as this controller is particularly interesting for soft robots with convex elastic potential, we assume linear elasticity $K(q) = S \, q$ with $S \succ 0$, although the controller would also converge globally work for any convex potential field or locally for non-convex elastic potentials assuming sufficiently large feedback gains. We refer the interested reader to the section on \emph{Setpoint Regulation with Gravity Cancellation and Compensation of Elastic Forces} for an extended discussion on this topic.
+% In the following, we will assume the actuation matrix to be constant with $A(q) = A$.
+% Additionally, as this controller is particularly interesting for soft robots with convex elastic potential, we assume linear elasticity $K(q) = S \, q$ with $S \succ 0$, although the controller would also converge globally for any convex potential field or locally for non-convex elastic potentials assuming sufficiently large feedback gains. We refer the interested reader to the section on \emph{Setpoint Regulation with Gravity Cancellation and Compensation of Elastic Forces} for an extended discussion on this topic.
+In the following, we assume that the actuation matrix is constant, i.e., $A(q) = A$. Moreover, since this controller is particularly well-suited for soft robots with a convex elastic potential, we assume linear elasticity $K(q) = S \, q$ with $S \succ 0$. Note that the controller would still converge globally for any convex potential field—or locally for non-convex elastic potentials provided sufficiently high feedback gains are used. For a more detailed discussion, please refer to the section on \emph{Setpoint Regulation with Gravity Cancellation and Compensation of Elastic Forces}.
 
-A trajectory tracking controller that exhibits full state feedback apart from compensating instead of canceling elastic forces is given by~\citep{kelly1996class, della2020model}
+% A trajectory tracking controller that exhibits full state feedback apart from compensating instead of canceling elastic forces is given by~\citep{kelly1996class, della2020model}
+A trajectory tracking controller that employs full state feedback, except for compensating instead of canceling elastic forces, can be formulated as~\citep{kelly1996class, della2020model}
 \begin{equation}
     \tau_\mathrm{mb}(t,q,\dot{q}) = \underbrace{M_\varphi(q(t)) \, \ddot{\varphi}^\mathrm{d}(t) + \eta_\varphi(q(t),\dot{q}(t)) \, \dot{\varphi}^\mathrm{d}(t) + A^{-1} \, G(q(t))}_\text{Rigid Manipulator Nonlinear PD/PD+} + \underbrace{S_\varphi \, \varphi^\mathrm{d}(t) + D_\varphi \, \dot{\varphi}^\mathrm{d}(t)}_\text{Shaping Soft Robot Impedance},
 \end{equation}
@@ -278,13 +325,13 @@ The goal is now to show that the closed-loop error dynamics, which are defined a
     M_\varphi(q(t)) \, \ddot{e}(t) + \left ( \eta_\varphi(q(t),\dot{q}(t)) + D_\varphi \right ) \, \dot{e}(t) + S_\varphi \, e(t) = \tau_\mathrm{fb}(t,q,\dot{q}),
 \end{equation}
 with $e(t) = \varphi(t) - \varphi^\mathrm{d}(t) \in \mathbb{R}^n$, $\dot{e}(t) = \dot{\varphi} - \dot{\varphi}^\mathrm{d}(t)$, and $\ddot{e}(t) = \ddot{\varphi}(t) - \ddot{\varphi}^\mathrm{d}(t)$ asymptotically converge to zero: $\lim_{t \to \infty} e(t) = 0$.
-Even without pure feedback term (i.e., $\tau_\mathrm{fb}(t,q,\dot{q}) = 0$), the asymptotic convergence to the trajectory $(\varphi^\mathrm{d}, \dot{\varphi}^\mathrm{d}, \ddot{\varphi}^\mathrm{d})$ can be shown via the Lyapunov function
+Even without an error-based feedback term (i.e., $\tau_\mathrm{fb}(t,q,\dot{q}) = 0$), the asymptotic convergence to the trajectory $(\varphi^\mathrm{d}, \dot{\varphi}^\mathrm{d}$ can be shown via the Lyapunov function
 \begin{equation}
     V(e, \dot{e}) = \frac{1}{2} \, \dot{e}^\top \, M_\varphi(h^{-1}(\varphi^\mathrm{d}+e) \, \dot{e}(t) + \frac{1}{2} \, e^\top(t) \, \left ( S_\varphi + K_\mathrm{d} \right ) \, e(t),
 \end{equation}
-that has the time derivative
+that exhibits the time derivative
 \begin{equation}
-    \dot{V}(t,e,\dot{e}) = -\dot{e}^\top \left (D_\varphi + K_\mathrm{d} \right ) \, \dot{e} \leq 0 \quad \forall \: e,\dot{e} \in \mathbb{R}^n,
+    \dot{V}(\dot{e}) = -\dot{e}^\top \left (D_\varphi + K_\mathrm{d} \right ) \, \dot{e} \leq 0 \quad \forall \: \dot{e} \in \mathbb{R}^n,
 \end{equation}
 by applying Barbalat's Lemma~\citep{slotine1991applied, della2020model}.
 Here, $K_\mathrm{p}, K_\mathrm{d} \in \mathbb{R}^{n \times n} \succeq 0$ are any PD feedback gains that are optionally applied.
@@ -292,83 +339,209 @@ Here, $K_\mathrm{p}, K_\mathrm{d} \in \mathbb{R}^{n \times n} \succeq 0$ are any
 
 
 \subsection{Model-Based Terms: The Underactuated Case}\label{sub:background:model_based_control:model_based_terms_underactuated}
-\textcolor{red}{\begin{itemize}
-    \item Feedforward regulator: Refer to \citep{pustina2025analysis}
-    \item PD+ regulator: Refer to \citep{pustina2025analysis}
-    \item Elastically decoupled soft robots: Refer to \citep{pustina2025analysis}
-    \item Elastically dominated soft robots
-\end{itemize}}
 
+\subsubsection{Preliminaries}
 
-% \subsubsection{Setpoint Regulation with Compensation of Static Forces}
-% The following regulator locally stabilizes the system around the setpoint $\varphi^\mathrm{d} = h(q^\mathrm{d})$ by shaping the potential energy of the first $m$ actuation coordinates~\citep{borja2022energy, della2023model}
-% \begin{equation}\label{eq:background:model_based_control:potential_shaping_regulation}
-%     \tau_\mathrm{mb}(t, q, \dot{q}) = J_{\mathrm{h},\mathrm{M},\mathrm{a}}^{+\top}(q^\mathrm{d}) \left ( G(q^\mathrm{d}) + K(q^\mathrm{d}) \right ).
-% \end{equation}
-% This model-based feedforward term renders the closed-loop dynamics
-% \begin{equation}
-%     M_\varphi(q) \, \ddot{\varphi} + \eta_\varphi(q,\dot{q}) \, \dot{q} + \begin{bmatrix}
-%         \partial_{\varphi_\mathrm{a}} \mathcal{U}_\varphi(\varphi) - \partial_{\varphi_\mathrm{a}} \mathcal{U}_\varphi(\varphi^\mathrm{d})\\
-%         \partial_{\varphi_\mathrm{u}} \mathcal{U}_\varphi(\varphi)
-%     \end{bmatrix} + D_\varphi(q) \, \dot{q} = \begin{bmatrix}
-%         \tau_\mathrm{fb}(t, q, \dot{q})\\ 0_{n-m}
-%     \end{bmatrix},
-% \end{equation}
-% to be locally asymptotically stable.
+In the following, we will consider the underactuated where $m < n$. As underactuation is not a primary focus of this thesis, we will only broach the subject. For a much more detailed discussion, we refer the interested reader to the seminal thesis by \citet{pustina2025analysis}.
 
-% As mentioned already before, for this regulator to work, $\varphi^\mathrm{d}$ needs to be an attainable equilibrium of the system - especially as we cannot control the behavior of the unactuated coordinates $\varphi_\mathrm{u}$. 
+First, we need to revisit the definition of attainable equilibria.
+In the case of underactuated soft robots, a setpoint $\varphi^\mathrm{d} = \begin{bmatrix}
+    \varphi_\mathrm{a}^{\mathrm{d}^\top} & \varphi_\mathrm{u}^{\mathrm{d}^\top}
+\end{bmatrix}^\top = h(q^\mathrm{d})$, where $q^\mathrm{d} = \begin{bmatrix}
+    q_\mathrm{a}^{\mathrm{d}^\top} & q_\mathrm{u}^{\mathrm{d}^\top}
+\end{bmatrix}^\top$, needs to be a solution to the equilibrium equation~\citep{pustina2025analysis}
+\begin{equation}
+    \begin{bmatrix}
+        A_\mathrm{a}^{-1}(q^\mathrm{d}) \, \left ( G_\mathrm{a}(q^\mathrm{d}) + K_\mathrm{a}(q^\mathrm{d}) \right )\\
+        -A_\mathrm{u}(q^\mathrm{d}) \, A_\mathrm{a}^{-1}(q^\mathrm{d}) \left ( G_\mathrm{a}(q^\mathrm{d}) + K_\mathrm{a}(q^\mathrm{d}) \right ) + G_\mathrm{u}(q^\mathrm{d}) + K_\mathrm{u}(q^\mathrm{d})
+    \end{bmatrix} = \begin{bmatrix}
+        \tau^\mathrm{ss}\\
+        0_{n-m}
+    \end{bmatrix}.
+\end{equation}
 
-% If the potential field is convex (i.e., $\frac{\partial^2}{\partial \varphi^2}  \mathcal{U}_\varphi(\varphi) \succ 0 \: \forall \varphi \in \mathbb{R}$) this controller is globally asymptotically stable - even with a deactivated feedback term $\tau_\mathrm{fb}(t,q,\dot{q})=0$. If this is not the case, the region of attraction can be increased, or the controller can even be made globally asymptotically stable by sufficiently increasing the proportional gains $K_\mathrm{p}$ of the feedback controller, which makes the robot stiffer.
+\subsubsection{Zero Dynamics in the Regulation Case}
+It is essential for the stability of the system to ensure that the zero dynamics of the system, i.e., the last $n-m$, unactuated \glspl{DOF} of the closed-loop dynamics, remain bounded. If the zero dynamics are unstable, the system state will eventually diverge, even if initial stability is observed from an input-output perspective~\citep{pustina2025analysis}.
+For a regulator, that drives the system towards $\varphi = \varphi^\mathrm{d}, \dot{\varphi} = 0$, the associated zero dynamics are given as~\citep{pustina2025analysis}
+\begin{equation}
+    M_{\varphi,\mathrm{uu}}(q^{\mathrm{d}_\mathrm{a}}) \, \ddot{\varphi}_\mathrm{u} + \eta_{\varphi,\mathrm{u}}(q^{\mathrm{d}_\mathrm{a}},\dot{q}^{\mathrm{d}_\mathrm{a}}) \, \dot{\varphi}_\mathrm{u} + \partial_{\varphi_\mathrm{u}} \mathcal{U}_\varphi(\varphi^{\mathrm{d}_\mathrm{a}}) + D_{\varphi,\mathrm{uu}}(q^{\mathrm{d}_\mathrm{a}}) \, \dot{\varphi}_\mathrm{u} = 0_{n-m}
+\end{equation}
+where $q^{\mathrm{d}_\mathrm{a}} = \begin{bmatrix}
+    q_\mathrm{a}^{\mathrm{d}^\top} & q_\mathrm{u}^{\top}
+\end{bmatrix}^\top$, $\dot{q}^{\mathrm{d}_\mathrm{a}} = \begin{bmatrix}
+    0_m^\top & \dot{q}_\mathrm{u}^{\top}
+\end{bmatrix}^\top$, and $\varphi^{\mathrm{d}_\mathrm{a}} = \begin{bmatrix}
+    \varphi_\mathrm{a}^{\mathrm{d}^\top} & \varphi_\mathrm{u}^{\top}
+\end{bmatrix}^\top$.
+The Lyapunov function
+\begin{equation}
+    V(\varphi_\mathrm{u},\dot{\varphi}_\mathrm{d}) = \frac{1}{2} \, \dot{\varphi}_\mathrm{u}^\top \, M_{\varphi,\mathrm{uu}}(h^{-1}(\varphi^{\mathrm{d}_\mathrm{a}})) \, \dot{\varphi}_\mathrm{u} + \mathcal{U}_\varphi(\varphi^{\mathrm{d}_\mathrm{a}})),
+\end{equation}
+that is non-negative provided that both the elastic and gravitational forces are Lipschitz and upper-bounded in their magnitude~\citep{pustina2025analysis}, exhibits the time derivative
+\begin{equation}
+    \dot{V}(\varphi_\mathrm{u},\dot{\varphi}_\mathrm{u}) = -\dot{\varphi}_\mathrm{u}^\top \, D_{\varphi,\mathrm{uu}}(q^{\mathrm{d}_\mathrm{a}}) \, \dot{\varphi}_\mathrm{u} \leq 0 \quad \forall \:  q^{\mathrm{d}_\mathrm{a}} \in \mathbb{R}^{n}, \dot{\varphi}_\mathrm{u} \in \mathbb{R}^{n-m},
+\end{equation}
+as $D_{\varphi,\mathrm{uu}}(q^{\mathrm{d}_\mathrm{a}}) \succ 0$.
+Subsequently, it can be shown that these zero dynamics are bounded and converge to $(\varphi_\mathrm{u},\dot{\varphi}_\mathrm{u}) = (\varphi_\mathrm{u}^\mathrm{d}, 0)$~\citep{pustina2025analysis}, where $\varphi_\mathrm{u}^\mathrm{d}$ is a solution to
+\begin{equation}\footnotesize
+    \frac{\partial }{\partial \varphi_\mathrm{u}} \mathcal{U}_\varphi \left ( \begin{bmatrix}
+        \varphi_\mathrm{a}^\mathrm{d}\\ \varphi_\mathrm{u}^\mathrm{d}
+    \end{bmatrix} \right ) = -A_\mathrm{u}(h^{-1}(\varphi^\mathrm{d})) \, A_\mathrm{a}^{-1}(h^{-1}(\varphi^\mathrm{d})) \left ( G_\mathrm{a}(h^{-1}(\varphi^\mathrm{d})) + K_\mathrm{a}(h^{-1}(\varphi^\mathrm{d}) \right ) + G_\mathrm{u}(h^{-1}(\varphi^\mathrm{d})) + K_\mathrm{u}(h^{-1}(\varphi^\mathrm{d}) = 0_{n-m}.
+\end{equation}
 
-% \subsubsection{Setpoint Regulation with Gravity Cancellation and Compensation of Elastic Forces}
-% As stated previously, Eq.~\ref{eq:background:model_based_control:potential_shaping_regulation}, depending on the gravitational field and for low feedback gains, is only locally asymptotically stable 
-% \begin{equation}
-%     % \tau_\mathrm{mb}(t, q, \dot{q}) =  J_{\mathrm{h},\mathrm{M},\mathrm{a}}^{+\top}(q) \left ( G(q) + K(q) \right ),
-%     \tau_\mathrm{mb}(t, q, \dot{q}) = J_{\mathrm{h},\mathrm{M},\mathrm{a}}^{+\top}(q) \left ( \underbrace{G(q)}_\text{Cancel Gravity} + \underbrace{K(q^\mathrm{d})}_\text{Comp. Elasticity} \right )
-% \end{equation}
-% leading to the closed-loop dynamics
-% \begin{equation}
-%     M_\varphi(q) \, \ddot{\varphi} + \eta_\varphi(q,\dot{q}) \, \dot{q} + \begin{bmatrix}
-%         J_{\mathrm{h},\mathrm{M},\mathrm{a}}^{+\top}(q) \left ( K(q) - K(q^\mathrm{d}) \right )\\
-%         J_{\mathrm{h},\mathrm{M},\mathrm{u}}^{+\top}(q) \left ( K(q) + G(q)) \right )\\
-%     \end{bmatrix} + D_\varphi(q) \, \dot{q} = \begin{bmatrix}
-%         \tau_\mathrm{fb}(t, q, \dot{q})\\ 0_{n-m}
-%     \end{bmatrix}.
-% \end{equation}
-% \citet{pustina2022feedback} has 
+\subsubsection{Setpoint Regulation with Feedforward Compensation}
+A setpoint regulator with feedforward compensation that shapes the potential of the actuated coordinates is given by~\citep{pustina2025analysis}
+\begin{equation}
+    \tau_\mathrm{mb} = \frac{\partial \mathcal{U}_\varphi(\varphi)}{\partial \varphi_\mathrm{a}} \bigg |_{\varphi=\varphi^\mathrm{d}} = A_\mathrm{a}^{-1}(q^\mathrm{d}) \, \left ( G_\mathrm{a}(q^\mathrm{d}) + K_\mathrm{a}(q^\mathrm{d}) \right ),
+\end{equation}
+leading to the closed-loop dynamics
+\begin{equation}\scriptsize
+    M_\varphi(q) \, \ddot{\varphi} + \begin{bmatrix}
+        \eta_{\varphi,\mathrm{a}}(q,\dot{q})\\ \eta_{\varphi,\mathrm{u}}(q,\dot{q})
+    \end{bmatrix} \, \dot{\varphi} + \begin{bmatrix}
+        A_\mathrm{a}^{-1}(q) \left ( G_\mathrm{a}(q) + K_\mathrm{a}(q) \right ) - A_\mathrm{a}^{-1}(q^\mathrm{d}) \left ( G_\mathrm{a}(q^\mathrm{d}) + K_\mathrm{a}(q^\mathrm{d}) \right ) + K_\mathrm{p} \left ( \varphi_\mathrm{a} - \varphi^\mathrm{d}_\mathrm{a} \right ) + K_\mathrm{d} \, \dot{\varphi}_\mathrm{a}\\
+        -A_\mathrm{u}(q) \, A_\mathrm{a}^{-1}(q) \left ( G_\mathrm{a}(q) + K_\mathrm{a}(q) \right ) + G_\mathrm{u}(q) + K_\mathrm{u}(q)
+    \end{bmatrix} + \begin{bmatrix}
+        D_{\varphi,\mathrm{a}}(q)\\
+        D_{\varphi,\mathrm{u}}(q)
+    \end{bmatrix} \, \dot{\varphi} = \begin{bmatrix}
+        0_m\\ 0_{n-m}
+    \end{bmatrix},
+\end{equation}
+where we assumed that the feedback controller $\tau_\mathrm{fb}(\varphi,\dot{\varphi})$ contains a PD with gains $K_\mathrm{p}, K_\mathrm{d} \in \mathbb{R}^{m \times m}$.
+These closed-loop dynamics are equivalent to
+\begin{equation}\scriptsize
+    \begin{bmatrix}
+        M_{\varphi,\mathrm{aa}}(q) & M_{\varphi,\mathrm{au}}(q)\\ 
+        M_{\varphi,\mathrm{ua}}(q) & M_{\varphi,\mathrm{uu}}(q)
+    \end{bmatrix} \, \ddot{\varphi} + \begin{bmatrix}
+        \eta_{\varphi,\mathrm{a}}(q,\dot{q})\\ \eta_{\varphi,\mathrm{u}}(q,\dot{q})
+    \end{bmatrix} \, \dot{\varphi} + \begin{bmatrix}
+       \partial_{\varphi_\mathrm{a}} \mathcal{U}_\varphi(\varphi) - \partial_{\varphi_\mathrm{a}} \mathcal{U}_\varphi(\varphi^\mathrm{d}) + K_\mathrm{p} \left ( \varphi_\mathrm{a} - \varphi^\mathrm{d}_\mathrm{a} \right ) + K_\mathrm{d} \, \dot{\varphi}_\mathrm{a}\\
+       \partial_{\varphi_\mathrm{u}} \mathcal{U}_\varphi(\varphi)
+    \end{bmatrix} + \begin{bmatrix}
+        D_{\varphi,\mathrm{a}}(q)\\
+        D_{\varphi,\mathrm{u}}(q)
+    \end{bmatrix} \, \dot{\varphi} = \begin{bmatrix}
+        0_m\\ 0_{n-m}
+    \end{bmatrix}.
+\end{equation}
+We can devise the Lyapunov candidate
+\begin{equation}
+\begin{split}
+    V(\varphi, \dot{\varphi}) =& \: \underbrace{\frac{1}{2} \, \dot{\varphi}^\top \, M_\varphi(h^{-1}(\varphi)) \, \dot{\varphi}}_\text{Kinetic Energy} + \underbrace{\mathcal{U}_\varphi(\varphi) - \mathcal{U}_\varphi(\varphi^\mathrm{d})}_\text{Centered Potential Energy}\\
+    & \: + \underbrace{\frac{\partial \mathcal{U}_\varphi(\varphi)}{\partial \varphi_\mathrm{a}} \Bigg |_{\varphi = \varphi^\mathrm{d}}^\top \left ( \varphi_\mathrm{a}^\mathrm{d} - \varphi_\mathrm{a} \right )}_\text{Correction Term on Actuated Coord.} + \underbrace{\frac{1}{2} \, (\varphi_\mathrm{a}-\varphi_\mathrm{a}^\mathrm{d})^\top \, K_\mathrm{p} \, (\varphi_\mathrm{a}-\varphi_\mathrm{a}^\mathrm{d})}_\text{Artificial Potential Energy},
+\end{split}
+\end{equation}
+which is valid if
+\begin{equation}
+    \frac{\partial^2 \mathcal{U}_\varphi(\varphi)}{\partial \varphi^2} \Bigg |_{\varphi = \varphi^\mathrm{d}} + \begin{bmatrix}
+        K_\mathrm{p} & 0_{m \times (n-m)}\\
+        0_{(n-m) \times m} & 0_{(n-m) \times (n-m)}
+    \end{bmatrix} \succ 0,
+\end{equation}
+which can be locally ensured by choosing $K_\mathrm{p} \succ 0$ sufficiently large~\citep{pustina2025analysis}.
+The time derivative of the Lyapunov function is given as
+\begin{equation}
+\begin{split}
+    \dot{V}(\varphi,\dot{\varphi}) 
+    % =& \: \dot{\varphi}^\top \, M_\varphi(h^{-1}(\varphi)) \, \ddot{\varphi} + \frac{1}{2} \, \dot{\varphi}^\top \, \dot{M}_\varphi(h^{-1}(\varphi)) \, \dot{\varphi} - \dot{\varphi}^\top \, \left ( \partial_{\varphi} \mathcal{U}_\varphi(\varphi) - \partial_{\varphi} \mathcal{U}_\varphi(\varphi^\mathrm{d}) \right ),\\
+    =& \: -\dot{\varphi}^\top \, D_\varphi(h^{-1}(\varphi)) \, \dot{\varphi} - \dot{\varphi}_\mathrm{a}^\top \, K_\mathrm{d} \, \dot{\varphi}_\mathrm{a}, \succ 0 \quad \forall \: \varphi,\dot{\varphi} \in \mathbb{R}^{m}, K_\mathrm{d} \succeq 0,
+\end{split}
+\end{equation}
 
-% \subsubsection{Trajectory Tracking with Compensation of Static Forces}
-% \begin{equation}
-%     \tau_\mathrm{mb}(t, q, \dot{q}) = M_{\varphi,\mathrm{a}}(q^\mathrm{d}) \, \ddot{\varphi}^\mathrm{d} + \eta_{\varphi,\mathrm{a}}(q^\mathrm{d},\dot{q}^\mathrm{d}) \, \dot{q}^\mathrm{d} + J_{\mathrm{h},\mathrm{M},\mathrm{a}}^{+\top}(q^\mathrm{d}) \left ( G(q^\mathrm{d}) + K(q^\mathrm{d}) + D \, \dot{q}^\mathrm{d} \right )
-% \end{equation}
+As previously mentioned, the statically attainable equilibrium $(\varphi^\mathrm{d},0_n)$ is locally asymptotically stable for sufficiently large proportional gains $K_\mathrm{p}$.
+If the robot is elastically dominated with
+\begin{equation}\footnotesize
+    \frac{\partial^2 \mathcal{U}_\varphi(\varphi)}{\partial \varphi_\mathrm{u}^2} = \frac{\partial}{\partial \varphi_\mathrm{u}} \left ( -A_\mathrm{u}(h^{-1}(\varphi)) \, A_\mathrm{a}^{-1}(h^{-1}(\varphi)) \left ( G_\mathrm{a}(h^{-1}(\varphi)) + K_\mathrm{a}(h^{-1}(\varphi)) \right ) + G_\mathrm{u}(h^{-1}(\varphi)) + K_\mathrm{u}(h^{-1}(\varphi)) \right ) \succ 0 \quad \forall \: \varphi \in \mathbb{R}^n,
+\end{equation}
+the regulator additionally achieves \gls{GAS} for a sufficiently large $K_\mathrm{p} \succ 0$~\citep{pustina2025analysis}.
 
+\subsubsection{Setpoint Regulation with Gravity Cancellation and Compensation of Elastic Forces for Elastically Decoupled Soft Robots}
+Elastically decoupled soft robots are defined as the generalized elastic force taking the form~\citep{pustina2025analysis}
+\begin{equation}
+    \frac{\partial \mathcal{U}_{\varphi,\mathrm{K}}}{\partial \varphi}(\varphi) = \begin{bmatrix}
+        \frac{\partial \mathcal{U}_{\varphi,\mathrm{K}}}{\partial \varphi_\mathrm{a}}(\varphi_\mathrm{a})\\
+        \frac{\partial \mathcal{U}_{\varphi,\mathrm{K}}}{\partial \varphi_\mathrm{u}}(\varphi_\mathrm{u})
+    \end{bmatrix} = \begin{bmatrix}
+        A_\mathrm{a}^{-1}(h^{-1}(\varphi_\mathrm{a})) K_\mathrm{a}(h^{-1}(\varphi_\mathrm{a}))\\
+        -A_\mathrm{u}(h^{-1}(\varphi_\mathrm{u})) \, A_\mathrm{a}^{-1}(h^{-1}(\varphi_\mathrm{u})) K_\mathrm{a}(h^{-1}(\varphi_\mathrm{u})) + K_\mathrm{u}(h^{-1}(\varphi_\mathrm{u}))
+    \end{bmatrix},
+\end{equation}
+which is for example the case for $A(q) = A$ and linear elasticity $K(q) = S \, q$, where $S \in \mathbb{R}^{n\times n}$ is defined in a decoupled form
+\begin{equation}
+    S = \begin{bmatrix}
+        S_\mathrm{aa} & 0_{m \times (n-m)}\\
+        0_{(n-m) \times m} & S_\mathrm{uu}
+    \end{bmatrix}.
+\end{equation}
 
-% \subsubsection{Trajectory Tracking with Cancellation of Static Forces}
-% \begin{equation}
-%     \tau_\mathrm{mb}(t, q, \dot{q}) = M_{\varphi,\mathrm{a}}(q) \, \ddot{\varphi}^\mathrm{d} + \eta_{\varphi,\mathrm{a}}(q,\dot{q}) \, \dot{q}^\mathrm{d} + J_{\mathrm{h},\mathrm{M},\mathrm{a}}^{+\top}(q) \left ( G(q) + K(q) \right ),
-% \end{equation}
-% leading to the closed-loop dynamics
-% \begin{equation}
-%     M_\varphi(q) \, \ddot{\varphi} + \begin{bmatrix}
-        
-%     \end{bmatrix} \eta_\varphi(q,\dot{q}) \, \dot{q} + \begin{bmatrix}
-%         0_m\\ J_{\mathrm{h},\mathrm{M},\mathrm{u}}^{+\top}(q) \left ( G(q) + K(q) + D \, \dot{q} \right )
-%     \end{bmatrix} = \begin{bmatrix}
-%         \tau_\mathrm{fb}(t, q, \dot{q})\\ 0_{n-m}
-%     \end{bmatrix}.
-% \end{equation}
+In this case, a regulator that cancels the gravitational forces and compensates the elastic forces on the actuated coordinates
+\begin{equation}
+    \tau_\mathrm{mb}(\varphi) = \underbrace{\frac{\partial \mathcal{U}_{\varphi,\mathrm{G}}(\varphi)}{\partial \varphi_\mathrm{a}}}_\text{Cancel Gravity} + \underbrace{\frac{\partial \mathcal{U}_{\varphi,\mathrm{K}}(\varphi)}{\partial \varphi_\mathrm{a}} \bigg |_{\varphi_\mathrm{a}=\varphi_\mathrm{a}^\mathrm{d}}}_\text{Compensate Elasticity} = \underbrace{A_\mathrm{a}^{-1}(q) \, G_\mathrm{a}(h^{-1}(\varphi))}_\text{Cancel Gravity} + \underbrace{A_\mathrm{a}^{-1}(h^{-1}(\varphi_\mathrm{a})) \, K_\mathrm{a}(h^{-1}(\varphi_\mathrm{a}))}_\text{Compensate Elasticity},
+\end{equation}
+renders the $\varphi_\mathrm{a} = \varphi_\mathrm{a}^\mathrm{d}$ to be globally asymptotically stable provided sufficiently large proportional feedback gains $K_\mathrm{p} \succeq 0$~\citep{pustina2025analysis}.
+This system exhibits the closed-loop dynamics
+\begin{equation}\footnotesize
+    \begin{bmatrix}
+        M_{\varphi,\mathrm{aa}}(q) & M_{\varphi,\mathrm{au}}(q)\\ 
+        M_{\varphi,\mathrm{ua}}(q) & M_{\varphi,\mathrm{uu}}(q)
+    \end{bmatrix} \, \ddot{\varphi} + \begin{bmatrix}
+        \eta_{\varphi,\mathrm{a}}(q,\dot{q})\\ \eta_{\varphi,\mathrm{u}}(q,\dot{q})
+    \end{bmatrix} \, \dot{\varphi} + \begin{bmatrix}
+       \partial_{\varphi_\mathrm{a}} \mathcal{U}_{\varphi,\mathrm{K}}(\varphi) - \partial_{\varphi_\mathrm{a}} \mathcal{U}_{\varphi,\mathrm{K}}(\varphi^\mathrm{d}) + K_\mathrm{p} \left ( \varphi_\mathrm{a} - \varphi^\mathrm{d}_\mathrm{a} \right ) + K_\mathrm{d} \, \dot{\varphi}_\mathrm{a}\\
+       \partial_{\varphi_\mathrm{u}} \mathcal{U}_{\varphi,\mathrm{G}}(\varphi) + \partial_{\varphi_\mathrm{u}} \mathcal{U}_{\varphi,\mathrm{K}}(\varphi)
+    \end{bmatrix} + \begin{bmatrix}
+        D_{\varphi,\mathrm{a}}(q)\\
+        D_{\varphi,\mathrm{u}}(q)
+    \end{bmatrix} \, \dot{\varphi} = \begin{bmatrix}
+        0_m\\ 0_{n-m}
+    \end{bmatrix}.
+\end{equation}
+We can use the Lyapunov candidate
+\begin{equation}
+\begin{split}\small
+    V(\varphi, \dot{\varphi}) =& \: \underbrace{\frac{1}{2} \, \dot{\varphi}^\top \, M_\varphi(h^{-1}(\varphi)) \, \dot{\varphi}}_\text{Kinetic Energy} + \underbrace{\mathcal{U}_{\varphi,\mathrm{G}}(\varphi) - \mathcal{U}_{\varphi,\mathrm{G}_\mathrm{a}}(\varphi) - \mathcal{U}_{\varphi,\mathrm{G}_\mathrm{u}}(\varphi^\mathrm{d})}_\text{Centered Gravitational Potential Energy} + \underbrace{\mathcal{U}_{\varphi,\mathrm{K}}(\varphi) - \mathcal{U}_{\varphi,\mathrm{K}}(\varphi^\mathrm{d})}_\text{Centered Elastic Potential Energy}\\
+    & \: + \underbrace{\frac{\partial \mathcal{U}_\varphi(\varphi)}{\partial \varphi_\mathrm{a}} \Bigg |_{\varphi = \varphi^\mathrm{d}}^\top \left ( \varphi_\mathrm{a}^\mathrm{d} - \varphi_\mathrm{a} \right )}_\text{Correction Term on Actuated Coord.} + \underbrace{\frac{1}{2} \, (\varphi_\mathrm{a}-\varphi_\mathrm{a}^\mathrm{d})^\top \, K_\mathrm{p} \, (\varphi_\mathrm{a}-\varphi_\mathrm{a}^\mathrm{d})}_\text{Artificial Potential Energy},
+\end{split}
+\end{equation}
+where
+\begin{equation}
+\begin{split}
+    \mathcal{U}_{\varphi,\mathrm{G}}(\varphi) = \mathcal{U}_{\varphi,\mathrm{G}_\mathrm{a}}(\varphi) + \mathcal{U}_{\varphi,\mathrm{G}_\mathrm{u}}(\varphi),
+\end{split}
+\end{equation}
+with $\mathcal{U}_{\varphi,\mathrm{G}_\mathrm{a}}(\varphi)$ and $\mathcal{U}_{\varphi,\mathrm{G}_\mathrm{u}}(\varphi)$ the gravitational potential energy of the actuated and unactuated coordinates, respectively.
+These quantities can be computed as
+\begin{equation}
+\begin{split}
+    \mathcal{U}_{\varphi,\mathrm{G}_\mathrm{a}}(\varphi) =& \: \int A_\mathrm{a}^{-1}(q) \, G_\mathrm{a}(h^{-1}(\varphi)) \, \mathrm{d}\varphi_\mathrm{a},\\
+    \mathcal{U}_{\varphi,\mathrm{G}_\mathrm{u}}(\varphi) =& \: \int -A_\mathrm{u}(h^{-1}(\varphi)) \, A_\mathrm{a}^{-1}(h^{-1}(\varphi)) \, G_\mathrm{a}(h^{-1}(\varphi)) + G_\mathrm{u}(h^{-1}(\varphi)) \, \mathrm{d}\varphi_\mathrm{u},\\
+\end{split}
+\end{equation}
+and need to fulfill the properties
+\begin{equation}
+    \frac{\partial \mathcal{U}_{\varphi,\mathrm{G}_\mathrm{a}}(\varphi)}{\partial \varphi_\mathrm{a}} = \frac{\partial \mathcal{U}_{\varphi,\mathrm{G}}(\varphi)}{\partial \varphi_\mathrm{a}},
+    \qquad
+    \frac{\partial \mathcal{U}_{\varphi,\mathrm{G}_\mathrm{u}}(\varphi)}{\partial \varphi_\mathrm{u}} = \frac{\partial \mathcal{U}_{\varphi,\mathrm{G}}(\varphi)}{\partial \varphi_\mathrm{u}}.
+\end{equation}
+This Lyapunov function has the associated time derivative
+\begin{equation}
+    \dot{V}(\varphi,\dot{\varphi}) = -\dot{\varphi}^\top \, D_\varphi(h^{-1}(\varphi)) \, \dot{\varphi} - \dot{\varphi}_\mathrm{a}^\top \, K_\mathrm{d} \, \dot{\varphi}_\mathrm{a}, \succ 0 \quad \forall \: \varphi,\dot{\varphi} \in \mathbb{R}^{m}, K_\mathrm{d} \succeq 0,
+\end{equation}
+to analyze the stability properties in more detail.
 
 \subsection{Integrated Controllers}\label{sub:background:model_based_control:integrated_controllers}
-In the following, we will discuss some common closed-form model-based controllers that cannot (easily) be separated into a model-based term and a pure feedback term.
+In the following, we will discuss some common closed-form model-based controllers that cannot (easily) be separated into a model-based term and an error-based feedback term.
 For simplicity, we assume in the following the fully actuated case - i.e., $n=m$, $\varphi = \varphi_\mathrm{a}$, $M_{\varphi}(q) = M_{\varphi,\mathrm{a}}(q)$, etc.
 
 \subsubsection{P-satI-D+Potential Shaping}
 The \emph{P-satI-D+Potential Shaping} controller consists of \emph{P-satI-D} feedback term and the \emph{Setpoint Regulation with Feedforward Compensation} model-based term.
-As we frequently use this controller throughout this thesis, such as in Chapter~\ref{chp:hsacontrol} (underactuated version), and Chapter~\ref{chp:pcsregression} \& \ref{chp:con}, we will below specify the control law
+As we frequently use this controller throughout this thesis, such as in Chapter~\ref{chp:hsacontrol} (underactuated version), and Chapter~\ref{chp:pcsregression} \& \ref{chp:con}, we will below specify the control law, assuming a constant actuation matrix $A(q) = A$
 \begin{equation}
 \begin{split}
     \tau(t,q,\dot{q}) =& \: \underbrace{A^{-1} \, \left ( G(q^\mathrm{d}) + K(q^\mathrm{d}) \right )}_\text{Model-Based Feedforward}\\
-    & \: + \underbrace{K_\mathrm{p} \left (\varphi^\mathrm{d}(t) - \varphi(t) \right ) + K_\mathrm{d} \left ( \dot{\varphi}^\mathrm{d}(t) - \dot{\varphi}(t) \right ) + K_\mathrm{i} \int_0^t \tanh \left ( \gamma \, ( \varphi^\mathrm{d}(t')-\varphi(t') ) \right ) \: \mathrm{d} t'}_\text{Model-Free Feedback Term: P-satI-D},
+    & \: + \underbrace{K_\mathrm{p} \left (\varphi^\mathrm{d}(t) - \varphi(t) \right ) + K_\mathrm{i} \int_0^t \tanh \left ( \gamma \, ( \varphi^\mathrm{d}(t')-\varphi(t') ) \right ) \: \mathrm{d} t' + K_\mathrm{d} \left ( \dot{\varphi}^\mathrm{d}(t) - \dot{\varphi}(t) \right )}_\text{Model-Free Feedback Term: P-satI-D},
 \end{split}
 \end{equation}
 which generates the closed-loop dynamics
@@ -378,17 +551,17 @@ which generates the closed-loop dynamics
     + K_\mathrm{p} \left (\varphi(t) - \varphi^\mathrm{d}(t) \right ) + K_\mathrm{d} \left ( \dot{\varphi}(t) - \dot{\varphi}^\mathrm{d}(t) \right ) + K_\mathrm{i} \int_0^t \tanh \left ( \gamma \, ( \varphi(t')-\varphi^\mathrm{d}(t') ) \right ) \: \mathrm{d} t' = 0_n,
 \end{split}
 \end{equation}
-where we assume a constant actuation matrix $A(q) = A$.
+where $K_\mathrm{p}, K_\mathrm{i}, K_\mathrm{d} \succeq 0 \in \mathbb{R}^{n \times n}$ are the proportional, integral, and derivative feedback gains, respectively.
 
 % In case of linear elasticity $K(q) = S \, q$, the closed loop dynamics simplify to 
 
 \subsubsection{Feedback Linearization via Computed Torque}
 The idea behind (full) feedback linearization~\citep{slotine1987on, spong2020robot} is to 
-cancel the existing dynamics of the robot and ensure that the closed-loop system exhibits linear dynamics - usually established via a PD term. A computed torque controller for soft robots exhibits the form
+cancel the existing dynamics of the robot and ensure that the closed-loop system exhibits linear dynamics - usually established via a PD term. A computed torque controller for soft robots assumes the form
 \begin{equation}\small
     \tau(t,q,\dot{q}) = M_{\varphi}(q) \, \left (K_\mathrm{p} \left (\varphi^\mathrm{d} - \varphi \right ) + K_\mathrm{d} \left (\dot{\varphi}^\mathrm{d} - \dot{\varphi} \right ) + \ddot{\varphi}^\mathrm{d}\right ) + \left ( \eta_{\varphi}(q,\dot{q}) + D_\varphi(q) \right ) \, \dot{\varphi} + A^{-1}(q) \left ( G(q) + K(q) \right ),
 \end{equation}
-where $K_\mathrm{p}, K_\mathrm{d} \in \mathbb{R}^{m \times m}$ are proportional and derivative control gains for tracking the desired actuation coordinate and actuation velocity, respectively. 
+where $K_\mathrm{p}, K_\mathrm{d} \in \mathbb{R}^{n \times n}$ are proportional and derivative control gains for tracking the desired actuation coordinate and actuation velocity, respectively. 
 The closed-loop dynamics read as
 \begin{equation}\label{eq:background:model_based_control:feedback_linearization:closed_loop_dynamics}
     M_{\varphi}(q) \left (K_\mathrm{p} \left (\varphi - \varphi^\mathrm{d} \right ) + K_\mathrm{d} \left (\dot{\varphi} - \dot{\varphi}^\mathrm{d} \right ) + \left ( \ddot{\varphi} - \ddot{\varphi}^\mathrm{d} \right ) \right ) = 0.
@@ -398,7 +571,8 @@ After defining the control error as $e(t) = \varphi(t) - \varphi^\mathrm{d}(t)$ 
     \ddot{e}(t) + K_\mathrm{d} \, \dot{e}(t) + K_\mathrm{p} \, e(t) = 0,
 \end{equation}
 which lets us notice that now linear dynamics govern with stiffness $K_\mathrm{p}$ and damping factor $K_\mathrm{d}$ govern the closed-loop system behavior.
-If we assume scalar control gains $K_\mathrm{p}, K_\mathrm{d} \in \mathbb{R}_+$, these error dynamics converge exponentially fast to the global equilibrium $e(t) = 0$ with decay time $\frac{1}{K_\mathrm{d}}$. Specifically, we can always choose the control such that the closed-loop system exhibits a critically damped behavior $\frac{K_\mathrm{d}}{2} = \sqrt{K_\mathrm{p}}$
+If we assume scalar control gains $K_\mathrm{p}, K_\mathrm{d} \in \mathbb{R}_+$, these error dynamics converge exponentially fast to the global equilibrium $e(t) = 0$ with decay time $\frac{1}{K_\mathrm{d}}$. Specifically, we can always choose the control such that the closed-loop system exhibits a critically damped behavior $\frac{K_\mathrm{d}}{2} = \sqrt{K_\mathrm{p}}$.
+The evolution of the error is then given in closed form as
 \begin{equation}\label{eq:background:model_based_control:feedback_linearization:error_evolution_closed_form}
     e(t) = \left ( e_0 + \left ( \dot{e}_0 + \frac{K_\mathrm{d}}{2} \, e_0 \right ) (t-t_0) \right ) \, e^{-\frac{K_\mathrm{d}}{2} (t - t_0)},
 \end{equation}
@@ -410,19 +584,19 @@ So far, computed torque controllers have been verified for fully actuated soft r
 
 \subsubsection{Operational Space Impedance Control}
 % A operational space impedance controller leverages the partial feedback linearization framework to cancel out the existing task dynamics and establish new linear dynamics with stiffness matrix $K_\mathrm{x} \in \mathbb{R}^{o \times o}$ and damping matrix $D_\mathrm{x} \in \mathbb{R}^{o \times o}$ that regulates the closed-loop system towards the operational space reference $x^\mathrm{d} \in \mathbb{R}^o$~\citep{khatib1987unified, della2020model}
-A operational space impedance controller uses partial feedback linearization to cancel out the original task dynamics and replace them with a new set of linear dynamics in operational space. These new dynamics are defined by a stiffness matrix $K_\mathrm{x} \in \mathbb{R}^{o \times o}$ and a damping matrix $D_\mathrm{x} \in \mathbb{R}^{o \times o}$, which together drive the closed-loop system toward the desired operational space reference $x^\mathrm{d} \in \mathbb{R}^o$~\citep{khatib1987unified, della2020model}.
+An operational space impedance controller uses partial feedback linearization to cancel out the original task dynamics and replace them with a new set of linear dynamics in operational space $x \in \mathbb{R}^n$. These new dynamics are defined by a stiffness matrix $K_\mathrm{x} \in \mathbb{R}^{o \times o}$ and a damping matrix $D_\mathrm{x} \in \mathbb{R}^{o \times o}$, which together drive the closed-loop system toward the desired operational space reference $x^\mathrm{d} \in \mathbb{R}^o$~\citep{khatib1987unified, della2020model}.
 \begin{equation}\small
 \begin{split}
     \tau =& \: \underbrace{A^{-1}(q)}_{J_\mathrm{h}^{-\top}(q)} \, \big ( \underbrace{J^\top(q) \, J_\mathrm{M}^{+\top}(q) \left ( K(q) + D \, \dot{q} \right )}_\text{Cancel Elastic \& Diss. Forc. Acting on Task} + \underbrace{G(q)}_\text{Cancel Gravity} \big )\\
-    + & \: A^{-1}(q) \, \big ( \underbrace{J^\top(q) \, \eta_\mathrm{x}(q,\dot{q}) \left ( \mathbb{I}_n - J_\mathrm{M}^{+}(q) \, J(q)  \right ) \, \dot{q}}_\text{Cancel Coupling of Null-Space Coriolis Force on Task} + \underbrace{J^\top(q) \left ( K_\mathrm{x} \, (x^\mathrm{d} - x) - D_\mathrm{x} \, \dot{x} \right )}_{\text{PD for Shaping Operational Space Impedance}} \big ),
+    + & \: A^{-1}(q) \, \big ( \underbrace{J^\top(q) \, \eta_\mathrm{x}(q,\dot{q}) \left ( \mathbb{I}_n - J_\mathrm{M}^{+}(q) \, J(q)  \right ) \, \dot{q}}_\text{Cancel Coupling of Null-Space Coriolis Force on Task} + \underbrace{J^\top(q) \left ( K_\mathrm{x} \, (x^\mathrm{d} - x) - D_\mathrm{x} \, \dot{x} \right )}_{\text{PD for Shaping Operational Space Impedance}} \big ).
 \end{split}
 \end{equation}
 % As previously already mentioned, this impedance controller assumes (a) full actuation (i.e., $n=m$), (b) that $A(q) \in \mathbb{R}{n \times n}$ is invertible~\citep{della2020model}, (c) the dimensionality of the operational space with coordinates $x \in \mathrm{R}^\mathrm{o}$ is smaller than the of the configuration space (i.e., $m \leq n$), and (d) that the null-space is asymptotically stable which should generally be the case if $K(q) = S \, q$ with $S \succ 0$ and $D \succ 0$.
 As noted earlier, the impedance controller relies on several key assumptions. It presumes (a) full actuation (i.e., $n = m$), (b) that the matrix $A(q) \in \mathbb{R}^{n \times n}$ is invertible~\citep{della2020model}, (c) that the operational space—characterized by coordinates $x \in \mathbb{R}^{o}$—has lower dimensionality than the configuration space (i.e., $m \leq n$), and (d) that the null space is asymptotically stable, a condition typically met when $K(q) = S \, q$ with $S \succ 0$ and $D \succ 0$.
 
-In the following, we will guide you step-by-step through the control design.
+In the following, we will guide the reader step-by-step through the control design.
 First, we cancel the gravitational forces of the system via $\tau_\mathrm{q} = G(q)$. Please note that this immediately ensures that gravity is not acting anymore on the closed-loop null-space dynamics, which could potentially cause instability.
-Now, the updated task and null space dynamics are given by
+Now, the updated operational and null space dynamics are given by
 \begin{equation}
     \begin{bmatrix}
         \Lambda_\mathrm{x}(q) & 0_{o \times (n-o)}\\
@@ -440,17 +614,18 @@ Now, the updated task and null space dynamics are given by
         Z(q)
     \end{bmatrix} \, \left ( K(q) + D \, \dot{q} \right ) = \begin{bmatrix}
         f_\mathrm{x}\\ f_\mathrm{n}
-    \end{bmatrix},
+    \end{bmatrix}.
 \end{equation}
-Next, we devise a force $f_\mathrm{x} \in \mathbb{R}^o$ in operational space
+Next, we devise an operational space force $f_\mathrm{x} \in \mathbb{R}^o$
 \begin{equation}
     f_\mathrm{x} = \underbrace{J_\mathrm{M}^{+\top}(q) \left ( K(q) + D \, \dot{q} \right )}_{f_\mathrm{KD}}
     + \underbrace{\eta_\mathrm{x}(q,\dot{q}) \left ( \mathbb{I}_n - J_\mathrm{M}^{+}(q) \, J(q)  \right ) \, \dot{q}}_{f_{\eta_\mathrm{xn}}}
-    + \underbrace{K_\mathrm{x} \, (x^\mathrm{d} - x) - D_\mathrm{x} \, \dot{x}}_{f_\mathrm{PD}}
+    + \underbrace{K_\mathrm{x} \, (x^\mathrm{d} - x) - D_\mathrm{x} \, \dot{x}}_{f_\mathrm{PD}},
 \end{equation}
-that cancels the existing operational space dynamics, removes the remaining coupling from the null space dynamics, and creates new linear dynamics with a tunable impedance and an asymptotically stable equilibrium at $x^\mathrm{d}$ via a PD term. 
-Diving into more detail, the force $f_\mathrm{KD}$ cancels the existing operational space elastic and dissipative forces.
-Next, the purpose of the term $f_{\eta_\mathrm{xn}}$ is to remove the remaining coupling of the null space dynamics on the operational space dynamics from the closed loop system. Specifically, the aim is to eliminate the Coriolis forces of the null space acting on the operational space $\eta_\mathrm{xn}(q,\dot{q}) \, \nu_\mathrm{n}$. However, we want to avoid having to compute the null space online. We can avoid the derivation of the null space by performing the substitution~\citep{ott2008cartesian, della2020model}
+% that cancels the existing operational space dynamics, removes the remaining coupling from the null space dynamics, and creates new linear dynamics with a tunable impedance and an asymptotically stable equilibrium at $x^\mathrm{d}$ via a PD term. 
+% Diving into more detail, the force $f_\mathrm{KD}$ cancels the existing operational space elastic and dissipative forces.
+% Next, the purpose of the term $f_{\eta_\mathrm{xn}}$ is to remove the remaining coupling of the null space dynamics on the operational space dynamics from the closed loop system. Specifically, the aim is to eliminate the Coriolis forces of the null space acting on the operational space $\eta_\mathrm{xn}(q,\dot{q}) \, \nu_\mathrm{n}$. However, we want to avoid having to compute the null space online. We can avoid the derivation of the null space by performing the substitution~\citep{ott2008cartesian, della2020model}
+that cancels the existing operational space dynamics, decouples the remaining null space interactions, and establishes new linear dynamics with a tunable impedance and an asymptotically stable equilibrium at $x^\mathrm{d}$ via a PD term. In more detail, the force $f_\mathrm{KD}$ eliminates the inherent elastic and dissipative forces in the operational space. Next, the term $f_{\eta_\mathrm{xn}}$ is designed to remove any residual coupling from the null space dynamics on the operational space, specifically by canceling the null space Coriolis forces $\eta_\mathrm{xn}(q,\dot{q}) \, \nu_\mathrm{n}$. To avoid computing the null space online, we bypass its derivation by performing the substitution outlined in~\citep{ott2008cartesian, della2020model}.
 \begin{equation}
 \begin{split}
     f_{\eta_\mathrm{xn}} =& \: \eta_\mathrm{xn}(q,\dot{q}) \, \nu_\mathrm{n} = \eta_\mathrm{x}(q,\dot{q}) \, \dot{q} - \eta_\mathrm{xx}(q,\dot{q}) \, \dot{q},\\
@@ -476,16 +651,20 @@ This forcing $f_\mathrm{x}$ results in the closed-loop task and null space dynam
     \end{bmatrix} + \begin{bmatrix}
         K_\mathrm{x} \, (x - x^\mathrm{d}) - D_\mathrm{x} \, \dot{x}\\
         Z(q) \left ( K(q) + D \, \dot{q} \right )
-    \end{bmatrix} = 0_{n},
+    \end{bmatrix} = 0_{n}.
 \end{equation}
 We can extract several interesting observations by analyzing these closed-loop dynamics in more detail. First, the operational space dynamics
 \begin{equation}
     \Lambda_\mathrm{x}(q) \, \ddot{x} + K_\mathrm{x} \, (x - x^\mathrm{d}) - D_\mathrm{x} \, \dot{x} = 0_{o},
 \end{equation}
-now mirror the ones of coupled damped harmonic oscillators, and we can easily prove, analog to the computed torque controller, that they converge exponentially fast to the global asymptotic equilibrium $x^\mathrm{d}$.
-In the spirit of the previously introduced setpoint regulation controllers with gravity cancellation and compensation of elastic forces, we don't fully eliminate the null space dynamics but instead increase robustness against disturbances and modeling errors by preserving the natural elasticity and dissipation of the system while only removing the gravitational forces. This results in closed-loop null-space dynamics that converge in steady-state to the minimum of the operational space potential field.
+now mirror the ones of coupled damped harmonic oscillators.
+% Furthermore, we can easily prove, analog to the computed torque controller, that they converge exponentially fast to the global asymptotic equilibrium $x^\mathrm{d}$.
+% In the spirit of the previously introduced setpoint regulation controllers with gravity cancellation and compensation of elastic forces, we don't fully eliminate the null space dynamics but instead increase robustness against disturbances and modeling errors by preserving the natural elasticity and dissipation of the system while only removing the gravitational forces. This results in closed-loop null-space dynamics that converge in steady-state to the minimum of the operational space potential field.
+Furthermore, similar to the computed torque controller, we can readily demonstrate that they converge exponentially fast to the global asymptotic equilibrium $x^\mathrm{d}$. In line with the previously introduced setpoint regulation controllers that cancel gravitational forces while compensating for elastic forces, we do not entirely eliminate the null space dynamics. Instead, we enhance robustness against disturbances and modeling errors by preserving the system’s natural elasticity and dissipation while only removing the gravitational forces. This approach yields closed-loop null-space dynamics that settle in steady-state at the (local) minimum of their potential field.
 
-After designing the desired forces in operational space $f_\mathrm{x}$, we can easily derive the control input via configuration space. First, $f_\mathrm{x}$ is projected into configuration space, resulting in a sum between the projected operational space forces and the gravity cancellation: $\tau_\mathrm{q} = J^\top(q) \, f + G(q)$ 
-Finally, the inverse of the actuation matrix can be used to devise the control input based on the desired configuration space torques $\tau = A^{-1}(q) \, \tau_\mathrm{q}$.
+% After designing the desired forces in operational space $f_\mathrm{x}$, we can easily derive the control input via configuration space. First, $f_\mathrm{x}$ is projected into configuration space, resulting in a sum between the projected operational space forces and the gravity cancellation: $\tau_\mathrm{q} = J^\top(q) \, f + G(q)$ 
+% Finally, the inverse of the actuation matrix can be used to devise the control input based on the desired configuration space torques $\tau = A^{-1}(q) \, \tau_\mathrm{q}$.
+After designing the desired forces in operational space $f_\mathrm{x}$, the control input can be derived via a projection into configuration space. First, $f_\mathrm{x}$ is mapped into configuration space, resulting in a combination of the projected operational space forces and gravity cancellation: $\tau_\mathrm{q} = J^\top(q) \, f + G(q)$. Finally, by applying the inverse of the actuation matrix, the control input based on the desired configuration space torques is obtained as $\tau = A^{-1}(q) \, \tau_\mathrm{q}$.
 
-We propose a variation of this operational space impedance controller that is specialized to Cartesian control of underactuated planar \gls{HSA} robots in Chapter~\ref{chp:hsacontrol}.
+% We propose a variation of this operational space impedance controller that is specialized to Cartesian control of underactuated planar \gls{HSA} robots in Chapter~\ref{chp:hsacontrol}.
+We propose a variation of this operational space impedance controller tailored to the Cartesian control of underactuated planar \gls{HSA} robots in Chapter~\ref{chp:hsacontrol}.

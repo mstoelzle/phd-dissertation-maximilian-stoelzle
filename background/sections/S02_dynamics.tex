@@ -18,12 +18,12 @@ Regardless of the chosen kinematic parameterization, the \glspl{EOM} for a soft 
 \begin{equation}\label{eq:background:dynamics:eom}
 M(q) , \ddot{q} + C(q, \dot{q}) , \dot{q} + K(q) + G(q) + D \, \dot{q} = \alpha(q,\tau) = A(q) , \tau,
 \end{equation}
-where the mass matrix $M(q) \succ 0 \in \mathbb{R}^{n \times n}$ represents the robot’s inertia, $C(q,\dot{q}) \in \mathbb{R}^{n \times n}$ accounts for Coriolis and centrifugal effects, $K(q)$ and $G(q)$ (in $\mathbb{R}^{n}$) correspond to elastic and gravitational forces, respectively, and $D \succ 0$ is the damping matrix. This model shares properties with traditional rigid robot dynamics, such as the skew-symmetry of $\dot{M}(q) - 2 , C(q,\dot{q})$, provided that $C(q,\dot{q})$ is defined using Christoffel symbols~\citep{della2020model}.
+where the mass matrix $M(q) \succ 0 \in \mathbb{R}^{n \times n}$ represents the robot’s inertia, $C(q,\dot{q}) \in \mathbb{R}^{n \times n}$ accounts for Coriolis and centrifugal effects, $K(q)$ and $G(q)$ (in $\mathbb{R}^{n}$) correspond to elastic and gravitational forces, respectively, and $D \succ 0$ is the damping matrix. This model shares properties with traditional rigid robot dynamics, such as the skew-symmetry of $\dot{M}(q) - 2 \, C(q,\dot{q})$, provided that $C(q,\dot{q})$ is defined using Christoffel symbols~\citep{della2020model}.
 
 We assume that the soft robot is actuated by $m$ actuators via the mapping $\alpha: q \times \tau \mapsto A(q) , \tau$, where $A(q) \in \mathbb{R}^{n \times m}$\footnote{While this control-affine formulation with a configuration-dependent actuation matrix $A(q)$ captures the characteristics of most existing soft robot actuation methods—such as pneumatic or tendon-driven actuation—the actuation can also be represented as a more general nonlinear function $\alpha(q,\tau)$, as is the case for the \gls{HSA} robot actuation model presented in Chapter~\ref{chp:hsamodel}. Furthermore, when accounting for actuator dynamics, as discussed in Chapter~\ref{chp:backstepping} for pneumatic pistons, the generalized actuation torque may also depend on the actuator’s state $(\mu,\dot{\mu})$.}. 
 Depending on the relationship between $n$ and $m$, if $n=m$, the robot is fully actuated; if $n < m$ (which is less common), it is considered overactuated~\citep{pustina2024input}; and if $n > m$, the soft robot is regarded as underactuated~\citep{pustina2025analysis}.
 
-\subsection{Formulation as a First-Order Ordinary Differential Equation (ODE)}
+\subsection{Formulation as a 1st-Order Ordinary Differential Equation (ODE)}
 After defining the state of the soft robot as $y = \begin{bmatrix}
     q^\top & \dot{q}^\top
 \end{bmatrix}^\top \in \mathbb{R}^{2n}$, Eq.~\ref{eq:background:dynamics:eom} can be expressed as a control-affine \gls{ODE} in nonlinear state-space representation:
@@ -226,6 +226,7 @@ $\eta_\varphi(q,\dot{q})$ captures the Coriolis and centrifugal effects
 \begin{equation}
     \eta_\varphi(q, \dot{q}) = M_\varphi(q) \, \left ( J_\mathrm{h}(q) \, M^{-1}(q) \, C(q,\dot{q}) - \dot{J}_\mathrm{h}(q,\dot{q})) \right ) \, J_\mathrm{h}^{-1}(q) \in \mathbb{R}^{n \times n}.
 \end{equation}
+The property $\dot{M}_\varphi(q) = \eta_\varphi(q,\dot{q}) + \eta^\top_\varphi(q,\dot{q})$ still holds.
 Crucially, we now notice in Eq.~\ref{eq:background:dynamics:eom_actuation_coordinates} how $\tau$ directly acts via an identity actuation matrix on the first $m$ actuation coordinates.
 %
 We can partition the dynamics of Eq.~\ref{eq:background:dynamics:eom_actuation_coordinates} into the first $m$ (actuated) rows, and the last $n-m$ unactuated rows:
