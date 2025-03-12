@@ -35,7 +35,7 @@ Very recently, \citet{alkayas2025soft} proposed a data-driven algorithm to ident
 % However, as it is tailored towards regressing coefficients of continuous basis functions, it requires access to prior knowledge about the terminal points of actuators for accurately capturing strain discontinuities.
 However, the discrete strain basis requires careful numerical integration at runtime, and identifying the dynamical parameters (e.g., stiffness, damping coefficients) of the soft robot relies upon solving a nonlinear least-squares problem that is not always well behaved~\citep{stolzle2024experimental}.
 
-This paper proposes to solve these challenges by introducing an end-to-end approach that can automatically learn both a \gls{PCS} kinematic parametrization and the corresponding dynamical model, including its dynamic parameters directly from image/Cartesian pose data.
+This chapter proposes to solve these challenges by introducing an end-to-end approach that can automatically learn both a \gls{PCS} kinematic parametrization and the corresponding dynamical model, including its dynamic parameters directly from image/Cartesian pose data.
 First, a kinematic fusion algorithm aims to minimize the \glspl{DOF} of the \gls{PCS} kinematic model while preserving a desired shape reconstruction accuracy for the given discrete shape measurements in Cartesian space. In contrast to previous work~\citep{alkayas2025soft}, we do not necessitate prior knowledge about strain discontinuities.
 Secondly, an integrated strategy is proposed to simultaneously sparsify the strains of the \gls{PCS} model and estimate the parameters of the dynamical model with closed-form linear least-squares.
 Contrary to common symbolic regression approaches such as \gls{SINDy}~\citep{kaiser2018sparse}, we crucially preserve the (physical) structure of the Euler-Lagrangian dynamics as derived according to the \gls{PCS} model.
@@ -49,4 +49,4 @@ However, we find that the difference is even greater in extrapolation scenarios 
 % We also exhibit the significantly improved extrapolation performance.
 Finally, we demonstrate how the Lagrangian structure of the identified dynamical model allows us to easily design a model-based controller that is effective at regulating the shape of the soft robot.
 
-A video attachment presents the research idea \& methodology and contains supplementary plots and animations of the results presented in the paper.\footnote{{\small \url{https://youtu.be/dfO-PhDIiHI}}}
+A video attachment presents the research idea \& methodology and contains supplementary plots and animations of the results presented in the chapter.\footnote{{\small \url{https://youtu.be/dfO-PhDIiHI}}}
