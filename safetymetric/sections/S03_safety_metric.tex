@@ -2,9 +2,9 @@
 Thereafter, we propose a quantitative safety metric that captures the particular characteristics that continuum soft robots exhibit (e.g., elasticity, actuation through their structure, Cosserat rod dynamics, etc.).
 Importantly, the presented safety metric fulfills all the requirements that we laid out previously. % (e.g., based on a soft robotic dynamical model, computationally tractable, differentiable, etc.).
 First, we state the necessary background on soft robotic dynamics and contact models. Subsequently, we derive the dynamics of a collision between the continuum soft robot and the human (body part).
-Next, we propose two flavors of the safety metric: (i) the \textbf{Injury Severity Criterion (ISC)} captures the injury risk for a \emph{given} contact geometry, soft robot state, and actuation sequence. We envision this criterion to be useful for control applications with safety guarantees.
-The second flavor, (ii) the \textbf{Design Hazardousness Criterion (DHC)}, captures the inherent safety of an integrated soft robot design (e.g., also considering the control policy) and leverages the \gls{ISC} for estimating the maximum injury risk over all possible contact geometries, feasible robot states and actuation sequences.
-Apart from the procedure for formulating this safety metric, one of the key innovations here is that we identify a closed-form solution to the collision dynamics, which renders the computation of the \gls{ISC} to be computationally tractable.
+Next, we propose two flavors of the safety metric: (i) the \glsxtrafull{SRISC} captures the injury risk for a \emph{given} contact geometry, soft robot state, and actuation sequence. We envision this criterion to be useful for control applications with safety guarantees.
+The second flavor, (ii) the \glsxtrafull{SRDHC}, captures the inherent safety of an integrated soft robot design (e.g., also considering the control policy) and leverages the \gls{SRISC} for estimating the maximum injury risk over all possible contact geometries, feasible robot states and actuation sequences.
+Apart from the procedure for formulating this safety metric, one of the key innovations here is that we identify a closed-form solution to the collision dynamics, which renders the computation of the \gls{SRISC} to be computationally tractable.
 
 \subsection{Background on Soft Robot Dynamics and Contact Model}
 Following the Cosserat rod theory, we can capture the kinematic behavior of slender structures such as continuum soft robots by considering the deformations of the robot's backbone. As the 1D spatial deformations of this backbone are still an infinite-dimensional problem, the field has developed many methods (e.g., \gls{PCC}~\citep{webster2010design}, \gls{PCS}~\citep{renda2018discrete}, \gls{GVS}~\citep{renda2020geometric}, etc.) to describe such deformations with a finite number of finite vector of configuration variables $q \in \mathbb{R}^n$. The associated forward kinematic model then allows us to define the geometric positional Jacobian $J_\mathrm{p}(q, s) \in \mathbb{R}^{3 \times n}$, where $s \in [0,L]$ is the backbone abscissa/coordinate and $L$ is the length of the entire continuum structure.
@@ -83,14 +83,14 @@ Furthermore, we assume the actuation force to be constant, which can be easily a
 \begin{figure}[h!]
     \centering
     \includegraphics[width=0.9\linewidth]{safetymetric/figures/injury_severity_criterion.pdf}
-    \caption{Proposed \emph{Injury Severity Criterion} as a safety metric for soft robots: The maximum contact pressure $\max_t p_\mathrm{c}(t) = \max_t \frac{f_\mathrm{c}(t)}{A_\mathrm{c}}$ experienced during the (potential) collision acts as a proxy for the expected injury risk~\citep{Isots_15066_2016}, where $f_\mathrm{c}(t)$ denotes the contact force and $A_\mathrm{c}$ the contact area. For computing $f_\mathrm{c}(t)$, we derive the dynamics of the collision (i.e., the time evolution of the penetration depth $\delta_\mathrm{c}(t))$ by projecting the dynamics of the soft robot onto a 1D Cartesian motion along the contact surface normal. In order to get a conservative estimate of the injury risk, we assume the human body part to be constrained in its motion (i.e., that the inertia of the human body part dominates the reflected inertia of the soft robot $m_\mathrm{R}$).}
+    \caption{Proposed \glsxtrafull{SRISC} as a safety criterion for soft robots: The maximum contact pressure $\max_t p_\mathrm{c}(t) = \max_t \frac{f_\mathrm{c}(t)}{A_\mathrm{c}}$ experienced during the (potential) collision acts as a proxy for the expected injury risk~\citep{Isots_15066_2016}, where $f_\mathrm{c}(t)$ denotes the contact force and $A_\mathrm{c}$ the contact area. For computing $f_\mathrm{c}(t)$, we derive the dynamics of the collision (i.e., the time evolution of the penetration depth $\delta_\mathrm{c}(t))$ by projecting the dynamics of the soft robot onto a 1D Cartesian motion along the contact surface normal. In order to get a conservative estimate of the injury risk, we assume the human body part to be constrained in its motion (i.e., that the inertia of the human body part dominates the reflected inertia of the soft robot $m_\mathrm{R}$).}
     \label{fig:safetymetric:injury_severity_criterion}
 \end{figure}
 
 \subsection{Injury Severity Criterion}
-Following the standards established in ISO/TS 15066:2016~\citep{Isots_15066_2016}, we consider the maximum contact pressure experienced during the collision as a proxy for the injury risk. Therefore, we define the \emph{Injury Severity Criterion} for a given tuple $(q^{\mathrm{c}0},s_\mathrm{c}, n_\mathrm{c})$ capturing the contact geometry as
+Following the standards established in ISO/TS 15066:2016~\citep{Isots_15066_2016}, we consider the maximum contact pressure experienced during the collision as a proxy for the injury risk. Therefore, we define the \gls{SRISC} for a given tuple $(q^{\mathrm{c}0},s_\mathrm{c}, n_\mathrm{c})$ capturing the contact geometry as
 \begin{equation}
-    \mathrm{ISC}(q^{\mathrm{c}0},\dot{\delta}_\mathrm{c}^0,u,s_\mathrm{c},n_\mathrm{c}) = \max_t p_\mathrm{c} = \max_t \frac{f_\mathrm{c}(t)}{A_\mathrm{c}(t)} \leq \frac{\max_t f_\mathrm{c}(t)}{\min_t A_\mathrm{c}(t)} =  \frac{k_\mathrm{c} \max_t \delta_\mathrm{c}(t)}{\min_t A_\mathrm{c}(t)},
+    \mathrm{SRISC}(q^{\mathrm{c}0},\dot{\delta}_\mathrm{c}^0,u,s_\mathrm{c},n_\mathrm{c}) = \max_t p_\mathrm{c} = \max_t \frac{f_\mathrm{c}(t)}{A_\mathrm{c}(t)} \leq \frac{\max_t f_\mathrm{c}(t)}{\min_t A_\mathrm{c}(t)} =  \frac{k_\mathrm{c} \max_t \delta_\mathrm{c}(t)}{\min_t A_\mathrm{c}(t)},
 \end{equation}
 where $p_\mathrm{c}(t)$ is the contact pressure, and $A_\mathrm{c}$ is the contact area.
 
@@ -102,9 +102,9 @@ The closed-form solution to the collision dynamics of \eqref{eq:safetymetric:col
 % \subsubsection{Example: Mass-Spring Robot}
 % First, we consider the most \emph{basic} soft robot - a damped mass-spring system with dynamics $m_\mathrm{R} \, \ddot{q} + k_\mathrm{R} \, (q-q^0) + d_\mathrm{R} \, \dot{q} = u + \tau_\mathrm{c}$, where $q \in \mathbb{R}$ and $q^0$ is the equilibrium extension. The \emph{Injury Severity Criterion} is then given by
 % \begin{equation}
-%      \mathrm{ISC} = \frac{k_\mathrm{c}}{A_\mathrm{c}} \, \left (\frac{u - k_\mathrm{R} (q^{\mathrm{c}0} - q^0)}{k_\mathrm{R} + k_\mathrm{c}} + \sqrt{\left ( \delta_\mathrm{c}^0 - \frac{u - k_\mathrm{R} (q^{\mathrm{c}0} - q^0)}{k_\mathrm{R} + k_\mathrm{c}} \right )^2 + \left (\dot{\delta}_\mathrm{c}^0 \right )^2 \frac{m_\mathrm{R}}{k_\mathrm{R} + k_\mathrm{c}} } \right ),
+%      \mathrm{SRISC} = \frac{k_\mathrm{c}}{A_\mathrm{c}} \, \left (\frac{u - k_\mathrm{R} (q^{\mathrm{c}0} - q^0)}{k_\mathrm{R} + k_\mathrm{c}} + \sqrt{\left ( \delta_\mathrm{c}^0 - \frac{u - k_\mathrm{R} (q^{\mathrm{c}0} - q^0)}{k_\mathrm{R} + k_\mathrm{c}} \right )^2 + \left (\dot{\delta}_\mathrm{c}^0 \right )^2 \frac{m_\mathrm{R}}{k_\mathrm{R} + k_\mathrm{c}} } \right ),
 % \end{equation}
-% with the limit $\lim_{k_\mathrm{R} \to \infty} \mathrm{ISC} = 2 \, \frac{k_\mathrm{c}}{A_\mathrm{c}} \left ( q^{\mathrm{c}0} - q^0 \right )$ for $\delta_\mathrm{c}^0 = 0$. 
+% with the limit $\lim_{k_\mathrm{R} \to \infty} \mathrm{SRISC} = 2 \, \frac{k_\mathrm{c}}{A_\mathrm{c}} \left ( q^{\mathrm{c}0} - q^0 \right )$ for $\delta_\mathrm{c}^0 = 0$. 
 
 \subsubsection{Example: Planar Piecewise Constant Strain Robot}
 1 Figure giving an example how the contact location influences the injury severity.
@@ -115,7 +115,7 @@ The closed-form solution to the collision dynamics of \eqref{eq:safetymetric:col
 
 \subsubsection{Example: Integrating a Control Policy}
 % alternative heading: \subsection{Influence of Control Policy}
-An important question when analyzing the safety of a closed-loop soft robotic system is what influence the control policy has on the \gls{ISC}.
+An important question when analyzing the safety of a closed-loop soft robotic system is what influence the control policy has on the \gls{SRISC}.
 First, we consider a case where the behavior of the control policy $u = \phi(q,\dot{q})$ cannot be bounded or even inspected, such as it would be the case for controllers that contain integral terms or for many RL-based control policies.
 In this case, access to actuation bounds $[u_\mathrm{min}, u_\mathrm{max}]$ provides us with the injury risk in the \emph{worst case scenario}.
 
@@ -135,12 +135,12 @@ The proportional feedback term increases the local stiffness of the robot: $k_\m
 This analysis agrees with similar results known in literature~\citep{della2017controlling}.
 
 \subsection{Design Hazardousness Criterion}
-As presented in Fig.~\ref{fig:safetymetric:safety_metric_applications}, one application of a soft robotic safety metric would be to answer the question "\emph{How safe is this proposed soft robot design?}". The \gls{ISC} on its own is not sufficient to answer this question as it relies on a knowledge of the soft robot state at the beginning of the collision $(q^{\mathrm{c}0}, \dot{q}^{\mathrm{c}0})$, and the contact geometry $(s_\mathrm{c},n_\mathrm{c})$.
-Therefore, we define the \gls{DHC} as the maximum injury severity that can be imposed by the soft robot over all feasible soft robot states, all possible contact geometries, and actuation sequences
+As presented in Fig.~\ref{fig:safetymetric:safety_metric_applications}, one application of a soft robotic safety metric would be to answer the question "\emph{How safe is this proposed soft robot design?}". The \gls{SRISC} on its own is not sufficient to answer this question as it relies on a knowledge of the soft robot state at the beginning of the collision $(q^{\mathrm{c}0}, \dot{q}^{\mathrm{c}0})$, and the contact geometry $(s_\mathrm{c},n_\mathrm{c})$.
+Therefore, we define the \gls{SRDHC} as the maximum injury severity that can be imposed by the soft robot over all feasible soft robot states, all possible contact geometries, and actuation sequences
 \begin{equation}
 \begin{split}
-    \mathrm{DHC} =& \: \max_{q \in \mathcal{Q}} \max_{\dot{\delta}_\mathrm{c}^0 \in [0,\dot{\delta}_\mathrm{c}^\mathrm{max}]} \max_{u \in [u_\mathrm{min}, u_\mathrm{max}]} \max_{s_\mathrm{c} \in [0,L]} \max_{n_\mathrm{c} \in \mathcal{S}^3} \mathrm{ISC}(q^{\mathrm{c}0},\dot{\delta}_\mathrm{c}^0,u,s_\mathrm{c},n_\mathrm{c}),\\
-    \leq& \: \max_{q \in \mathcal{Q}} \max_{s_\mathrm{c} \in [0,L]} \max_{n_\mathrm{c} \in \mathcal{S}^3} \mathrm{ISC}(q^{\mathrm{c}0},\dot{\delta}_\mathrm{c}^\mathrm{max},\lVert u_\mathrm{max} \rVert_2,s_\mathrm{c},n_\mathrm{c}),
+    \mathrm{SRDHC} =& \: \max_{q \in \mathcal{Q}} \max_{\dot{\delta}_\mathrm{c}^0 \in [0,\dot{\delta}_\mathrm{c}^\mathrm{max}]} \max_{u \in [u_\mathrm{min}, u_\mathrm{max}]} \max_{s_\mathrm{c} \in [0,L]} \max_{n_\mathrm{c} \in \mathcal{S}^3} \mathrm{SRISC}(q^{\mathrm{c}0},\dot{\delta}_\mathrm{c}^0,u,s_\mathrm{c},n_\mathrm{c}),\\
+    \leq& \: \max_{q \in \mathcal{Q}} \max_{s_\mathrm{c} \in [0,L]} \max_{n_\mathrm{c} \in \mathcal{S}^3} \mathrm{SRISC}(q^{\mathrm{c}0},\dot{\delta}_\mathrm{c}^\mathrm{max},\lVert u_\mathrm{max} \rVert_2,s_\mathrm{c},n_\mathrm{c}),
 \end{split}
 \end{equation}
 where $\mathcal{Q}$ is the set of feasible soft robot configurations.
