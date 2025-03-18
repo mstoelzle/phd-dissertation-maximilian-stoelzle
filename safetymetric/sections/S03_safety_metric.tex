@@ -62,18 +62,18 @@ Finally, we assume that the change of configuration during the collision is suff
 $A_\mathrm{c} \approx J_\mathrm{c,B}^{+\top}(q^{\mathrm{c}0}) \, A(q^{\mathrm{c}0})$, where the $q^{\mathrm{c}0}$ is the configuration of the robot at the beginning of the contact.
 The same assumption also allows us to linearize the potential forces of the soft robot with 
 \begin{equation}
-    f_\mathcal{U} = J_\mathrm{c,B}^{+\top}(q) \, \partial_{q} \, \mathcal{U}(q) \approx \underbrace{J_\mathrm{c,B}^{+\top}(q^{\mathrm{c}0}) \, \partial_{q} \, \mathcal{U}(q^{\mathrm{c}0})}_{f_\mathcal{U}^{\mathrm{c0}}} + \underbrace{\frac{\partial}{\partial q} J_\mathrm{c,B}^{+\top}(q) \, \partial_{q} \, \mathcal{U}(q) \Big |_{q=q^{\mathrm{c}0}} \,  J_\mathrm{c,B}^{+}(q^{\mathrm{c}0})}_{k_\mathrm{R}}  \, \delta_\mathrm{c},
+    f_{\mathcal{U}} = J_\mathrm{c,B}^{+\top}(q) \, \partial_{q} \, \mathcal{U}(q) \approx \underbrace{J_\mathrm{c,B}^{+\top}(q^{\mathrm{c}0}) \, \partial_{q} \, \mathcal{U}(q^{\mathrm{c}0})}_{f_{\mathcal{U}}^{\mathrm{c}0}} + \underbrace{\frac{\partial}{\partial q} J_\mathrm{c,B}^{+\top}(q) \, \partial_{q} \, \mathcal{U}(q) \Big |_{q=q^{\mathrm{c}0}} \,  J_\mathrm{c,B}^{+}(q^{\mathrm{c}0})}_{k_\mathrm{R}}  \, \delta_\mathrm{c},
 \end{equation}
-where $k_\mathrm{R} \in \mathbb{R}$ is the local stiffness of the system against small perturbations and $f_\mathcal{U}^{\mathrm{c0}}$ are the potential forces present at the start of the contact.
+where $k_\mathrm{R} \in \mathbb{R}$ is the local stiffness of the system against small perturbations and $f_{\mathcal{U}}^{\mathrm{c}0}$ are the potential forces present at the start of the contact.
 Integrating the stated assumptions results in the approximated collision dynamics
 \begin{equation}\label{eq:safetymetric:simplified_collision_dynamics}
-    m_\mathrm{R} \, \Ddot{\delta}_\mathrm{c} + (k_\mathrm{R} + k_\mathrm{c}) \, \delta_\mathrm{c} = f_u - f_\mathcal{U}^{\mathrm{c0}}.
+    m_\mathrm{R} \, \Ddot{\delta}_\mathrm{c} + (k_\mathrm{R} + k_\mathrm{c}) \, \delta_\mathrm{c} = f_u - f_{\mathcal{U}}^{\mathrm{c}0}.
 \end{equation}
 To avoid computationally expensive simulations of the collision, we identify a closed-form solution to the collision dynamics
 \begin{equation}\small\label{eq:safetymetric:collision_dynamics_cfs}
 \begin{split}
-    \delta_\mathrm{c}(t) =& \: \left (\delta_\mathrm{c}^0-\frac{f_u-f_\mathcal{U}^{\mathrm{c0}}}{k_\mathrm{R} + k_\mathrm{c}} \right ) \cos \left ( \sqrt{\frac{k_\mathrm{R} + k_\mathrm{c}}{m_\mathrm{R}}} \, t \right ) + \dot{\delta}_\mathrm{c}^0 \sqrt{\frac{m_\mathrm{R}}{k_\mathrm{R} + k_\mathrm{c}}} \, \sin \left ( \sqrt{\frac{k_\mathrm{R} + k_\mathrm{c}}{m_\mathrm{R}}} \, t \right ) + \frac{f_u-f_\mathcal{U}^{\mathrm{c0}}}{k_\mathrm{R} + k_\mathrm{c}},\\
-    % \dot{\delta}_\mathrm{c}(t) =& \: -\sqrt{\frac{k_\mathrm{R} + k_\mathrm{c}}{m_\mathrm{R}}} \left (\delta_\mathrm{c}^0 - \frac{f_u-f_\mathcal{U}^{\mathrm{c0}}}{k_\mathrm{R} + k_\mathrm{c}} \right ) \, \sin \left ( \sqrt{\frac{k_\mathrm{R} + k_\mathrm{c}}{m_\mathrm{R}}} \, t \right ) + \dot{\delta}_\mathrm{c}^0 \, \cos \left ( \sqrt{\frac{k_\mathrm{R} + k_\mathrm{c}}{m_\mathrm{R}}} \, t \right ),
+    \delta_\mathrm{c}(t) =& \: \left (\delta_\mathrm{c}^0-\frac{f_u-f_{\mathcal{U}}^{\mathrm{c}0}}{k_\mathrm{R} + k_\mathrm{c}} \right ) \cos \left ( \sqrt{\frac{k_\mathrm{R} + k_\mathrm{c}}{m_\mathrm{R}}} \, t \right ) + \dot{\delta}_\mathrm{c}^0 \sqrt{\frac{m_\mathrm{R}}{k_\mathrm{R} + k_\mathrm{c}}} \, \sin \left ( \sqrt{\frac{k_\mathrm{R} + k_\mathrm{c}}{m_\mathrm{R}}} \, t \right ) + \frac{f_u-f_{\mathcal{U}}^{\mathrm{c}0}}{k_\mathrm{R} + k_\mathrm{c}},\\
+    % \dot{\delta}_\mathrm{c}(t) =& \: -\sqrt{\frac{k_\mathrm{R} + k_\mathrm{c}}{m_\mathrm{R}}} \left (\delta_\mathrm{c}^0 - \frac{f_u-f_{\mathcal{U}}^{\mathrm{c}0}}{k_\mathrm{R} + k_\mathrm{c}} \right ) \, \sin \left ( \sqrt{\frac{k_\mathrm{R} + k_\mathrm{c}}{m_\mathrm{R}}} \, t \right ) + \dot{\delta}_\mathrm{c}^0 \, \cos \left ( \sqrt{\frac{k_\mathrm{R} + k_\mathrm{c}}{m_\mathrm{R}}} \, t \right ),
 \end{split}
 \end{equation}
 where we assume without loss of generality that $t=0$ at the start of the collision, and $\delta_\mathrm{c}^0$ is the initial penetration depth.
@@ -96,7 +96,7 @@ where $p_\mathrm{c}(t)$ is the contact pressure, and $A_\mathrm{c}$ is the conta
 
 The closed-form solution to the collision dynamics of \eqref{eq:safetymetric:collision_dynamics_cfs} allows us to upper-bound the maximum contact force $\max_t f_\mathrm{c}(t)$ that is encountered during the collision as
 \begin{equation}
-     \max_{t}f_\mathrm{c}(t) = k_\mathrm{c} \, \left ( \frac{f_u-f_\mathcal{U}^{\mathrm{c0}}}{k_\mathrm{R} + k_\mathrm{c}} + \sqrt{\left ( \delta_\mathrm{c}^0 - \frac{f_u-f_\mathcal{U}^{\mathrm{c0}}}{k_\mathrm{R} + k_\mathrm{c}} \right )^2 + \left (\dot{\delta}_\mathrm{c}^0 \right )^2 \frac{m_\mathrm{R}}{k_\mathrm{R} + k_\mathrm{c}} } \right ).
+     \max_{t}f_\mathrm{c}(t) = k_\mathrm{c} \, \left ( \frac{f_u-f_{\mathcal{U}}^{\mathrm{c}0}}{k_\mathrm{R} + k_\mathrm{c}} + \sqrt{\left ( \delta_\mathrm{c}^0 - \frac{f_u-f_{\mathcal{U}}^{\mathrm{c}0}}{k_\mathrm{R} + k_\mathrm{c}} \right )^2 + \left (\dot{\delta}_\mathrm{c}^0 \right )^2 \frac{m_\mathrm{R}}{k_\mathrm{R} + k_\mathrm{c}} } \right ).
 \end{equation}
 
 % \subsubsection{Example: Mass-Spring Robot}
