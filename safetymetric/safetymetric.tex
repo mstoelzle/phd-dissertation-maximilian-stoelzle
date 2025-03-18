@@ -6,9 +6,9 @@
     Traditionally, efforts in the robotics community have focused on achieving safety through computational intelligence. This includes constraining motions to remain within safe state sets, avoiding obstacles, and employing compliant controllers such as impedance control. In contrast, one of the most intriguing and promising features of soft robots is their embodied intelligence, which provides passive compliance to the system. Despite this promise, existing literature has yet to thoroughly investigate or quantify the impact of embodied intelligence on the overall safety of soft robotic systems. The absence of a dedicated safety metric for soft robotics hampers the design process, often leading to underperforming or unsafe designs. This chapter introduces a safety metric for soft robots that captures both the embodied intelligence (i.e., the passive behavior) and computational intelligence (e.g., controller) of the system. For the first time, this allows for a quantitative evaluation of their combined effects on system safety and performance.
 \end{foreword}
 
-\blfootnote{This chapter is partly based on \faFileTextO~\emph{\textbf{M. Stölzle}*, N. Pagliarani*, F. Stella*, J. Hughes, C. Laschi, D. Rus, M. Cianchetti, C. Della Santina, and G. Zardini (2025). Safe yet Effective Soft Robots via Co-Design. In Nature Machine Intelligence, \textbf{\emph{In Preparation}}}.
+\blfootnote{This chapter is partly based on \faFileTextO~\emph{\textbf{M. Stölzle}*, N. Pagliarani*, F. Stella*, J. Hughes, C. Laschi, D. Rus, M. Cianchetti, C. Della Santina, and G. Zardini (2025). Safe yet Effective Soft Robots via Holistic Co-Design. In Nature Machine Intelligence, \textbf{\emph{In Preparation}}}.
 
-\nth{1}-author contributions: M. Stölzle conceived and implemented the safety metric and all other content presented in this chapter. 
+\nth{1}-author contributions: M. Stölzle conceived and implemented the safety metric and all other content presented in this chapter, including the writing, except for Figures \ref{fig:safetymetric:safety_metric_applications} \& \ref{fig:safetymetric:injury_severity_criterion}. 
 }
 
 \pagebreak
@@ -27,48 +27,17 @@
 %% Start the actual chapter on a new page.
 \newpage
 
-\section{Introduction}
-\dropcap{R}obots have long played a pivotal role in industrial applications, such as assembly and manufacturing, where precision and force are crucial~\citep{todd1996fundamentals}.
-However, to address pressing societal challenges, there is a growing demand for robotic systems that are specifically designed for and adaptable to human-centered environments (e.g., homes and public spaces)~\citep{nahavandi2019industry, chibani2013ubiquitous, royakkers2015literature}.
-To unlock their full potential, robots must be designed with inherent physical compliance to operate safely around humans in dynamic, unconstrained, unpredictable settings.
-Such requirement aligns with Asimov's First Law--robots must never harm humans--making safety fundamental to their design and deployment~\citep{villani2018survey}.
-%
-In the context of autonomous vehicles (AVs) and mobile robots, safety is typically ensured through safety-aware autonomy stacks. 
-Specifically, existing technologies leverage advanced control mechanisms such as safety filters, real-time collision detection, and predefined safety zones~\citep{zhao2024potential}. 
-These systems rely on sophisticated sensors, algorithms, and extensive pre-programming to anticipate and avoid hazards \citep{fragapane2021planning}. 
-\glspl{Cobot}~\citep{el2019cobot}, designed to safely interact with humans, achieve this through mechanical and control strategies such as decoupling actuators from links, reducing inertia, and using compliant controllers to detect and respond to external forces. 
-Yet, their considerable link inertia and rigid structures still pose significant risks to nearby humans~\citep{haddadin2013towards}.
-Collision detection further enhances safety by stopping or slowing the robot upon contact. While reducing the worst-case injury likelihood, this approach is inherently reactive and cannot fully prevent injuries.
-Design standards such as ISO/TS 15066:2016~\citep{Isots_15066_2016} demand that \gls{Cobot} controllers be designed so that when in proximity to humans, they move slowly enough to stop in time to prevent collisions~\citep{ajoudani2018progress, lucci2020combining}. 
-However, this strategy poses high requirements on perception systems and significantly reduces \gls{Cobot}'s efficiency and effectiveness in the context of human-centered environments.
+\input{safetymetric/sections/S01_introduction}
+\input{safetymetric/sections/S02_towards_quantifying_safety}
+\input{safetymetric/sections/S03_safety_metric}
+\input{safetymetric/sections/S04_conclusion}
 
-Interestingly, soft robotics redefines safety from the ground up. 
-In these robots~\citep{rus2015design, laschi2016soft}, safety is not an add-on or managed through autonomy stacks but is embedded in the material and structural properties of the robot itself. 
-Their compliant nature allows soft robots to interact safely with humans and operate in sensitive environments where safety is essential, such as personal assistance, caregiving, and handling delicate objects and produce~\citep{abidi2017intrinsic}. 
-Despite their potential to revolutionize human-robot interaction, soft robots face significant challenges hindering their full integration into practical applications. These obstacles include limited durability, complex manufacturing processes, inadequate stiffness for carrying substantial payloads, and imprecise, often oscillatory motion~\citep{mazzolai2022roadmap, majidi2014soft, hawkes2017soft}. 
-Indeed, while much focus has traditionally centered on the trade-off between performance and material softness, this approach is somewhat misguided. 
-Many designers have treated this challenge as a balance between precision and softness, assuming that increasing material compliance inherently improves safety.
-However, we argue that this is an oversimplification, that the safety of soft robots is a function of both body (e.g., geometry, materials, etc.) and mind (e.g., control policy) and that it should be explicitly quantified, contrary to what has been done so far in the literature.
-% Indeed, we find that material softness is not equivalent to safety, as closed-loop safety depends on various design parameters, not just the material's compliance.
-
-Rigid robots, often employed in industrial settings, prioritize performance and precision but compromise safety, making them unsuitable for human-centered environments.
-For instance, many soft robots are designed to be highly compliant, prioritizing safety but sacrificing performance \citep{cianchetti2013stiff}. 
-In some cases, they tend to be too soft and flexible, lacking the structural integrity needed to perform tasks efficiently. 
-While such compliance improves safety, it often makes these robots ineffective in applications that could tolerate a slightly stiffer design without compromising safety. 
-As a result, overly soft robots may struggle to exert sufficient force or handle loads, limiting their utility \citep{iida2011soft}.
-The key challenge is balancing safety with the ability to perform tasks efficiently and precisely~\citep{khanna2022human}.
-In conclusion, we find that the lack of a quantitative safety metric for soft robots is currently a major road-block that prevents soft robotic researchers and designers from formalizing the trade-off between safety and performance, and we anticipate that removing this road-block would lead to more optimal and performant soft robot designs.
-
-Apart from \emph{safety-aware design}, we expect that a safety metric would also be very beneficial for other purposes such as \emph{safety certification} of a soft robotic design or \emph{safety-aware control} where the controller chooses its actions such as that the required safety levels are always met.
-After detailing such potential applications of a safety metric for soft robots in more detail, we devise requirements that a safety metric would need to meet in order to be suitable for the mentioned applications.
-Subsequently, we then propose a new model-based safety metric for soft robots by building an injury criterion on top of the existing ISO norms for collaborative robots~\citep{Isots_15066_2016} while modifying the underlying model to account for the essential characteristics of soft robots, such as the elastic structure that deforms under the influence of internal actuation and external forces, and the potential of collisions along its entire body.
-After modeling the contact model and the collision dynamics between soft robots and humans, we consider analog to ISO/TS 15066:2016~\citep{Isots_15066_2016}, the maximum contact pressure experienced during the collision as a proxy for the injury severity. Instead of requiring computationally expensive simulations, we devise a conservative approximation of the collision dynamics, which allows us to determine the maximum contact pressure in closed form.
-Importantly, the proposed safety metric considers the safety of the closed-loop system, which allows us to take the control policy into account when assessing the severity of the injury.
-The safety metric comes in two flavors: \gls{ISC} computes the injury severity for a known soft robot state, control input, and contact geometry (e.g., point along the soft robot body of contact and collision direction) and is particularly well suited for \emph{safety-aware control} applications. 
-When we want to judge the safety of a soft robot design, we can instead compute the \gls{DHC}, which considers all possible contact geometries, soft robot states, etc., within the given operating conditions. We envision the \gls{DHC} the metric of choice for \emph{safety-aware design} and \emph{design safety certification}.
-
-\section{Towards Quantifying the Safety of Soft Robots}
-\subsection{Potential Applications for a Safety Metric}
-\subsection{Requirements for a Soft Robotic Safety Metric}
-\section{A Metric for Quantifying the Safety of Soft Robots}
-\section{Recommendations for the Design of Safe Soft Robots}
+% \section{Design of Safe Soft Robots}
+% \begin{itemize}
+%     \item Based on the insights gained in Section~\ref{sec:safety_metric}, give \emph{simple} insights how safe designs can be achieved.
+%     \item Stiffness of the soft robot design (i.e., not just of the material) should be reduced, particularly close to the base/proximal end.
+%     \item Reflected mass (e.g., material density \& volume) should be reduced, in particular close to the tip/distal end.
+%     \item Guidelines for establishing safe controllers.
+%     \item Specifically, explain how the combination of robot stiffness and the proportional control gains impacts the design hazardousness.
+%     \item However, we stress that \emph{simple} guidelines that guarantee a specific safety level cannot be (easily) expressed. Therefore, we require a co-design methodology that takes into account the safety metric.
+% \end{itemize}
