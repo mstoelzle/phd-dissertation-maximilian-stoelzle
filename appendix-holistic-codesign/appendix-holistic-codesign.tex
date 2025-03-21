@@ -1,6 +1,24 @@
-\chapter{How Holistic Co-Design Will Enable the Societal Uptake of Soft Robots}\label{chp:apx:holisticcodesign}
-\section{Existing Soft Robotic Co-Design Approaches}
-\section{A Framework for Holistic Co-Design}
-\section{Reduced-Order Design Parametrizations}
-\section{Co-Designing Physical Intelligence}
-\section{Exploiting Safety vs. Performance Trade-off with Multi-Objective Optimization}
+% \chapter{How Holistic Co-Design Will Enable the Societal Uptake of Soft Robots}
+\chapter{Safe yet Effective Soft Robots via Holistic Co-Design}
+\label{chp:apx:holisticcodesign}
+
+\begin{abstract}
+    Soft robots promise inherent safety and embodied intelligence, enabling seamless interactions with both people and delicate environments. Yet their development remains challenging, as it requires integrating materials, geometry, actuation, and control into a cohesive design strategy. Despite recent progress, the field still struggles to balance task-specific performance with broader system-level considerations, often resulting in fragmented design approaches. For instance, lacking a quantitative safety metric, many designs are rendered overly soft—compromising crucial performance aspects such as motion precision and payload capacity. In this chapter, we propose a holistic co-design framework that transcends conventional optimization by viewing soft robots as inherently interconnected systems. Specifically, we call for the creation of a quantitative safety metric for soft robots, introduce techniques to significantly enhance computational efficiency in co-design, and advocate for moving beyond solely simulation-based evaluations by incorporating purposeful real-world prototyping. We believe that this holistic framework has the potential to greatly enhance the performance and overall value of soft robots while maintaining essential safety, ultimately redefining human-robot interaction and fostering greater acceptance and confidence in soft robotic systems.    
+\end{abstract}
+
+\blfootnote{This chapter is partly based on \faFileTextO~\emph{\textbf{M. Stölzle}*, N. Pagliarani*, F. Stella*, J. Hughes, C. Laschi, D. Rus, M. Cianchetti, C. Della Santina, and G. Zardini (2025). Safe yet Effective Soft Robots via Holistic Co-Design. In Nature Machine Intelligence, \textbf{\emph{In Preparation}}}.
+
+\nth{1}-author contributions: M. Stölzle devised and led the project and wrote the vast majority of the content presented in this chapter. The other co-first-authors contributed ideas and were responsible for the graphics.
+}
+
+%% Start the actual chapter on a new page.
+\newpage
+
+\input{appendix-holistic-codesign/sections/S01_introduction}
+\input{appendix-holistic-codesign/sections/S02_related_work}
+\input{appendix-holistic-codesign/sections/S03_holistic_codesign_framework}
+\input{appendix-holistic-codesign/sections/S04_reduced_order_design_parametrizations}
+\input{appendix-holistic-codesign/sections/S05_probabilistic_codesign_metrics}
+\input{appendix-holistic-codesign/sections/S06_codesigning_physical_intelligence}
+\input{appendix-holistic-codesign/sections/S07_safety_vs_performance_tradeoff}
+\input{appendix-holistic-codesign/sections/S08_conclusion}
