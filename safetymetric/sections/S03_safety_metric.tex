@@ -1,5 +1,5 @@
 \section{A Metric for Quantifying the Safety of Soft Robots}
-Thereafter, we propose a quantitative safety metric that captures the particular characteristics that continuum soft robots exhibit (e.g., elasticity, actuation through their structure, Cosserat rod dynamics, etc.).
+Thereafter, we propose a quantitative safety metric for \emph{blunt} contacts~\citep{haddadin2011safe} between soft robots and humans that captures the particular characteristics that continuum soft robots exhibit (e.g., elasticity, actuation through their structure, Cosserat rod dynamics, etc.).
 Importantly, the presented safety metric fulfills all the requirements that we laid out previously. % (e.g., based on a soft robotic dynamical model, computationally tractable, differentiable, etc.).
 First, we state the necessary background on soft robotic dynamics and contact models. Subsequently, we derive the dynamics of a collision between the continuum soft robot and the human (body part).
 Next, we propose two flavors of the safety metric: (i) the \glsxtrfull{SRISC} captures the injury risk for a \emph{given} contact geometry, soft robot state, and actuation sequence. We envision this criterion to be useful for control applications with safety guarantees.
@@ -23,7 +23,7 @@ In the following, we will assume that the soft robot is only in contact with the
 Specifically, we assume that the contact occurs at a specific point $s_\mathrm{c}$ and that the contact exhibits a constant surface normal of $n_\mathrm{c} \in \mathcal{S}^3$ which is a unit vector and, with that, $\mathcal{S}^3 = \{ n_\mathrm{c} \in \mathbb{R}^3: \lVert n_\mathrm{c} \rVert_2 = 1 \}$.
 We now describe with $\delta_\mathrm{c} > 0$ a penetration between the soft robot and the soft tissue of the human.
 Then, the generalized torque acting on the soft robot as a consequence of the contact is given by $\tau_\mathrm{c} = -J^\top(q,s_\mathrm{c}) \, n_\mathrm{c} \, f_\mathrm{c}(\delta_\mathrm{c}, \dot{\delta}_\mathrm{c}) = -J_\mathrm{c}^\top(q) \, f_\mathrm{c}(\delta_\mathrm{c}, \dot{\delta}_\mathrm{c})$.
-While the formulation that we use in this perspective for formulating the safety metric is compatible with many of the contact models that have been studied in the literature (e.g., Hunt-Crossley~\citep{hunt1975coefficient, aouaj2021predicting}, Hertz~\citep{johnson1987contact, park2011designing, she2020comparative}, etc.), we will mainly focus in the following on a linear spring-damper contact model~\citep{Isots_15066_2016, haddadin2009requirements} given by
+While the formulation that we use in this perspective for formulating the safety metric is compatible with many of the contact models that have been studied in the literature, such as Hunt-Crossley~\citep{hunt1975coefficient, aouaj2021predicting}, Hertz~\citep{johnson1987contact, park2011designing, she2020comparative}, etc., we will mainly focus in the following on a linear spring-damper contact model~\citep{iso2016collaborative, haddadin2009requirements} given by
 \begin{equation}
     f_\mathrm{c}(\delta_\mathrm{c}, \dot{\delta}_\mathrm{c}) = \begin{cases}
         0 & \delta_\mathrm{c} \leq 0,\\
@@ -31,12 +31,13 @@ While the formulation that we use in this perspective for formulating the safety
 \end{cases}
 \end{equation}
 where $k_\mathrm{c} \in \mathbb{R}_{>0}$ is the contact stiffness and $d_\mathrm{c} \in \mathbb{R}_{\geq 0}$ is the contact damping coefficient.
-If we assume the soft robot surface material and the soft tissue to have spring constants and damping coefficients of $k_\mathrm{R,surf}$, $k_\mathrm{H,st}$ and $d_\mathrm{R}$, $d_\mathrm{H}$, respectively, then we can connect the spring-dampers in series
+If we assume the soft robot surface material and the human soft tissue to have spring constants and damping coefficients of $k_\mathrm{R,surf}$, $k_\mathrm{H,st}$ and $d_\mathrm{R}$, $d_\mathrm{H}$, respectively, then we can connect the spring-dampers in series
 \begin{equation}
     k_\mathrm{c} = \left (\frac{1}{k_\mathrm{R,surf}} + \frac{1}{k_\mathrm{H,st}} \right )^{-1},
     \qquad
     d_\mathrm{c} = \left (\frac{1}{d_\mathrm{R}} + \frac{1}{d_\mathrm{H}} \right )^{-1}.
 \end{equation}
+Please note that effective spring constant of many human body parts are reported in ISO/TS 15066:2016~\citep{iso2016collaborative}.
 
 \subsection{Collision Dynamics}
 We now progress towards a formulation of the collision dynamics as motions of the soft robot and the human body part along the contact surface normal $n_\mathrm{c}$.
@@ -46,10 +47,10 @@ We can project the dynamics of \eqref{eq:safetymetric:soft_robot_configuration_s
 \begin{equation}
     \Lambda_\mathrm{c}(q) \, \Ddot{x}_\mathrm{R} + \mu_\mathrm{c}(q,\dot{q}) \, \dot{x}_\mathrm{R} + J_\mathrm{c,B}^{+\top}(q) ( \partial_{q} \, \mathcal{U}(q) + D \dot{q} ) = J_\mathrm{c,B}^{+\top}(q) \, A(q) \, u - f_{\mathrm{c}}(\delta_\mathrm{c}, \dot{\delta}_\mathrm{c}),
 \end{equation}
-where $J_\mathrm{c,B}^{+\top}(q) = J_\mathrm{B}^+(q,s_\mathrm{c},n_\mathrm{c}) = B^{-1}J_\mathrm{c}^\top(J_\mathrm{c} B^{-1} J_\mathrm{c}^\top)^{-1} \in \mathbb{R}^{n \times 1}$ is the dynamically consistent pseudo-inverse, $\Lambda_\mathrm{c}(q) = \Lambda(q,s_\mathrm{c},n_\mathrm{c}) = (J_\mathrm{c} \, B^{-1} J_\mathrm{c}^\top)^{-1} \in \mathbb{R}^{1 \times 1}$ is the reflected inertia of the soft robot at the contact point~\citep{haddadin2009requirements, Isots_15066_2016}, and $\mu_\mathrm{c}(q,\dot{q}) = \mu(q, \dot{q},s_\mathrm{c},n_\mathrm{c}) = \Lambda(q) \, (J_\mathrm{c} B^{-1} C - \dot{J}_\mathrm{c}) \in \mathbb{R}^{1 \times n}$ collects the Cartesian Coriolis and centrifugal terms~\citep{khatib1987unified}.
+where $J_\mathrm{c,B}^{+\top}(q) = J_\mathrm{B}^+(q,s_\mathrm{c},n_\mathrm{c}) = B^{-1}J_\mathrm{c}^\top(J_\mathrm{c} B^{-1} J_\mathrm{c}^\top)^{-1} \in \mathbb{R}^{n \times 1}$ is the dynamically consistent pseudo-inverse, $\Lambda_\mathrm{c}(q) = \Lambda(q,s_\mathrm{c},n_\mathrm{c}) = (J_\mathrm{c} \, B^{-1} J_\mathrm{c}^\top)^{-1} \in \mathbb{R}^{1 \times 1}$ is the reflected inertia of the soft robot at the contact point~\citep{haddadin2009requirements, iso2016collaborative}, and $\mu_\mathrm{c}(q,\dot{q}) = \mu(q, \dot{q},s_\mathrm{c},n_\mathrm{c}) = \Lambda(q) \, (J_\mathrm{c} B^{-1} C - \dot{J}_\mathrm{c}) \in \mathbb{R}^{1 \times n}$ collects the Cartesian Coriolis and centrifugal terms~\citep{khatib1987unified}.
 If not explicitly stated otherwise, we will in the following, to simplify the notation, drop the specific dependency on the contact geometry $(s_\mathrm{c}, n_\mathrm{c})$: $J_\mathrm{c,B}^{+\top}(q) = J_\mathrm{B}^{+\top}(q,s_\mathrm{c},n_\mathrm{c})$, $\Lambda_\mathrm{c}(q) = \Lambda(q,s_\mathrm{c},n_\mathrm{c})$, etc.
 
-Next, we move towards modeling the behavior of the human body part. In literature, the human body part is usually modeled as a point mass $m_\mathrm{H}$~\citep{haddadin2011safe, Isots_15066_2016} that moves in 1D along the surface normal of the contact with state $(x_\mathrm{H},\dot{x}_\mathrm{H})$. Instead, we take here a conservative approach and assume that the human body is constrained in its motion with velocity $v_\mathrm{H} \in \mathbb{R}$ towards the soft robots (i.e., $m_\mathrm{H} \gg \Lambda(q) \: \forall q$). This represents the \emph{worst case}.
+Next, we move towards modeling the behavior of the human body part. In literature, the human body part is usually modeled as a point mass $m_\mathrm{H}$~\citep{haddadin2011safe, iso2016collaborative} that moves in 1D along the surface normal of the contact with state $(x_\mathrm{H},\dot{x}_\mathrm{H})$\footnote{Please note that the effective mass of various human body parts is reported in ISO/TS 15066:2016~\citep{iso2016collaborative}.}. Instead, we take here a conservative approach and assume that the human body is constrained in its motion with velocity $v_\mathrm{H} \in \mathbb{R}$ towards the soft robots (i.e., $m_\mathrm{H} \gg \Lambda(q) \: \forall q$). This represents the \emph{worst case}.
 After the coordinate change $\delta_\mathrm{c}(t) = x_\mathrm{R}(t) - x_\mathrm{H}$, $\dot{\delta}_\mathrm{c} = \dot{x}_\mathrm{R}(t) + v_\mathrm{H}$, % where $x^{\mathrm{c}0} \in \mathbb{R}$ is the position of the initial contact, 
 where $x_\mathrm{H} \in \mathbb{R}$ is the position of the soft tissue surface, and while only considering the case of contact (i.e., $\delta_\mathrm{c} \geq 0$), the collision dynamics are given by
 \begin{equation}
@@ -83,12 +84,12 @@ Furthermore, we assume the actuation force to be constant, which can be easily a
 \begin{figure}[h!]
     \centering
     \includegraphics[width=0.9\linewidth]{safetymetric/figures/injury_severity_criterion.pdf}
-    \caption{Proposed \glsxtrfull{SRISC} as a safety criterion for soft robots: The maximum contact pressure $\max_t p_\mathrm{c}(t) = \max_t \frac{f_\mathrm{c}(t)}{A_\mathrm{c}}$ experienced during the (potential) collision acts as a proxy for the expected injury risk~\citep{Isots_15066_2016}, where $f_\mathrm{c}(t)$ denotes the contact force and $A_\mathrm{c}$ the contact area. For computing $f_\mathrm{c}(t)$, we derive the dynamics of the collision (i.e., the time evolution of the penetration depth $\delta_\mathrm{c}(t))$ by projecting the dynamics of the soft robot onto a 1D Cartesian motion along the contact surface normal. In order to get a conservative estimate of the injury risk, we assume the human body part to be constrained in its motion (i.e., that the inertia of the human body part dominates the reflected inertia of the soft robot $m_\mathrm{R}$).}
+    \caption{Proposed \glsxtrfull{SRISC} as a safety criterion for soft robots: The maximum contact pressure $\max_t p_\mathrm{c}(t) = \max_t \frac{f_\mathrm{c}(t)}{A_\mathrm{c}}$ experienced during the (potential) collision acts as a proxy for the expected injury risk~\citep{iso2016collaborative}, where $f_\mathrm{c}(t)$ denotes the contact force and $A_\mathrm{c}$ the contact area. For computing $f_\mathrm{c}(t)$, we derive the dynamics of the collision (i.e., the time evolution of the penetration depth $\delta_\mathrm{c}(t))$ by projecting the dynamics of the soft robot onto a 1D Cartesian motion along the contact surface normal. In order to get a conservative estimate of the injury risk, we assume the human body part to be constrained in its motion (i.e., that the inertia of the human body part dominates the reflected inertia of the soft robot $m_\mathrm{R}$).}
     \label{fig:safetymetric:injury_severity_criterion}
 \end{figure}
 
 \subsection{Injury Severity Criterion}
-Following the standards established in ISO/TS 15066:2016~\citep{Isots_15066_2016}, we consider the maximum contact pressure experienced during the collision as a proxy for the injury risk. Therefore, we define the \gls{SRISC} for a given tuple $(q^{\mathrm{c}0},s_\mathrm{c}, n_\mathrm{c})$ capturing the contact geometry as
+Following the standards established in ISO/TS 15066:2016~\citep{iso2016collaborative}, we consider the maximum contact pressure, also sometimes referred to as stress~\citep{haddadin2009requirements}, experienced during the collision as a proxy for the injury risk. Therefore, we define the \gls{SRISC} for a given tuple $(q^{\mathrm{c}0},s_\mathrm{c}, n_\mathrm{c})$ capturing the contact geometry as
 \begin{equation}
     \mathrm{SRISC}(q^{\mathrm{c}0},\dot{\delta}_\mathrm{c}^0,u,s_\mathrm{c},n_\mathrm{c}) = \max_t p_\mathrm{c} = \max_t \frac{f_\mathrm{c}(t)}{A_\mathrm{c}(t)} \leq \frac{\max_t f_\mathrm{c}(t)}{\min_t A_\mathrm{c}(t)} =  \frac{k_\mathrm{c} \max_t \delta_\mathrm{c}(t)}{\min_t A_\mathrm{c}(t)},
 \end{equation}
@@ -136,7 +137,7 @@ This analysis agrees with similar results known in literature~\citep{della2017co
 
 \subsection{Design Hazardousness Criterion}
 As presented in Fig.~\ref{fig:safetymetric:safety_metric_applications}, one application of a soft robotic safety metric would be to answer the question "\emph{How safe is this proposed soft robot design?}". The \gls{SRISC} on its own is not sufficient to answer this question as it relies on a knowledge of the soft robot state at the beginning of the collision $(q^{\mathrm{c}0}, \dot{q}^{\mathrm{c}0})$, and the contact geometry $(s_\mathrm{c},n_\mathrm{c})$.
-Therefore, we define the \gls{SRDHC} as the maximum injury severity that can be imposed by the soft robot over all feasible soft robot states, all possible contact geometries, and actuation sequences
+Therefore, we define the \gls{SRDHC} as the maximum injury severity that can be imposed by the soft robot over all feasible soft robot states, all possible contact geometries, and actuation sequences~\citep{wassink2007towards}
 \begin{equation}
 \begin{split}
     \mathrm{SRDHC} =& \: \max_{q \in \mathcal{Q}} \max_{\dot{\delta}_\mathrm{c}^0 \in [0,\dot{\delta}_\mathrm{c}^\mathrm{max}]} \max_{u \in [u_\mathrm{min}, u_\mathrm{max}]} \max_{s_\mathrm{c} \in [0,L]} \max_{n_\mathrm{c} \in \mathcal{S}^3} \mathrm{SRISC}(q^{\mathrm{c}0},\dot{\delta}_\mathrm{c}^0,u,s_\mathrm{c},n_\mathrm{c}),\\

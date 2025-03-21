@@ -11,10 +11,10 @@
 % \end{bmatrix}^\top \in \mathbb{R}^6$ across time $t$ and along the $s \in (0,L]$ is the curve linear backbone abscissa, which defines a point along the backbone curve.
 % Here, $\kappa_*$ and $\sigma_*$ represent the rotational and linear strains in the units $[\si{rad \per m}]$ and $[-]$, respectively.
 % Particularly, when the backbone points along the local $z$-axis, $\kappa_\mathrm{x}, \kappa_\mathrm{y}$ capture the bending strains along the two local coordinate directions, $\kappa_\mathrm{z}$ the twist strain, $\sigma_\mathrm{x}, \sigma_\mathrm{y}$ the two shear strains, and $\sigma_\mathrm{z}$ the axial strain~\citep{della2023model}.
-The goal of a kinematic model for robots~\citep{siciliano2010robotics} is to provide an estimate of the robot’s current configuration—specifically, to determine $SE(3)$ poses for every point on the robot body.
+The goal of a kinematic model for robots is to provide a description of the robot’s current shape—specifically, to determine $SE(3)$ poses for every point on the robot body given the current value of its configuration variables $q \in \mathbb{R}^{n}$.
 For rigid manipulators, one can readily derive a kinematic model that describes the position and orientation of the links by considering the joint angles as the configuration variables~\citep{siciliano2010robotics}. In contrast, the continuous three-dimensional deformations of continuum soft robots make this task considerably more challenging~\citep{armanini2023soft}.
 To simplify the problem, the community adopts the \emph{slender structure} hypothesis for continuum soft robots, which assumes that the body’s radius is much smaller than its length: $R \ll L$.
-This assumption permits the use of Cosserat rod theory~\citep{cosserat1909theorie} by reducing the analysis to the one-dimensional deformation of a geometric line that represents an infinitesimally thin backbone of the continuum robot~\citep{gazzola2018forward}\footnote{Models that consider the full three-dimensional deformations of soft robots, similar to standard \gls{FEM}, are beyond the scope of this thesis. We refer the interested reader to \citet{faure2012sofa, coevoet2017software, armanini2023soft}.}.
+This assumption permits the use of Cosserat rod theory~\citep{cosserat1909theorie} by reducing the analysis to the one-dimensional deformation of a geometric line that represents an infinitesimally thin backbone of the continuum robot~\citep{gazzola2018forward}\footnote{Models that consider the full three-dimensional deformations of soft robots, extending volumetric \gls{FEM} to control-oriented modeling, are beyond the scope of this thesis. We refer the interested reader to \citet{faure2012sofa, coevoet2017software, armanini2023soft}.}.
 We then model the backbone’s deformation in 3D space by examining the variation of the strain field $\xi(t,s) = \begin{bmatrix}
     \kappa_\mathrm{x} & \kappa_\mathrm{y} & \kappa_\mathrm{z} & \sigma_\mathrm{x} & \sigma_\mathrm{y} & \sigma_\mathrm{z}
 \end{bmatrix}^\top \in \mathbb{R}^6$,
@@ -22,13 +22,13 @@ where $t$ denotes time and $s \in (0,L]$ is the curvilinear abscissa along the b
 
 % Still, these Cosserat rod models live in infinite-dimensional state space and, therefore, make it infeasible to, in practice, measure the state of the soft robot. Furthermore, the corresponding dynamics need to be formulated as \glspl{PDE}, which makes it hard to directly leverage this knowledge for control.
 % Instead, we ultimately strive to formulate the dynamics as \glspl{ODE}, particularly in Euler-Lagrangian form, requiring us to approximate the deformation of the backbone with finite-dimensional parameterizations.
-Nonetheless, since these Cosserat rod models reside in an infinite-dimensional state space, it becomes impractical to measure the state of a soft robot directly. Moreover, the associated dynamics are formulated as \glspl{PDE}, complicating their direct use in control applications. Therefore, the ultimate aim is to recast the dynamics as \glspl{ODE}—specifically, in Euler-Lagrangian form—by approximating the backbone deformation with finite-dimensional parameterizations.
+Nonetheless, since these Cosserat rod models reside in an infinite-dimensional state space, it becomes impossible to measure the state of a soft robot directly. Moreover, the associated dynamics are formulated as \glspl{PDE}, complicating their direct use in control applications. Therefore, the ultimate aim is to recast the dynamics as \glspl{ODE}—specifically, in Euler-Lagrangian form—by approximating the backbone deformation with finite-dimensional parameterizations.
 
 % Indeed, the continuous strain field can then be approximated as $\xi(t,s) = \Psi(t,q,s)$, where $\Psi(t,q,s): \mathbb{R} \times \mathbb{R}^n \times \mathbb{R}_+ \to \mathbb{R}^6$ is the functional parameterization, $q \in \mathbb{R}^n$ is the finite-dimensional configuration and $\xi^0 \in \mathbb{R}^6$ denotes the rest strain~\citep{mathew2025reduced}. 
 % Next, we can formalize the forward kinematics as $\pi(q,s): \mathbb{R}^n \times \mathbb{R}_+ \to SE(3)$.
 In fact, the continuous strain field can be approximated as $\xi(t,s) = \Psi(t,q,s)$,
-where $\Psi(t,q,s): \mathbb{R} \times \mathbb{R}^n \times \mathbb{R}+ \to \mathbb{R}^6$ serves as the functional parameterization, $q \in \mathbb{R}^n$ denotes the finite-dimensional configuration, and $\xi^0 \in \mathbb{R}^6$ represents the rest strain~\citep{mathew2025reduced}. Then, the forward kinematics can be formalized as
-$\pi(q,s): \mathbb{R}^n \times \mathbb{R}+ \to SE(3)$.
+where $\Psi(t,q,s): \mathbb{R} \times \mathbb{R}^n \times \mathbb{R}_+ \to \mathbb{R}^6$ serves as the functional parameterization, $q \in \mathbb{R}^n$ denotes the finite-dimensional configuration, and $\xi^0 \in \mathbb{R}^6$ represents the rest strain~\citep{mathew2025reduced}. Then, the forward kinematics can be formalized as
+$\pi(q,s): \mathbb{R}^n \times \mathbb{R}_+ \to SE(3)$.
 
 % In the following, we will introduce several common kinematic parametrization, many of which are leveraged in this thesis, that range from relatively simple single segment planar settings to the most general and expressive \gls{GVS} models.
 Below, we introduce several commonly used kinematic parametrizations—many of which are employed in this thesis—that range from relatively simple single-segment planar cases to the most general and expressive \gls{GVS} models.
@@ -40,7 +40,10 @@ In the planar case, we need to consider the following three deformations: the be
 \end{bmatrix}^\top \in \mathbb{R}^3$.
 After defining the rest strain $\xi^0 = \begin{bmatrix}
     0 & 0 & 1
-\end{bmatrix}^\top$, we can now express the strain field as a function of the finite-dimensional configuration $q \in \mathbb{R}^3$: $\xi(t) = \underbrace{\mathbb{I}_3 \, q(t)}_{\Psi(q)} + \xi^0$.
+\end{bmatrix}^\top$, we can now express the strain field as a function of the finite-dimensional configuration $q \in \mathbb{R}^3$
+\begin{equation}
+    \xi(t) = \underbrace{\mathbb{I}_3 \, q(t)}_{\Psi(q)} + \xi^0.
+\end{equation}
 The goal is now to determine the planar $SE(2)$ pose $\chi = \begin{bmatrix}
     p_\mathrm{x} & p_\mathrm{y} & \theta
 \end{bmatrix}^\top \in \mathbb{R}^3$ for each $s \in (0,L]$, where $p_\mathrm{x}$ is the x-position, $p_\mathrm{y}$ the y-position, and $\theta \in \mathbb{S}^1$ the planar orientation measured as the angle with respect to the x-axis.
@@ -54,7 +57,7 @@ Assuming that the robot backbone is aligned with the local y-axis, the infinites
 \end{equation}
 We can now integrate $\frac{\partial \chi}{\partial s}$ in order to obtain the forward kinematics
 \begin{equation}\label{eq:background:kinematics:planar_constant_strain:forward_kinematics}
-    \chi = \pi(q,s) = \int_{s'=0}^{s'=s} \frac{\partial \pi}{\partial s}(q,s') \: \mathrm{d}s' = \begin{bmatrix}
+    \chi = \pi(q,s) = \int_{0}^{s} \frac{\partial \pi}{\partial s}(q,s') \: \mathrm{d}s' = \begin{bmatrix}
         p_\mathrm{x}^0 + \sigma_\mathrm{sh} \frac{-\sin(\theta^0) + \sin(\theta^0 + \kappa_\mathrm{be} s)}{\kappa_\mathrm{be}} + \sigma_\mathrm{ax} \frac{-\cos(\theta^0) + \cos(\theta^0 + \kappa_\mathrm{be} s)}{\kappa_\mathrm{be}}\\
         p_\mathrm{y}^0 + \sigma_\mathrm{sh} \frac{\cos(\theta^0) - \cos(\theta^0 + \kappa_\mathrm{be} s)}{\kappa_\mathrm{be}} + \sigma_\mathrm{ax} \frac{-\sin(\theta^0)+\sin(\theta^0 + \kappa_\mathrm{be} s)}{\kappa_\mathrm{be}}\\
         \theta^0 + \kappa_\mathrm{be} \, s
@@ -114,9 +117,13 @@ where $\varepsilon \approx \SI{0.01}{rad \per m}$ determines the minimum magnitu
 Therefore, $\tilde{\kappa}_\mathrm{be}$ exhibits a discontinuity at $\kappa_\mathrm{be} = 0$ when it switches from $-\varepsilon$ to $\varepsilon$ and vice-versa. Furthermore, the gradient exhibits a discontinuity at $|\kappa_\mathrm{be}| = \varepsilon$ when it transitions between a linear and a constant function.
 
 \subsubsection{Planar Constant Curvature}
-In the special case of a planar \gls{CC} segment~\citep{webster2010design, della2023model}, we would set $\sigma_\mathrm{sh} = 0$, $\sigma_\mathrm{ax} = 1$ and reformulate the strain field as $\xi(t) = \underbrace{\begin{bmatrix}
-    1\\ 0_{2 \times 1}
-\end{bmatrix}}_{\Phi} \, q$, where now the configuration only contains the bending strain $q = \kappa_\mathrm{be} \in \mathbb{R}$.
+In the special case of a planar \gls{CC} segment~\citep{webster2010design, della2023model}, we would set $\sigma_\mathrm{sh} = 0$, $\sigma_\mathrm{ax} = 1$ and reformulate the strain field as 
+\begin{equation}
+    \xi(t) = \underbrace{\begin{bmatrix}
+        1\\ 0_{2 \times 1}
+    \end{bmatrix}}_{\Phi} \, q,
+\end{equation}
+where now the configuration only contains the bending strain $q = \kappa_\mathrm{be} \in \mathbb{R}$.
 
 
 \subsection{Piecewise Constant Strain}
