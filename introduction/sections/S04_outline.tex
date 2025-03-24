@@ -2,14 +2,14 @@
 
 \begin{figure}[ht]
     \centering
-    \includegraphics[width=1.0\linewidth]{introduction/figures/thesis_outline_tree_v1.pdf}
+    \includegraphics[width=1.0\linewidth]{introduction/figures/thesis_outline_tree_v2.pdf}
     \caption{Outline of this thesis with a focus on the contributions. The background colors of the blocks refer to the parts of this thesis. With \emph{C.X}, we refer to the various contributions with dashed frames encapsulating the corresponding chapters.}
     \label{fig:introduction:thesis_outline_tree}
 \end{figure}
 
 \begin{figure}[ht]
     \centering
-    \includegraphics[width=1.0\linewidth]{introduction/figures/thesis_structure_house_v1.pdf}
+    \includegraphics[width=1.0\linewidth]{introduction/figures/thesis_outline_house_v2.pdf}
     \caption{Outline of this thesis with a focus the physical priors of the models and the application area of the model (e.g., proprioception/shape sensing, control, motion generation/policies, and \gls{HRI}).}
     \label{fig:introduction:thesis_outline_house}
 \end{figure}
@@ -32,12 +32,7 @@ At the outset of this thesis, our understanding of several fundamental aspects o
 % Specifically, Part~\ref{part:learning} is dedicated to incorporating priors related to kinematics, stability characteristics, and physical structure into \gls{ML}-based methods, utilizing these hybrid models for shape sensing and control. The content of both parts is discussed in greater detail below. Finally, in Chapter~\ref{chp:conclusion}, we summarize our findings and suggest promising directions for future research.
 This deeper insight into soft robot characteristics has equipped us to propose more suitable physical priors for integration into learned models. Specifically, Part~\ref{part:learning} focuses on incorporating priors related to kinematics, stability, and physical structure into \gls{ML}-based methods, thereby employing these hybrid models for improved shape sensing and control. 
 
-Both parts are discussed in further detail below. Finally, Chapter~\ref{chp:conclusion} summarizes our findings and suggests promising directions for future research.
-
-% We note that while we aimed to keep the notation similar throughout the chapters, the variety of problem settings and methods combined with the limited number of available symbols allowed us to develop tailored notations for each chapter.
-We acknowledge that, although we strived to maintain consistent notation across chapters, the diversity of problem settings and methods, coupled with the limited pool of available symbols, necessitated the use of tailored notations for each chapter.
-% Also, please note that in the following, if not explicitly otherwise noted, we refer with the expression \emph{soft robot} to \emph{continuum soft robots} (versus articulated soft robots)~\cite{della2020softencyclopedia}.
-Please note that, unless explicitly stated otherwise, the term "soft robot" in this thesis refers to "continuum soft robots" (as opposed to articulated soft robots)~\citep{della2020softencyclopedia}.
+Parts~\ref{part:physicsmodels} \& \ref{part:learning} are discussed in further detail in the following subsections.
 
 \subsection*{Part I - Shape Sensing and Control with Advanced Physics-based Models}
 
@@ -81,3 +76,23 @@ Part~\ref{part:learning} combines several research efforts integrating modern \g
     % The inverse Jacobian of the bijective encoder allows the projection of predicted latent velocities back into the oracle space. We validate the approach experimentally on multiple robot embodiments, such as a tendon-driven helicoid soft robot~\citep{guan2023trimmed}, a swimming turtle robot, a UR5 robotic manipulator, and a Kuka \gls{Cobot}.
     \item \textbf{Chapter~\ref{chp:osmp}} proposes a method for learning orbitally stable motion policies from demonstration, which can serve as a reference for the low-level motor controllers introduced in Chapters~\ref{chp:hsacontrol} and \ref{chp:pcsregression}–\ref{chp:con}. Building on pioneering research in \glsxtrfull{SMP}, which parameterizes motion policies using (latent) dynamical systems~\citep{ijspeert2013dynamical, rana2020euclideanizing}, this chapter integrates a learned bijective encoder implemented as a Euclideanizing flow~\citep{dinh2016density, rana2020euclideanizing} with an orbitally stable supercritical Hopf bifurcation as the latent dynamics. This approach enables the learning of periodic motions from demonstrations with stability guarantees. The inverse Jacobian of the bijective encoder facilitates the projection of predicted latent velocities back into the oracle space. The proposed method is experimentally validated on various robot embodiments, including a tendon-driven helicoid soft robot~\citep{guan2023trimmed}, a swimming turtle robot, a UR5 robotic manipulator, and a Kuka \gls{Cobot}.
 \end{itemize}
+
+\subsection*{Conclusion and Appendices}
+In the following, we will detail the content of Parts~\ref{part:conclusion} \& \ref{part:appendices} \ref{part:appendices}.
+\begin{itemize}
+    \item \textbf{Chapter~\ref{chp:conclusion}} summarizes our findings and suggests promising directions for future research.
+    \item 
+    % \textbf{Appendix~\ref{chp:apx:holisticcodesign}} proposes a framework for holistic co-design of soft robots that enables co-optimization of soft robot body (e.g., its morphology) and brain (e.g., perception and control systems)~\citep{spielberg2019learning, wang2024diffusebot, navez2024contributions}. Crucially, this framework considers a broad set of values beyond task-centric performance, such as safety, manufacturability, and regulatory considers, it explicitly accounts for realization of the design and how prototyping can decrease the uncertainty in the evaluation metrics used to assess designs computationally, and it proposes modifications and augmentations to the co-design process that have the potential to make it computationally significantly more efficient. In summary, this holistic co-design framework guides a way towards how the soft robot's structural shape, the actuator and sensing placement (see Chapters~\ref{chp:srslam} \& \ref{chp:promasens}), the reduced-order modeling (see Chapters~\ref{chp:hsamodel}, \ref{chp:pcsregression}, \& \ref{chp:con}), and the controller (see Chapters~\ref{chp:hsacontrol}, \ref{chp:backstepping}, \ref{chp:pcsregression}, \& \ref{chp:con}) could be jointly optimized in the future to optimize performance while ensuring that the closed-loop system remains sufficiently compliant and safe (see Chapter~\ref{chp:safetymetric}).
+    \textbf{Appendix~\ref{chp:apx:holisticcodesign}} introduces a framework for the holistic co-design of soft robots, enabling the simultaneous optimization of both the robot’s body (e.g., its morphology) and its brain (e.g., the perception and control systems)~\citep{spielberg2019learning, wang2024diffusebot, navez2024contributions}. Importantly, the framework considers a broad array of criteria beyond task-centric performance, including safety, manufacturability, and regulatory considerations. It explicitly addresses the practical realization of designs by demonstrating how prototyping can reduce uncertainty in the computational evaluation metrics, while also proposing modifications to the co-design process that could greatly enhance computational efficiency. In summary, this holistic co-design framework provides guidance on how the soft robot’s structural shape, actuator and sensor placement (see Chapters\ref{chp:srslam} \& \ref{chp:promasens}), reduced-order modeling (see Chapters~\ref{chp:hsamodel}, \ref{chp:pcsregression}, \& \ref{chp:con}), and controller (see Chapters~\ref{chp:hsacontrol}, \ref{chp:backstepping}, \ref{chp:pcsregression}, \& \ref{chp:con}) might be jointly optimized in the future to boost performance while ensuring that the closed-loop system remains sufficiently compliant and safe (see Chapter~\ref{chp:safetymetric}).
+    \item \textbf{Appendix~\ref{chp:apx:con}} contains supplementary material, including details on the experimental setup and additional results, for Chapter~\ref{chp:con}.
+    \item 
+    % \textbf{Appendix~\ref{chp:apx:infrastructure}} details some of the lab infrastructure, such as a motion capture system and pneumatic pressure regulation, that was developed as part of this PhD to support and enable the research presented in this thesis. Furthermore, we present some of the software libraries that support many of the chapters contained in this thesis. For example, a JAX implementation of control-oriented soft robot models that enables simulation, model-based control, or in the future motion planning, or a ROS2 ecosystem for the control of \gls{HSA} robots.
+    \textbf{Appendix~\ref{chp:apx:infrastructure}} outlines some of the laboratory infrastructure developed during this PhD—such as a motion capture system and pneumatic pressure regulation—to support the research presented in this thesis. Additionally, we introduce several software libraries that underpin many of the thesis chapters, including a JAX implementation of control-oriented soft robot models for simulation, model-based control, and motion planning, as well as a ROS2 ecosystem for model-based control of \gls{HSA} robots.
+\end{itemize}
+ 
+
+\subsection{Important Notes}
+% We note that while we aimed to keep the notation similar throughout the chapters, the variety of problem settings and methods combined with the limited number of available symbols allowed us to develop tailored notations for each chapter.
+We acknowledge that, although we strived to maintain consistent notation across chapters, the diversity of problem settings and methods, coupled with the limited pool of available symbols, necessitated the use of tailored notations for each chapter.
+% Also, please note that in the following, if not explicitly otherwise noted, we refer with the expression \emph{soft robot} to \emph{continuum soft robots} (versus articulated soft robots)~\cite{della2020softencyclopedia}.
+Please note that, unless explicitly stated otherwise, the term "soft robot" in this thesis refers to "continuum soft robots" (as opposed to articulated soft robots)~\citep{della2020softencyclopedia}.
