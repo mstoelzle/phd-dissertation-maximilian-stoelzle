@@ -1,0 +1,282 @@
+\section{Methodology}
+In this work, we introduce \glspl{OSMP}, which can be trained to capture complex periodic motions from demonstrations while ensuring convergence to a limit cycle that aligns with a predefined oracle. To accomplish this, we build on previous research~\citep{rana2020euclideanizing, zhi2024teaching} that combines learned bijective encoders with a prescribed motion behavior in latent space. These latent dynamics generate velocities or accelerations that are subsequently mapped back into the oracle space via a pullback operator~\citep{zhang2022learning}—in the case of a bijective encoder, this operator is the inverse of the encoder’s Jacobian. In this formulation, the motion in latent space exhibits key convergence properties, such as \gls{GAS}~\citep{rana2020euclideanizing, perez2023stable, sochopoulos2024learning} or \gls{OS}~\citep{zhi2024teaching}, while the learned encoder provides the necessary expressiveness to capture complex motions and transfers the convergence guarantees from latent to oracle space through the established diffeomorphism.
+
+However, compared to existing work~\citep{zhi2024teaching}, we introduce several crucial modifications that enhance both the performance and practical utility of the proposed method: (1) we develop a limit cycle matching loss to reduce the discrepancy between the learned limit cycle and the periodic oracle; (2) we design strategies to modulate the learned velocity field online without the need for retraining—for instance, to adjust the convergence behavior; (3) we establish a procedure to synchronize the phase of multiple \glspl{OSMP}; and (4) we condition the encoder on a task, enabling a single \gls{OSMP} to exhibit multiple distinct motion behaviors. Moreover, we introduce loss terms that allow the trained \gls{OSMP} to smoothly interpolate between the learned motion behaviors—something that has not been possible before.
+
+\subsection{Orbitally Stable Motion Primitives}
+In the framework of stable motion primitives~\citep{rana2020euclideanizing, perez2023stable, perez2024puma}, we aim to learn velocity field $\dot{x} = f(x)$ that maps the robot's position/state $x \in \mathbb{R}^n$ into the corresponding time derivative $\dot{x} \in \mathbb{R}^n$, where $n \in \mathbb{N}_{>1}$ denotes the Degrees of Freedom (DOF). Here, $x$ is typically defined in task space but can also be defined in other Cartesian or generalized coordinates (e.g., joint space). Therefore, we will in the following refer to these coordinates as \emph{Oracle space}.
+In this work, we are specifically interested in cases where we train $f(x)$ to learn periodic motions.
+To achieve this, we establish a connection between the oracle and a latent space via a diffeomorphism that is provided by an encoder $\psi: \mathbb{R}^n \to \mathbb{R}^n$, which maps positional states $x \in \mathbb{R}^n$ into the latent states $y \in \mathbb{R}^n$.
+Optionally, this encoding is conditioned on a continuous variable $z \in \mathbb{R}$ as a homotopy such that $y = \psi(x;z)$.
+Furthermore, we construct $\psi$ such that it is invertible and a closed-form inverse function $\psi^{-1}: y \mapsto x$ allows us to map from latent space back into oracle space.
+In latent space, we apply dynamics $\dot{y} = f_\mathrm{y}(y)$ that exhibit a stable limit cycle behavior. In summary, the orbitally stable motion primitive is given as
+\begin{equation}
+    \dot{x} = f(x;z) = J_\psi^{-1}(x;z) \, f_\mathrm{y} \left (\psi(x;z) \right ),
+\end{equation}\
+where $J_\psi = \frac{\partial \psi(x;z)}{\partial x}$ defines the Jacobian of the encoder. 
+As $\psi$ is bijective (w.r.t. $x$ and $y$), the motion policy is orbitally stable by construction~\citep{zhi2024teaching}.
+
+\subsubsection{Diffeomorphic Encoder}
+
+We consider a bijective encoder $\psi_\theta : \mathbb{R}^n \times \mathbb{R} \to \mathbb{R}^n$, which maps positional states $x \in \mathbb{R}^n$ into the latent states $y \in \mathbb{R}^n$ conditioned on $z \in \mathbb{R}$, where we assume that $n \in \mathbb{N} \geq 2$.
+% Remark: In a slight abuse of phrasing, we refer to the encoder as bijective when the mapping $x \mapsto y$ is bijective. This, however, is sufficient for stability purposes.
+The encoder $y = \psi_\theta(x;z)$ is parametrized by the learnable weights $\theta \in \mathbb{R}^{n_\theta}$. We omit $\theta$ in most subsequent expressions for simplicity of notation.
+%
+If a conditioning is used, the encoder first embeds it with a function $e_\mathrm{z}: \mathbb{R} \to \mathbb{R}^{n_\mathrm{e}}$, which provides $\Bar{z} = e_\mathrm{z}(z)$. Customarily, we choose $n_\mathrm{e} = n$ and construct $e_\mathrm{z}$ using a Gaussian Fourier projection~\citep{chi2023diffusion} into a dimensionality of $4 \, n_\mathrm{e}$ and a two-layer MLP with hidden dimension of $8 \, n_\mathrm{e}$ and a softplus nonlinearity.
+% \textcolor{red}{TODO: explain Fourier projection in more detail}.
+%
+The encoder is composed by $n_\mathrm{b}$ blocks: $\psi = \psi_1 \circ \psi_2 \dots \psi_{n_\mathrm{b}}$, where $\psi_j: \chi_{j-1} \in \mathbb{R}^n \in \mathbb{R} \mapsto \chi_{j} \in \mathbb{R}^n$. Therefore, $\chi_0 = x$ and $\chi_{n_\mathrm{b}} = y$.
+In particular, we employ Euclideanizing flows~\citep{dinh2017density, rana2020euclideanizing}, which splits $\chi_j$ into two parts: $\chi_\mathrm{a} \in \mathbb{R}^{n_\mathrm{a}}$ and $\chi_\mathrm{b} \in \mathbb{R}^{n_\mathrm{b}}$ with $n_\mathrm{a} + n_\mathrm{b} = n$.
+%
+Then, for odd and even $j$, $\psi_j$ is given by
+\begin{equation}
+    \chi_j = \begin{bmatrix}
+        \chi_{\mathrm{a}, j}\\
+        \chi_{\mathrm{b}, j}
+    \end{bmatrix} = \psi_j(\chi_{j-1}; \Bar{z}) = \begin{bmatrix}
+        \chi_{\mathrm{a}, j-1}\\
+        \chi_{\mathrm{b}, j-1} \odot \exp(s_{\theta_{\mathrm{s},j}}(\chi_{\mathrm{a}, j-1}; \Bar{z})) + t_{\theta_{\mathrm{t},j}}(\chi_{\mathrm{a}, j-1}; \Bar{z})
+    \end{bmatrix},
+\end{equation}
+and
+\begin{equation}
+    \chi_j = \begin{bmatrix}
+        \chi_{\mathrm{a}, j}\\
+        \chi_{\mathrm{b}, j}
+    \end{bmatrix} = \psi_j(\chi_{j-1}; \Bar{z}) = \begin{bmatrix}
+        \chi_{\mathrm{a}, j-1} \odot \exp(s_{\theta_{\mathrm{s},j}}(\chi_{\mathrm{b}, j-1}; \Bar{z})) + t_{\theta_{\mathrm{t},j}}(\chi_{\mathrm{b}, j-1}; \Bar{z})\\
+        \chi_{\mathrm{b}, j-1}
+    \end{bmatrix},
+\end{equation}
+respectively, which are diffeomorphism by construction.
+%
+For conciseness and without loss of generality, we consider in the following only the case of odd $j$.
+In this setting, $s_j(\chi_{\dot, j-1}, \Bar{z}): \mathbb{R}^{n_\mathrm{a}} \to \mathbb{R}^{n_\mathrm{b}}$ and $t_j(\chi_{\dot, j-1}, \Bar{z}): \mathbb{R}^{n_\mathrm{a}} \to \mathbb{R}^{n_\mathrm{b}}$ are two learned functions expressing the scaling and translation.
+In our experiments, we leverage random Fourier features networks consisting of a clamped linear layer with randomly sampled, untrained weights, a cosine activation function and a learned, linear output layer to parametrize $s_{\theta_{\mathrm{s},j}}(\chi_{\mathrm{a}, j-1}; \Bar{z})$ and $t_{\theta_{\mathrm{t},j}}(\chi_{\mathrm{a}, j-1}; \Bar{z})$, where $\theta_{\mathrm{s},j}$ and $\theta_{\mathrm{t},j}$ are the learnable parameters~\citep{rana2020euclideanizing}.
+
+\subsubsection{Latent Dynamics}
+
+In latent space, we consider the \nth{1}-order dynamics of a supercritical Hopf bifurcation~\citep{strogatz2018nonlinear}
+\begin{equation}
+    \dot{y} = \begin{bmatrix}
+        \dot{y}_1\\
+        \dot{y}_2\\
+        \dot{y}_{3:n}\\
+    \end{bmatrix} = f_\mathrm{y}(y) = \begin{bmatrix}
+        -\omega \, y_2 + \alpha \, \left ( 1 - \frac{y_1^2 + y_2^2}{R^2} \right ) \, y_1\\
+        + \omega \, y_1 + \alpha \, \left ( 1 - \frac{y_1^2 + y_2^2}{R^2} \right ) \, y_2\\
+        -\beta \, y_{3:n}\\
+    \end{bmatrix},
+    % \quad
+    % \forall i \: \in 3, \dots, N.
+\end{equation}
+Here, the dynamics of $y_1$ and $y_2$ describe the Cartesian-space behavior of a simple limit cycle whose behavior in polar coordinates $(r, \varphi)$ is expressed as
+\begin{equation}
+    \begin{bmatrix}
+        \dot{r}\\ \dot{\varphi}\\ \dot{y}_{3:n}
+    \end{bmatrix} = \begin{bmatrix}
+        \alpha \left ( 1 - \frac{r^2}{R^2} \right ) \, r\\ \omega\\ -\beta \, y_{3:n}\\
+    \end{bmatrix},
+    % \quad
+    % \forall i \: \in 3, \dots, N,
+\end{equation}
+where in the general case, the polar angular velocity $\omega \geq 0$ is positive. In practice, we use while learning the motion primitive simply $\omega = 1$. $\alpha > 0$ and $\beta > 0$ are positive gains that determine how fast the system converges onto the limit cycle. When learning the dynamics, we choose $\alpha = \beta = 1$. $R \in \mathbb{R}^+$ expresses the radius of the limit cycle in latent space. Again, it is sufficient to choose $R =1$.
+% Finally, latent space velocity is mapped back into the original space using the inverse Jacobian of the encoder $\dot{x} = J_\psi^{-1} \, \dot{y}$.
+
+\subsection{Training}
+We consider a dataset $\langle X^\mathrm{d}, \dot{X}^\mathrm{d}, Z \rangle$ as a tuple between positions $X^\mathrm{d} = \langle x^\mathrm{d}(1), \dots, x^\mathrm{d}(k), \dots, x^\mathrm{d}(\mathrm{N}) \rangle$, the corresponding, demonstrated velocities $\dot{X}^\mathrm{d} = \langle \dot{x}^\mathrm{d}(1), \dots, \dot{x}^\mathrm{d}(k), \dots, \dot{x}^\mathrm{d}(\mathrm{N}) \rangle$ and an optional conditioning $Z = \langle z(1), \dots, z(k), \dots, z(\mathrm{N}) \rangle$, where $k \in \mathbb{N}_\mathrm{N} = \{1, 2, \dots, N \}$.
+
+The total training loss function is given by
+\begin{equation}
+    \mathcal{L} = \lambda_\mathrm{vel} \, \mathcal{L}_\mathrm{vel} + \lambda_\mathrm{lcm} \, \mathcal{L}_\mathrm{lcm} + \lambda_\mathrm{sci} \, \mathcal{L}_{\mathrm{sci}} + \lambda_\mathrm{wr} \, \mathcal{L}_\mathrm{wr},
+\end{equation}
+where $\mathcal{L}_\mathrm{vel}$ is a loss term that enforces that the velocity of the motion primitive matches the one demanded by the demonstration at all samples in the demonstration dataset, $\mathcal{L}_\mathrm{lcm}$ ensures that the encoded demonstration positions lie on the latent limit cycle. The optional $\mathcal{L}_{\mathrm{sci}}$ gives rise to smooth interpolation between different encoder conditioning, and $\mathcal{L}_\mathrm{wr}$ regularizes the encoder network weights.
+Also, $\lambda_\mathrm{vel}, \lambda_\mathrm{lcm}, \lambda_\mathrm{sci}, \lambda_\mathrm{wr} \in \mathbb{R}$ are scalar loss weights.
+
+Analog to the literature on stable point-to-point motion primitives~\citep{rana2020euclideanizing}, the predicted oracle space velocity is supervised by a \gls{MSE} loss
+\begin{equation}
+    \mathcal{L}_\mathrm{vel} = \sum_{k = 1}^{N} \frac{\lVert \dot{x}^\mathrm{d}(k) - f(x^\mathrm{d}) \rVert_2^2}{N}.
+\end{equation}
+Next, we consider a subset of the demonstrations $\mathcal{P} \subset \mathbb{N}_\mathrm{N}$ that exhibit a periodic motion. To guarantee the \gls{OS} of the learned system, we need to make sure that the learned limit cycle matches the periodic demonstration.
+For this purpose, we design a \emph{limit cycle matching} loss $\mathcal{L}_\mathrm{lcm}$ in latent space
+% \begin{equation}
+% \begin{split}
+%     y_\mathrm{p}(k) =& \: \begin{bmatrix}
+%         \sqrt{y_1^2(k) + y_2^2(k)} & y_3 & \dots & y_n
+%     \end{bmatrix}^\mathrm{T}, \\
+%     y_\mathrm{p}^\mathrm{d}(k) =& \: \begin{bmatrix}
+%         R & 0 & \dots & 0
+%     \end{bmatrix}^\mathrm{T}, \\
+%     \mathcal{L}_\mathrm{lcm} =& \: \sum_{k \in \mathcal{P}} \frac{\big \lVert y_\mathrm{p}^\mathrm{d}(k) - y_\mathrm{p}(k) \big \rVert_2^2}{|\mathcal{P}|},
+% \end{split}
+% \end{equation}
+\begin{equation}\small
+    y_\mathrm{p}(k) = \begin{bmatrix}
+        \sqrt{y_1^2(k) + y_2^2(k)}\\ y_{3:n}
+    \end{bmatrix} \in \mathbb{R}^{n-1},
+    \quad
+    y_\mathrm{p}^\mathrm{d}(k) = \begin{bmatrix}
+        R\\ 0_{n-2}
+    \end{bmatrix},
+    \quad
+    \mathcal{L}_\mathrm{lcm} = \sum_{k \in \mathcal{P}} \frac{\big \lVert y_\mathrm{p}^\mathrm{d}(k) - y_\mathrm{p}(k) \big \rVert_2^2}{|\mathcal{P}|},
+\end{equation}
+where $|\mathcal{P}|$ is the cardinality of $\mathcal{P}$, and $y=\psi(x^\mathrm{d}; z) \in \mathbb{R}^n$ is the latent encoding. % , and $y_\mathrm{p}^\mathrm{d}$ and $y_\mathrm{p}$ are the desired and actual latent positions in polar coordinates, respectively.
+
+Moreover, we penalize the deformation of the diffeomorphism by regularizing the weights $\theta$ of the bijective encoder: $\mathcal{L}_\mathrm{wr} = \sum_{w=1}^{n_\theta} \frac{\theta_w}{n_\theta}$.
+
+\subsubsection{Smooth Conditioning Interpolation Loss}
+Next, optionally, we can add a loss term that encourages a smooth interpolation of the learned limit cycle between conditionings $z$. We assume that all conditionings in the dataset $z(k) \in \mathcal{Z}$, where $\mathcal{Z} = \{ z(1), \dots, z(k), \dots, z(N) \}$, are bounded in the interval $[z_\mathrm{min}, z_\mathrm{max}]$.
+Next, we draw $N_\mathrm{sci}$ random conditionings from a uniform distribution: $\tilde{z}(j) \sim \mathcal{U}(z_\mathrm{min}, z_\mathrm{max}) \in \mathbb{R}$ with $j \in \mathbb{N}_{N_\mathrm{sci}}$.
+Additionally, we also generate $N_\mathrm{sci}$ samples on the latent limit cycle by uniformly sampling polar angles $\varphi(j) \sim [-\pi, \pi)$ and subsequently first map into Cartesian latent coordinates and then into oracle space using the inverse encoder
+\begin{equation}
+    y(j) = \begin{bmatrix}
+        R \, \cos(\varphi(j)) & R \, \sin(\varphi(j)) & 0_{n-2}
+    \end{bmatrix}^\mathrm{T},
+    \quad
+    \tilde{x}(j) = \psi^{-1}(y(j) \, ; \tilde{z}(j)).
+\end{equation}
+Now, we define the floor $\lfloor \cdot \rfloor$ and ceil $\lceil \cdot \rceil$ functions that round down, or up to the next conditioning $z \in \mathcal{Z}$ in the dataset
+\begin{equation}
+    \lfloor \tilde{z} \rfloor = \max\{ z \in \mathbb{Z} \mid z \le \tilde{z} \},
+    \qquad
+    \lceil \tilde{z} \rceil = \min\{ z \in \mathbb{Z} \mid z \ge \tilde{z} \}.
+\end{equation}
+Then, the target for $\tilde{x}(j)$ that represents a smooth linear interpolation between conditioning $\lfloor \tilde{z} \rfloor $ and $\lceil \tilde{z} \rceil$ is given by
+\begin{equation}
+    \tilde{x}^*(j) = \lfloor \tilde{x}(j) \rfloor + \frac{\tilde{z}(j) - \lfloor \tilde{z}(j) \rfloor}{\lceil \tilde{z}(j) \rceil - \lfloor \tilde{z}(j) \rfloor} \left ( \lceil \tilde{x}(j) \rceil - \lfloor \tilde{x}(j) \rfloor \right )
+\end{equation}
+where
+\begin{equation}
+    \lfloor \tilde{x}(j) \rfloor = \psi^{-1}(y(j) \, ; \lfloor \tilde{z}(j) \rfloor),
+    \qquad
+    \lceil \tilde{x}(j) \rceil = \psi^{-1}(y(j) \, ; \lceil \tilde{z}(j) \rceil).
+\end{equation}
+Finally, the smooth conditioning interpolation loss can be formulated as
+\begin{equation}
+    \mathcal{L}_{\mathrm{sci}} = \sum_{j = 1}^{N_\mathrm{sci}} \frac{\left ( \tilde{x}^*(j) - \tilde{x}(j)\right )^2}{N_\mathrm{sci}}.
+\end{equation}
+
+\subsection{Reshaping of the Learned Velocity Field}
+In order to improve the practicality of using the learned orbital motion primitives, we introduce in this section approaches that allow us to modulate the learned velocity field to adjust the task or modify its characteristics without having to retrain the \gls{OSMP}. 
+
+First, we introduce variables that allow us to spatially translate and scale the learned velocity field
+\begin{equation}
+    \dot{x}(t) = \tilde{f}(x \, ;z) \coloneq s_\mathrm{f} \, f \left ( \frac{x(t)-x^\mathrm{o}}{s_\mathrm{f}}; z \right ).
+\end{equation}
+Here, $s_\mathrm{f} \in \mathbb{R}_{>0}$ controls the spatial scale of the velocity field. When $s_\mathrm{f} = 1$, the executed motion primitive is equal to the learned motion primitive. $x^\mathrm{o} \in \mathbb{R}^{n}$ defines the origin of the velocity field.
+
+However, we are not limited to affine transformations such as translation and scaling. Additionally, we can adjust the period and convergence characteristics of the velocity field online. Specifically, by adjusting the polar angular velocity $\omega$, we can either slow-down ($0 < \omega < 1$) or speed-up ($\omega > 1$) the periodic motion.
+Furthermore, the convergence of trajectories onto the $\mathbb{S}^1$ limit cycle can be made more or less aggressive by adjusting the convergence gain $k_\mathrm{conv} \in \mathbb{R}_{>0}$. Usually, we set $\alpha = \beta = k_\mathrm{conv} \, \omega$.
+
+Finally, constraints in the oracle or actuation space (e.g., joint limits, environment obstacles) might pose challenges to the deployment of the orbital motion primitive in real-world settings when the system is initialized (far) off the oracle.
+In these situations, we would not want to start our periodic motion directly, but instead, we would first converge into a neighborhood around the oracle that is collision-free. We devise a strategy that is able to accomplish such behavior by scaling the polar angular velocity $\tilde{\omega}$ as a function $\sigma: \mathbb{R}_{>0} \to \mathbb{R}$ of the distance from the limit cycle $d_\mathrm{lc}$
+\begin{equation}\small
+    d_\mathrm{lc} = \sqrt{\frac{\left (\sqrt{y_1^2 + y_2^2} - R \right)^2 + \sum_{i=2}^{n} y_i^2}{n-1}},
+    \qquad
+    \tilde{\omega} = \sigma(d_\mathrm{lc}) = \exp \left ( - \frac{\max(d_\mathrm{lc} - R_\mathrm{sm}, 0)^2}{2 \, \sigma_\mathrm{sm}^2} \right ) \, \omega,
+\end{equation}
+where $d_\mathrm{lc} \in \mathbb{R}_{>0}$ the Euclidean distance of the latent state $y$ from the limit cycle normalized by the DOF.
+The mapping $d_\mathrm{lc} \mapsto \tilde{\omega}$ can be intuitively interpreted as follows, in a tube of radius $R_\mathrm{sm}$ around the limit cycle, we apply the nominal polar angular velocity $\omega$. Outside of that tube, we reduce the angular velocity using a Gaussian function with RMS width $\sigma_\mathrm{sm} \in \mathbb{R}_{>0}$. In the limit $d_\mathrm{lc} \to \infty$, the polar angular velocity is zero: $\lim_{d_\mathrm{lc} \to \infty} \sigma(d_\mathrm{lc}) = 0$.
+
+
+\subsection{Phase Synchronization of Multiple Motion Primitives}
+In many real-world applications, it is essential to synchronize the phases of multiple learned orbital motion primitives. For instance, in turtle swimming, the phases of the two limbs must align, while in (human) walking, the periodic movement of the two legs should be offset by $\pi$. To address this, we developed a controller that can synchronize the motion of two or more systems.
+Here, we consider that we trained $n_\mathrm{s}$ \glspl{OSMP}. We refer to the latent state of the $i$th system, where $i \in \mathbb{N}_{n_\mathrm{s}}$, as ${}_{i} y$. The polar phase of each system is given by ${}_{i} \varphi = \mathrm{atan2}({}_{i} y_2, {}_{i} y_1)$. We then construct a symmetric matrix $\delta \Phi^* \in \mathbb{R}^{(n_\mathrm{s}-1) \times (n_\mathrm{s}-1)}$ that contains the desired phase offsets. For example, $\delta \Phi^*_{ij} = \delta \Phi^*_{ji} \in [-\pi, \pi)$ specifies the desired phase offset between the $i$th and the $j$th system. In the case of $\delta \Phi^* = 0^{(n_\mathrm{s}-1) \times (n_\mathrm{s}-1)}$, we ask the phase difference between all systems to be zero.
+We then adopt a technique from the field of network synchronization~\citep{dorfler2014synchronization} that allows the alignment of the \glspl{OSMP} in phase. Namely, we define a feedback controller that acts on the angular velocity of the latent system
+\begin{equation}
+    {}_{i} \tilde{\omega} = {}_{i} \omega \, \left (1  -k_\mathrm{ps} \sum_{j=1}^{n_\mathrm{s}} \sin \left ( \delta \Phi^*_{ij} + {}_{i} \varphi - {}_{j} \varphi \right ) \right ),
+\end{equation}
+where $\omega, \tilde{\omega} \in \mathbb{R}$ are the default and modified polar angular velocities of the systems, respectively. 
+$k_\mathrm{ps} \in \mathbb{R}_{>0}$ is the phase synchronization gain that determines how quickly the systems synchronize.
+
+\subsection{Robot Control with Orbital Motion Primitives}
+In this work, we illustrate several examples of how the orbital motion policy’s output can be employed to control real-world robots. The range of robots examined in this study covers a diverse spectrum of robotic embodiments—from rigid manipulators (UR5, KUKA) to soft robotic manipulators (Helix Robot) and even locomotion systems (Crush turtle robot).
+Below, we specify the low-level control implementation on each system, which explains how the output of the \gls{OSMP} is mapped into an actuation on the system.
+
+\subsubsection{UR5 Robotic Manipulator}
+We deploy the periodic motion primitives in task space on the UR5 robotic manipulator
+\begin{equation}
+    x^*(t) = x(t) + \frac{k_\mathrm{v2p}}{\omega_\mathrm{ctrl}} \, \tilde{f}(x(t) \, ; z),
+    \qquad
+    f_\mathrm{v}(t) = k_\mathrm{p} \, (x^*(t) - x(t)) - k_\mathrm{d} \, \dot{x}(t),
+\end{equation}
+where $x(t) \in \mathbb{R}^3$ is the current position of the end-effector as computed by the forward kinematic model, $x^*(t) \in \mathbb{R}^3$ is the internal task-space setpoint/goal, $\omega_\mathrm{ctrl} = 200 \, \mathrm{Hz}$ is the control frequency and $k_\mathrm{v2p} = 1500$ is a gain to map the desired task-space velocity into the next task-space position goal.
+The internal goal $x^*(t)$ is tracked by a virtual Cartesian impedance controller~\citep{scherzinger2017forward} to generate a virtual Cartesian force $f_\mathrm{v}(t)$ with a proportional gain of $0.05 \, \mathrm{N/m}$ and a damping gain of $0.005 \, \mathrm{Ns/m}$.
+
+
+\subsubsection{KUKA Cobot}
+We also verified the \gls{OSMP} on a KUKA LBR iiwa 14 collaborative robot with $n_\mathrm{q} = 7$ DOFs.
+In contrast to the UR5 manipulator, in addition to the end-effector position $p \in \mathbb{R}^3$, we also consider here the orientation of the end-effector represented by a rotation matrix $C \in SO(3)$. Here, both $p(t)$ and $C(t)$ are computed by the forward kinematics $\mathrm{FK}(q): R^\mathrm{n_\mathrm{q}} \to \mathbb{R}^3 \times SO(3)$. 
+However, the orientation does not live in Euclidean space, preventing us from directly applying the \gls{OSMP}.
+Instead, we formulate inspired by \citet{urain2022learning} the motion primitive in $SO(3)$ tangent space. Specifically, we apply the LogMap to the rotation matrix $C(t)$ resulting in the motion primitive state $x(t) = \begin{bmatrix}
+    p^\top(t) & \mathrm{Log}(C(t))^\top
+\end{bmatrix}^\top \in \mathbb{R}^6$ such that the \gls{OSMP} is defined in dimensionality $n=6$.
+In order to train this motion primitive via the velocity prediction loss $\mathcal{L}_\mathrm{vel}$, we apply finite differences in tangent space
+\begin{equation}
+    \dot{x}_{4:6}^\mathrm{d}(k) = \frac{\mathrm{Log}(R^\mathrm{d}(k+1)) - \mathrm{Log}(R^\mathrm{d}(k))}{\delta t},
+\end{equation}
+to gather the velocity reference $\dot{x}^\mathrm{d}(k)$ of the oracle.
+Then, analog to the UR5, the internal goal is computed by the \gls{OSMP} as
+\begin{equation}
+    x^*(t) = x(t) + \frac{k_\mathrm{v2p}}{\omega_\mathrm{ctrl}} \, \tilde{f}(x(t); z),
+\end{equation}
+where $\omega_\mathrm{ctrl} = 150 \, \mathrm{Hz}$ is the control frequency, and $k_\mathrm{v2p} \in \mathbb{R}_+$ is a gain to map the desired velocities into the next (internal) position goal.
+Subsequently, we define the internal pose goal as $p_i^*(t) = x_{i}^*(t) \: \forall \: i \in \{1, 2, 3 \}$ and $C^*(t) = \mathrm{Exp}(x_{4:6}^*(t))$ after applying the $SO(3)$ exponential map to the orientation component.
+% Subsequently, the reference $x^*(t)$ is tracked by a operational space impedance controller~\citep{khatib1987unified} and the joint torques are computed as
+% \begin{equation}
+%     \tau = J^\top(q) \, \left ( \eta(q,\dot{q}) \, \dot{q} + J_\mathrm{M}^{+^\top}(q) \, G(q) + K_\mathrm{p} \, (x^*(t) - x(t)) - K_\mathrm{d} \, \dot{x} \right ),
+% \end{equation}
+% where $G(q) \in \mathbb{R}^{n_\mathrm{q}}$ captures the joint space gravitational forces, $J(q) \in \mathbb{R}^{n \times n_\mathrm{q}}$ is the Jacobian that maps joint space into operational space velocities $\dot{x} = J(q) \, \dot{q}$, $J_\mathrm{M}^{+} \in \mathbb{R}^{n_\mathrm{q} \times n}$ is its dynamically consistent pseudo-inverse~\citep{khatib1987unified}, and $\eta(q,\dot{q}) \in \mathbb{R}^{n \times n_\mathrm{q}}$ represents the Coriolis matrix in operational space.
+% Furthermore, $K_\mathrm{p}, K_\mathrm{d} \in \mathbb{R}^{n \times n}$ are proportional and derivative control gains, respectively, defining the impedance behavior of the robot in operational space.
+Subsequently, the reference $T^*(t) \in SE(3)$ consisting of the end-effector position $p^*(t) \in \mathbb{R}^3$ and orientation $C^*(t) \in SO(3)$ is tracked by combining an inverse kinematics solver designed for fast and smooth tracking~\citep{wang2023rangedik} with a joint-space impedance controller
+\begin{equation}
+     \tau = G(q) + K_\mathrm{p} \left( \mathrm{IK}(p^*, C^*) - q \right) - K_\mathrm{d} \, \dot{q},
+\end{equation}
+where $G(q) \in \mathbb{R}^{n_\mathrm{q}}$ captures the joint space gravitational forces, $\mathrm{IK}: \mathbb{R}^3 \times SO(3) \to \mathbb{R}^{n_\mathrm{q}}$ represents a solver that computes a reference joint state $q^{*}(t)$ from $x^{*}(t)$, i.e., $q^{*} = \mathrm{IK}(p^*, C^*)$, and $K_\mathrm{p}, K_\mathrm{d} \in \mathbb{R}^{n_\mathrm{q} \times n_\mathrm{q}}$ are proportional and derivative control gains, respectively, defining the impedance behavior of the robot.
+
+\subsubsection{Helix Continuum Soft Robot}
+The Helix Robot~\citep{guan2023trimmed} is a continuum soft manipulator consisting of three independently actuated segments that can bend in the $x$,$y$ plane and adjust their length. Each segment is modeled as a constant curvature arc with variable length~\citep{guan2023trimmed, stella2023piecewise}, with this configuration-space $q \in \mathbb{R}^{9}$ serving as an intermediary mapping between the tendon space and Cartesian space.
+
+We position the Helix robot within a motion capture cage equipped with six Optitrack Flex 13 cameras and track the 3D pose of its end-effector, denoted as $x(k) \in \mathbb{R}^3$. Additionally, we implement a task-space control law where the internal target for the end-effector position, $x^*(k) \in \mathbb{R}^3$, is updated iteratively.
+\begin{equation}
+    x^*(k) = x^*(t_{k-1}) + \frac{k_\mathrm{v2p}}{\omega_\mathrm{ctrl}} \, \tilde{f}(x(k); z),
+\end{equation}
+% where $x(k)$ is the current task-space position of the end-effector as computed by the forward kinematic model, 
+where $\omega_\mathrm{ctrl} = 50 \, \mathrm{Hz}$ is the control frequency and $k_\mathrm{v2p} = 0.45$ is a gain to map the desired task-space velocity into the next task-space position goal. 
+Subsequently, a statics-aware inverse kinematic algorithm is employed to map $x^*(k)$ to target configurations $q^*(k) \in \mathbb{R}^9$ and associated tendon-lengths $\delta L \in \mathbb{R}^{9}$, which are then tracked with a Dynamixel position controller.
+
+\subsubsection{Crush Turtle Robot}
+% The Crush turtle robot is a bioinspired hybrid soft-rigid robot developed by the Distributed Robotics Lab (DRL) at MIT that can swim in water and mirrors green sea turtles (Chelonia mydas)~\citep{van2022new, van2023soft}.
+% It consists of a main body containing a Raspberry Pi 5 for computation and a battery for power supply, two flipper arms with three joints where each joint is actuated by a Dynamixel XW540-T260-R motor, and the flipper itself is a soft-rigid structure that allows it via its embodied intelligence to generate more effective motion. Furthermore, the turtle robot also has two rear flippers, each actuated in a serial chain by two Dynamixel XW540-T260-R motors.
+The Crush turtle robot is a bioinspired hybrid soft-rigid system developed by MIT’s Distributed Robotics Lab (DRL) that can swim and emulates the swimming motion of green sea turtles (Chelonia mydas)~\citep{van2022new, van2023soft}. It comprises a main body housing a Raspberry Pi 5 for computation and a battery for power, two flipper arms with three joints—each actuated by a Dynamixel XW540-T260-R motor—and a soft-rigid flipper design that leverages embodied intelligence for more effective movement. Additionally, the robot features two rear flippers, each powered in a serial chain by two Dynamixel XW540-T260-R motors.
+
+\paragraph{Joint Space Control.} In the first scenario, we directly train the motion primitive in joint space based on a bioinspired oracle published by \citet{van2023soft}. 
+We perform direct velocity control on the motors by commanding a joint velocity
+\begin{equation}
+    \dot{q}^*(t) = \frac{1}{\omega_\mathrm{ctrl}} \, \tilde{f}(\tilde{q}(t) \, ;z) \in \mathbb{R}^3,
+\end{equation}
+that is tracked by the low-level motor controller. Here, $\tilde{q}(t) = (q(t) + \pi) \bmod 2 \pi$ are the flipper arm joint angles normalized into the interval $[-\pi, \pi)$.
+% \textcolor{red}{TODO: specify the low-level motor control gains}.
+
+\paragraph{Task Space Control.} In the second scenario, we execute control of the pose of the tip of the front flipper that we define as $x(t) = \begin{bmatrix}
+    x_1 & x_2 & x_3 & \theta
+\end{bmatrix}^\mathrm{T} \in \mathbb{R}^4$, where $x_{1:3}$ are the positional coordinates of the flipper end-effector in Cartesian space and $\theta$ is the twist angle (i.e., the position of the last joint).
+We train the motion primitive on an oracle based on the measurements of the swimming of green sea turtles (Chelonia mydas), where the flipper pose was estimated based on video recordings~\citep{van2022new}. Therefore, the motion primitive is formulated as
+\begin{equation}
+    \dot{x}^*(t) = \frac{1}{\omega_\mathrm{ctrl}} \, \tilde{f}(\tilde{x}(t) \, ; z),
+    \qquad
+    \dot{q}^* = \left ( \mathrm{diag}(1,1,1,w_\theta) \, J_{q \rightarrow x}(q) \right )^{-1} \, \dot{x}^*(t)
+\end{equation}
+where $J_{q \rightarrow x} \in \mathbb{R}^{4 \times 3}$ is the Jacobian relating joint to task space velocity $\dot{x} = J_{q \rightarrow x} \, \dot{q}$ and $w_\theta \in \mathbb{R}_+$ is a weight specifying how accurately commanded twist angular velocity $\theta^*$ should be tracked, as the system is overconstrained by one \gls{DOF}. The corresponding Jacobian is computed as
+\begin{equation}
+    J_{q \rightarrow x}(q) = \begin{bmatrix}
+        \frac{\partial x_1}{\partial q_1} & \frac{\partial x_1}{\partial q_2} & \frac{\partial x_1}{\partial q_3}\\
+        \frac{\partial x_2}{\partial q_1} & \frac{\partial x_2}{\partial q_2} & \frac{\partial x_2}{\partial q_3}\\
+        \frac{\partial x_3}{\partial q_1} & \frac{\partial x_3}{\partial q_2} & \frac{\partial x_3}{\partial q_3}\\
+        0 & 0 & 1\\
+    \end{bmatrix}.
+\end{equation}
+Analog to the joint space control approach, the desired joint-space velocity $\dot{q}^* \in \mathbb{R}^3$ is tracked by the low-level motor controller.
+% 
+Note: Even though taking into account the twist angle renders the projection from task into joint space to be overconstrained, we found that it helps to avoid the kinematic singularities of the mechanism.

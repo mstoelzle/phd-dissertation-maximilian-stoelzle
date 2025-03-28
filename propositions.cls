@@ -144,7 +144,7 @@
     \geometry{papersize={148mm,210mm}}
 \fi
 %% We decrease the margins slightly from the default (scale = 0.7).
-\geometry{hscale=0.8,vscale=0.8}
+\geometry{hscale=0.82,vscale=0.82}
 
 %% Redefine the title command to accept an optional subtitle.
 \renewcommand*\title[2][]{%

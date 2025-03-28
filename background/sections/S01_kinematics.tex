@@ -22,7 +22,7 @@ where $t$ denotes time and $s \in (0,L]$ is the curvilinear abscissa along the b
 
 % Still, these Cosserat rod models live in infinite-dimensional state space and, therefore, make it infeasible to, in practice, measure the state of the soft robot. Furthermore, the corresponding dynamics need to be formulated as \glspl{PDE}, which makes it hard to directly leverage this knowledge for control.
 % Instead, we ultimately strive to formulate the dynamics as \glspl{ODE}, particularly in Euler-Lagrangian form, requiring us to approximate the deformation of the backbone with finite-dimensional parameterizations.
-Nonetheless, since these Cosserat rod models reside in an infinite-dimensional state space, it becomes impossible to measure the state of a soft robot directly. Moreover, the associated dynamics are formulated as \glspl{PDE}, complicating their direct use in control applications. Therefore, the ultimate aim is to recast the dynamics as \glspl{ODE}—specifically, in Euler-Lagrangian form—by approximating the backbone deformation with finite-dimensional parameterizations.
+Nonetheless, since these Cosserat rod models reside in an infinite-dimensional state space, it becomes impossible to measure the state of a soft robot directly. Moreover, the associated dynamics are formulated as \glspl{PDE}~\citep{gazzola2018forward}, complicating their direct use in control applications. Therefore, the ultimate aim is to recast the dynamics as \glspl{ODE}—specifically, in Euler-Lagrangian form—by approximating the backbone deformation with finite-dimensional parameterizations.
 
 % Indeed, the continuous strain field can then be approximated as $\xi(t,s) = \Psi(t,q,s)$, where $\Psi(t,q,s): \mathbb{R} \times \mathbb{R}^n \times \mathbb{R}_+ \to \mathbb{R}^6$ is the functional parameterization, $q \in \mathbb{R}^n$ is the finite-dimensional configuration and $\xi^0 \in \mathbb{R}^6$ denotes the rest strain~\citep{mathew2025reduced}. 
 % Next, we can formalize the forward kinematics as $\pi(q,s): \mathbb{R}^n \times \mathbb{R}_+ \to SE(3)$.
@@ -40,7 +40,7 @@ In the planar case, we need to consider the following three deformations: the be
 \end{bmatrix}^\top \in \mathbb{R}^3$.
 After defining the rest strain $\xi^0 = \begin{bmatrix}
     0 & 0 & 1
-\end{bmatrix}^\top$, we can now express the strain field as a function of the finite-dimensional configuration $q \in \mathbb{R}^3$
+\end{bmatrix}^\top$, we can express the strain field as a function of the finite-dimensional configuration $q \in \mathbb{R}^3$
 \begin{equation}
     \xi(t) = \underbrace{\mathbb{I}_3 \, q(t)}_{\Psi(q)} + \xi^0.
 \end{equation}
@@ -89,7 +89,7 @@ As demonstrated in Chapter~\ref{chp:hsamodel}, the inverse kinematics $q = \varr
         -\cos(\theta^0) \, p_\mathrm{x} - \sin(\theta^0) \, p_\mathrm{y} - \frac{\left (-\sin(\theta^0) \, p_\mathrm{x} + \cos(\theta^0) \,  p_\mathrm{y} \right ) \sin(\theta-\theta^0)}{\cos(\theta-\theta^0)-1}
     \end{bmatrix}.
 \end{equation}
-Please note that even though both the forward and inverse kinematics (Eqs. \eqref{eq:background:kinematics:planar_constant_strain:forward_kinematics} \& \eqref{eq:background:kinematics:planar_constant_strain:inverse_kinematics}) exhibit a well-defined limit for the case of no bending
+Please note that even though both the forward and inverse kinematics - i.e., Eqs. \eqref{eq:background:kinematics:planar_constant_strain:forward_kinematics}- \eqref{eq:background:kinematics:planar_constant_strain:inverse_kinematics} - exhibit a well-defined limit for the case of no bending
 \begin{equation}
 \begin{split}
     \lim_{\kappa_\mathrm{be} \to 0} \pi(q,s) =& \: \begin{bmatrix}
@@ -170,8 +170,8 @@ In the special case of \gls{PCC}~\citep{webster2010design}—the most popular so
             0 & 1 & 0 & 0 & 0 & 0\\
             0 & 0 & 0 & 0 & 0 & 1\\
         \end{bmatrix}^\top
-        , & \text{if} \: \sum_{i'=1}^{i-1} l_{i'} < s \leq \sum_{i'= 1}^{i} l_{i'} \\
-        0_{6\times 3}, & \text{else}
+        , & \text{if} \: \sum_{i'=1}^{i-1} l_{i'} < s \leq \sum_{i'= 1}^{i} l_{i'}, \\
+        0_{6\times 3}, & \text{else},
     \end{cases} \in \mathbb{R}^{6 \times 6} \quad \forall i \in \{ 1,\dots, N \}.
 \end{equation}
 Even though the name of the model implies otherwise, the configuration of the $i$th segment $q_i=\begin{bmatrix}
@@ -190,7 +190,7 @@ Various alternative versions of the \gls{PCC} parametrization appear in the lite
 \end{bmatrix}^\top$, where $\kappa_i \in \mathbb{R}$ and $\ell_i \in \mathbb{R}_+$ are the curvature and length of the arc, respectively, and $\phi_i \in [-\pi,\pi]$ the angle of the direction of bending.
 We can easily identify the mapping between the strain-based parametrization and the $(\kappa,\phi,\ell)$ parametrization
 \begin{equation}
-    \kappa_i = \sqrt{\kappa_{\mathrm{x},i}^2 + \kappa_{\mathrm{x},i}^2},
+    \kappa_i = \sqrt{\kappa_{\mathrm{x},i}^2 + \kappa_{\mathrm{y},i}^2},
     \qquad
     \phi_i = \mathrm{arctan2}(\kappa_{\mathrm{y},i}, -\kappa_{\mathrm{x},i}),
     \qquad
@@ -205,14 +205,14 @@ and the inverse map as
     \sigma_{\mathrm{z},i} = \frac{\ell_i}{s}.
 \end{equation}
 % Even though the $(\kappa,\phi,\ell)$ parametrization has had a great impact on the field of soft robots and has found widespread adoption, it exhibits multiple shortcomings that reflect on both the kinematics and dynamics, as first identified by \citet{della2020improved}: (a) there exists a redundancy for the case of $\kappa_i = 0$ as $\phi_i$ can take any values while still resulting in the same backbone shape, (b) we can notice a redundancy for the sign of $\kappa$ as the following two configurations result in an equivalent shape: $(\kappa_i, \phi_i, \ell_i) = (-\kappa_i, \phi_i-\pi, \ell_i)$, and, finally, (c) a discontinuity from $\phi_i = \pi \to -\pi$ and vice-versa and be easily observed.
-Although the $(\kappa,\phi,\ell)$ parametrization has significantly influenced the soft robotics field and been widely adopted, it presents several drawbacks affecting both kinematics and dynamics, as initially noted by \citet{della2020improved}: (a) when $\kappa_i = 0$, there is a redundancy because $\phi_i$ can take any value without changing the backbone shape; (b) a sign redundancy exists for $\kappa$, since the configurations $(\kappa_i, \phi_i, \ell_i)$ and $(-\kappa_i, \phi_i-\pi, \ell_i)$ produce the same shape; and (c) a discontinuity is observed when $\phi_i$ transitions from $\pi$ to $-\pi$, or vice versa.
+Although the $(\kappa,\phi,\ell)$ parametrization has significantly influenced the soft robotics field and been widely adopted, it presents several drawbacks affecting both kinematics and dynamics, as initially noted by \citet{della2020improved}: (a) when $\kappa_i = 0$, there is a redundancy because $\phi_i$ can take any value without changing the backbone shape; (b) a sign redundancy exists for $\kappa_i$, since the configurations $(\kappa_i, \phi_i, \ell_i)$ and $(-\kappa_i, \phi_i-\pi, \ell_i)$ produce the same shape; and (c) a discontinuity is observed when $\phi_i$ transitions from $\pi$ to $-\pi$, or vice versa.
 
 \paragraph{$\Delta$-Parametrization.}
 % \citet{della2020improved} proposed the $\Delta$-parametrization that aims to resolve some of the previously mentioned shortcomings of the  $(\kappa,\phi,\ell)$ parametrization by describing the configuration of the $i$th \gls{PCC} segment as $q_i \begin{bmatrix}
 %     \Delta_{\mathrm{x},i} & \Delta_{\mathrm{y},i} & \delta L_i
 % \end{bmatrix}^\top$ that relies upon the delta between soft segment side lengths and the change of length of the backbone denoted as $\delta L_i$. The intuition here is that the shape of each segment is uniquely described by the length of four arcs that are equiangularly distributed at a radial distance of $d_i \in \mathbb{R}_+$ from the backbone center line.
 \citet{della2020improved} introduced the $\Delta$-parametrization to address some of the shortcomings of the $(\kappa,\phi,\ell)$ parametrization. In this approach, the configuration of the $i$th \gls{PCC} segment is represented as 
-$q_i \begin{bmatrix}
+$q_i = \begin{bmatrix}
     \Delta_{\mathrm{x},i} & \Delta_{\mathrm{y},i} & \delta L_i
 \end{bmatrix}^\top$,
 which depends on the difference between the soft segment side lengths and the change in backbone length, denoted by $\delta L_i$. The underlying intuition is that each segment’s shape is uniquely defined by the lengths of four arcs that are equiangularly distributed at a radial distance of $d_i \in \mathbb{R}_+$ from the backbone center line.
@@ -268,7 +268,7 @@ To our knowledge, \gls{GVS}~\citep{renda2020geometric, boyer2020dynamics, mathew
 \begin{equation}
     \xi(t,s) = \Phi(t,q,s) \, q + \xi^0(s),
 \end{equation}
-which is composed of a configuration- and time-dependent strain basis function $\Phi(t,q,s): \mathbb{R} \times \mathbb{R}^n \times \mathbb{R}+ \to \mathbb{R}^{6 \times n}$ (potentially exhibiting discontinuities and a configuration and time dependencies) and an abscissa-dependent rest strain function $\xi^0(s): \mathbb{R}+ \to \mathbb{R}^6$~\citep{mathew2025reduced}. Conventionally, $\Phi(s)$ is constructed using abscissa-dependent basis functions, such as those derived from monomial or Legendre polynomial functions\citep{mathew2025reduced}. For instance, \citet{della2019control} examines the polynomial curvature case.
+which is composed of a configuration- and time-dependent strain basis function $\Phi(t,q,s): \mathbb{R} \times \mathbb{R}^n \times \mathbb{R}+ \to \mathbb{R}^{6 \times n}$ (potentially exhibiting discontinuities and a configuration and time dependencies) and an abscissa-dependent rest strain function $\xi^0(s): \mathbb{R}+ \to \mathbb{R}^6$~\citep{mathew2025reduced}. Conventionally, $\Phi(s)$ is constructed using abscissa-dependent basis functions, such as those derived from monomial or Legendre polynomial functions~\citep{mathew2025reduced}. For instance, \citet{della2019control} examines the polynomial curvature case.
 
 \subsubsection{Affine Curvature}
 A special case of variable strain is \gls{AC}~\citep{della2020soft, stella2022experimental, tiburzio2025model}, later extended to multi-segment cases via \gls{PAC} by \citet{stella2023piecewise}.
@@ -285,7 +285,7 @@ Alternatively, we could enforce the same affine curvature function for both bend
 \begin{equation}
     q_i = \begin{bmatrix}\kappa_{0,i} & \kappa_{1,i} & \phi_i & \delta L_{i} \end{bmatrix}^{\top} \in \mathbb{R}^4,    
 \end{equation}
-where $\kappa_{0,i}, \kappa_{1,i} \in \mathbb{R}$ are the coefficients of the \gls{AC} function, $\phi_i \in [-\pi, \pi]$ signifies the bending direction, and $\delta L_i = L_i(t) - L$ captures the elongation of the segment.
+where $\kappa_{0,i}, \kappa_{1,i} \in \mathbb{R}$ are the coefficients of the \gls{AC} function, $\phi_i \in [-\pi, \pi]$ signifies the bending direction, and $\delta L_i = L_i(t) - L_i^0$ captures the elongation of the segment, where $L_i^0$ is the equilibrium length of the segment.
 The strains of the segment can be recovered using the map
 \begin{equation}
 \begin{split}
