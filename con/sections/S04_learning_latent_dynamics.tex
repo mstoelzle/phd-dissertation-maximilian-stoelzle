@@ -193,7 +193,7 @@ For each trajectory, we randomly sample a constant actuation/input $u \sim \math
 We generate three datasets based on this continuum soft robot model: in the \emph{CS} dataset, we consider one segment with all three planar strains active (i.e., bending, shear, and elongation). This results in three \gls{DOF} and six-state variables in the dynamical model. In the case of the \emph{PCC-NS-2} and \emph{PCC-NS-3} datasets, we base the dataset on a simulated system consisting of two planar bending segments, respectively. Each segment is parametrized using \gls{CC}~\citep{webster2010design, rosi2022sensing}, which results in two configuration variables and a state dimension of four.
 
 \subsubsection{Unactuated PDE Reaction-Diffusion Dataset}\label{ssub:con:reaction_diffusion_dataset}
- We consider the \nth{1}-order Reaction-diffusion (\emph{R-D}) \gls{PDE} on which (Champion et al, 2019)~\citep{champion2019data} evaluated their SINDy Autoencoder on. The \gls{PDE} of the high-dimensional lambda-omega reaction-diffusion system is defined as
+ We consider the \nth{1}-order Reaction-diffusion (\emph{R-D}) \gls{PDE} on which \citet{champion2019data} evaluated their SINDy Autoencoder on. The \gls{PDE} of the high-dimensional lambda-omega reaction-diffusion system is defined as
 \begin{equation}
 \begin{split}
     \frac{\partial u}{\partial t} =& \: \left ( 1 - (u^2 + v^2) \right ) u + \beta \, (u^2 + v^2) \, v + d_1 \left ( \frac{\partial^2 u}{\partial q_1^2} + \frac{\partial^2 u}{\partial q_2^2} \right ),\\

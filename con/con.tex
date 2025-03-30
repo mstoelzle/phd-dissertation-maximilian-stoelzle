@@ -10,8 +10,6 @@
     Finally, we exploit in Section~\ref{sec:con:latent_space_control} the physical structure of the \gls{CON} dynamics for closed-form model-based control with P-satI-D+Feedforward controllers, as already seen previously in Chapters~\ref{chp:hsacontrol} \& \ref{chp:pcsregression}.
 \end{foreword}
 
-\blfootnote{This chapter is partly based on \faFileTextO \, \faTrophy~\emph{\textbf{M. Stölzle}, and C. Della Santina (2024). Input-to-State Stable Coupled Oscillator Networks for Closed-form Model-based Control in Latent Space. In Proceedings of Advances in Neural Information Processing Systems (NeurIPS) 37, Accepted as a \textbf{Spotlight} paper~\citep{stolzle2024input}.}}
-
 \pagebreak
 
 \begin{abstract}
@@ -25,6 +23,14 @@
     We tackle (iii) by approximating the forcing-to-input mapping with a decoder that is trained to reconstruct the input based on the encoded latent space force.
     Finally, we leverage these three properties and show that they enable latent-space control. We use an integral-saturated PID with potential force compensation and demonstrate high-quality performance on a soft robot using raw pixels as the only feedback information.
 \end{abstract}
+
+\blfootnote{This chapter is partly based on \faFileTextO \, \faTrophy~\emph{\textbf{M. Stölzle}, and C. Della Santina (2024). Input-to-State Stable Coupled Oscillator Networks for Closed-form Model-based Control in Latent Space. In Proceedings of Advances in Neural Information Processing Systems (NeurIPS) 37, Accepted as a \textbf{Spotlight} paper~\citep{stolzle2024input}.}
+
+M.S. and C.D.S conceived the project, developed the formulation of the coupled oscillator network, and derived the stability proof.
+M.S. devised the closed-form approximation to the \gls{CON} dynamics, came up with the model-based control approach, and implemented the training and control pipeline.
+M.S. planned and conducted all experiments and wrote the manuscript.
+C.D.S. revised the manuscript, provided funding, and supervised the project.
+}
 
 
 %% Start the actual chapter on a new page.

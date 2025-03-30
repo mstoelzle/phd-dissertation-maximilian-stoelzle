@@ -1,9 +1,19 @@
 \chapter{Background on Modeling and Control of Soft Robots}\label{chp:background}
 
+\textit{
 % In this Chapter, we provide background on existing approaches for modeling, both kinematically and dynamically, soft robots and subsequently exploiting them within closed-form model-based controllers.
-\dropcap{I}n this chapter, we review existing approaches for both kinematic and dynamic modeling of soft robots and discuss how these models can subsequently be exploited in closed-form model-based controllers.
+In this chapter, we review existing approaches for both kinematic and dynamic modeling of soft robots and discuss how these models can subsequently be exploited in closed-form model-based controllers.
+These topics are highly relevant to the core of the thesis and many concepts presented in this are employed throughout all chapters of this thesis.
+% 
+% Examples include the \gls{PCC}~\citep{webster2010design, della2020improved} and \gls{PCS}~\citep{renda2018discrete} kinematic models, soft robot dynamics in Euler-Lagrangian formulation~\citep{della2023model} and their projection into operational space~\citep{khatib1987unified, della2020model} and actuation space~\citep{pustina2024input}, and closed-form soft robot controllers, such as error-based feedback+energy-shaping~\citep{della2023model}, integral-saturated PIDs~\citep{pustina2022p}, or Cartesian impedance controllers~\citep{della2020model}.
+Examples include the \gls{PCC}~\citep{webster2010design, della2020improved} and \gls{PCS}~\citep{renda2018discrete} kinematic models, as well as soft robot dynamics expressed in an Euler-Lagrangian formulation~\citep{della2023model} and their projection into operational~\citep{khatib1987unified, della2020model} and actuation~\citep{pustina2024input} spaces. Moreover, we report various closed-form soft robot controllers, such as those based on error-based feedback combined with energy shaping~\citep{della2023model}, integral-saturated PIDs~\citep{pustina2022p}, or Cartesian impedance controllers~\citep{della2020model}.
+%
 % We stress that all of kinematic and dynamic modeling~\citep{armanini2023soft} of soft robots and model-based control of soft robots~\citep{della2023model} are very much active areas of research and the content presented in this chapter was predominantly only proposed in recent years~\citep{yasa2023overview}.
 We emphasize that kinematic and dynamic modeling~\citep{armanini2023soft} of soft robots, as well as model-based control~\citep{della2023model}, remain highly active areas of research, and that much of the content presented in this chapter has only been proposed in recent years~\citep{yasa2023overview}.
+}
+
+%% Start the actual chapter on a new page.
+\newpage
 
 \input{background/sections/S01_kinematics}
 \input{background/sections/S02_dynamics}

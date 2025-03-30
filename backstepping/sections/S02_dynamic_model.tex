@@ -1,8 +1,8 @@
 \section{Dynamic Model}\label{sec:backstepping:dynamic_model}
 
-We consider the robot made by a sequence of $n_{\mathrm{S}}$ segments. Each segment is described with $n_{\mathrm{D}}$ configuration variables by using one of the many modeling techniques being developed in the state-of the-art~\citep {faure2012sofa, grazioso2019geometrically, sadati2021tmtdyn, boyer2020dynamics}.
+We consider the robot made by a sequence of $n_{\mathrm{S}} \in \mathbb{N}_+$ segments. Each segment is described with $n_{\mathrm{D}} \in \mathbb{N}_+$ configuration variables by using one of the many modeling techniques being developed in the state-of the-art~\citep {faure2012sofa, grazioso2019geometrically, sadati2021tmtdyn, boyer2020dynamics}.
 %
-We denote with $n_{\mathrm{q}} = n_{\mathrm{S}} n_{\mathrm{D}}$ the total number of configuration variables, which also represents the approximated DoFs of the soft arm.
+We denote with $n_{\mathrm{q}} = n_{\mathrm{S}} n_{\mathrm{D}}  \in \mathbb{N}_+$ the total number of configuration variables, which also represents the approximated DoFs of the soft arm.
 %
 Although we show planar kinematic relations for the \gls{PCC}-case in Figure~\ref{fig:backstepping:pcc_case_overview} as an example, the dynamic model derived in this section is agnostic to the chosen kinematic approximation.
 %

@@ -8,14 +8,6 @@
     We follow here a strategy of exploiting the vast and well-grounded literature on control-oriented modeling of rigid robotic manipulators and augment them with a specialized kinematic model based on the \gls{PCS} parametrization and a nonlinear, actuation-dependent elastic model.
 \end{foreword}
 
-\blfootnote{This chapter is partly based on 
-\begin{itemize}
-    \item[\faFileTextO] ~\emph{\textbf{M. Stölzle}, L. Chin, R. L. Truby, D. Rus, and C. Della Santina (2023, April). Modeling Handed Shearing Auxetics: Selective Piecewise Constant Strain Kinematics and Dynamic Simulation. In 2023 IEEE International Conference on Soft Robotics (RoboSoft) (pp. 1-8). IEEE}~\citep{stolzle2023modelling}.
-    \item[\faFileTextO] ~\emph{\textbf{M. Stölzle}, D. Rus, and C. Della Santina (2023, December). An Experimental Study of Model-based Control for Planar Handed Shearing Auxetics Robots. In Experimental Robotics: The 18th International Symposium. Springer}~\citep{stolzle2024experimental}.
-\end{itemize}
-}
-
-
 \pagebreak
 
 \begin{abstract}
@@ -24,6 +16,20 @@
     We verify all theoretical contributions experimentally. The \gls{HSA} robot simulator is used to replicate experimental data of the mechanical characterization of HSA rods. For the kinematic description of the \gls{HSA} rods, we attach motion capture markers at various points to a parallel HSA robot and find that the shape of the \glspl{HSA} can be kinematically represented with an average accuracy of \SI{0.3}{mm} for positions and \SI{0.07}{rad} for orientations.
     Finally, the identified Euler-Lagrangian model for planar \gls{HSA} robots exhibits exceptional accuracy at predicting future system states over a horizon of more than \SI{4}{s}.
 \end{abstract}
+
+\blfootnote{This chapter is partly based on 
+    \begin{itemize}
+        \item[\faFileTextO] ~\emph{\textbf{M. Stölzle}, L. Chin, R. L. Truby, D. Rus, and C. Della Santina (2023, April). Modeling Handed Shearing Auxetics: Selective Piecewise Constant Strain Kinematics and Dynamic Simulation. In 2023 IEEE International Conference on Soft Robotics (RoboSoft) (pp. 1-8). IEEE}~\citep{stolzle2023modelling}.
+        \item[\faFileTextO] ~\emph{\textbf{M. Stölzle}, D. Rus, and C. Della Santina (2023, December). An Experimental Study of Model-based Control for Planar Handed Shearing Auxetics Robots. In Experimental Robotics: The 18th International Symposium. Springer}~\citep{stolzle2024experimental}.
+    \end{itemize}
+    
+    M.S. and C.D.S conceived the project.
+    M.S. and C.D.S. devised the modeling approaches.
+    L.C., R.L.T, and D.R. designed and fabricated the \gls{HSA} robot.
+    M.S. implemented the model, planned and executed the simulations and the experiments,  performed the data analysis, and wrote the manuscript.
+    C.D.S supervised the project and revised the manuscript.
+    C.D.S. and D.R. provided funding.
+}
 
 %% Start the actual chapter on a new page.
 \newpage

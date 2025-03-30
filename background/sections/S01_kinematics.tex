@@ -1,4 +1,5 @@
 \section{Kinematics: From Planar Constant Strain to Geometric Variable Strain}\label{sec:background:kinematics}
+\dropcap{I}n this section, we review relevant kinematic parameterizations and models for soft robots that the community has developed in recent years.
 
 \subsection{Preliminaries}
 % The task of a kinematic model for robots~\citep{siciliano2010robotics} is to provide us with an estimate of the current shape of the robot - specifically $SE(3)$ poses for each point of the robot body.
@@ -268,7 +269,7 @@ To our knowledge, \gls{GVS}~\citep{renda2020geometric, boyer2020dynamics, mathew
 \begin{equation}
     \xi(t,s) = \Phi(t,q,s) \, q + \xi^0(s),
 \end{equation}
-which is composed of a configuration- and time-dependent strain basis function $\Phi(t,q,s): \mathbb{R} \times \mathbb{R}^n \times \mathbb{R}+ \to \mathbb{R}^{6 \times n}$ (potentially exhibiting discontinuities and a configuration and time dependencies) and an abscissa-dependent rest strain function $\xi^0(s): \mathbb{R}+ \to \mathbb{R}^6$~\citep{mathew2025reduced}. Conventionally, $\Phi(s)$ is constructed using abscissa-dependent basis functions, such as those derived from monomial or Legendre polynomial functions~\citep{mathew2025reduced}. For instance, \citet{della2019control} examines the polynomial curvature case.
+which is composed of a configuration- and time-dependent strain basis function $\Phi(t,q,s): \mathbb{R} \times \mathbb{R}^n \times \mathbb{R}+ \to \mathbb{R}^{6 \times n}$ (potentially exhibiting discontinuities and a configuration and time dependencies) and an abscissa-dependent rest strain function $\xi^0(s): \mathbb{R}+ \to \mathbb{R}^6$~\citep{mathew2025reduced}. Conventionally, $\Phi(s)$ is constructed using abscissa-dependent basis functions, such as those derived from monomial or Legendre polynomial functions~\citep{mathew2025reduced}. For instance, \citet{della2019control} examine the polynomial curvature case.
 
 \subsubsection{Affine Curvature}
 A special case of variable strain is \gls{AC}~\citep{della2020soft, stella2022experimental, tiburzio2025model}, later extended to multi-segment cases via \gls{PAC} by \citet{stella2023piecewise}.

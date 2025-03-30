@@ -10,7 +10,7 @@ We give some background on the \gls{DCM} in Section~\ref{sub:hsamodel:hsa_robot_
 \subsection{Background: Discretized Cosserat Rod Model}\label{sub:hsamodel:hsa_robot_simulation:discretized_cosserat_rod_model}
 This subsection will introduce the governing equations of the \gls{DCM} following the work by \citet{gazzola2018forward}.
 According to the Cosserat rod theory, a slender rod's shape can be purely described by the line along its backbone. % The coordinate $s \in [0,L] \in \mathbb{R}$ can then be used to define a point along the backbone. % arc-length coordinate
-The backbone curve is divided into a discrete set of nodes with position $r_i(t) \in \mathbb{R}^3$ for $i \in \{1,\dots,n_\mathrm{v}+1\}$ and $n_\mathrm{v}$ links of orientation $Q_i(t) \in \mathbb{R}^{3 \times 3}$.
+The backbone curve is divided into a discrete set of nodes with position $r_i(t) \in \mathbb{R}^3 \: \forall \: i \in \{1,\dots,n_\mathrm{v}+1\}$ and $n_\mathrm{v}$ links of orientation $Q_i(t) \in \mathbb{R}^{3 \times 3}$.
 Differentiating the position and orientation with respect to time gives the translational and angular velocities $v_i = \frac{\partial r_i}{\partial t} \in \mathbb{R}^3$ and $\omega_{\mathcal{L}}^i \in \mathbb{R}^3$.
 % The $\mathcal{L}$ subscript denotes that the quantity lives in the body-convected frame, while all other variables are described in the inertial frame.
 Each node has a mass of $m_i$, and the rigid links are modeled to have a second mass moment of inertia $J_i$.
@@ -88,7 +88,7 @@ where $C_{S_z}$ is a tunable constant.
 \subsection{Verification of HSA Rod Steady-State Behaviour}\label{sub:hsamodel:hsa_robot_simulation:verification_good}
 We verify that our simulator can represent the steady-state behavior of a real \gls{HSA} by re-producing the characterization results for closed \glspl{HSA} by \citet{good2022expanding}.
 More specifically, we let the simulator converge to steady-state and then identify several mechanical properties such as blocked force ($F_\mathrm{b}$), minimum energy length, holding torque ($\tau_\mathrm{h}$), and the spring constant ($k$).
-Following the reporting in \citet{good2022expanding}, we tune the parameters of our simulation to match the behavior of closed Carbon FPU50 \glspl{HSA} with \SI{19}{mm} outside diameter, \SI{2}{mm} wall thickness, as good as possible. We report the chosen simulation parameters in Table~\ref{tab:hsamodel:hsa_rod_parameters_sim_verification}. 
+Following the reporting in \citep{good2022expanding}, we tune the parameters of our simulation to match the behavior of closed Carbon FPU50 \glspl{HSA} with \SI{19}{mm} outside diameter, \SI{2}{mm} wall thickness, as good as possible. We report the chosen simulation parameters in Table~\ref{tab:hsamodel:hsa_rod_parameters_sim_verification}. 
 The \gls{HSA} rod is modelled to consist of $n_\mathrm{v} = 10$ nodes and $9$ links with a material density of $\rho = \SI{1050}{kg \per m^3}$. For all simulations, the proximal end of the rod is constrained, and only rotations around the z-axis are allowed to mirror the actuation with electric motors. Furthermore, twisting is constrained at the distal end, which allows twist strains to build up in the rod. Otherwise, the distal end is unconstrained.
 
 \begin{figure*}[hbt]

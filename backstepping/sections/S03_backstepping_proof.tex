@@ -13,10 +13,10 @@ The input field defined in \eqref{eq:backstepping:gf} verifies
 \end{equation*}
 %
 $\forall \mu_{\mathrm{p},\mathrm{a}},\mu_{\mathrm{p},\mathrm{b}} \in \mathbb{R}^{n_{\mu_\mathrm{p}}}$ and $q \in \mathbb{R}^{n_{\mathrm{q}}}$
-	with $S \in \mathbb{R}^{n_{\mathrm{q}} \times n_{\mu_\mathrm{p}}} $ so defined
+	with $S \in \mathbb{R}^{n_{\mathrm{q}} \times n_{\mu_\mathrm{p}}} $ defined via
 	%
 	\begin{equation*}
-	    S_{i,j} = \frac{ A_{\mathrm{p},j} \alpha_{\mathrm{air},j} \partial_{q_i}V_{\mathrm{C},j}}{(V_{\mathrm{C},j}(q_i) + A_{\mathrm{p},j} \mu_{\mathrm{p},\mathrm{a},j})(V_{\mathrm{C},j}(q_i) + A_{\mathrm{p},j} \mu_{\mathrm{p},\mathrm{b},j})}.
+	    S_{ij} = \frac{ A_{\mathrm{p},j} \alpha_{\mathrm{air},j} \partial_{q_i}V_{\mathrm{C},j}}{(V_{\mathrm{C},j}(q_i) + A_{\mathrm{p},j} \mu_{\mathrm{p},\mathrm{a},j})(V_{\mathrm{C},j}(q_i) + A_{\mathrm{p},j} \mu_{\mathrm{p},\mathrm{b},j})}.
 	\end{equation*}
 \end{lemma}
 %
@@ -34,8 +34,9 @@ $\forall \mu_{\mathrm{p},\mathrm{a}},\mu_{\mathrm{p},\mathrm{b}} \in \mathbb{R}^
 	%
 	\begin{equation}
 	\begin{split}
-		G_{\mathrm{P},i}^{\mathrm{q}}(q,\mu_{\mathrm{p},\mathrm{a}}) - G_{\mathrm{P},i}^{\mathrm{q}}(q,\mu_{\mathrm{p},\mathrm{b}}) = &-\left(\sum_{j = 1}^{n_{\mu_\mathrm{p}}}  \frac{\alpha_{\mathrm{air},j} \partial_{q_i}V_{\mathrm{C},j}}{V_{\mathrm{C},j}(q_i) + A_{\mathrm{p},j} \mu_{\mathrm{p},\mathrm{a},i}} \!-\! \sum_{j = 1}^{n_{\mu_\mathrm{p}}}  \frac{\alpha_{\mathrm{air},j} \partial_{q_i}V_{\mathrm{C},j}}{V_{\mathrm{C},j}(q_i) + A_{\mathrm{p},j} \mu_{\mathrm{p},\mathrm{b},j}}\right),  \\
-	= &\sum_{j = 1}^{n_{\mu_\mathrm{p}}} \frac{ (\mu_{\mathrm{p},\mathrm{a},j} - \mu_{\mathrm{p},\mathrm{b},j})  A_{\mathrm{p},j} \alpha_{\mathrm{air},j} \partial_{q_i}V_{\mathrm{C},j}}{(V_{\mathrm{C},j}(q_i) + A_{\mathrm{p},j} \mu_{\mathrm{p},\mathrm{a},j})(V_{\mathrm{C},j}(q_i) + A_{\mathrm{p},j} \mu_{\mathrm{p},\mathrm{b},j})}.
+		G_{\mathrm{P},i}^{\mathrm{q}}(q,\mu_{\mathrm{p},\mathrm{a}}) - G_{\mathrm{P},i}^{\mathrm{q}}(q,\mu_{\mathrm{p},\mathrm{b}}) = &-\left(\sum_{j = 1}^{n_{\mu_\mathrm{p}}}  \frac{\alpha_{\mathrm{air},j} \partial_{q_i}V_{\mathrm{C},j}}{V_{\mathrm{C},j}(q_i) + A_{\mathrm{p},j} \mu_{\mathrm{p},\mathrm{a},j}} \!-\! \sum_{j = 1}^{n_{\mu_\mathrm{p}}}  \frac{\alpha_{\mathrm{air},j} \partial_{q_i}V_{\mathrm{C},j}}{V_{\mathrm{C},j}(q_i) + A_{\mathrm{p},j} \mu_{\mathrm{p},\mathrm{b},j}}\right),  \\
+	= &\sum_{j = 1}^{n_{\mu_\mathrm{p}}} \frac{A_{\mathrm{p},j} \alpha_{\mathrm{air},j} \partial_{q_i}V_{\mathrm{C},j} \, (\mu_{\mathrm{p},\mathrm{a},j} - \mu_{\mathrm{p},\mathrm{b},j})}{(V_{\mathrm{C},j}(q_i) + A_{\mathrm{p},j} \mu_{\mathrm{p},\mathrm{a},j})(V_{\mathrm{C},j}(q_i) + A_{\mathrm{p},j} \mu_{\mathrm{p},\mathrm{b},j})},\\
+        = &\sum_{j = 1}^{n_{\mu_\mathrm{p}}} S_{ij} \, (\mu_{\mathrm{p},\mathrm{a},j} - \mu_{\mathrm{p},\mathrm{b},j}) = S \, (\mu_{\mathrm{p},\mathrm{a}} - \mu_{\mathrm{p},\mathrm{b}}).
 	\end{split}
 	\end{equation}
 	%
@@ -43,8 +44,14 @@ $\forall \mu_{\mathrm{p},\mathrm{a}},\mu_{\mathrm{p},\mathrm{b}} \in \mathbb{R}^
 \end{proof}
 
 Thus, even if the robot side of the dynamics \eqref{eq:backstepping:complete_dyn} is not affine in control when taking $\mu_\mathrm{p}$ as input, still Lemma \ref{lemma:f_g_S} provides some structure that we leverage in the next theorem.
+%
+% Assuming access to a soft robot controller $\tau(q,\dot{q})$ that regulates the soft robot, neglecting actuator dynamics, to the setpoint $\bar{q}$,
+% Theorem~\ref{theorem:backstepping:backstepping_controller} proposes, based on the backstepping procedure, a fluidic piston force controller $f_\mathrm{p} = \Psi(q,\dot{q},\mu_\mathrm{p}, \dot{\mu}_\mathrm{p})$ which is proven to let the closed-loop system converge to the setpoint - specifically the desired soft robot configuration $\bar{q}$ and the corresponding steady-state piston position $\bar{\mu}_\mathrm{p} = \Gamma(q)$. 
+% As visualized in Fig.~\ref{fig:backstepping:control_scheme}, $\Gamma(q)$ maps positions from the configuration to the actuation space, the controller $\bar{\dot{\mu}}_\mathrm{p} = \Pi(q,\dot{q},\mu_\mathrm{p})$ provides piston velocity references, which are subsequently mapped into piston force commands by $\Psi(q,\dot{q},\mu_\mathrm{p}, \dot{\mu}_\mathrm{p})$.
+% $K_1 \succ 0 \in \mathbb{R}^{n_{\mu_\mathrm{p}} \times n_{\mu_\mathrm{p}}}$ is a proportional feedback gain on the error $(\mu_\mathrm{p} - \bar{\mu}_\mathrm{p})$ between actual and desired piston positions and $K_2 \succ 0 \in \mathbb{R}^{n_{\mu_\mathrm{p}} \times n_{\mu_\mathrm{p}}}$ is a proportional feedback gain on the error $(\dot{\mu}_\mathrm{p} - \bar{\dot{\mu}}_\mathrm{p})$ between actual and desired piston velocities.
+Assuming a soft robot controller $\tau(q,\dot{q})$ that regulates the soft robot to the setpoint $\bar{q}$ while neglecting actuator dynamics, Theorem~\ref{theorem:backstepping:backstepping_controller} introduces—via the backstepping procedure—a fluidic piston force controller $f_\mathrm{p} = \Psi(q,\dot{q},\mu_\mathrm{p}, \dot{\mu}_\mathrm{p})$ that ensures the closed-loop system converges to the setpoint. In particular, the system reaches the desired soft robot configuration $\bar{q}$ along with the corresponding steady-state piston position $\bar{\mu}_\mathrm{p} = \Gamma(q)$. As depicted in Fig.~\ref{fig:backstepping:control_scheme}, the function $\Gamma(q)$ maps positions from the configuration space to the actuation space, while the controller $\bar{\dot{\mu}}_\mathrm{p} = \Pi(q,\dot{q},\mu_\mathrm{p})$ supplies piston velocity references that are then converted into piston force commands by $\Psi(q,\dot{q},\mu_\mathrm{p}, \dot{\mu}_\mathrm{p})$. Here, $K_1 \succ 0 \in \mathbb{R}^{n_{\mu_\mathrm{p}} \times n_{\mu_\mathrm{p}}}$ is a proportional feedback gain applied to the error $(\mu_\mathrm{p} - \bar{\mu}_\mathrm{p})$ between actual and desired piston positions, and $K_2 \succ 0 \in \mathbb{R}^{n_{\mu_\mathrm{p}} \times n_{\mu_\mathrm{p}}}$ is a proportional feedback gain on the error $(\dot{\mu}_\mathrm{p} - \bar{\dot{\mu}}_\mathrm{p})$ between actual and desired piston velocities.
 
-\begin{theorem}
+\begin{theorem}\label{theorem:backstepping:backstepping_controller}
 	Suppose that a $\Gamma(q,\dot{q})$ exists s.t. the reduced system
 	%
 	\begin{equation}\label{eq:backstepping:reduced_sys}

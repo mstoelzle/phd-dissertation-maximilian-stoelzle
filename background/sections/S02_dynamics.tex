@@ -27,7 +27,7 @@ Depending on the relationship between $n$ and $m$, if $n=m$, the robot is fully 
 \subsection{Formulation as a 1st-Order Ordinary Differential Equation (ODE)}
 After defining the state of the soft robot as $y = \begin{bmatrix}
     q^\top & \dot{q}^\top
-\end{bmatrix}^\top \in \mathbb{R}^{2n}$, Eq.~\ref{eq:background:dynamics:eom} can be expressed as a control-affine \gls{ODE} in nonlinear state-space representation
+\end{bmatrix}^\top \in \mathbb{R}^{2n}$, \eqref{eq:background:dynamics:eom} can be expressed as a control-affine \gls{ODE} in nonlinear state-space representation
 \begin{equation}
     \dot{y} = f(y,\tau) = \begin{bmatrix}
         \frac{\mathrm{d} q}{\mathrm{d}t}\\
@@ -54,12 +54,12 @@ In the case of linear elasticity $K(q) = S \, q$, where $S \succ 0 \in \mathbb{R
 Consequently, the Lagrangian is defined as $\mathcal{L}(q,\dot{q}) = \mathcal{T}(q,\dot{q}) - \mathcal{U}(q)$.
 
 % As seen in \citet{della2020model, della2023model} and Chapters~\ref{chp:backstepping} \& \ref{chp:con}, this energy field can serve as a starting point for analyzing the stability of the open- and closed-loop system using Lyapunov arguments~\citep{khalil2002nonlinear}.
-As demonstrated in \citet{della2020model, della2023model} and in Chapters~\ref{chp:backstepping} and \ref{chp:con}, these energetic expressions provide a solid foundation for analyzing the stability of both open- and closed-loop systems using Lyapunov arguments~\citep{khalil2002nonlinear}.
+As demonstrated by \citet{della2020model, della2023model} and in Chapters~\ref{chp:backstepping} and \ref{chp:con}, these energetic expressions provide a solid foundation for analyzing the stability of both open- and closed-loop systems using Lyapunov arguments~\citep{khalil2002nonlinear}.
 
 \subsection{Operational Space Dynamics}\label{sub:background:dynamics:operational_space}
 % As initially proposed in the seminal work by \citet{khatib1987unified} and later adopted to soft robots by \citet{della2020model}, the dynamics of the system can be directly expressed in operational space\footnote{The task space is often also referred to as operational space. As oftentimes end-effectors (e.g., grippers) are attached to the distal end of the robot, the operational space is usually defined as the pose $\chi \in SE(3)$ of the end-effector.}
-% Irrespective of the exact definition of the operational space (e.g., end-effector pose), for the given forward kinematics $\pi: q \mapsto x$, where $x \in \mathbb{R}^o$ is the operational space coordinate with $o \leq n$, and the associated Jacobian $J(q) = \frac{\partial \pi}{\partial q} \in \mathbb{R}^{o \times n}$, Eq.~\ref{eq:background:dynamics:eom} can be equivalently expressed in operational space as
-As originally proposed in the seminal work by \citet{khatib1987unified} and later adapted for soft robots by \citet{della2020model}, the system dynamics can be directly expressed in operational space\footnote{The operational space is also commonly referred to as task space. Since end-effectors (e.g., grippers) are typically attached to the distal end of the robot, the operational space is often defined by the pose $\chi \in SE(3)$ of the end-effector.}. Regardless of the precise definition of operational space (e.g., end-effector pose), given the forward kinematics $\pi: q \mapsto x$, where $x \in \mathbb{R}^o$ denotes the operational space coordinate with $o \leq n$, and the corresponding Jacobian $J(q) = \frac{\partial \pi}{\partial q} \in \mathbb{R}^{o \times n}$, Eq.~\ref{eq:background:dynamics:eom} can equivalently be written in operational space as
+% Irrespective of the exact definition of the operational space (e.g., end-effector pose), for the given forward kinematics $\pi: q \mapsto x$, where $x \in \mathbb{R}^o$ is the operational space coordinate with $o \leq n$, and the associated Jacobian $J(q) = \frac{\partial \pi}{\partial q} \in \mathbb{R}^{o \times n}$, \eqref{eq:background:dynamics:eom} can be equivalently expressed in operational space as
+As originally proposed in the seminal work by \citet{khatib1987unified} and later adapted for soft robots by \citet{della2020model}, the system dynamics can be directly expressed in operational space\footnote{The operational space is also commonly referred to as task space. Since end-effectors (e.g., grippers) are typically attached to the distal end of the robot, the operational space is often defined by the pose $\chi \in SE(3)$ of the end-effector.}. Regardless of the precise definition of operational space (e.g., end-effector pose), given the forward kinematics $\pi: q \mapsto x$, where $x \in \mathbb{R}^o$ denotes the operational space coordinate with $o \leq n$, and the corresponding Jacobian $J(q) = \frac{\partial \pi}{\partial q} \in \mathbb{R}^{o \times n}$, \eqref{eq:background:dynamics:eom} can equivalently be written in operational space as
 \begin{equation}\label{eq:background:dynamics:eom_operational_space}
     \Lambda_\mathrm{x}(q) \, \ddot{x} + \eta_\mathrm{x}(q, \dot{q}) \, \dot{q} + J_\mathrm{M}^{+\top}(q) \left ( G(q) + K(q) + D \, \dot{q} \right ) = J_\mathrm{M}^{+^\top}(q) \, A(q) \, \tau,
 \end{equation}
@@ -75,7 +75,7 @@ denotes the dynamically consistent pseudo-inverse~\citep{chang1995manipulator}, 
 % is the operational space inertia matrix, and the operational space Coriolis and centrifugal matrix $\eta(q, \dot{q})$\footnote{Please note that in Chapter~\ref{chp:hsacontrol} we refer to this operational space as $\mu(q,\dot{q})$.} is defined as~\citep{khatib1987unified, della2020model}
 defines the operational space inertia matrix, and the operational space Coriolis and centrifugal matrix $\eta(q, \dot{q})$\footnote{Please note that in Chapter~\ref{chp:hsacontrol} this operational space Coriolis matrix is denoted as $\mu(q,\dot{q})$.} is defined as~\citep{khatib1987unified, della2020model}
 \begin{equation}
-    \eta_\mathrm{x}(q, \dot{q}) = \Lambda(q) \, \left ( J(q) \, M^{-1}(q) \, C(q,\dot{q}) - \dot{J}(q,\dot{q})) \right ) \in \mathbb{R}^{o \times o}.
+    \eta_\mathrm{x}(q, \dot{q}) = \Lambda(q) \, \left ( J(q) \, M^{-1}(q) \, C(q,\dot{q}) - \dot{J}(q,\dot{q}) \right ) \in \mathbb{R}^{o \times o}.
 \end{equation}
 
 \subsubsection{Null Space Dynamics}
@@ -204,7 +204,7 @@ The dynamics in actuation coordinates are then given by
 \begin{equation}
     M_\varphi(q) \, \ddot{\varphi} + \eta_\varphi(q,\dot{q}) \, \dot{\varphi} + J_{\mathrm{h},\mathrm{M}}^{+\top}(q) \left ( G(q) + K(q) + D \, \dot{q} \right ) = \begin{bmatrix}
         \tau\\ 0_{n-m}
-    \end{bmatrix}
+    \end{bmatrix},
 \end{equation}
 where analog to the operational space dynamics, the actuation space inertia is defined as~\citep{khatib1987unified}
 \begin{equation}\label{eq:background:dynamics:eom_actuation_coordinates}
@@ -225,12 +225,12 @@ $J_{\mathrm{h},\mathrm{M}}^{+\top}(q) \in \mathbb{R}^{n \times n}$ is the dynami
 \end{equation}
 $\eta_\varphi(q,\dot{q})$ captures the Coriolis and centrifugal effects
 \begin{equation}
-    \eta_\varphi(q, \dot{q}) = M_\varphi(q) \, \left ( J_\mathrm{h}(q) \, M^{-1}(q) \, C(q,\dot{q}) - \dot{J}_\mathrm{h}(q,\dot{q})) \right ) \, J_\mathrm{h}^{-1}(q) \in \mathbb{R}^{n \times n}.
+    \eta_\varphi(q, \dot{q}) = M_\varphi(q) \, \left ( J_\mathrm{h}(q) \, M^{-1}(q) \, C(q,\dot{q}) - \dot{J}_\mathrm{h}(q,\dot{q}) \right ) \, J_\mathrm{h}^{-1}(q) \in \mathbb{R}^{n \times n}.
 \end{equation}
 The property $\dot{M}_\varphi(q) = \eta_\varphi(q,\dot{q}) + \eta^\top_\varphi(q,\dot{q})$ still holds.
-Crucially, we now notice in Eq.~\ref{eq:background:dynamics:eom_actuation_coordinates} how $\tau$ directly acts via an identity actuation matrix on the first $m$ actuation coordinates.
+Crucially, we now notice in \eqref{eq:background:dynamics:eom_actuation_coordinates} how $\tau$ directly acts via an identity actuation matrix on the first $m$ actuation coordinates.
 %
-We can partition the dynamics of Eq.~\ref{eq:background:dynamics:eom_actuation_coordinates} into the first $m$ (actuated) rows, and the last $n-m$ unactuated rows:
+We can partition the dynamics of \eqref{eq:background:dynamics:eom_actuation_coordinates} into the first $m$ (actuated) rows, and the last $n-m$ unactuated rows:
 \begin{equation}\footnotesize
     \begin{bmatrix}
         M_{\varphi,\mathrm{a}}(q)\\ 

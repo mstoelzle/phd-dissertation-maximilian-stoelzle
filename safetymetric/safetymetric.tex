@@ -14,9 +14,14 @@
     Traditionally, the robotics community has focused on achieving safety through computational intelligence—constraining motions within safe state sets, avoiding obstacles, and using compliant controllers like impedance control. In contrast, one of the most fascinating and promising features of soft robots is their intrinsic compliance due to material softness. However, the safety achieved by soft robots has yet to be quantified, preventing us from determining whether they are indeed safe and how much safer they are compared to (collaborative) robots—a crucial factor in motivating soft robotics research and development. Moreover, the community often emphasizes the correlation between material softness and safety, while overlooking other important factors such as mass density, operating conditions, and control policy. This lack of understanding about the factors that significantly influence soft robot safety often leads to overly soft designs that suffer from degraded performance in practical tasks (e.g., limited payload capacity, imprecise or oscillatory motion). Since control is a central focus of this thesis, it is vital to identify which controller characteristics affect the safety of the closed-loop system, an often overseen aspect in the soft robotics domain, and how to design controllers that maximize performance while preserving safety. Therefore, this chapter focuses on deriving a quantitative safety metric for soft robots.
 \end{foreword}
 
-\blfootnote{This chapter is partly based on \faFileTextO~\emph{\textbf{M. Stölzle}*, N. Pagliarani*, F. Stella*, J. Hughes, C. Laschi, D. Rus, M. Cianchetti, C. Della Santina, and G. Zardini (2025). Safe yet Effective Soft Robots via Holistic Co-Design. In Nature Machine Intelligence, \textbf{\emph{In Preparation}}}.
+\blfootnote{
+    This chapter is partly based on \faFileTextO~\emph{\textbf{M. Stölzle}*, N. Pagliarani*, F. Stella*, J. Hughes, C. Laschi, D. Rus, M. Cianchetti, C. Della Santina, and G. Zardini (2025). Safe yet Effective Soft Robots via Holistic Co-Design. In Nature Machine Intelligence, \textbf{\emph{In Preparation}}}.
 
-\nth{1}-author contributions: M. Stölzle conceived and implemented the safety metric and all other content presented in this chapter, including the writing, except for Figures \ref{fig:safetymetric:safety_metric_applications} \& \ref{fig:safetymetric:injury_severity_criterion_illustration}. 
+    % \nth{1}-author contributions: M. Stölzle conceived and implemented the safety metric and all other content presented in this chapter, including the writing, except for Figures \ref{fig:safetymetric:safety_metric_applications} \& \ref{fig:safetymetric:injury_severity_criterion_illustration}.
+
+    M.S. conceived and led the project, derived and implemented the safety metric, characterized its behavior, and wrote the manuscript.
+    N.P. and F.S. contributed Figures \ref{fig:safetymetric:safety_metric_applications} \& \ref{fig:safetymetric:injury_severity_criterion_illustration}. 
+    G.Z. and C.D.S. supervised the project and contributed funding.
 }
 
 \pagebreak

@@ -20,7 +20,7 @@ For a short-time-interval $\delta t$, we now approximate \eqref{eq:con:con_split
     F(t_k) =  -f_{\ddot{x}, \mathrm{nld}}(y(t_k), u(t_k)).
     % f_\mathrm{ext}(t_k) = -g(u(t_k))-(K-\kappa) x(t_k) - (D-d) \, \dot{x}(t_k) - \tanh(W \, x(t_k) + b)
 \end{equation}
-For a scalar \nth{2}-order, linear \gls{ODE} of form $\dot{y}_i = f_{\mathrm{ld},i}(x(t'), F(t_k))$, a well-known, closed-form solution~\citep{Pas2023damped} exists.
+For a scalar \nth{2}-order, linear \gls{ODE} of the form $\dot{y}_i = f_{\mathrm{ld},i}(x(t'), F(t_k))$, a well-known, closed-form solution~\citep{Pas2023damped} exists.
 We exploit this characteristic by formulating the approximate solution as 
 \begin{equation}\label{eq:con:cfa_con}
     y(t_k + \delta t) \approx \, f_\mathrm{CFA-CON}(y(t_k), u(t_k)) =  y(t_k) + \int_{t_k}^{t_k + \delta t} f_{\mathrm{ld}}(y(t'), F(t_k)) \, \mathrm{d}t'

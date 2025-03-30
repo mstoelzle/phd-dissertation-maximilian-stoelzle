@@ -37,7 +37,7 @@ By intercoupling damped harmonic oscillators, we can drastically increase the ex
 \end{equation}
 where $K, D \in \mathbb{R}^{n \times n}$ are the linear stiffness and damping matrices, respectively. The neuron-inspired term $\tanh(W \, x(t) + b)$ with $W \in \mathbb{R}^{n \times n}$, $b \in \mathbb{R}^n$ provides nonlinear coupling between the harmonic oscillators.
 The network is excited by the time-dependent input $u(t) \in \mathbb{R}^m$ through the possibly nonlinear mapping $g: \mathbb{R}^m \to \mathbb{R}^n$.
-Specifically, we consider in this work a formulation where an input-dependent matrix $B(u) \in \mathbb{R}^{n \times m}$ projects the input $u(t)$ to a time-dependent forcing on the oscillators: $\tau = g(u) = B(u) \, u$. Here $B(u)$ could, for example, be parametrized by a \gls{MLP}.
+Specifically, we consider in this work a formulation where an input-dependent matrix $B(u) \in \mathbb{R}^{n \times m}$ projects the input $u(t)$ to a time-dependent forcing on the oscillators: $\tau = g(u) = B(u) \, u$. Here, $B(u)$ could, for example, be parametrized by a \gls{MLP}.
 
 We specifically designed the network architecture such that (i) the system exhibits a unique and isolated equilibrium and (ii) we can derive expressions for the kinetic and potential energies. These two features allow us to (a) prove \gls{GAS} and \gls{ISS} stability using an established procedure based on strict Lyapunov arguments~\citep{calzolari2020exponential, wu2022passive}, and (b) implement model-based controller based on potential shaping.
 
@@ -117,7 +117,7 @@ Next, we introduce a mapping into the $\tilde{\text{tilde}}$ coordinates $\tilde
     \end{bmatrix}
 \end{equation}
 
-% In the following, we will write $\lVert A \rVert$ to denote the induced norm of matrix $A$ and $\lambda_\mathrm{m}(A)$, $\lambda_\mathrm{M}(A)$ to refer to its minimum and maximum Eigenvalue respectively.
+% In the following, we will write $\lVert A \rVert$ to denote the induced norm of matrix $A$ and $\lambda_\mathrm{m}(A)$, $\lambda_\mathrm{M}(A)$ to refer to its minimum and maximum eigenvalue respectively.
 
 \begin{figure}[t]
     \centering
@@ -129,7 +129,7 @@ Next, we introduce a mapping into the $\tilde{\text{tilde}}$ coordinates $\tilde
 
 \subsection{Global Asymptotic Stability (GAS) for the unforced system} 
 We first consider the unforced system with $\tau = g(u) = 0, \: \forall t \in [t_0, t_\infty)$ and strive to prove global asymptotic stability~\citep{khalil2002nonlinear} for the attractor $\bar{x}$.
-For this, we need to first identify a valid, (strict) Lyapunov function and subsequently demonstrate that, expect at the global equilibrium, the time derivative of the Lypapunov function is negative definite.
+For this, we need to first identify a valid (strict) Lyapunov function and subsequently demonstrate that, except at the global equilibrium, the time derivative of the Lyapunov function is negative definite.
 
 \subsubsection{Strict Lyapunov candidate}
 We propose a strict Lyapunov candidate with skewed level sets~\citep{wu2022passive}
@@ -144,7 +144,7 @@ We propose a strict Lyapunov candidate with skewed level sets~\citep{wu2022passi
 \end{split}
 \end{equation}
 
-In the following, we will write $\lVert A \rVert$ to denote the induced norm of matrix $A$ and $\lambda_\mathrm{m}(A)$, $\lambda_\mathrm{M}(A)$ to refer to its minimum and maximum Eigenvalue respectively.
+In the following, we will write $\lVert A \rVert$ to denote the induced norm of matrix $A$ and $\lambda_\mathrm{m}(A)$, $\lambda_\mathrm{M}(A)$ to refer to its minimum and maximum eigenvalue respectively.
 % 
 The gradient of $V_\mu(\tilde{y}_\mathrm{w})$ w.r.t. the residual coordinate $\tilde{y}_\mathrm{w}$ is given by
 \begin{equation}\label{eq:con:V_mu_gradient}
@@ -180,7 +180,7 @@ Below, we will first introduce three auxiliary Lemmas and subsequently proof Lem
     Suppose $M_\mathrm{w} \succ 0, K_\mathrm{w} \succ 0$ and $0 < \mu < \frac{\sqrt{\lambda_\mathrm{m}(M_\mathrm{w}) \, \lambda_\mathrm{m}\left(K_\mathrm{w}\right)}}{\lVert M_\mathrm{w} \rVert} \coloneqq \mu_\mathrm{V}$. Then $S_{P_\mathrm{V}}$, as defined in \eqref{eq:con:P_V_Schur_complement}, is positive definite.
 \end{lemma}
 \begin{proof}
-    The minimum Eigenvalue of $S_{P_\mathrm{V}}$ is bounded by
+    The minimum eigenvalue of $S_{P_\mathrm{V}}$ is bounded by
     \begin{equation}
     \begin{split}
         \lambda_\mathrm{m}(S_{P_\mathrm{V}}) \geq& \: \lambda_\mathrm{m}(M_\mathrm{w}) - \mu^2 \, \lVert M_\mathrm{w}^\top \, K_\mathrm{w} \, M_\mathrm{w} \rVert,\\
@@ -194,7 +194,7 @@ Below, we will first introduce three auxiliary Lemmas and subsequently proof Lem
         \lambda_\mathrm{m}(S_{P_\mathrm{V}}) >& \: \lambda_\mathrm{m}(M_\mathrm{w}) - \frac{\lambda_\mathrm{m}(M_\mathrm{w}) \, \lambda_\mathrm{m}\left(K_\mathrm{w}\right)}{\lVert M_\mathrm{w} \rVert^2} \, \frac{\lVert M_\mathrm{w} \rVert^2}{\lambda_\mathrm{w}(K_\mathrm{w})} \: = \: 0
     \end{split}
     \end{equation}
-    Consequently, the Eigenvalue sensitivity theorem~\citep{golub2013matrix} demands that $S_{P_\mathrm{V}} \succ 0$.
+    Consequently, the eigenvalue sensitivity theorem~\citep{golub2013matrix} demands that $S_{P_\mathrm{V}} \succ 0$.
 \end{proof}
 
 \begin{lemma}\label{lemma:con:P_V_positive_definite}
@@ -278,7 +278,7 @@ Below, we will first introduce three auxiliary Lemmas and subsequently proof Lem
 
 \subsubsection{Proof of Global Asymptotic Stability}
 
-In the following, we will demonstrate how the strict Lyapunov candidate of \eqref{eq:con:conw_lyapunov_function} allows us to prove global asymptotic stability of the unforced system. We will first introduce two auxiliary Lemmas before stating Theorem~\ref{theorem:con:global_asymptotic_stability}.
+In the following, we will demonstrate how the strict Lyapunov candidate of \eqref{eq:con:conw_lyapunov_function} allows us to prove \glsxtrfull{GAS} of the unforced system. We will first introduce two auxiliary Lemmas before stating Theorem~\ref{theorem:con:global_asymptotic_stability}.
 
 \begin{lemma}\label{lemma:con:V_d_tanh_term_lower_bound}
     Suppose $\bar{x}_\mathrm{w}, \tilde{x}_\mathrm{w}, b \in \mathbb{R}^n$ and $n \in \mathbb{N}^+$. Then, the function $h_{\dot{\mathrm{V}},\mathrm{th}}(\tilde{x}_\mathrm{w})$ defined as
@@ -311,7 +311,7 @@ In the following, we will demonstrate how the strict Lyapunov candidate of \eqre
     \begin{equation}
         S_{P_{\dot{V}}} = D_\mathrm{w} - \mu M_\mathrm{w} - \frac{1}{4} \, \mu D_\mathrm{w}^\top \, K_\mathrm{w}^{-1} \, D_\mathrm{w}.
     \end{equation}
-    The lower bound on the smallest Eigenvalue of $S_{P_{\dot{V}}}$ can be identified as
+    The lower bound on the smallest eigenvalue of $S_{P_{\dot{V}}}$ can be identified as
     \begin{equation}
         \lambda_\mathrm{m} \left (S_{P_{\dot{V}}} \right ) \geq \lambda_\mathrm{m}(D_\mathrm{w}) - \mu \, \lambda_\mathrm{m}(M_\mathrm{w}) - \mu \frac{\lVert D_\mathrm{w} \rVert^2}{4 \, \lambda_\mathrm{m}(K_\mathrm{w})}.
     \end{equation}
@@ -321,7 +321,7 @@ In the following, we will demonstrate how the strict Lyapunov candidate of \eqre
         \lambda_\mathrm{m} \left (S_{P_{\dot{V}}} \right ) > \lambda_\mathrm{m}(D_\mathrm{w}) - \mu_{\dot{\mathrm{V}}} \left ( \lambda_\mathrm{m}(M_\mathrm{w}) - \frac{\lVert D_\mathrm{w} \rVert^2}{4 \, \lambda_\mathrm{m}(K_\mathrm{w})} \right ) = 0.
     \end{split}
     \end{equation}
-    We conclude, based on the Eigenvalue sensitivity theorem of symmetric matrices~\citep{golub2013matrix}, that $S_{P_{\dot{V}}} \succ 0$ and with that $P_{\dot{V}} \succ 0$~\citep{boyd2004convex}.
+    We conclude, based on the eigenvalue sensitivity theorem of symmetric matrices~\citep{golub2013matrix}, that $S_{P_{\dot{V}}} \succ 0$ and with that $P_{\dot{V}} \succ 0$~\citep{boyd2004convex}.
 \end{proof}
 
 \begin{theorem}\label{theorem:con:global_asymptotic_stability}

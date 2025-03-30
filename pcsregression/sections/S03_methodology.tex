@@ -227,7 +227,14 @@ We define a maximum allowable stiffness $k^\mathrm{max}_e \in \mathbb{R}_{\geq0}
     k_{\text{ax}}^{\text{max}} = A_c E^{\text{max}}.
 \end{equation}
 
-Given these maximum stiffnesses, the $e$-th strain is neglected if its estimated stiffness lies above the threshold $\hat{k}_e>k_e^{\mathrm{max}}$. Therefore, the $e$-th strain is removed as a configuration variable $q = q\setminus q_e$, and its influence on the dynamics needs to be eliminated as well. We update the Euler-Lagrange basis functions as $\Psi = \lim_{(q_e,\dot{q}_e,\ddot{q}_e)\to 0} \Psi (q, \dot{q}, \ddot{q})$. Any columns that turn into all-\emph{zeros} are also removed, and the coefficient vector $\pi^+$ is updated accordingly by removing the corresponding rows. A similar procedure applies to the Lagrangian basis functions $f$ and their coefficients $\pi$.
+Given these maximum stiffnesses, the $e$-th strain is neglected if its estimated stiffness lies above the threshold $\hat{k}_e>k_e^{\mathrm{max}}$. Therefore, the $e$-th strain is removed as a configuration variable through
+% $q = q\setminus q_e$, 
+\begin{equation}
+    q' = \begin{bmatrix}
+        q_1, q_2, \ldots, q_{e-1}, q_{e+1}, \ldots, q_{n_\mathrm{q}})
+    \end{bmatrix}^\top,
+\end{equation}
+and its influence on the dynamics needs to be eliminated as well. We update the Euler-Lagrange basis functions as $\Psi = \lim_{(q_e,\dot{q}_e,\ddot{q}_e)\to 0} \Psi (q, \dot{q}, \ddot{q})$. Any columns that turn into all-\emph{zeros} are also removed, and the coefficient vector $\pi^+$ is updated accordingly by removing the corresponding rows. A similar procedure applies to the Lagrangian basis functions $f$ and their coefficients $\pi$.
 
 % Having reached this result, we must perform a new regression of the parameters to find the sparser dynamic model. For this, the configuration vector is updated by excluding the $e$-th strain $q_e$ ($q=q\setminus q_e$), and the Lagrangian basis functions are adjusted such that the updated Lagrangian parameterization is given by
 % \begin{align}\label{eq:pcsregression:update_basis_fcns}

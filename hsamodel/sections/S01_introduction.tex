@@ -5,13 +5,13 @@
 % Cable-driven soft robots generate a pulling force with electric motors using a tendon attached to a soft structure, relying on the elasticity of the system to generate a motion.
 %While similarly electrically actuated, 
 
-\dropcap{R}obots based on Handed Shearing Auxetics (HSA) are a recent development in the soft robotics field~\citep{chin2018compliant, truby2021recipe, zhang2022vision, lipton2018handedness, chin2019automated}, which directly transform applied motor torques into complex motion primitives.
+\dropcap{R}obots based on \glsxtrfull{HSA} are a recent development in the soft robotics field~\citep{chin2018compliant, truby2021recipe, zhang2022vision, lipton2018handedness, chin2019automated}, which directly transform applied motor torques into complex motion primitives.
 %
 This novel type of actuator is based on an architected metamaterial. The most important characteristic of this cylindrical metamaterial is that twist strains along the handedness of the structure lead to an elongation of the rod, which is also called auxetic trajectory~\citep{good2022expanding}. 
 % These twist strains can be imposed by electric actuation thus enabling fast system responses~\citep{garg2022kinematic}. 
 An \gls{HSA} robot combines multiple \glspl{HSA} of different handedness with a platform constraining the movement of the distal ends in the fashion of a soft parallel manipulator. 
 Differential elongation of the rods enables complex motion primitives such as elongation, bending, and twisting~\citep{chin2018compliant}, which can be seen in Fig.~\ref{fig:hsamodel:motion_primitives}. % lipton2018handedness
-\gls{HSA} robots are particularly difficult to model and control as the forces and torques causing the evolution of the system are not directly produced by the actuator, but instead are intrinsically generated as an effect of the modified cell state of the metamaterial and of the interaction forces coming from the parallel arrangement.
+\gls{HSA} robots are particularly difficult to model and control as the forces and torques causing the evolution of the system are not directly produced by the actuator but instead are intrinsically generated as an effect of the modified cell state of the metamaterial and of the interaction forces coming from the parallel arrangement.
 
 \begin{figure}
     \centering
@@ -27,10 +27,10 @@ Differential elongation of the rods enables complex motion primitives such as el
 % Each of these \glspl{HSA} is independently actuated using electric servo motors thus enabling fast system responses~\citep{garg2022kinematic}.
 
 % Although the latest advances in 3D-printing of metamaterials via digital projection lithography~\citep{truby2021recipe} have made the manufacturing of \gls{HSA} robots much easier, the technology is still expensive and in its infancy. This lack of accessibility severely limits the progress on modeling the behaviour of \gls{HSA} robots and control them successfully. Therefore, a fast simulator is a necessity to allow the research community to rapidly prototype new control strategies.
-3D-\gls{FEM} based approaches~\citep{farrell2020extension} have proven to be effective in simulating soft parallel structures \citep{vanneste2021enabling} and could be a good candidate for representing the complex behavior of \gls{HSA} robots. However, in this chapter, we strive for a less computationally expensive solution - towards applications in model-based control \citep{della2023model}. For this reason, we look at the framework of the \gls{DCM}. The Cosserat rod theory assumes the slenderness of the object, e.g. that the length is much larger than the radius, and allows for the rod to exhibit all six principal strains. The 1D discretization of the rod along its length dramatically reduces the computational demand compared to \gls{FEM}~\citep{gazzola2018forward}. 
+3D-\gls{FEM} based approaches~\citep{farrell2020extension} have proven to be effective in simulating soft parallel structures \citep{vanneste2021enabling} and could be a good candidate for representing the complex behavior of \gls{HSA} robots. However, in this chapter, we strive for a less computationally expensive solution - towards applications in model-based control \citep{della2023model}. For this reason, we look at the framework of the \gls{DCM}. The Cosserat rod theory assumes the slenderness of the object, e.g., that the length is much larger than the radius, and allows for the rod to exhibit all six principal strains. The 1D discretization of the rod along its length dramatically reduces the computational demand compared to \gls{FEM}~\citep{gazzola2018forward}. 
 % The main modification compared to the SoA simulators~\citep{naughton2021elastica, mathew2022sorosim} is that we couple the twist strains to the rest length of the rod. 
 %
-Several works in recent literature have successfully applied this framework to soft robotics \citep{grazioso2019geometrically,sadati2021tmtdyn,armanini2023soft}. Among them, in \gls{PCS}~\citep{renda2018discrete} the continuum dynamics of the Cosserat model is discretized in space by keeping a selection of strains constant along a segment of the continuum. %They all neglect volumetric deformations and focus on the behavior of the central axis~\citep{della2021model}. 
+Several works in recent literature have successfully applied this framework to soft robotics \citep{grazioso2019geometrically,sadati2021tmtdyn,armanini2023soft}. Among them, in \gls{PCS}~\citep{renda2018discrete}, the continuum dynamics of the Cosserat model is discretized in space by keeping a selection of strains constant along a segment of the continuum. %They all neglect volumetric deformations and focus on the behavior of the central axis~\citep{della2021model}. 
 The most popular \gls{PCS} is \gls{PCC}~\citep{webster2010design}, which assumes a sequence of arcs. Functional extensions of \gls{PCS} use continuous function to approximate the strain~\citep{della2019control,renda2020geometric}. %The functional subspace is split into basis functions and weights, which are taken as the configuration of the robot~\citep{della2021model}. 
 % Finally, \gls{FEM} models represent the shape of the continuum with a mesh~\citep{grazioso2019geometrically}, therefore not neglecting the volumetric deformations.
 
@@ -38,8 +38,8 @@ The most popular \gls{PCS} is \gls{PCC}~\citep{webster2010design}, which assumes
     \centering
     \includegraphics[width=1.0\textwidth]{hsamodel/figures/motion_primitives/motion_primitives_v2_compressed.pdf}
     
-    \caption{Motion primitives of Handed Shearing Auxetic (HSA) robots: elongation, bending in the four cardinal directions (e.g., north (N), south (S), west (W), east (E)), and clockwise (CW) and counter-clockwise (CCW) twisting.
-    \textbf{First row (a):} depicts the necessary actuation inputs to generate these motion primitives. Pure elongation is achieved by applying the motor torques of the same magnitude but in opposite directions to the left-handed (L) and right-handed (R) HSAs. For bending, there exists a delta in the elongation of the rods while the sum of torques is still zero. Last but not least, counter-clockwise twisting is achieved by applying more torque to the right-handed, than to the left-handed HSA rods.
+    \caption{Motion primitives of \gls{HSA} robots: elongation, bending in the four cardinal directions (e.g., north (N), south (S), west (W), east (E)), and clockwise (CW) and counter-clockwise (CCW) twisting.
+    \textbf{First row (a):} depicts the necessary actuation inputs to generate these motion primitives. Pure elongation is achieved by applying the motor torques of the same magnitude but in opposite directions to the left-handed (L) and right-handed (R) HSAs. For bending, a delta exists in the elongation of the rods, while the sum of torques is still zero. Last but not least, counter-clockwise twisting is achieved by applying more torque to the right-handed than to the left-handed HSA rods.
     \textbf{Second row (b):} Snapshots of the experimental platform when actuated according to the above-specified sequence.
     \textbf{Third row (c):} Renderings of simulated steady-states of an HSA robot. It consists of four HSA rods and a platform at the distal end. The red arrows point along the local x-axis, and the green arrows along the local y-axis, respectively. The blue arrow signifies the z-axis of the local frame of the platform.}\label{fig:hsamodel:motion_primitives}
 \end{figure*}
@@ -62,8 +62,8 @@ We provide an open-source implementation of this kinematic model in JAX\footnote
 % Furthermore, we propose a Selective Piecewise Constant Strain (SPCS) kinematic model to describe the full 3D deformation of a single \gls{HSA} rod with a dramatically reduced number of states (compared to the \gls{DCM} strategy).
 
 This kinematic model could then be used to parametrize the deformation of each limb in the parallel \gls{HSA} rod.
-However, this would require the enforcement of kinematic constraints~\cite {armanini2021discrete}, which can be algorithmically and computationally challenging.
-We propose to avoid this complexity in the planar case, by natively incorporating the kinematic constraints into the model. In particular, we 
+However, this would require the enforcement of kinematic constraints~\citep {armanini2021discrete}, which can be algorithmically and computationally challenging.
+We propose to avoid this complexity in the planar case by natively incorporating the kinematic constraints into the model. In particular, we 
 defining the \gls{CS} of a virtual backbone in the center of the robot to be our configuration variable.
 Finally, we derive the system dynamics of a planar \gls{HSA} robot in Euler-Lagrangian form.
 

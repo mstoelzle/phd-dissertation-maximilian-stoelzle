@@ -2,7 +2,18 @@
 % - ISS Coupled Oscillator Networks for Closed-form Model-based Control in Latent Space 
 }\label{chp:apx:con}
 
-\blfootnote{This Appendix is partly based on \faFileTextO \, \faTrophy~\emph{\textbf{M. Stölzle}, and C. Della Santina (2024). Input-to-State Stable Coupled Oscillator Networks for Closed-form Model-based Control in Latent Space. In Proceedings of Advances in Neural Information Processing Systems (NeurIPS) 37, \textbf{Spotlight}~\citep{stolzle2024input}.}}
+\textit{
+% This appendix contains supplementary material for Chapter~\ref{chp:con}. Specifically, we report additional details on the training and evaluation process, such as the reporting of the mathematical definition of all considered baseline methods and evaluation metrics, additional results for learning latent dynamics, such as a complete set of evaluation metrics and number of trainable parameters for all evaluated methods, and sequences of stills of the prediction results of \gls{CON} on all datasets, and additional results for the model-based latent space control, including the baselines of a pure feedback controller based on a \gls{NODE} model, and a pure feedback controller based on the learned \gls{CON} dynamics.
+\noindent This appendix provides supplementary material for Chapter~\ref{chp:con}. In particular, we offer further details on the training and evaluation process, including the mathematical definitions of all baseline methods and evaluation metrics considered. Additionally, we present extra results on learning latent dynamics—such as a complete set of evaluation metrics and the number of trainable parameters for every evaluated method—as well as sequences of stills illustrating the prediction results of \gls{CON} across all datasets. Finally, we include additional findings on model-based latent space control, featuring baselines like a pure feedback controller based on a \gls{NODE} model and one based on the learned \gls{CON} dynamics.
+}
+
+\blfootnote{
+    This appendix is partly based on \faFileTextO \, \faTrophy~\emph{\textbf{M. Stölzle}, and C. Della Santina (2024). Input-to-State Stable Coupled Oscillator Networks for Closed-form Model-based Control in Latent Space. In Proceedings of Advances in Neural Information Processing Systems (NeurIPS) 37, \textbf{Spotlight}~\citep{stolzle2024input}.}
+    M.S. and C.D.S conceived the project, developed the formulation of the coupled oscillator network, and derived the stability proof.
+    M.S. devised the closed-form approximation to the \gls{CON} dynamics, came up with the model-based control approach, and implemented the training and control pipeline.
+    M.S. planned and conducted all experiments and wrote the manuscript.
+    C.D.S. revised the manuscript, provided funding, and supervised the project.
+}
 
 \newpage
 
