@@ -157,10 +157,10 @@ Finally, the smooth conditioning interpolation loss can be formulated as
     \mathcal{L}_{\mathrm{sci}} = \sum_{j = 1}^{N_\mathrm{sci}} \frac{\left ( \tilde{x}^*(j) - \tilde{x}(j)\right )^2}{N_\mathrm{sci}}.
 \end{equation}
 
-\subsection{Reshaping of the Learned Velocity Field}
+\subsection{Online Shaping of the Learned Motion}
 In order to improve the practicality of using the learned orbital motion primitives, we introduce in this section approaches that allow us to modulate the learned velocity field to adjust the task or modify its characteristics without having to retrain the \gls{OSMP}. 
 
-First, we introduce variables that allow us to spatially translate and scale the learned velocity field
+First, we introduce variables that allow us to translate and scale the learned velocity field spatially
 \begin{equation}
     \dot{x}(t) = \tilde{f}(x \, ;z) \coloneq s_\mathrm{f} \, f \left ( \frac{x(t)-x^\mathrm{o}}{s_\mathrm{f}}; z \right ).
 \end{equation}

@@ -59,7 +59,7 @@ These instances illustrate that \glspl{OSMP} can learn oracles with dimensions e
 \begin{figure}
     \centering
     \includegraphics[width=1.0\linewidth]{osmp/figures/kinesthetic_teaching_results/kinesthetic_teaching_results_v1_cropped.pdf}
-    \caption{\textbf{Real-world results for learning orbital motion primitives from kinesthetic oracles.}
+    \caption{\textbf{Real-world results for learning orbital motion primitives from kinesthetic demonstrations.}
     In the first column, we show the results for a whiteboard cleaning task executed with the UR5 manipulator, and in the second and third columns, we show the results for a booming task executed with the KUKA robot.
     In both cases, the demonstration was provided via kinesthetic teaching, and the \gls{OSMP} was trained on the resulting periodic oracle.
     For the UR5 manipulator, the \gls{OSMP} learns the motion of the end-effector position in three dimensions. For the KUKA manipulator, we learn both the motion of the end-effector position and orientation.
@@ -68,7 +68,7 @@ These instances illustrate that \glspl{OSMP} can learn oracles with dimensions e
     \label{fig:osmp:kinesthetic_teaching_results}
 \end{figure}
 
-\subsection{Learning Orbital Motion Primitives from Kinesthetic Oracles}
+\subsection{Learning Orbital Motion Primitives from Kinesthetic Demonstrations}
 % \begin{itemize}
 %     \item Demonstrate how our method is able to be applied to demonstrations that were created using kinesthetic teaching and that it is able to accomplish real-world tasks.
 %     \item Show results for UR5 whiteboard cleaning and KUKA brooming tasks.
@@ -135,7 +135,7 @@ In Fig.~\ref{fig:osmp:phase_sync_results}, we show simulation and experimental r
 
 Regarding experimental findings, we examined the swimming performance of the Crush turtle robot. Tests in a swimming pool revealed that the robot can swim effectively only when both front flippers—the primary means of locomotion in water~\citep{van2022new, van2023soft}—are fully synchronized. In practice, even aside from external disturbances and inherent differences between the flippers, desynchronization occurs already during initialization when the flipper arms start in slightly different configurations with varying polar phases. Our results show that using our method, the two flipper arms synchronize in less than a quarter of a period, thereby enabling the turtle robot to swim effectively.
 
-\subsection{Smooth Interpolation Between Oracles via Encoder Conditioning}
+\subsection{Smooth Interpolation Between Motion Behaviors via Encoder Conditioning}
 % \begin{itemize}
 %     \item Motivate how encoder conditioning enables the incorporation of multiple oracles in the same motion primitive.
 %     \item Motivate why we would (ideally) want to achieve smooth interpolation between oracles.
