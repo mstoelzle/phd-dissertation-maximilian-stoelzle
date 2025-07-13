@@ -18,7 +18,7 @@ We conduct extensive verification of our proposed approach in both simulation an
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=1.0\linewidth]{osmp/figures/methodology_overview/osmp_methodology_overview_v2.png}
+    \includegraphics[width=1.0\linewidth]{osmp/figures/methodology_overview/osmp_methodology_overview_v2_compressed.pdf}
     \caption{
     \textbf{Overview of the methodology of \glsxtrfull{OSMP}:}
     Periodic motions can be learned from demonstration via a \gls{DMP} that combines a bijective encoder with latent space dynamics defined by a supercritical Hopf bifurcation. After encoding the current oracle space position of the system into latent space and predicting the latent space velocity, the pullback operator projects the velocity back into oracle space and represents a motion reference for the various robot embodiments. During training, we enforce both the predicted velocity and the exhibited limit cycle to match the demonstrations that are, for example, provided via kinesthetic teaching or based on biological oracles.

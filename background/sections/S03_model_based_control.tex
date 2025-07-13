@@ -259,7 +259,7 @@ We leverage such a controller in Chapter~\ref{chp:hsacontrol} of this thesis.
 % exhibit a globally asymptotically stable equilibrium at the setpoint $q^\mathrm{d}$, even when the soft robot is not elastically dominated.
 
 \subsubsection{Setpoint Regulation with Cancellation of Static Forces}
-Akin to PD+~\citep{kelly1996class, kelly1998global} controllers originally developed for rigid manipulators, we can fully cancel the static, including gravitational and elastic, forces of the soft robot dynamics via nonlinear feedback and achieve setpoint regulation solely based on the potential field established by the (proportional) feedback term. The associated control law is given by~\citep{patterson2024design, pustina2025analysis}
+Akin to PD+~\citep{paden1988globally, kelly1996class} controllers originally developed for rigid manipulators, we can fully cancel the static, including gravitational and elastic, forces of the soft robot dynamics via nonlinear feedback and achieve setpoint regulation solely based on the potential field established by the (proportional) feedback term. The associated control law is given by~\citep{patterson2024design, pustina2025analysis}
 \begin{equation}
     \tau_\mathrm{mb}(q) =  \underbrace{A^{-1}(q) \, G(q)}_\text{Cancel Gravity} + \underbrace{A^{-1}(q) \, K(q)}_\text{Cancel Elasticity}
 \end{equation}

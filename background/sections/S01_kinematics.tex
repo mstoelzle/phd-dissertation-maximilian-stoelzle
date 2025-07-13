@@ -139,12 +139,12 @@ where $q \in \mathbb{R}^{6N}$ (i.e., $n=6N$) is the configuration,
 $\xi^0 \in \mathbb{R}^6$ is the rest strain, that is usually chosen as $\xi^0 = \begin{bmatrix}
     0 & 0 & 0 & 0 & 0 & 1
 \end{bmatrix}^\top$ for the case of the backbone being aligned with the local z-axis,
-$\Phi(s): \mathbb{R_+} \to \mathbb{R}^6 \times \mathbb{R}^{6N}$ is called the strain basis~\citep{renda2020geometric, mathew2025reduced} and consists of
+$\Phi(s): \mathbb{R_+} \to \mathbb{R}^{6 \times 6N}$ is called the strain basis~\citep{renda2020geometric, mathew2025reduced} and consists of
 $N$ discontinuous functions $\Phi_i \: \forall i \in \{ 1,\dots, N \}$ that are defined as
 \begin{equation}
     \Phi_i(s) = \begin{cases}
         \mathbb{I}_{6}, & \text{if} \: \sum_{i'=1}^{i-1} l_{i'} < s \leq \sum_{i'= 1}^{i} l_{i'} \\
-        0_{6\times 6}, & \text{else}
+        0_{6\times 3}, & \text{else}
     \end{cases} \in \mathbb{R}^{6 \times 6} \quad \forall i \in \{ 1,\dots, N \},
 \end{equation}
 where $l_i$ is the length of each segment, therefore fulfilling the property $L = \sum_{i=1}^{N} l_i$.
