@@ -123,7 +123,7 @@ $\sigma(r): \mathbb{R}^m \to \mathbb{R}^m$ is a function that transforms the con
 \paragraph{PD Control.} The PD+ variant~\citep{kelly1997pd}, commonly employed for the low-level control of rigid robots, is realized by combining a PD controller with static force compensation. In practice, this is achieved by setting $K_\mathrm{i} = 0$.
 
 % \paragraph{P-satI-D Control.} \citet{pustina2022p} has proposed an integral-saturated PID for shape regulation of soft robots via feedback control. A common choice for the saturated function is $\sigma(r) = \tanh(\gamma \, r)$, where $\gamma \in \mathbb{R}_+$ is a control gain to compress the control error before saturating it. We leverage this integral-saturated PID in Section~\ref{sec:hsacontrol:configuration_space_regulation} and Chapters~\ref{chp:pcsregression} \& \ref{chp:con}.
-\paragraph{P-satI-D Control.} \citet{pustina2022p} introduced an integral-saturated PID for the shape regulation of soft robots via error-based feedback control. A typical choice for the saturation function is $\sigma(r) = \tanh(\gamma , r)$, where $\gamma \in \mathbb{R}_+$ is a control gain that compresses the control error prior to saturation. We implement this integral-saturated PID in Section~\ref{sec:hsacontrol:configuration_space_regulation} and Chapters~\ref{chp:pcsregression} and \ref{chp:con}.
+\paragraph{P-satI-D Control.} \citet{pustina2022p} introduced an integral-saturated PID for the shape regulation of soft robots via error-based feedback control. A typical choice for the saturation function is $\sigma(r) = \tanh(\gamma \, r)$, where $\gamma \in \mathbb{R}_+$ is a control gain that compresses the control error prior to saturation. We implement this integral-saturated PID in Section~\ref{sec:hsacontrol:configuration_space_regulation} and Chapters~\ref{chp:pcsregression} and \ref{chp:con}.
 
 \subsection{Model-Based Terms: The Fully Actuated Case}\label{sub:background:model_based_control:model_based_terms_fully_actuated}
 % First, we consider common model-based terms for the fully actuated setting (i.e., $n = m$).
@@ -537,7 +537,7 @@ For simplicity, we assume in the following the fully actuated case - i.e., $n=m$
 
 \subsubsection{P-satI-D+Potential Shaping}
 The \emph{P-satI-D+Potential Shaping} controller consists of \emph{P-satI-D} feedback term and the \emph{Setpoint Regulation with Feedforward Compensation} model-based term.
-As we frequently use this controller throughout this thesis, such as in Chapter~\ref{chp:hsacontrol} (underactuated version), and Chapter~\ref{chp:pcsregression} \& \ref{chp:con}, we will below specify the control law, assuming a constant actuation matrix $A(q) = A$
+As we frequently use this controller throughout this thesis, such as in Chapter~\ref{chp:hsacontrol} (underactuated version), and Chapter~\ref{chp:pcsregression} \& \ref{chp:con}, we will specify below the control law, assuming a constant actuation matrix $A(q) = A$
 \begin{equation}
 \begin{split}
     \tau(t,q,\dot{q}) =& \: \underbrace{A^{-1} \, \left ( G(q^\mathrm{d}) + K(q^\mathrm{d}) \right )}_\text{Model-Based Feedforward}\\

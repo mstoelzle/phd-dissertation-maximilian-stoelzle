@@ -20,6 +20,7 @@ In this thesis, we introduce two approaches for learning kinematic and dynamic m
 Moreover, instead of relying on computationally expensive methods such as \gls{RL} or \gls{MPC}, which are often necessary for learned models, our controller provides a closed-form solution. This makes it possible to analyze the characteristics of the closed-loop system and formally prove stability using Lyapunov arguments~\citep{khalil2002nonlinear}, as already demonstrated for the open-loop case~\citep{stolzle2024input}. These stability guarantees—supported by the interpretability of the learned model—constitute an initial step toward \emph{safe control}.
 % 
 To further promote and quantify safety, we i) propose a safety metric that evaluates potential injury severity from the closed-loop system dynamics and specifically establishes bounds on the proportional feedback gains to ensure safety requirements and ii) develop stable high-level strategies to generate compliant motion behaviors by providing references/setpoints to the low-level controller.
+Experimental verification of the contributions is an important aspect of this thesis, and we present some of the (soft) robot embodiments used in Fig.~\ref{fig:introduction:thesis_robots}.
 
 This core contribution is enabled by multiple key contributions, which we detail in the following.
 
@@ -52,6 +53,19 @@ This contribution outlines a pathway for quantifying, optimizing, ensuring throu
 % We verify the proposed algorithm both with a simulated \gls{CC} segment and on a real soft segment with an attached low-cost Raspberry Pi camera.
 % A major benefit of this approach is that very good shape reconstruction performance is enabled by the combination of four already very established components: 1) low-cost monocular cameras, 2) \gls{vSLAM}, 3) the \gls{PCC}~\citep{webster2010design} kinematic model for soft robots, and 4) optimization based on the Levenberg-Marquardt algorithm~\citep{levenberg1944method, marquardt1963algorithm}.
 % In the future, shape estimation performance could be (likely) very easily improved by, for example, replacing the used \gls{vSLAM} algorithm with the current \gls{SOTA} algorithm or by using more expressive kinematic parametrizations (e.g., \gls{GVS}~\citep{renda2020geometric}).
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=1.0\linewidth]{introduction/figures/thesis_robots.pdf}
+    \caption{
+    Soft robot prototypes were used for experimental validation of the methods proposed in this thesis. 
+    \textbf{Panel (A):} A three-segment pneumatic continuum soft robot made of silicon with three air cavities per segment. The picture is taken from ~\citet{katzschmann2019dynamic}.
+    \textbf{Panel (B):} A tendon-driven continuum soft robot consisting of five segments based on a helicoid structure, coined Helix Robot~\citep{guan2023trimmed}.
+    \textbf{Panel (C):} An \gls{HSA} soft robot based on 3D-printed auxetic metamaterials driven by four servo motors~\citep{lipton2018handedness, truby2021recipe}.
+    \textbf{Panel (D):} A hybrid soft-rigid turtle robot combining a rigid body with limbs consisting of three servos and a rigid-soft flipper.
+    }
+    \label{fig:introduction:thesis_robots}
+\end{figure}
 
 
 % The second approach appears in Chapter~\ref{chp:promasens} and considers shape proprioception based on magnetic sensors. 
