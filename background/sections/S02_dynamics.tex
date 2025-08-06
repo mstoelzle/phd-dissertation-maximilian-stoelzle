@@ -65,7 +65,7 @@ As originally proposed in the seminal work by \citet{khatib1987unified} and late
 \end{equation}
 where 
 \begin{equation}
-    J_\mathrm{M}^{+\top}(q) = M^{-1}(q) \, J^\top(q) \left ( J(q) \, M^{-1}(q) \, J^\top(q) \right )^{-1} \in \mathbb{R}^{n \times o},
+    J_\mathrm{M}^{+}(q) = M^{-1}(q) \, J^\top(q) \left ( J(q) \, M^{-1}(q) \, J^\top(q) \right )^{-1} \in \mathbb{R}^{n \times o},
 \end{equation}
 % is the dynamically consistent pseudo-inverse~\citep{chang1995manipulator}, which can be used to map operational space velocities into configuration space and generalized torques into operational space,
 denotes the dynamically consistent pseudo-inverse~\citep{chang1995manipulator}, which maps operational space velocities to configuration space and transforms generalized torques into operational space. Moreover,
@@ -213,13 +213,10 @@ where analog to the operational space dynamics, the actuation space inertia is d
 $J_{\mathrm{h},\mathrm{M}}^{+\top}(q) \in \mathbb{R}^{n \times n}$ is the dynamically-consistent pseudo-inverse~\citep{chang1995manipulator}
 \begin{equation}
 \begin{split}
-    J_{\mathrm{h},\mathrm{M}}^{+\top}(q) =& \: M^{-1}(q) \, J_\mathrm{h}^\top(q) \left ( J_\mathrm{h}(q) \, M^{-1}(q) \, J_\mathrm{h}^\top(q) \right )^{-1} = J_\mathrm{h}^{-\top}(q),\\
-    =& \: \begin{bmatrix}
-        A_\mathrm{a}^{-1}(q) & 0_{m \times (n-m)}\\
-        -A_\mathrm{u}(q) \, A_\mathrm{a}^{-1}(q) & \mathbb{I}_{n-m}
-    \end{bmatrix} = \begin{bmatrix}
-        J_{\mathrm{h},\mathrm{a}}^{-\top}(q)\\
-        J_{\mathrm{h},\mathrm{u}}^{-\top}(q)
+    J_{\mathrm{h},\mathrm{M}}^{+}(q) % =& \: M^{-1}(q) \, J_\mathrm{h}^\top(q) \left ( J_\mathrm{h}(q) \, M^{-1}(q) \, J_\mathrm{h}^\top(q) \right )^{-1} 
+    = J_\mathrm{h}^{-1}(q) = \begin{bmatrix}
+        A_\mathrm{a}^{-\top}(q) & -A_\mathrm{a}^{-\top}(q) \, A_\mathrm{u}^\top(q)\\
+        0_{m \times (n-m)} & \mathbb{I}_{n-m}
     \end{bmatrix},
 \end{split}
 \end{equation}

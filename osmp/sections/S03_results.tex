@@ -1,0 +1,807 @@
+\section{Experiments \& Results}\label{sec:osmp:results}
+\subsection{OSMPs are Asymptotically Orbitally Stable and Transverse Contracting}
+In this section, we analyze the convergence characteristics of \glspl{OSMP} from a theoretical perspective. Specifically, we show that \glspl{OSMP} exhibit \gls{AOS} and under which conditions they are transverse contracting and lead to \gls{EOS}
+
+\subsubsection{Proof of Asymptotic Orbital Lyapunov Stability}
+In the general setting, we show that \glspl{OSMP} possess \gls{AOS}. This property was noted—but not fully proven—in earlier work~\citep{urain2020imitationflow,zhi2024teaching}. Instead, in the following, we formally prove \gls{AOS}.
+\begin{theorem}\label{theorem:osmp:asymptotic_orbital_stability}
+    Let $\alpha, \beta, R > 0$ and $f_\mathrm{s}(x): \mathbb{R}^n \to \mathbb{R}_{>0}$ and $z$ be constant. Then, the dynamics $\dot{x} = f(x;z)$ are asymptotically orbitally stable under the transverse Lyapunov function
+    \begin{equation}
+        V_\mathrm{x}(x;z) = \frac{\alpha \, R^2}{4} \left ( y_1^2+y_2^2 - R^2 \right )^2 + \frac{1}{2} y_{3:n}^\top \, \beta \, y_{3:n} \Bigg |_{y=\Psi(x;z)}.
+    \end{equation}
+\end{theorem}
+\begin{proof}
+    \textbf{Step 1: Proof of Orbital Stability in Polar Latent Dynamics.}
+    Consider the transverse Lyapunov candidate~\citep{manchester2011transverse} for the polar latent dynamics $\dot{y}_\mathrm{pol} = f_\mathrm{pol}(y_\mathrm{pol})$
+    \begin{equation}
+        V_\mathrm{pol}(y_\mathrm{pol}) = \alpha \, \frac{R^2}{4} \left ( r^2 - R^2 \right )^2 + \frac{1}{2} y_{3:n}^\top \, \beta \, y_{3:n}.
+    \end{equation}
+    We can demonstrate that $V_\mathrm{pol}$ is a valid Lyapunov candidate with respect to the limit cycle $\mathcal{O}_\mathrm{pol} = \{ r, \varphi \in \mathbb{R}, y_{3:n} \in \mathbb{R}^{n-2} | r = R, \varphi \in [-\pi, \pi), y_{3:n} = 0_{n-2} \}$ via
+    \begin{equation}
+        V_\mathrm{pol}(y_{\mathrm{pol}}) = \alpha \, \frac{R^2}{4} \left ( R^2 - R^2 \right )^2 = 0,
+        \quad
+        \forall \, y_{\mathrm{pol}} \in \mathcal{O},
+    \end{equation}
+    and
+    \begin{equation}
+        V_\mathrm{pol}(y_{\mathrm{pol}}) = \frac{\alpha \, R^2}{4} \underbrace{\left ( r^2 - R^2 \right )^2}_{\geq 0} + \underbrace{\frac{1}{2} y_{3:n}^\top \, \beta \, y_{3:n}}_{\geq 0} > 0,
+        \quad
+        \forall y_{\mathrm{pol}} \in \mathbb{R}^{n} \setminus \mathcal{O}_\mathrm{pol}.
+    \end{equation}
+    The time derivative of the Lyapunov candidate perpendicular to the orbital flow $\begin{bmatrix}
+        0 & f_\omega(\varphi) & 0
+    \end{bmatrix}^\top$ is given by
+    \begin{equation}
+    \begin{split}
+         \dot{V}_{\mathrm{pol},f_{\mathrm{pol},\perp}}(y_\mathrm{pol}) =& \: \frac{\partial V_\mathrm{y}}{\partial y_\mathrm{pol}} \, f_{\mathrm{pol},\perp} = \begin{bmatrix}
+            -\alpha \left ( 1-\frac{r^2}{R^2} \right ) r & 0 & \beta \, y_{3:n}
+        \end{bmatrix} \, \begin{bmatrix}
+            \alpha \left ( 1-\frac{r^2}{R^2} \right ) r\\
+            0\\
+            -\beta \, y_{3:n}
+        \end{bmatrix},\\
+        =& \: -\underbrace{\alpha^2 \left (1 - \frac{r^2}{R^2} \right )^2 r^2}_{\geq 0} - \underbrace{y_{3:n}^\top \, \beta^2 \, y_{3:n}}_{\geq 0} < 0,
+        \quad
+        \forall y_\mathrm{pol} \in \mathbb{R}^{n} \setminus \mathcal{O}_\mathrm{pol}.
+    \end{split}
+    \end{equation}
+    with $\dot{V}_{\mathrm{pol},f_{\mathrm{pol},\perp}}(y_\mathrm{pol}) = 0 \: \forall y_\mathrm{pol} \in \mathcal{O}_\mathrm{pol}$.\\
+    %
+    \textbf{Step 2: Proof of Orbital Stability in Cartesian Latent Dynamics.}
+    First, we define the limit cycle in latent space as $\mathcal{O}_\mathrm{y} = \{ y \in \mathbb{R}^n | \sqrt{y_1^2 + y_2^2} = R, y_{3:n} = 0_{n-2} \}$
+    The Lyapunov function in Cartesian latent coordinates $y = h_\mathrm{p2c}(y_\mathrm{pol})$ can be stated as 
+    \begin{equation}
+        V_\mathrm{y}(y) = V_\mathrm{pol}(h_\mathrm{y2p}(y)) = \frac{\alpha \, R^2}{4} \left ( y_1^2+y_2^2 - R^2 \right )^2 + \frac{1}{2} y_{3:n}^\top \, \beta \, y_{3:n}.
+    \end{equation}
+    Naturally, the two conditions on the Lyapunov candidate $V_\mathrm{y}(y) = 0 \: \forall y \in \mathcal{O}_\mathrm{y}$ and $V_\mathrm{y}(y) > 0 \: \forall y \in \mathbb{R}^n \setminus \mathcal{O}_\mathrm{y}$ still hold. 
+    As the flow orthogonal to the orbit is given by
+    \begin{equation}
+        f_{\mathrm{y},\perp}(y) = \frac{\partial h_\mathrm{p2c}}{\partial y_\mathrm{pol}} \, f_{\mathrm{pol},\perp}(h_\mathrm{c2p}(y)) = \begin{bmatrix}
+        \alpha \, \left ( 1 - \frac{y_1^2 + y_2^2}{R^2} \right ) \, y_1\\
+        \alpha \, \left ( 1 - \frac{y_1^2 + y_2^2}{R^2} \right ) \, y_2\\
+        -\beta \, y_{3:n}\\
+    \end{bmatrix},
+    \end{equation}
+    the corresponding time derivative of the Lyapunov function can be computed as
+    \begin{equation}
+    \begin{split}
+        \dot{V}_{\mathrm{y},f_{\mathrm{y},\perp}}(y) =& \: \frac{\partial V_\mathrm{y}(y)}{\partial y} \, f_{\mathrm{y},\perp}(y) = \frac{\partial V_\mathrm{pol}(h_{c2p}(y))}{\partial y} \, \frac{\partial h_\mathrm{p2c}(y_\mathrm{pol})}{\partial y_\mathrm{pol}} \, f_{\mathrm{pol},\perp}(y_\mathrm{pol}) \Bigg |_{y_\mathrm{pol} = h_{c2p}(y)},\\
+        =& \: \frac{\partial V_\mathrm{pol}(y_\mathrm{pol})}{\partial y_\mathrm{pol}} \, \underbrace{\frac{\partial h_\mathrm{c2p}}{\partial y} \, \frac{\partial h_\mathrm{p2c}}{\partial y_\mathrm{pol}}}_{\mathbb{I}_n} \, f_{\mathrm{pol},\perp}(y_\mathrm{pol}) \Bigg |_{y_\mathrm{pol} = h_{c2p}(y)},\\
+        =& \: \frac{\partial V_\mathrm{pol}(y_\mathrm{pol})}{\partial y_\mathrm{pol}} \, f_{\mathrm{pol},\perp}(y_\mathrm{pol}) \Bigg |_{y_\mathrm{pol} = h_{c2p}(y)} < 0, \quad \forall \, y \in \mathbb{R}^n \setminus \mathcal{O}_\mathrm{y}.
+    \end{split}
+    \end{equation}
+    %
+    \textbf{Step 3: Proof of Asymptotic Orbital Stability of \gls{OSMP} Dynamics.}
+    Similar to prior work~\citep{rana2020euclideanizing, urain2020imitationflow, zhi2024teaching}, we transfer the orbital stability guarantees back into oracle space.
+    The orbit/limit cycle in oracle space is given by
+    $\mathcal{O}_\mathrm{x} = \{ x \in \mathbb{R}^n | y=\Psi(x;z), \sqrt{y_1^2 + y_2^2} = R, y_{3:n} = 0_{n-2} \}$.
+    Then, define the Lyapunov function by substituting $y = \Psi(x;z)$ into $V_\mathrm{y}(y)$
+    \begin{equation}
+         V_\mathrm{x}(x;z) = V_\mathrm{y}(\Psi(x;z)) = \frac{\alpha \, R^2}{4} \left ( y_1^2+y_2^2 - R^2 \right )^2 + \frac{1}{2} y_{3:n}^\top \, \beta \, y_{3:n} \Bigg |_{y=\Psi(x;z)},
+    \end{equation}
+    which still admits to the properties $V_\mathrm{x}(x) = 0 \: \forall x \in \mathcal{O}_\mathrm{x}$ and $V_\mathrm{x}(x) > 0 \: \forall x \in \mathbb{R}^n \setminus \mathcal{O}_\mathrm{x}$.
+    The flow orthogonal to the limit cycle can be expressed as 
+    \begin{equation}
+        f_{\mathrm{x},\perp}(x) = f_\mathrm{s}(x) \, J_\Psi^{-1}(x;z) \, f_{\mathrm{y},\perp}(\Psi(x;z)).
+    \end{equation}
+    Similar to Step 2, but now also considering the oracle-space velocity scaling $f_\mathrm{s}(x)$, we derive the time derivative of the Lyapunov function orthogonal to the limit cycle flow as
+    \begin{equation}
+    \begin{split}
+        \dot{V}_{\mathrm{x},f_{\mathrm{x},\perp}}(x) =& \: \frac{\partial V_\mathrm{x}(x)}{\partial x} \, f_{\mathrm{x},\perp}(x) = \frac{\partial V_\mathrm{y}(\Psi(x;z))}{\partial x} \, f_\mathrm{s}(x) \, J_\Psi^{-1}(x;z) \, f_{\mathrm{y},\perp}(\Psi(x;z)) \Bigg |_{y = \Psi(x;z)},\\
+        =& \: f_\mathrm{s}(x) \, \frac{\partial V_\mathrm{y}(y)}{\partial y} \, \underbrace{J_\Psi(x;z) \, J_\Psi^{-1}(x;z)}_{\mathbb{I}_n} \, f_{\mathrm{y},\perp}(\Psi(x;z)) \Bigg |_{y = \Psi(x;z)},\\
+        =& \: \underbrace{f_\mathrm{s}(x)}_{>0} \, \underbrace{\frac{\partial V_\mathrm{y}(y)}{\partial y} \, f_{\mathrm{y},\perp}(y_\mathrm{pol})}_{\leq 0} \bigg |_{y = \Psi(x;z)} < 0, \quad \forall \, x \in \mathbb{R}^n \setminus \mathcal{O}_\mathrm{x}.
+    \end{split}
+    \end{equation}
+\end{proof}
+
+\subsubsection{Proof of Transverse Contraction}
+Now, we move to analyzing the transverse contraction conditions.
+To our knowledge, earlier studies have not tackled \gls{EOS} or contraction \citep{lohmiller1998contraction}. When a velocity scaling is applied in the original coordinates—as in Euclideanizing flows \citep{rana2020euclideanizing}—such guarantees cannot be established unless the scaling factor is explicitly bounded. By contrast, if no velocity scaling is used in the x-coordinates (i.e., $f_\mathrm{s}=1$), we can prove contraction in the directions orthogonal to the limit cycle, a property known as transverse contraction \citep{manchester2014transverse}. Transverse contraction implies \gls{EOS}, ensuring trajectories converge to the limit cycle at an exponential rate.
+
+This section is organized as follows: First, we provide formal definitions of (transverse) contraction and \gls{EOS}. Subsequently, we prove transverse contraction of the polar latent dynamics. Then, we transfer this proof into Cartesian latent coordinates and, finally, also into the original/oracle coordinates.
+
+\paragraph{Definitions}
+\begin{definition}\label{def:osmp:transverse_contraction}
+    An autonomous system $\dot{x} = f(x)$ with is said to be transverse contracting in the region $x \in \mathcal{X} \subseteq \mathbb{R}^n$ with rate $\zeta \in \mathbb{R}_{>0}$ if a positive definite metric $M(x) \succ 0 \in \mathbb{R}^{n \times n}$ exists such that
+    \begin{equation}
+        \delta_{x}^\top \left ( \frac{\partial f(x)}{\partial x}^\top \, M(x) + M(x) \, \frac{\partial f(x)}{\partial x} + \dot{M}(x) + 2 \, \zeta \, M(x) \right ) \delta_{x} \leq 0
+        \quad
+        \forall \, x \in \mathcal{X}
+    \end{equation}
+    for all $\delta_{x} \neq 0$ orthogonal to the flow satisfying $\delta_{x}^\top \, M(x) \, f(x) = 0$~\citep{manchester2014transverse}.
+\end{definition}
+
+\begin{definition}\label{def:osmp:exponential_orbital_stability}
+    Let $\dot{x} = f(x)$ be an autonomous, transverse contracting system in the region $x \in \mathcal{X} \subseteq \mathbb{R}^n$ with contracting rate $\zeta \in \mathbb{R}_{>0}$. 
+    Also, consider the non-trivial $T$-periodic solution $x_\mathrm{lc}(t) \in \mathcal{X}$ that defines the solution curve $X_\mathrm{lc} = \{ x \in \mathbb{R}^n : \exists t \in [0,T):x=x_\mathrm{lc} \}$.
+    Then, the solution $x_\mathrm{lc}(t)$ is said to be \emph{exponentially orbitally stable} as there exists a $k > 0$ such that for any $x_0 \in \mathcal{X}$
+    \begin{equation}
+        \inf_{x_\mathrm{lc} \in X_\mathrm{lc}} \lVert x(t) - x_\mathrm{lc} \rVert_2 \leq k \inf_{x_\mathrm{lc} \in X_\mathrm{lc}} \lVert x_0 - x_\mathrm{lc} \rVert_2 \, e^{-\zeta t}.
+    \end{equation}
+\end{definition}
+Please note that the notion of \gls{EOS}, also referred to as transverse exponential stability, is stronger than the commonly used \emph{asymptotic orbital stability} as it guarantees \textbf{exponential} convergence to the orbit/limit cycle~\citep{manchester2011transverse}.
+
+\paragraph{Proof of Transverse Contraction of Latent Dynamics in Polar Coordinates}
+First, we prove that the latent dynamics in polar coordinates $\dot{y}_\mathrm{pol} = f_\mathrm{pol}(y_\mathrm{pol})$ are transversely contracting: i.e., they are not contracting along the polar phase variable $\varphi$, but contracting orthogonal to the flow $f_\mathrm{pol}(y_\mathrm{pol})$~\citep{manchester2014transverse}. Inspired by a recent proof of transverse contraction for the Andronov-Hopf oscillator with state $(r, \varphi)$~\citep{nah2025combining}, we define the following Proposition.
+\begin{proposition}\label{prop:osmp:polar_latent_dynamics_transverse_contraction}
+    Let $\alpha, \beta > 0$, $R > 0$, $f_\omega(r): [-\pi, \pi) \to \mathbb{R}_{>0}$, and $y_\mathrm{pol} = \begin{bmatrix}
+    r & \varphi & y_{3:n}^\top
+\end{bmatrix}^\top \in \mathcal{Y}_\mathrm{pol}$. Then, the latent dynamics in polar coordinates from \eqref{eq:osmp:latent_dynamics_polar_coordinates} are transverse contracting under the metric
+    \begin{equation}\label{eq:osmp:contraction_metric_polar_latent_dynamics}
+        M_\mathrm{pol}(y_\mathrm{pol}) = \begin{bmatrix}
+            \frac{1}{r^2} & -\frac{\alpha \left( 1 - \frac{r^2}{R^2} \right )}{f_\omega(\varphi) \, r} & 0_{1 \times (n-2)}\\
+            -\frac{\alpha \left( 1 - \frac{r^2}{R^2} \right )}{f_\omega(\varphi) \, r} & m_{\varphi \varphi}(r) & 0_{1 \times (n-2)}\\
+            0_{(n-2) \times 1} & 0_{(n-2) \times 1} & \mathbb{I}_{n-2}
+        \end{bmatrix} \succ 0 \in \mathbb{R}^{n \times n},
+    \end{equation}
+    with the contraction rate $\zeta_\mathrm{pol} \geq \left (\frac{2\alpha}{R^2} + \beta \right ) \, \frac{r_\epsilon^2}{r_\epsilon^2 + 1}$ in the region
+    \begin{equation}
+        \mathcal{Y}_\mathrm{pol} = \left \{ y_\mathrm{pol} \in \mathbb{R}^n | r_\epsilon \in \mathbb{R}_{>0}, r \geq r_\epsilon, \varphi \in [-\pi, \pi) \right \}.
+    \end{equation}
+\end{proposition}
+\begin{proof} The proof consists of three steps: proof of positive-definiteness of the contraction metric, and the fulfillment of the orthogonality and contraction conditions in order to meet the conditions for transverse contraction stated in Theorem~3 of \citep{manchester2014transverse}.\\
+    \textbf{Step 1: Positive definite contraction metric.} Positive definite contraction metric $M_\mathrm{pol}(y_\mathrm{pol})$. In order for $M_\mathrm{pol}(y_\mathrm{pol}) \in \mathbb{R}^{n \times n}$ to be a valid contraction metric, we need to ensure that it is positive definite (i.e., that the real part of its Eigenvalues is positive $\forall y_\mathrm{pol} \in \mathcal{Y}_\mathrm{pol}$). 
+    For this to be the case, the following condition, derived from the smallest Eigenvalue of the contraction metric $\zeta_\mathrm{m}(M_\mathrm{pol}(y_\mathrm{pol}))$, must hold
+    \begin{equation}\small
+        \frac{m_{\varphi \varphi}(r) \, r^2 + 1}{2 \, r^2} - \frac{\sqrt{\left ( R^4 f_\omega^2(\varphi) r^4 \right ) m_{\varphi \varphi}^2 + \left ( -2 R^4 f_\omega^2(\varphi) r^2 \right ) m_{\varphi \varphi}(r) + \left ( 4 \alpha^2 r^6 - 8 R^2 \alpha^2 r^4 + 4 R^2 \alpha^2 r^2 + R^4 f_\omega^2(\varphi) \right )}}{2 \, R^2 \, f_\omega(\varphi) \, r^2} \geq 0
+    \end{equation}
+    which can be ensured if the following two conditions hold
+    \begin{equation}\small
+    \begin{split}
+        m_{\varphi \varphi} \geq 0,
+        \quad
+        \left ( R^4 \right ) m_{\varphi \varphi}^2(r) + \left ( -2 R^4 f_\omega^2(\varphi) r^2 \right ) \, m_{\varphi \varphi}(r) + \left ( 4 \alpha^2 r^6 - 8 R^2 \alpha^2 r^4 + 4 R^2 \alpha^2 r^2 + R^4 f_\omega^2(\varphi) \right ) \leq 0.\\
+    \end{split}
+    \end{equation}
+    Solving the quadratic equation results in
+    \begin{equation}
+    \begin{split}
+        0 \leq m_{\varphi \varphi}(r) \leq m_{\varphi \varphi}^\mathrm{ub}(r) = \frac{R^2 f_\omega(\varphi) + 2 \, \alpha \, \sqrt{- r^4 + 2R^2 r^2 -R^4 } \, |r|}{R^2 \, f_\omega(\varphi) \, r^2}.
+    \end{split}
+    \end{equation}
+    Thus, for example, the choice of $m_{\varphi \varphi}(r) = m_{\varphi \varphi}^\mathrm{ub}(r)$ admits to the stated condition.
+    Then, the Eigenvalues of the $M_\mathrm{pol}(y_\mathrm{pol})$ are given by
+    \begin{equation}
+    \begin{split}
+        \zeta_{1,2}(M_\mathrm{pol}(r)) =  \: \frac{R^2 f_\omega(\varphi) + \alpha \sqrt{- r^4 + 2R^2 r^2 -R^4 } \, |r|}{R^2 \, f_\omega(\varphi) \, r^2},
+        \qquad
+        \zeta_{3:n}M_\mathrm{pol}(r)) = \: 1.
+    \end{split}
+    \end{equation}
+    with $\mathrm{Re}(\zeta_{1,2}(M_\mathrm{pol}(r))) > 0 \: \forall r \in R_{>0}$. Therefore, $M_\mathrm{pol}(y_\mathrm{pol}) \succ 0 \: \forall r \in R_{>0}$.
+    \\
+    \textbf{Step 2: Orthogonality condition.}
+    Let $\delta_{y_\mathrm{pol}} = c \, \begin{bmatrix}
+        1 & 0 & 1_{n-2}
+    \end{bmatrix}^\top$ with $c \in \mathbb{R}_+$ be the incremental motion orthogonal to the flow. Then, the contraction metric \eqref{eq:osmp:contraction_metric_polar_latent_dynamics} fulfills the orthogonality condition for the stated choice of $\delta y_\mathrm{pol}$~\citep{manchester2014transverse}
+    \begin{equation}\label{eq:osmp:orthogonality_condition_polar_latent_dynamics}
+    \begin{split}
+        \delta_{y_\mathrm{pol}}^\top \, M_\mathrm{pol}(y_\mathrm{pol}) \, f_\mathrm{pol}(y_\mathrm{pol}) = & \: \begin{bmatrix}
+            c & 0 & c \, 1_{1 \times (n-2)}
+        \end{bmatrix} \, \begin{bmatrix}
+            0\\
+            m_{\varphi \varphi}(r) \, f_\omega(\varphi) - \alpha^2 \, \frac{(R^2 - r^2)^2}{R^4 \, f_\omega(\varphi)}\\
+            -\beta \, y_{3:n}
+        \end{bmatrix} = -c \, \beta \, y_{3:n}.\\
+    \end{split}
+    \end{equation}
+    Since $-c \, \beta \, y_{3:n}$ converges uniformly to zero, the orthogonality condition defined in \eqref{eq:osmp:orthogonality_condition_polar_latent_dynamics} converges to zero and is, therefore, fulfilled\footnote{See proof of Theorem~5 in \citep{manchester2014transverse}.}.\\
+    \textbf{Step 3: Transverse contraction condition.} The transverse contraction condition is given by~\citep{manchester2014transverse}
+    \begin{equation}\label{eq:osmp:contraction_condition_polar_latent_dynamics}
+    \begin{split}
+        \delta_{y_\mathrm{pol}}^\top \left ( \frac{\partial f_\mathrm{pol}}{\partial y_\mathrm{pol}}^\top M_\mathrm{pol}(y_\mathrm{pol}) + M_\mathrm{pol}(y_\mathrm{pol}) \, \frac{\partial f_\mathrm{pol}}{\partial y_\mathrm{pol}} + \dot{M}_\mathrm{pol}(y_\mathrm{pol}) + 2 \, \zeta_\mathrm{pol} \, M_\mathrm{pol}(y_\mathrm{pol}) \right ) \delta_{y_\mathrm{pol}} &\leq 0,\\
+        \frac{2 \, c^2}{r^2} \left (\zeta_\mathrm{pol} \left ( r^2 + 1 \right ) - \left ( \frac{2 \, \alpha}{R^2} + \beta \right ) r^2 \right ) & \leq 0,
+    \end{split}
+    \end{equation}
+    where
+    \begin{equation}
+    \begin{split}
+        \frac{\partial f_\mathrm{pol}}{\partial y_\mathrm{pol}} &= \begin{bmatrix}
+            \alpha - 3 \alpha \frac{r^2}{R^2} & 0 & 0_{1 \times (n-2)}\\
+            0 & \frac{f_\omega(\varphi)}{\partial \varphi} & 0_{1 \times (n-2)}\\
+            0_{(n-2) \times 1} & 0_{(n-2) \times 1} & -\beta \, \mathbb{I}_{n-2}
+        \end{bmatrix},\\
+        \dot{M}_\mathrm{pol} &= \begin{bmatrix}
+            % \alpha^2 \frac{1 - \frac{r^4}{R^4}}{\omega \, r}
+            -\frac{2 \alpha}{r^2} + \frac{2 \alpha}{R^2} & \frac{\alpha \left ( R^2-r^2 \right ) \left ( \alpha(R^2+r^2) + R^2 \frac{\partial f_\omega}{\partial \varphi} \right )}{R^4 \, r \,  f_\omega(\varphi)} & 0_{1 \times (n-2)}\\
+           \frac{\alpha \left ( R^2-r^2 \right ) \left ( \alpha(R^2+r^2) + R^2 \frac{\partial f_\omega}{\partial \varphi} \right )}{R^4 \, r \,  f_\omega(\varphi)} & \alpha \frac{R^2-r^2}{R^2} r \frac{\partial m_{\varphi \varphi}}{\partial r} & 0_{1 \times (n-2)}\\
+            0_{(n-2) \times 1} & 0_{(n-2) \times 1} & 0_{(n-2) \times (n-2)}
+        \end{bmatrix}.
+     \end{split}
+    \end{equation}
+    We can simplify \eqref{eq:osmp:contraction_condition_polar_latent_dynamics} to
+    \begin{equation}
+    \begin{split}
+        2 \, c^2 \left ( \zeta_\mathrm{pol} \left ( 1 + \frac{1}{r^2} \right ) - \left ( \frac{2\alpha}{R^2}  + \beta\right ) \right ) \leq 0,\\
+        \zeta_\mathrm{pol} \, \left ( r^2 + 1 \right ) - \left ( \frac{2 \, \alpha}{R^2} + \beta \right ) r^2 \leq 0,\\
+        \zeta_\mathrm{pol}  \leq  \left ( \frac{2 \, \alpha}{R^2} + \beta \right ) \, \frac{r^2}{r^2 + 1}.
+    \end{split}
+    \end{equation}
+    Given $y_\mathrm{pol} \in \mathcal{Y}_\mathrm{pol}$ (i.e., $r \geq r_\epsilon$), we can, therefore, guarantee that the actual contraction rate admits to the lower bound
+    \begin{equation}
+        \zeta_\mathrm{pol} \geq \left ( \frac{2 \, \alpha}{R^2} + \beta \right ) \, \frac{r_\epsilon^2}{r_\epsilon^2 + 1}.
+    \end{equation}
+\end{proof}
+In practical robotics settings, the contraction rate is particularly relevant for the region $r \geq R^2$ (i.e., the system is outside the defined limit cycle contour). In such a setting with $r_\epsilon = R$, the contraction rate is given $\forall r \geq R$ by $\zeta_\mathrm{pol} \geq \frac{2 \alpha + \beta R^2}{R^2 + 1}$ and for $R = 1$ by $\zeta_\mathrm{pol} \geq \alpha + \frac{\beta}{2}$. This illustrates well how the latent dynamics, $\alpha, \beta$, allow us to modulate the contraction behavior of the system.
+
+\paragraph{Proof of Transverse Contraction of Latent Dynamics in Cartesian Coordinates}
+\begin{proposition}\label{prop:osmp:cartesian_latent_dynamics_transverse_contraction}
+    Let $\omega \geq 0$, $\alpha, \beta > 0$, $R > 0$, and $y = \begin{bmatrix}
+    y_1 & y_2 & y_{3:n}^\top
+\end{bmatrix}^\top \in \mathcal{Y}$. Then, the latent dynamics in Cartesian coordinates from \eqref{eq:osmp:latent_dynamics} are transverse contracting under the metric
+    \begin{equation}\label{eq:osmp:contraction_metric_cartesian_latent_dynamics}
+        M_y(y) = \frac{\partial h_{\mathrm{p2c}}}{\partial y_\mathrm{pol}}^{-\top} \, M_\mathrm{pol} \, \frac{\partial h_{\mathrm{p2c}}}{\partial y_\mathrm{pol}}^{-1} \Bigg |_{y_\mathrm{pol} = h_\mathrm{p2c}^{-1}(y)} \succ 0 \in \mathbb{R}^{n \times n},
+    \end{equation}
+    with the contraction rate $\zeta_y \geq \left (\frac{2\alpha}{R^2} + \beta \right ) \, \frac{r_\epsilon^2}{r_\epsilon^2 + 1}$ in the region $\mathcal{Y} = \left \{ y \in \mathbb{R}^n | r_\epsilon \in \mathbb{R}_{>0}, \sqrt{y_1^2 + y_2^2} \geq r_\epsilon \right \}$.
+\end{proposition}
+\begin{proof}
+    Again, the proof consists of three steps: proof of positive-definiteness of the contraction metric, and the fulfillment of the orthogonality and contraction conditions in order to meet the conditions for transverse contraction.\\
+    \textbf{Step 1: Positive definite contraction metric.} As shown in Proposition \ref{prop:osmp:polar_latent_dynamics_transverse_contraction}, $M_\mathrm{pol}(y) \succ 0 \: \forall \, y \in \mathbb{R}^n$. As $M_\mathrm{pol}$ is square and $\mathrm{rank} \left ( \frac{\partial h_{\mathrm{p2c}}}{\partial y_\mathrm{pol}}^{-1} \right ) = n \: \forall y \in \mathcal{Y}$, $M_y(y)$, as defined in \eqref{eq:osmp:contraction_metric_cartesian_latent_dynamics}, is positive definite~\citep{petersen2008matrix}.\\
+    \textbf{Step 2: Orthogonality condition.} Let the incremental motion orthogonal to the flow be defined as
+    \begin{equation}
+        \delta_y = \frac{\partial h_{\mathrm{p2c}}}{\partial y_\mathrm{pol}} \, \delta_{y_\mathrm{pol}} \bigg |_{y_\mathrm{pol} = h_\mathrm{p2c}^{-1}(y)} = c \, \begin{bmatrix}
+        \frac{y_1}{\sqrt{y_1^2 + y_2^2}} & \frac{y_2}{\sqrt{y_1^2 + y_2^2}} & 1
+    \end{bmatrix}^\top.
+    \end{equation}
+    The orthogonality condition is then given by
+    \begin{equation}
+        \delta_y^\top \, M_y(y) \, f_y(y) = -c \, \beta \, y_{3:n}.
+    \end{equation}
+    Since $-c \, \beta \, y_{3:n}$ converges uniformly to zero, the orthogonality condition defined in \eqref{eq:osmp:orthogonality_condition_polar_latent_dynamics} converges to zero.\\
+    \textbf{Step 3: Transverse contraction condition.} 
+    The transverse contraction condition can be stated as
+    \begin{equation}
+    \begin{split}
+        \delta_{y}^\top \left ( \frac{\partial f_y}{\partial y}^\top M_y(y) + M_y(y) \, \frac{\partial f_y}{\partial y} + \dot{M}_y(y) + 2 \, \zeta_y \, M_y(y) \right ) \delta_{y} &\leq 0\\
+        \frac{2 \, c^2}{R^2 \, (y_1^2 + y_2^2)} \left ( - 2 \alpha (y_1^2 + y_2^2) - \beta R^2 (y_1^2 + y_2^2) + \zeta_y R^2 (y_1^2 + y_2^2) + \zeta_y R^2 \right ) & \leq 0,\\
+        -(2\alpha + \beta R^2) (y_1^2 + y_2^2) + \zeta_y R^2 (y_1^2 + y_2^2 + 1)& \leq 0.
+    \end{split}
+    \end{equation}
+    Subsequently, we can isolate the contraction rate in the inequality condition
+    \begin{equation}
+        \zeta_y \leq \left ( \frac{2 \alpha}{R^2} + \beta \right ) \frac{y_1^2+y_2^2}{y_1^2 + y_2^2 + 1}.
+    \end{equation}
+    Now, if we define the contraction region as $\sqrt{y_1^2+y_2^2} \geq r_\epsilon > 0$, we can guarantee a transverse contraction rate $\zeta_y \geq \left (\frac{2\alpha}{R^2} + \beta \right ) \, \frac{r_\epsilon^2}{r_\epsilon^2 + 1} \: \forall y \in \mathcal{Y}$.
+\end{proof}
+
+\paragraph{Proof of Transverse Contraction in Oracle/Original Coordinates}
+\begin{theorem}\label{theorem:osmp:transverse_contraction}
+    Let $\alpha, \beta > 0$, $R > 0$, and $z \in \mathbb{R}$ be constants.
+    Also, choose $f_\mathrm{s}(x) = 1$ and $\omega(\Bar{y}_{1:2}): \mathbb{R}^2 \to \mathbb{R}_{>0}$.
+    Then, the \gls{OSMP} dynamics $\dot{x} = f(x;z)$ defined in \eqref{eq:osmp:dynamics} are transverse contracting 
+    in the region $\mathcal{X} = \left \{ x \in \mathbb{R}^n | \sqrt{\{ \Psi(x,z) \}_1^2 + \{ \Psi(x,z) \}_2^2} > 0 \right \}$.
+\end{theorem}
+\begin{proof}
+    The proof consists of the following steps:
+    \begin{enumerate}
+        \item Proposition~\ref{prop:osmp:polar_latent_dynamics_transverse_contraction} proves that the polar latent dynamics are transverse contracting in the region $\mathcal{Y}_\mathrm{pol} = \left \{ y_\mathrm{pol} \in \mathbb{R}^n | r > 0, \varphi \in [-\pi, \pi) \right \}$.
+        \item Proposition~\ref{prop:osmp:cartesian_latent_dynamics_transverse_contraction} shows that the same transverse contraction properties hold in the Cartesian latent coordinates with dynamics $\dot{y} = f_\mathrm{y}(y)$.
+        \item Existing work~\citep{manchester2017control, mohammadi2024neural, jaffe2024learning} demonstrates that such contraction properties also hold after a change of coordinates $x = \Psi^{-1}(y;z)$ that is defined by a smooth diffeomorphism, which is the case for our encoder based on Euclideanizing flows~\citep{rana2020euclideanizing}. This is equivalent to proving the transverse contraction of the oracle space dynamics as $f_\mathrm{s}(x) = 1$.
+    \end{enumerate}
+\end{proof}
+
+Intuitively, Theorem~\ref{theorem:osmp:transverse_contraction} tells us that two trajectories starting from any initial conditions outside the exact center of the limit cycle will converge exponentially to the same periodic orbit~\citep{manchester2014transverse}, demonstrating almost-global contraction. This, in turn, implies almost-global exponential orbital stability: no matter the initial conditions (as long as they are outside the center of the limit cycle with $r = 0$), the trajectories will reach the stable limit cycle specified by the \gls{OSMP} in exponential time.
+
+\subsection{OSMPs Exhibit a High Imitation Fidelity and Ensure Global Convergence to the Oracle}\label{sub:osmp:osmp_benchmarking}
+
+We conduct both quantitative and qualitative evaluations of \glspl{OSMP} against several baselines. 
+Specifically, we evaluate the transverse contracting/exponentially stable variant of \gls{OSMP} with $f_\mathrm{s}(x) = 1$.
+The baselines include classical neural motion policies—\glspl{MLP}, \glspl{RNN}, and \glspl{LSTM}—that directly predict the next system position, plus \glspl{NODE} \citep{chen2018neural}, which instead predict the desired velocity. We also compare with state-of-the-art robotic imitation-learning methods such as \glspl{DP} that predict system trajectory over a horizon and existing \glspl{SMP} designed for periodic motion, namely Imitation Flows (iFlow) \citep{urain2020imitationflow} and \gls{SPDT}~\citep{zhi2024teaching}, predicting system velocities.
+
+\subsubsection{Training}
+The OSMP motion policy is trained by a AdamW optimizer~\citep{kingma2014adam, loshchilov2018decoupled} with $(\beta_1, \beta_2) = (0.9, 0.999)$ and a default weight decay of $\lambda = 1 0^{-10}$.
+We employ a learning rate scheduler that sequences a linear warmup phase (usually $10$ epochs), with a relatively short constant learning rate period and subsequent long cosine annealing~\citep{loshchilov2016sgdr} period for the remaining epochs. 
+We remark that we don't use a minibatch-based training strategy but instead process all given demonstrations in a single batch.
+Please note that we also apply the described training procedure to the baseline methods if not explicitly mentioned otherwise.
+
+\subsubsection{Datasets}
+In the following, we will introduce the datasets that we considered for the evaluation.
+We note that before training, all positions contained in the datasets are normalized to the interval $[-0.5, 0.5]$ with zero mean.
+
+\paragraph{IROS Letters}
+Originally published by \citet{urain2020imitationflow} and later adopted for benchmarking by \citet{nawaz2024learning}, the IROS Letters dataset provides several demonstrations for each character (\emph{IShape}, \emph{RShape}, \emph{OShape}, and \emph{SShape}), sometimes spanning multiple cycles.
+A noteworthy characteristic is that demonstrations of the same task are widely separated in state space, posing a challenge for deterministic policies. We smooth every trajectory with a Savitzky–Golay filter (order 3, window 8). Because the \emph{IShape} sequence contains very few sample points and large gaps between consecutive states, we upsample it by a factor of 5. The duration of the demonstrations is chosen as \SI{20}{s}.
+
+\paragraph{Drawing2D}
+The Drawing2D dataset introduced by \citet{nawaz2024learning} offers four demonstrations of a kidney‐bean-shaped periodic drawing. We train a separate motion policy for each demonstration, applying the same Savitzky–Golay filter (order 3, window 8) for smoothing. Trajectories are normalised to a SI{20}{s} duration.
+
+\paragraph{Image Contour}
+% We introduce a new benchmarking dataset category for learning period motions based on image contours that ranges from relatively simple contours, such as an Ellipse or Square shape, to very challenging contours such as the TU Delft flame logo, and a Bat and Eagle shape.
+% A significant difference to existing benchmarking datasets, such as the IROS letters~\citep{urain2020imitationflow} or the Drawing2D dataset~\citep{nawaz2024learning}, is that these oracles contain sharp turns (e.g., Star, Bat), which are particularly challenging for most DMP-based methods, highly curved concave contours (e.g., TUD-Flame), and discontinuous velocity profiles (e.g., Star, Bat, Eagle).
+% 
+% The full list of image contours is: Ellipse, Square, Star, MIT-CSAIL, TUD-Flame, Doge, Bat, Dolphin, and Eagle.
+% We extract the contour from the image using OpenCV~\citep{opencv_library} and subsequently slightly smooth the trajectory using a Savitzky–Golay filter of order three and window size $25$.
+% All trajectories have a duration of 20s.
+We contribute a new benchmark category based on image contours that range from simple shapes (Ellipse, Square) to highly intricate outlines such as the TU Delft flame logo, Bat, and Eagle. Compared to prior benchmarks like IROS Letters~\citep{urain2020imitationflow} and Drawing2D~\citep{nawaz2024learning}, these oracles introduce sharp corners (e.g., Star, Bat), strongly concave curves (e.g., TUD‐Flame), and discontinuous velocity profiles (e.g., Star, Bat, Eagle), all of which are difficult for most DMP-based approaches.
+We extract each outline with OpenCV~\citep{bradski2000opencv} and lightly smooth it using a Savitzky–Golay filter (order 3, window 25). Every trajectory lasts 20 s.
+% 
+The list of image contours is: Ellipse, Square, Star, MIT‐CSAIL, TUD‐Flame, Doge, Bat, Dolphin, and Eagle. 
+
+\paragraph{Turtle Swimming}
+This category contains four datasets.
+\textbf{(i)} The first two comprise Cartesian trajectories of the flipper tip of wild green sea turtles (Chelonia mydas) captured by marine biologists~\citep{van2022new} and represented by Fourier series. We train on two variants: position only (3-D oracle) and position plus twist angle (4-D oracle), each with a period of \SI{4.2}{s}.
+\textbf{(ii)} A subsequent dataset from the same authors applies inverse kinematics to those trajectories, yielding a three-joint-space oracle for bioinspired robotic turtles\citep{van2023soft}. After smoothing with a 30th-degree polynomial, we compute velocities; this oracle has a \SI{4.3}{s} period.
+\textbf{(iii)} Finally, we include a reverse-swimming template defined in joint space by sinusoidal functions, with a \SI{4}{s} period. This template was designed by constructing waypoints to produce "reverse rowing" movement patterns, interpolating between them with a spline, and finally approximating the trajectory with a Fourier fit.
+
+% An important differentiating factor from existing periodic demonstration datasets is that the velocity profile is crucial and highly influential on the task behavior (i.e., the actual swimming): if the velocity is off, then, the cost of transport is increased, and in the worst case, the turtle robot doesn't swim or even swims in the wrong direction.
+A key distinction from previous periodic-motion datasets is the pivotal influence of the velocity profile on swimming performance: if the velocity profile with which the trajectory is executed is wrong, the cost of transport rises, and in extreme cases, the turtle robot either stalls or even moves in the opposite direction.
+
+\subsubsection{Baseline Methods}
+Next, we formalize the baseline methods that we used during the evaluation.
+\paragraph{Trajectory Tracking PD Controller}
+A classical error-based feedback controller tracking a time-parametrized trajectory $(x^\mathrm{d}(t), \dot{x}^\mathrm{d}(t), \ddot{x}^\mathrm{d}(t)) \: \forall \: t \in [t_0, t_\mathrm{f}]$, referred to in this thesis as \gls{TT}, is usually given in the form
+\begin{equation}\label{eq:osmp:trajectory_tracking_controller}
+    \dot{x}(t) = \dot{x}^\mathrm{d}(t) + K_\mathrm{p} \, (x^\mathrm{d}(t) - x(t)),
+\end{equation}
+where $K_\mathrm{p} \in \mathbb{R}^{n \times n}$ is a proportional feedback gain that operates on the error between the current position $x(t)$ and the desired position $x^\mathrm{d}(t)$. In practice, we choose a scalar $k_\mathrm{p} \in \mathbb{R}_+$ such that $K_\mathrm{p} = k_\mathrm{p} \, \mathbb{I}_{n}$.
+
+\paragraph{Multilayer Perceptron (MLP)}
+As the most basic neural motion policy, we consider an \gls{MLP} that predicts the next position/state of the system according to the discrete transition function $x(k+1) = f_\mathrm{MLP}(x)$. We employ a five-layer MLP with a hidden dimension of $128$ and a LeakyReLU activation function.
+During training, we randomly sample at the start of each epoch $N_\mathrm{init} = 64$ initial positions from the oracles contained in the dataset. Subsequently, we roll out each trajectory for $T = 25$ steps and enforce an \gls{MSE} loss between the predicted $x_i(k)$ and demonstrated trajectory $x_i^\mathrm{d}(k)$
+\begin{equation}
+    \mathcal{L}_\mathrm{ro} = \frac{\sum_{i = 1}^{N_\mathrm{init}}\sum_{k=1}^{T} \left ( x_i(k) - x_i^\mathrm{d}(k) \right )^2}{N_\mathrm{init} \, K}.
+\end{equation}
+
+\paragraph{Recurrent Neural Networks (RNNs, LSTM)}
+For the RNN-like networks (i.e., Elman \gls{RNN} \& \gls{LSTM}), we employ a five-layer recurrent neural network with a hidden dimension of $128$.
+For example, in the case of the Elman \gls{RNN}, the transition function of the hidden state $h_j \in \mathbb{R}^{128}$ of the $j$th layer is given by
+\begin{equation}
+    h_j(k) = \tanh \left (W_\mathrm{xh} \, u_j(k) + W_\mathrm{hh} \, h_j(k-1) + b \right ).
+\end{equation}
+Here, $u_j(k)$ is the input to the $j$th layer such that $u_1(k) = x(k)$ and $u_j(k) = h_{j-1}(k) \: \forall \, j \in 2, \dots, 5$ and the output of the \gls{RNN} (i.e., the next state prediction) is given by $x(k+1) = W_\mathrm{o} \, h_5(k)$, where $W_\mathrm{o} \in \mathbb{R}^{n \times 128}$ is a learned matrix.
+For training, we use the same rollout procedure and loss $\mathcal{L}_\mathrm{ro}$ as in the case of the discrete MLP motion policy, with the difference that we initialize the RNN's concatenated hidden state $h = \begin{bmatrix}
+    h_1^\top & \dots & h_5^\top
+\end{bmatrix}^\top$ as $h(1) = 0_{640}$ at the beginning of the trajectory and subsequently propagate through each of the $25$ transitions. 
+
+\paragraph{Neural ODE (NODE)}
+A \gls{NODE}-based motion policy can be defined as $\dot{x} = f_\mathrm{NODE}(x)$ where $f_\mathrm{NODE}(x): \mathbb{R}^n \to \mathbb{R}^n$ is parametrized by an MLP. Specifically, we choose a five-layer MLP with hidden dimensions of $128$ and LeakyReLU activation functions.
+In addition to supervising the predicted velocity via $\mathcal{L}_\mathrm{vi}$, we compute position-based losses based on rolled-out trajectories analogous to the MLP and RNNs obtained via forward Euler integration of $f_\mathrm{NODE}(x)$.
+
+\paragraph{Diffusion Policy (DP)}
+We use the official open-source implementation of \glspl{DP}~\citep{chi2023diffusion} and train them on the respective datasets for $250$ epochs while employing a batch size of $256$, an AdamW~\citep{kingma2014adam, loshchilov2018decoupled} optimizer configured with a learning rate of $10^{-4}$, a weight decay of $10^{-6}$, and $(\beta_1, \beta_2) = (0.95, 0.999)$ and a cosine learning rate scheduler with $10$ warmup steps. For this task, we define the observation as the current and last position of the system $o(k) = \begin{bmatrix}
+    x^\top(k-1) & x^\top(k)
+\end{bmatrix}^\top \in \mathbb{R}^{2n}$ and the action as the positional state of the system $a = x \in \mathbb{R}^{n}$. For each observation $o(k)$, the DP is trained to predict a sequence of $h=16$ actions $a(k+1), \dots a(k+h)$, of which during inference only eight actions are executed before replanning takes place.
+The sampled noise is denoised in a sequence of $100$ steps via a Denoising Diffusion Probabilistic Models (DDPMs) \texttt{squaredcos\_cap\_v2} scheduler~\citep{ho2020denoising}. 
+The noise samples are clipped to the range $[-1, 1]$ and the noise prediction network is parametrized by a 1D UNet~\citep{ronneberger2015u} with dimension $(256, 512, 1024)$, kernel size $5$ and global conditioning on the observation $o(k)$. 
+
+\paragraph{Imitation Flows (iFlow)}
+We leverage the official iFlow~\citep{urain2020imitationflow} implementation for the training on the considered dataset. Specifically, we train the model with a normalizing flows~\citep{rezende2015variational} bijective encoder consisting of $15$ ResNet coupling layers for $1000$ epochs with a batch size of $100$ using an Adamax~\citep{kingma2014adam} optimizer with learning rate $10^{-3}$ and $(\beta_1, \beta_2) = (0.9, 0.999)$.
+To define the dynamics in latent space, the method uses a stochastic variant of linear polar limit cycle dynamics transformed into Cartesian coordinates.
+
+\paragraph{Stable Periodic Diagrammatic Teaching (SPDT)}
+The model architecture of \gls{SPDT}~\citep{zhi2024teaching} is very similar to \glspl{OSMP}, apart from the parametric angular velocity. Furthermore, in addition to  advanced features, such as online shaping of the learned motion, phase synchronization, and motion/task conditioning, that \glspl{OSMP} exhibit, the main difference in training a \gls{SPDT} lies in the loss function: Instead of employing a velocity imitation loss $\mathcal{L}_\mathrm{vi}$, a limit cycle matching loss $\mathcal{L}_\mathrm{lcm}$, a time reference guidance loss $\mathcal{L}_\mathrm{trg}$, and velocity regularization loss $\mathcal{L}_\mathrm{vr}$, \gls{SPDT} in mainly relies on on the Hausdorff distance to ensure that the encoded demonstrations match the limit cycle defined in latent space
+\begin{equation}
+     \mathcal{L}_\mathrm{haus} \;:=\; \max \left \{ \max_{k\in\mathbb{N}_N}\; \min_{\kappa\in\mathbb{N}_N} \; d_y(k, \kappa), \max_{\kappa \in\mathbb{N}_N}\; \min_{k\in\mathbb{N}_N} \; d_y(\kappa, k) \right \},
+\end{equation}
+where
+\begin{equation}
+    d_y(k, \kappa) = \lVert \Psi(x(k);z(k)) - y^\mathrm{d}(\kappa) \rVert_2,
+\end{equation}
+and $y^\mathrm{d}(k) = \begin{bmatrix}
+    r \, \cos(\varphi(k)) & r \, \sin(\varphi(k)) & 0_{n-2}^\top
+\end{bmatrix}^\top \in \mathbb{R}^n \: \forall \, k \in \mathbb{N}_n$ is a sequence of length $N$ of positions on the latent-space limit cycle obtained via arranging equally-spaced polar angles $\varphi^\mathrm{d}(k) \in [-\pi, \pi)$ and subsequently projecting them back into cartesian space with radius $r = R$.
+Additionally, the method also employs the encoder regularization loss $\mathcal{L}_\mathrm{er}$.
+% Additionally, the method minimizes an encoder regularization loss
+% \begin{equation}
+%     \mathcal{L}_{\Psi, \mathrm{reg}} = \sum_{k=1}^{N} \frac{\lVert x^\mathrm{d} % - \Psi(x^\mathrm{d};z) \rVert}{N},
+% \end{equation}
+% that penalizes deviations from an identity encoder $y = \Psi(x) = x$.
+
+\subsubsection{Imitation Metrics}
+We adopt several metrics from the literature that measure how well the motion policy is able to track the given demonstration, both along the time and spatial dimensions.
+For all metrics, we initialize the motion policy at the starting position of the demonstration (i.e., $x(1) = x^\mathrm{d}(1)$) and subsequently roll out the motion for $N$ steps (i.e., as many steps as included in the demonstration). Subsequently, we evaluate the mismatch between the actual $x(k)  \in \mathbb{R}^n \: \forall \, k \in \mathbb{N}_N$ and desired trajectory $x^\mathrm{d}(k) \in \mathbb{R}^n \: \forall \, k \in \mathbb{N}_N$, where we define $\mathbb{N}_N = 1,\dots,N$. In case a dataset contains multiple demonstrations, we separately initialize the motion policy at the starting point of each demonstration and report the mean of the metrics across all demonstrations.
+Please note that we compute all evaluation metrics on the normalized datasets (i.e., with the positions normalized into the range $[-0.5, 0.5]$), which makes it easier to compare and aggregate metrics across several datasets within the same dataset category.
+For all imitation metrics, we rely on the Python implementation by \citet{jekel2019similarity} open-sourced in the \texttt{similaritymeasures} package.
+
+\paragraph{Trajectory RMSE}
+The \emph{Trajectory Root Mean Square Error (Traj. \gls{RMSE})}, used, for example, by \citet{khadivar2021learning}, measures the deviation of the actual from the nominal trajectory in position space and is computed as
+\begin{equation}
+    \mathrm{RMSE}_\mathrm{x}\left (\{x(k)\}_{k\in\mathbb{N}_N},\{x^{\mathrm d}(k)\}_{k\in\mathbb{N}_N} \right ) := \sum_{k=1}^{N} \sum_{i=1}^{n} \frac{\left ( x_i^\mathrm{d}(k) - x_i(k) \right )^2}{N \, n}.
+\end{equation}
+
+\paragraph{Normalized Trajectory DTW}
+\gls{DTW}~\citep{sakoe1978dynamic} searches across all allowable temporal warpings to identify the alignment that minimizes the Euclidean distance between two time series and is used frequently to benchmark imitation learning and behavioral cloning algorithms in robotics~\citep{urain2020imitationflow, perez2023stable, nawaz2024learning} is defined as
+\begin{equation}\label{eq:osmp:dtw}
+    \mathrm{DTW}_\mathrm{x}\left (\{x(k)\}_{k\in\mathbb{N}_N},\{x^{\mathrm d}(k)\}_{k\in\mathbb{N}_N} \right ) := \min_{\pi}\;\sum_{(k, \kappa) \in \pi} \left \lVert x^{d}(k)-x(\kappa) \right \rVert_2.
+\end{equation}
+where $\pi = ((k_1, \kappa_1), \dots, (k_N, \kappa_N))$ is commonly referred to as the alignment path of length $N$ that contains the sequence of index pairs\footnote{Although \gls{DTW} is formally not a valid mathematical metric and instead a similarity measure as the triangle inequality doesn't hold, we refer to it here for convenience as one of the evaluation metrics.}. In order for $\pi$ to be a valid alignment path, it needs to fulfill the following constraints
+\begin{equation}
+\begin{split}
+    \pi_1 = (k_1, \kappa_1) = (1,1),
+    \qquad
+    \pi_N = (k_1, \kappa_1) = (N,N),\\
+    k_{\iota+1} - k_{\iota} \in \{0, 1\}, 
+    \quad 
+    \kappa_{\iota+1} - \kappa_{\iota} \in \{0, 1\},
+    \quad
+    k_{\iota+1} - k_{\iota} + \kappa_{\iota+1} - \kappa_{\iota} \geq 1,
+\end{split}
+\end{equation}
+where the first row contains constraints that ensure that the beginning and the end of each sequence are connected, and the second row verifies that the indices are monotonically increasing in both $k$ and $\kappa$ and are contained in the sequence at least once.
+However, as can be seen in \eqref{eq:osmp:dtw}, the magnitude of the \gls{DTW} is proportional to the demonstration length $N$, which makes it challenging to aggregate the measure across several datasets of varying demonstration lengths. Therefore, we instead compute a normalized version of the \gls{DTW}, the \emph{Normalized Trajectory Dynamic Time Warping} measure, as
+\begin{equation}
+    \mathrm{NDTW}_\mathrm{x}\left (\{x(k)\}_{k\in\mathbb{N}_N},\{x^{\mathrm d}(k)\}_{k\in\mathbb{N}_N} \right ) = \frac{1}{N} \, \mathrm{DTW}_\mathrm{x}\left (\{x(k)\}_{k\in\mathbb{N}_N},\{x^{\mathrm d}(k)\}_{k\in\mathbb{N}_N} \right ).
+\end{equation}
+
+\paragraph{Fréchet Distance}
+Let the Minkowski distance between two points be given by
+\begin{equation}
+    d_{\mathrm{m},p}(x(k), x^\mathrm{d}(\kappa)) = \lVert x(k) - x^\mathrm{d}(\kappa) \rVert_p = \left ( \sum_{i=1}^n \left | x_i(k) - x_i^\mathrm{d}(\kappa) \right |^p \right )^{\frac{1}{p}} \: \forall \, k, \kappa \in\mathbb{N}_N,
+\end{equation}
+where we choose the Minkowski order $p = 2$. Then, for all monotone lattices paths $\sigma$ from $(1,1)$ to $(N, N)$ that move only right, up, or diagonally-up-right, the Fréchet distance is given by~\citep{eiter1994computing}
+\begin{equation}
+    D_\mathrm{F}\left (\{x(k)\}_{k\in\mathbb{N}_N},\{x^{\mathrm d}(k)\}_{k\in\mathbb{N}_N} \right ) := \min_{\sigma} \max_{(k,\kappa) \in \sigma} d_{\mathrm{m},p}(x(k), x^\mathrm{d}(\kappa)).
+\end{equation}
+
+\paragraph{Velocity RMSE}
+The \emph{Velocity Root Mean Square Error (Vel. \gls{RMSE})} measures the deviation of the actual from the nominal velocities along the trajectory and is computed as
+\begin{equation}
+    \mathrm{RMSE}_\mathrm{\dot{x}}\left (\{\dot{x}(k)\}_{k\in\mathbb{N}_N},\{\dot{x}^{\mathrm d}(k)\}_{k\in\mathbb{N}_N} \right ) := \sum_{k=1}^{N}  \sum_{i=1}^{n} \frac{\left ( \dot{x}_i^\mathrm{d}(k) - \dot{x}_i(k) \right )^2}{N \, n},
+\end{equation}
+where $\dot{x}(k)$ is either directly given by the motion policy (e.g., \gls{DMP}, \gls{OSMP}, \gls{NODE}) or obtained via finite differences as $\dot{x}(k) = \frac{x(k) - x(k-1)}{\delta t}$ (e.g., \gls{DP}~\citep{chi2023diffusion}).
+This metric is particularly relevant for tasks in which it is crucial that the demonstrated velocity, and not just trajectory, is accurately tracked, as in the case of turtle swimming.
+
+\subsubsection{Convergence Metrics}
+% The goal of the convergence analysis is twofold: (i) does the method exhibit a (orbitally) stable behavior and converge to a stable limit cycle from any initial condition within the workspace, and (ii) does the obtained limit cycle correspond to the desired oracle? Opposite to the imitation metrics, we do not aim to evaluate here the time corresponding or velocity profile of the obtained motion, but instead focus on the motion trajectory.
+% To the best of our knowledge, no established procedure exists to evaluate the orbital convergence characteristics of rhythmic motion policies. 
+Our convergence study pursues two questions: (i) Does the method display orbital stability, converging to a stable limit cycle from any initial state in the workspace? and (ii) Does that limit cycle coincide with the desired oracle? Unlike the imitation metrics, we do not examine timing or velocity profiles; our attention is restricted to the geometric path of the motion. To the best of our knowledge, no standardized protocol yet exists for gauging the orbital-convergence behavior of rhythmic motion policies. Therefore, we devised a protocol based on several rollouts from randomly sampled initial conditions that verifies both the local and global convergence characteristics of the motion policy, which we describe in more detail in the next paragraph.
+We evaluate the convergence metrics on all rollouts and subsequently compute the mean value over the resulting trajectories.
+
+\paragraph{Local vs. Global Convergence}
+We evaluate both local and global convergence characteristics of the motion policies.
+In both cases, we sample randomly $25$ positions $x^\mathrm{d}(\kappa) \: \forall \kappa \in 1,\dots,25$ from the set of positions contained in the demonstration $x^\mathrm{d}(k) \forall k \in 1,\dots,N$. Subsequently, we sample an offset $\Delta x_\kappa \sim \mathcal{N}(0,\sigma) \in \mathbb{R}^n$. Now, we consider $x_\kappa(1) = x^\mathrm{d}(\kappa) + \Delta x_\kappa$ as the initial position for the rollout of the motion policy.
+For the local convergence analysis, we initialize close to the demonstration by choosing $\sigma = 0.05$. For the global convergence analysis, we select instead $\sigma = 0.15$.
+
+Subsequently, we roll out the motion policy for $N$ and $2N$ steps for the local and global convergence analysis, respectively, resulting in the trajectory sequences $(x_\kappa(1), \dots, x_\kappa(N))$ and $(x_\kappa(1), \dots, x_\kappa(2N))$. For the global convergence, we strive to give the motion policy sufficient time to converge to its limit cycle, and therefore, only evaluate the metrics on the trajectory after the demonstration duration - i.e., we compute the metric on the trajectory sequence $(x_\kappa(N+1), \dots, x_\kappa(2N))$. For simplicity of notation, we assume in the following a reset of time indices such that $k = k-N$.
+
+\paragraph{Directed Hausdorff Distance}
+The directed Hausdorff distance~\citep{hausdorff1914grundzuge, huttenlocher1993comparing} computes the largest distance between closest-neighbor correspondences from the actual convergence trajectory to the desired limit cycle
+\begin{equation}
+    h^{\rightarrow}\! \left (\{x(k)\}_{k \in\mathbb{N}_N},\{x^{\mathrm d}(\kappa)\}_{\kappa\in\mathbb{N}_N} \right ) \;:=\; \max_{k\in\mathbb{N}_N}\; \min_{\kappa\in\mathbb{N}_N} \; \left \lVert \,x(k)-x^{\mathrm d}(\kappa) \right \rVert_2.
+\end{equation}
+The undirected/symmetric version of the Hausdorff distance was used by \citet{zhi2024teaching} for evaluating the similarity between the desired and actual trajectory shape.
+
+
+\paragraph{Iterative Closest Point MED}
+We use an \gls{ICP} algorithm~\citep{besl1992method} to identify the optimal alignment between the two sequences $x^\mathrm{d}(k) \: \forall \, k \in 1,\dots,N$ and $x(\kappa) \: \forall \, \kappa \in 1,\dots,N$ containing the desired limit cycle shape (i.e., the demonstration) and the actual (asymptotic) behavior generated by the motion policy, respectively, by iteratively estimating the transformation, consisting of a translation and a rotation, between the two shapes.
+After initializing the translation between the points as $p_0 = 0_n$ and the rotation as $R = \mathbb{I}_n$, each iteration of the \gls{ICP} algorithm performs two steps
+\begin{equation}
+\begin{aligned}
+\textbf{(correspondence-search step)}\qquad
+      c_{m}(k) &:= 
+      \arg\min_{\kappa \in N}\,
+          \bigl\|\,x(k)\;-\;
+          \bigl(R_{m-1}\,x^\mathrm{d}(\kappa)+p_{m-1}\bigr)\bigr\|_2 ,
+      \\[6pt]
+\textbf{(alignment step)}\qquad
+      (R_{m},p_{m}) &:=
+      \arg\min_{\substack{R\in SO(n)\\ p \in\mathbb{R}^{n}}}
+          \sum_{k = 1}^n
+          \bigl\|\,x(k)\;-\;
+          \bigl(R\,x^\mathrm{d}\bigl(c_{m}(k)\bigr)+p\bigr)\bigr\|_2^{2},
+\end{aligned}
+\end{equation}
+where the nearest-neighborhood correspondence-search returns a correspondence map $c: N \to N$ that provides for each point $x(k)$ on the actual trajectory the closest point on the desired shape $x^\mathrm{d}(c(k))$. The \emph{alignment-step} identifies the optimal transformation that aligns the two point sequences and is, in practice, implemented using a closed-form SVD step.
+After the algorithm has converged to $\hat{c}:=c_{m^{\star}}$, $\hat{R}:=R_{m^{\star}}$, and $\hat{p}:=p_{m^{\star}}$, the \gls{MED} between the two aligned shapes is computed as
+\begin{equation}
+    \mathrm{MED}_\mathrm{conv}\left (\{x(k)\}_{k\in\mathbb{N}_N},\{x^{\mathrm d}(k)\}_{k\in\mathbb{N}_N} \right ) = \sum_{k=1}^{N} \frac{\left \lVert x(k)\;-\;
+          \bigl(\hat{R}\,x^\mathrm{d}\bigl(c_{m}(k)\bigr)+\hat{p}\bigr) \right \rVert_2}{N}.
+\end{equation}
+% Please note that while the ICP-based MED is suitable for evaluating the similarity between the shape of the desired and the actual limit cycle, the algorithm's computation of a common point translation that minimize the point distances, would appear two identical shapes, but offset by a translation, to exhibit a zero ICP MED error, although the actual limit cycle would be offset from the demonstration.
+Please note that \gls{ICP}-based \gls{MED} is designed to compare the shape of the desired and measured limit cycles. Because the algorithm also finds a single translation that minimizes the point-to-point distances, two identical shapes that are simply shifted in space will still produce an MED of zero, even though the measured limit cycle is displaced relative to the demonstration.
+Therefore, it is crucial to also always evaluate other metrics, such as the directed Hausdorff distance.
+
+\begin{table}[htbp]\centering
+    \centering
+    % Captions go above tables
+    \caption{\textbf{Orbitally Stable Motion Primitives (\glspl{OSMP}) provide the best tradeoff between imitation accuracy, global convergence characteristics, and computational time when compared to classical neural motion policies (e.g., \glspl{MLP}, \glspl{RNN}, \glspl{NODE}), current SOTA algorithms such as \glspl{DP}~\citep{chi2023diffusion}, and prior work on period motion policies with stability guarantees (e.g., iFlow~\citep{urain2020imitationflow}, \gls{SPDT}~\citep{zhi2024teaching})}. We report the mean $\pm$ std across three random seeds for each dataset/method evaluation. Entries marked with a $^*$ diverged for some random seeds, and we only report the statistics for the seeds that converged. We label other cases where all random seeds diverged or exhibited extremely high errors using the \emph{$\infty$} symbol.}
+    \label{tab:osmp:benchmarking_quantitative_results} % give each table a logical label name
+    \setlength{\tabcolsep}{2.0pt}   % tweak column padding (optional)
+    \renewcommand{\arraystretch}{1.2} % tweak row height   (optional)
+    \begin{tiny}
+    \begin{tabular}{|l|l|ccc|cc|cc|c|}   % vertical rules match your sketch
+    \toprule
+    & & \multicolumn{3}{c|}{\textbf{Imitation Metrics}} & \multicolumn{2}{c|}{\textbf{Local Convergence Metrics}} & \multicolumn{2}{c|}{\textbf{Global Convergence Metrics}} & \textbf{Eval. Time}\\
+    \textbf{Dataset Category} & \textbf{Method} & \textbf{Traj. RMSE~$\downarrow$} & \textbf{Norm. Traj. \gls{RMSE}~$\downarrow$} & \textbf{Vel. RMSE~$\downarrow$} & \textbf{Hausdorff Dist.~$\downarrow$} & \textbf{\gls{ICP} \gls{MED}~$\downarrow$} & \textbf{Hausdorff Dist.~$\downarrow$} & \textbf{\gls{ICP} \gls{MED}~$\downarrow$} & \textbf{per Step~$\downarrow$}\\
+    \midrule
+    \multirow{8}{*}{IROS Letters} & MLP & $0.257 \pm 0.011$ & $0.0745 \pm 0.0042$ & $0.630 \pm 0.011$ & $0.049 \pm 0.003$ & $0.011 \pm 0.000$ & $0.039 \pm 0.003$ & $0.011 \pm 0.000$ & $0.0017$\\
+    & Elman \gls{RNN} & $0.267 \pm 0.011$ & $0.0935 \pm 0.0286$ & $0.680 \pm 0.004$ & $0.092 \pm 0.011$ & $0.013 \pm 0.002$ & $0.048 \pm 0.014$ & $0.013 \pm 0.003$ & $0.0009$\\
+    & \gls{LSTM} & $0.406 \pm 0.058$ & $0.2719 \pm 0.0473$ & $0.777 \pm 0.055$ & $0.267 \pm 0.104$ & $0.032 \pm 0.008$ & $0.149 \pm 0.050$ & $0.019 \pm 0.008$ & $0.0010$\\
+    & \gls{NODE} & $0.751 \pm 0.573$ & $0.5894 \pm 0.5618$ & $0.856 \pm 0.062$ & $\infty$ & $\infty$ & $\infty$ & $\infty$ & $0.0009$\\
+    & \gls{DP} & $\mathbf{0.255 \pm 0.004}$ & $\mathbf{0.0891 \pm 0.0029}$ & $\mathbf{0.648 \pm 0.004}$ & $0.103 \pm 0.001$ & $0.024 \pm 0.001$ & $0.101 \pm 0.001$ & $0.024 \pm 0.001$ & $0.0272$\\
+    & iFlow & $0.783 \pm 0.481$ & $0.6832 \pm 0.6326$ & $1.317 \pm 0.895$ & $1.248 \pm 1.201$ & $0.441 \pm 0.449$ & $1.242 \pm 1.204$ & $0.441 \pm 0.449$ & $\mathbf{0.0007}$\\
+    & \gls{SPDT} & $0.374 \pm 0.002$ & $0.1406 \pm 0.0017$ & $0.707 \pm 0.004$ & $0.103 \pm 0.002$ & $0.027 \pm 0.001$ & $0.098 \pm 0.003$ & $0.027 \pm 0.001$ & $0.0019$\\
+    & \textbf{OSMP (ours)} & $0.344 \pm 0.007$ & $0.1759 \pm 0.0010$ & $0.895 \pm 0.007$ & $\mathbf{0.044 \pm 0.001}$ & $\mathbf{0.010 \pm 0.000}$ & $\mathbf{0.032 \pm 0.001}$ & $\mathbf{0.009 \pm 0.000}$ & $0.0020$\\
+    \midrule
+    \multirow{8}{*}{Drawing2D} & MLP & $\mathbf{0.039 \pm 0.004}$ &$\mathbf{0.0060 \pm 0.0002}$ & $\mathbf{0.071 \pm 0.004}$ & $0.046 \pm 0.003$ & $\mathbf{0.005 \pm 0.000}$ & $\mathbf{0.015 \pm 0.001}$ & $\mathbf{0.004 \pm 0.000}$ & $0.0008$\\
+    & Elman \gls{RNN} & $0.109 \pm 0.009$ & $0.0457 \pm 0.0382$ & $0.199 \pm 0.011$ & $0.119 \pm 0.002$ & $0.012 \pm 0.001$ & $0.041 \pm 0.003$ & $0.009 \pm 0.003$ & $0.0007$\\
+    & \gls{LSTM} & $0.384 \pm 0.039$ & $0.2891 \pm 0.0911$ & $0.482 \pm 0.121$ & $0.191 \pm 0.021$ & $0.017 \pm 0.004$ & $0.079 \pm 0.043$ & $0.006 \pm 0.005$ & $0.0008$\\
+    & \gls{NODE} & $0.075 \pm 0.039$ & $0.0279 \pm 0.0300$ & $0.093 \pm 0.028$ & $\infty$ & $\infty$ & $\infty$ & $\infty$ & $0.0008$\\
+    & \gls{DP} & $0.178 \pm 0.028$ & $0.0858 \pm 0.0238$ & $0.245 \pm 0.015$ & $0.156 \pm 0.007$ & $0.031 \pm 0.001$ & $0.154 \pm 0.006$ & $0.030 \pm 0.001$ & $0.0494$\\
+    & iFlow & $0.337 \pm 0.264$ & $0.2526 \pm 0.3407$ & $0.347 \pm 0.296$ & $0.921 \pm 1.238$ & $0.124 \pm 0.166$ & $0.907 \pm 1.243$ & $0.124 \pm 0.166$ & $\mathbf{0.0007}$\\
+    & \gls{SPDT} & $0.462 \pm 0.001$ & $0.2866 \pm 0.0020$ & $0.528 \pm 0.019$ & $0.070^* \pm 0.022^*$ & $0.014^* \pm 0.006^*$ & $0.049^* \pm 0.025^*$ & $0.014^* \pm 0.006^*$ & $0.0017$\\
+    & \textbf{OSMP (ours)} & $0.053 \pm 0.002$ & $0.0062 \pm 0.0001$ & $0.081 \pm 0.000$ & $\mathbf{0.040 \pm 0.000}$ & $\mathbf{0.005 \pm 0.000}$ & $\mathbf{0.016 \pm 0.000}$ & $\mathbf{0.004 \pm 0.000}$ & $0.0019$\\
+    \midrule
+    \multirow{8}{*}{Image Cont.} & MLP & $0.124 \pm 0.023$ & $0.1049 \pm 0.0237$ & $0.106 \pm 0.004$ & $0.051 \pm 0.003$ & $0.006 \pm 0.001$ & $0.030 \pm 0.005$ & $0.004 \pm 0.001$ & $0.0012$\\
+    & Elman \gls{RNN} & $0.318 \pm 0.021$ & $0.2793 \pm 0.0197$ & $0.397 \pm 0.034$ & $0.118 \pm 0.013$ & $0.010 \pm 0.000$ & $0.059 \pm 0.020$ & $0.004 \pm 0.002$ & $0.0012$\\
+    & \gls{LSTM} & $0.494 \pm 0.024$ & $0.5415 \pm 0.0071$ & $0.719 \pm 0.073$ & $0.220 \pm 0.023$ & $0.012 \pm 0.004$ & $0.098 \pm 0.032$ & $0.003 \pm 0.002$ & $0.0385$\\
+    & \gls{NODE} & $\infty$ & $\infty$ & $\infty$ & $\infty$ & $\infty$ & $\infty$ & $\infty$ & $\mathbf{0.0009}$\\
+    & \gls{DP} & $0.158 \pm 0.016$ & $0.0928 \pm 0.0078$ & $0.228 \pm 0.008$ & $0.113 \pm 0.005$ & $0.023 \pm 0.002$ & $0.125 \pm 0.005$ & $0.019 \pm 0.001$ & $0.0410$\\
+    & iFlow & $0.337 \pm 0.114$ & $0.2342 \pm 0.1799$ & $0.792 \pm 0.280$ & $0.688 \pm 0.608$ & $0.047 \pm 0.045$ & $0.679 \pm 0.613$ & $0.047 \pm 0.045$ & $0.0014$\\
+    & \gls{SPDT} & $0.433 \pm 0.000$ & $0.3453 \pm 0.0005$ & $0.454 \pm 0.009$ & $0.114 \pm 0.014$ & $0.024 \pm 0.000$ & $0.094^* \pm 0.002^*$ & $0.023^* \pm 0.001^*$ & $0.0027$\\
+    & \textbf{OSMP (ours)} & $\mathbf{0.033 \pm 0.009}$ & $\mathbf{0.0129 \pm 0.0086}$ & $\mathbf{0.050 \pm 0.001}$ & $\mathbf{0.043 \pm 0.002}$ & $\mathbf{0.004 \pm 0.001}$ & $\mathbf{0.016 \pm 0.002}$ & $\mathbf{0.003 \pm 0.000}$ & $0.0028$\\
+    \midrule
+    \multirow{8}{*}{Turtle Swim.} & MLP & $0.138 \pm 0.001$ & $0.2089 \pm 0.0003$ & $0.294 \pm 0.003$ & $\mathbf{0.084 \pm 0.001}$ & $\mathbf{0.112 \pm 0.041}$ & $\mathbf{0.036 \pm 0.009}$ & $\mathbf{0.089 \pm 0.062}$ & $0.0008$\\
+    & Elman \gls{RNN} & $0.174 \pm 0.021$ & $0.1756 \pm 0.0286$ & $1.165 \pm 0.120$ & $0.177 \pm 0.037$ & $0.126 \pm 0.020$ & $0.109 \pm 0.056$ & $0.120 \pm 0.013$ & $\mathbf{0.0006}$\\
+    & \gls{LSTM} & $0.476 \pm 0.096$ & $0.5712 \pm 0.2284$ & $2.748 \pm 0.518$ & $0.317 \pm 0.095$ & $0.042 \pm 0.020$ & $0.101 \pm 0.070$ & $0.008 \pm 0.009$ & $0.0008$\\
+    & \gls{NODE} & $0.085 \pm 0.022$ & $0.0621 \pm 0.0223$ & $0.236 \pm 0.016$ & $5.133 \pm 1.414$ & $1.085 \pm 0.247$ & $3198 \pm 1800$ & $599 \pm 332$ & $0.0007$\\
+    & \gls{DP} & $0.211 \pm 0.014$ & $0.1813 \pm 0.0526$ & $1.511 \pm 0.175$ & $0.183 \pm 0.017$ & $0.124 \pm 0.022$ & $0.190 \pm 0.035$ & $0.129 \pm 0.004$ & $0.0382$\\
+    & iFlow & $0.242 \pm 0.144$ & $0.2129 \pm 0.2555$ & $0.739 \pm 0.329$ & $0.590^* \pm 0.323^*$ & $0.183^* \pm 0.123^*$ & $0.391 \pm 0.376$ & $0.187 \pm 0.096$ & $0.0013$\\
+    & \gls{SPDT} & $0.321 \pm 0.009$ & $0.2616 \pm 0.0114$ & $0.671 \pm 0.029$ & $0.331 \pm 0.042$ & $0.137 \pm 0.005$ & $0.233 \pm 0.071$ & $0.154 \pm 0.027$ & $0.0016$\\
+    & \textbf{OSMP (ours)} & $\mathbf{0.009 \pm 0.000}$ & $\mathbf{0.0056 \pm 0.0008}$ & $\mathbf{0.052 \pm 0.000}$ & $0.135 \pm 0.021$ & $0.114 \pm 0.015$ & $0.045 \pm 0.023$ & $0.112 \pm 0.011$ & $0.0017$\\
+    \bottomrule
+    \end{tabular}
+    \end{tiny}
+\end{table}
+
+\subsubsection{Results}
+Table~\ref{tab:osmp:benchmarking_quantitative_results} summarizes the quantitative benchmarking of \glspl{OSMP} versus the baselines, assessing both imitation fidelity and convergence characteristics. To gauge imitation quality, we compute trajectory and velocity \gls{RMSE}, together with the \gls{DTW} distance, following prior work \citep{urain2020imitationflow, perez2023stable, nawaz2024learning}.
+Convergence is examined at two levels. For local convergence, the system is initialized near a demonstration; we roll out each policy for one estimated period and compare the resulting shapes using directed Hausdorff distance and \gls{MED} after aligning the sequences with \gls{ICP}. This scenario reflects small deviations from the desired limit cycle caused by low-level control errors or external disturbances. For global convergence, the system starts farther from the demonstrations. We roll out the motion policy for two full periods, then compute the same shape metrics on the second half of the rollout, allowing each policy sufficient time to settle into its limit cycle before measuring how closely that cycle matches the target demonstration.
+
+Our benchmarks span several dataset categories. We include datasets used in earlier studies—such as the IROS letter drawings \citep{urain2020imitationflow} and other 2-D shapes \citep{nawaz2024learning}—as well as particularly challenging 2-D image contours (e.g., Star, MIT CSAIL and TU Delft flame logos, Dolphin, Bat), whose tight curves and discontinuous velocity profiles test the methods limits. In addition, we employ turtle-swimming datasets generated from biologically inspired oracles; unlike previous work, these sequences require reproducing not only the positional trajectory but also its complex, nonlinear velocity profile. 
+% \textcolor{orange}{Finally, we add a robot-cleaning dataset category comprising multiple kinesthetic demonstrations of tasks such as whiteboard wiping and broom sweeping.}
+
+Please note that we train a separate motion policy on each dataset contained in the dataset category and report the mean of all datasets and demonstrations contained in a dataset category. In order to give statistical relevance to the results, we conduct three training runs on each model+dataset combination, where we initialized the neural network weights in each run with a different random seed. Subsequently, we report the mean and standard deviation across the three random seeds.
+
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=1.0\linewidth]{osmp/figures/benchmarking_results/benchmarking_results_v3_compressed.pdf}
+    \caption{\textbf{Qualitative benchmarking of \gls{OSMP} against baselines.}
+    In this figure, we display the qualitative benchmarking results when comparing the proposed \gls{OSMP} against baseline methods, such as \glspl{MLP}, \glspl{RNN}, \glspl{NODE}, \glspl{DP}~\citep{chi2023diffusion}, or \gls{SPDT}~\citep{zhi2024teaching}. The various columns represent oracles on which the motion policies were separately trained, shown as white dotted lines on the plots. The color map and the streamlines denote the velocity of the learned motion policy when evaluated on a grid. We initialize the trained motion policies at 10 different randomly sampled initial conditions and roll out their trajectory, visualized using solid green lines, for a duration of one period.
+    }
+    \label{fig:osmp:qualitative_benchmarking_results}
+\end{figure}
+
+The results in Tab.~\ref{tab:osmp:benchmarking_quantitative_results} indicate that, across most dataset categories and evaluation metrics, \glspl{OSMP} outperform the baselines. They not only converge more reliably than neural policies without formal guarantees, but also imitate the demonstrations and align their limit cycles to intricate periodic shapes more accurately than other orbitally stable methods, including iFlow~\citep{urain2020imitationflow} and \gls{SPDT}~\citep{zhi2024teaching}.
+This conclusion is also supported by the qualitative benchmarking in Fig.~\ref{fig:osmp:qualitative_benchmarking_results}, that shows while some of the baseline methods, such as MLPs, Neural ODEs, or \gls{SPDT}~\citep{zhi2024teaching}, might be sufficient for simpler oracles, such as the RShape~\citep{urain2020imitationflow}, the planar drawing~\citep{nawaz2024learning}, or the Star oracle, but fail to track the periodic demonstration for more complex and highly curved oracles, such as the TUD-Flame or the Dolphin image contour.
+
+\subsubsection{Ablation Study Loss Functions}
+In order to quantify the impact of each loss term on the overall performance of \gls{OSMP}, we conduct an ablation study and report the statistics of the evaluation metrics across three random seeds in Tab.~\ref{tab:osmp:ablation_study_loss_functions} and qualitative results in Fig.~\ref{fig:osmp:ablation_study_loss_functions}.
+It can be seen that the combination of velocity imitation loss $\mathcal{L}_\mathrm{vi}$, the encoder regularization loss $\mathcal{L}_\mathrm{er}$, the limit cycle matching loss $\mathcal{L}_\mathrm{lcm}$, and the time guidance loss $\mathcal{L}_\mathrm{tgd}$ works the best for very complex and curved oracles, such as the TUD-Flame. For ``\emph{easier}'' oracles, such as the Ellipse and the Star, the encoder regularization loss and the time guidance loss can slightly degrade performance and can be left out of training. For very basic oracles, such as the Ellipse, even the limit cycle matching loss is not necessary, and it is sufficient to rely on the velocity imitation loss.
+Finally, while the Hausdorff~\citep{hausdorff1914grundzuge} loss is suitable for simple oracle shapes~\citep{zhi2024teaching}, the limit cycle matching loss proposed in this paper is better suited for complex oracle shapes.
+
+\begin{table}[htbp]\centering
+    \centering
+    % Captions go above tables
+    \caption{\textbf{Quantitative results for ablation study on loss functions.} We report the mean $\pm$ std across three random seeds for each dataset evaluation.
+    As a particular point of emphasis, we compare the limit cycle matching loss $\mathcal{L}_\mathrm{lcm}$ proposed in this work with the Hausdorff distance loss as employed by \citet{zhi2024teaching} as they serve a similar purpose.
+    }
+    \label{tab:osmp:ablation_study_loss_functions} % give each table a logical label name
+    \setlength{\tabcolsep}{3pt}   % tweak column padding (optional)
+    % \renewcommand{\arraystretch}{1.2} % tweak row height   (optional)
+    \begin{tiny}
+    \begin{tabular}{|l|l|ccc|cc|cc|}   % vertical rules match your sketch
+    \toprule
+    & & \multicolumn{3}{c|}{\textbf{Imitation Metrics}} & \multicolumn{2}{c|}{\textbf{Local Convergence Metrics}} & \multicolumn{2}{c|}{\textbf{Global Convergence Metrics}}\\
+    \textbf{Dataset} & \textbf{Loss Config.} & \textbf{Traj. \gls{RMSE}~$\downarrow$} & \textbf{Norm. Traj. \gls{DTW}~$\downarrow$} & \textbf{Vel. \gls{RMSE}~$\downarrow$} & \textbf{Hausdorff Dist.~$\downarrow$} & \textbf{\gls{ICP} \gls{MED}~$\downarrow$} & \textbf{Hausdorff Dist.~$\downarrow$} & \textbf{\gls{ICP} \gls{MED}~$\downarrow$}\\
+    \midrule
+    \multirow{5}{*}{Ellipse} & $\mathcal{L}_\mathrm{vi}$ & $0.001 \pm 0.000$ & $0.0010 \pm 0.0000$ & $0.004 \pm 0.000$ & $\mathbf{0.042 \pm 0.000}$ & $\mathbf{0.002 \pm 0.000}$ & $0.002 \pm 0.000$ & $0.001 \pm 0.000$\\
+    & $\mathcal{L}_\mathrm{vi} + \mathcal{L}_\mathrm{er}$ & $0.001 \pm 0.000$ & $0.0007 \pm 0.0001$ & $0.004 \pm 0.000$ & $\mathbf{0.042 \pm 0.000}$ & $\mathbf{0.002 \pm 0.000}$ & $\mathbf{0.001 \pm 0.000}$ & $\mathbf{0.000 \pm 0.000}$\\
+    & $\mathcal{L}_\mathrm{vi} + \mathcal{L}_\mathrm{er} + \mathcal{L}_\mathrm{haus}$ & $0.006 \pm 0.002$ & $0.0025 \pm 0.0006$ & $0.006 \pm 0.000$ & $\mathbf{0.042 \pm 0.000}$ & $0.003 \pm 0.000$ & $0.005 \pm 0.001$ & $0.002 \pm 0.001$\\
+    & $\mathcal{L}_\mathrm{vi} + \mathcal{L}_\mathrm{er} + \mathcal{L}_\mathrm{lcm}$ & $\mathbf{0.000 \pm 0.000}$ & $\mathbf{0.0006 \pm 0.0001}$ & $\mathbf{0.004 \pm 0.000}$ & $\mathbf{0.042 \pm 0.000}$ & $\mathbf{0.002 \pm 0.000}$ & $\mathbf{0.001 \pm 0.000}$ & $\mathbf{0.000 \pm 0.000}$\\
+    & $\mathcal{L}_\mathrm{vi} + \mathcal{L}_\mathrm{er} + \mathcal{L}_\mathrm{lcm} + \mathcal{L}_\mathrm{tgd}$ & $\mathbf{0.000 \pm 0.000}$ & $\mathbf{0.0006 \pm 0.0001}$ & $\mathbf{0.004 \pm 0.000}$ & $\mathbf{0.042 \pm 0.000}$ & $\mathbf{0.002 \pm 0.000}$ & $\mathbf{0.001 \pm 0.000}$ & $\mathbf{0.000 \pm 0.000}$\\
+    \midrule
+    \multirow{5}{*}{Star} & $\mathcal{L}_\mathrm{vi}$ & $0.153 \pm 0.026$ & $0.0817 \pm 0.0193$ & $0.124 \pm 0.018$ & $0.368 \pm 0.065$ & $0.068 \pm 0.014$ & $0.350 \pm 0.055$ & $0.062 \pm 0.017$\\
+    & $\mathcal{L}_\mathrm{vi} + \mathcal{L}_\mathrm{er}$ & $0.172 \pm 0.041$ & $0.1024 \pm 0.0246$ & $0.095 \pm 0.008$ & $0.393 \pm 0.118$ & $0.072 \pm 0.018$ & $0.340 \pm 0.081$ & $0.067 \pm 0.014$\\
+    & $\mathcal{L}_\mathrm{vi} + \mathcal{L}_\mathrm{er} + \mathcal{L}_\mathrm{haus}$ & $0.077 \pm 0.020$ & $0.0144 \pm 0.0040$ & $0.089 \pm 0.018$ & $\mathbf{0.041 \pm 0.001}$ & $0.006 \pm 0.000$ & $0.015 \pm 0.001$ & $0.005 \pm 0.000$\\
+    & $\mathcal{L}_\mathrm{vi} + \mathcal{L}_\mathrm{er} + \mathcal{L}_\mathrm{lcm}$ & $\mathbf{0.024 \pm 0.006}$ & $\mathbf{0.0031 \pm 0.0007}$ & $\mathbf{0.041 \pm 0.007}$ & $0.044 \pm 0.002$ & $\mathbf{0.003 \pm 0.000}$ & $\mathbf{0.013 \pm 0.002}$ & $\mathbf{0.002 \pm 0.000}$\\
+    & $\mathcal{L}_\mathrm{vi} + \mathcal{L}_\mathrm{er} + \mathcal{L}_\mathrm{lcm} + \mathcal{L}_\mathrm{tgd}$ & $0.027 \pm 0.007$ & $0.0035 \pm 0.0007$ & $0.049 \pm 0.008$ & $0.049 \pm 0.005$ & $0.004 \pm 0.000$ & $0.017 \pm 0.003$ & $0.003 \pm 0.000$\\
+    \midrule
+    \multirow{5}{*}{TUD-Flame} & $\mathcal{L}_\mathrm{vi}$ & $0.116 \pm 0.127$ & $0.0879 \pm 0.1198$ & $0.107 \pm 0.058$ & $0.069 \pm 0.042$ & $0.009 \pm 0.007$ & $\infty$ & $\infty$\\
+    & $\mathcal{L}_\mathrm{vi} + \mathcal{L}_\mathrm{er}$ & $0.084 \pm 0.070$ & $0.0287 \pm 0.0352$ & $0.114 \pm 0.058$ & $0.082 \pm 0.057$ & $0.011 \pm 0.010$ & $0.066 \pm 0.072$ & $0.010 \pm 0.011$\\
+     & $\mathcal{L}_\mathrm{vi} + \mathcal{L}_\mathrm{er} + \mathcal{L}_\mathrm{haus}$ & $0.375 \pm 0.048$ & $0.4067 \pm 0.0289$ & $0.180 \pm 0.006$ & $0.094 \pm 0.020$ & $0.016 \pm 0.004$ & $0.113 \pm 0.030$ & $0.010 \pm 0.005$\\
+    & $\mathcal{L}_\mathrm{vi} + \mathcal{L}_\mathrm{er} + \mathcal{L}_\mathrm{lcm}$ & $0.113 \pm 0.084$ & $0.0249 \pm 0.0282$ & $0.114 \pm 0.049$ & $0.053 \pm 0.018$ & $0.006 \pm 0.004$ & $\infty$ & $\infty$\\
+    & $\mathcal{L}_\mathrm{vi} + \mathcal{L}_\mathrm{er} + \mathcal{L}_\mathrm{lcm} + \mathcal{L}_\mathrm{tgd}$ & $\mathbf{0.033 \pm 0.008}$ & $\mathbf{0.0025 \pm 0.0002}$ & $\mathbf{0.073 \pm 0.010}$ & $\mathbf{0.039 \pm 0.003}$ & $\mathbf{0.003 \pm 0.000}$ & $\mathbf{0.009 \pm 0.001}$ & $\mathbf{0.002 \pm 0.000}$\\
+    \bottomrule
+    \end{tabular}
+    \end{tiny}
+\end{table}
+
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=1.0\linewidth]{osmp/figures/ablation_study_loss_functions_results/ablation_study_loss_functions_results_v1_compressed.pdf}
+    \caption{\textbf{Qualitative results for ablation study on loss functions.}
+    This figure presents the qualitative results for the ablation study on the effect of the proposed loss functions on the imitation and convergence characteristics of the learned motion policy on a selection of datasets demonstrating that the full set of loss functions improves the quality of the learned velocity field on very complex and highly-curved oracles, such as the TUD-Flame logo dataset. 
+    }
+    \label{fig:osmp:ablation_study_loss_functions}
+\end{figure}
+
+\subsection{Stable and Accurate Tracking of Oracles Across Robot Embodiments}
+While the previous section focused on evaluating and benchmarking the learning of the \gls{OSMP}, we now aim to demonstrate that the proposed \gls{OSMP} can effectively control robot motion in real-world scenarios. To achieve this, we apply the method to a diverse range of robot embodiments, including robot manipulators (UR5), cobots (KUKA), continuum soft robots (Helix Soft Robot)~\citep{guan2023trimmed}, and prototypes of hybrid soft-rigid underwater robots (Crush turtle robot).
+Figure~\ref{fig:osmp:robot_embodiments_results} illustrates the effectiveness of \glspl{OSMP} across all tested robot embodiments.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=1.0\linewidth]{osmp/figures/robot_embodiments_results/robot_embodiments_results_v2_compressed.pdf}
+    \caption{\textbf{Deployment of \glspl{OSMP} on diverse robot embodiments.}
+    We showcase the motion behavior generated by \glspl{OSMP} deployed on various robot embodiments.
+    \textbf{(A \& B)} Tracking of image contours with the UR5 manipulator and the helix soft robot. The black line denotes the oracle shape and the red line the trajectory of the system over a horizon of the past $3$~s.
+    \textbf{(C-E)} Forward and reverse turtle robot swimming with the biological oracles defined either in joint or task space.
+    \textbf{(F-G)} Demonstrations provided via kinesthetic teaching on whiteboard cleaning (UR5 manipulator) and brooming tasks (Kuka cobot) and subsequent execution of \glspl{OSMP} trained on these demonstrations.
+    }
+    \label{fig:osmp:robot_embodiments_results}
+\end{figure}
+
+First, we deploy the \glspl{OSMP} trained on image contours on both the UR5 arm and the Helix soft robot, achieving accurate and stable contour tracking. The deviations and oscillations seen on the Helix stem not from the \gls{OSMP} itself but from the low-level controller—particularly inverse-kinematics errors—as demonstrated in Fig.~\ref{fig:osmp:robot_embodiments_extended_results} and Movie~S1\footnote{The movies are included in the Supplementary Material available at {\tiny \url{https://doi.org/10.5061/dryad.4f4qrfjrd}}.}, where we benchmark against a classical trajectory-tracking controller.
+Also, a quantitative evaluation of the imitation metrics and shape similarity between the actual system trajectory and the desired oracle shape is contained in Tab.~\ref{tab:osmp:robot_embodiments_quantitative_evaluation}.
+
+We then target swimming behavior on the Crush Turtle robot using biologically inspired oracles collected by marine biologists. Our goal is for the \gls{OSMP} to drive the two front flippers, the main propulsion surfaces. We use both a three-dimensional joint-space oracle~\citep{van2023soft} and a four-dimensional task-space oracle comprising flipper-tip position and twist~\citep{van2022new}, each derived from video recordings of green sea turtles (Chelonia mydas)~\citep{van2022new,van2023soft}. The resulting joint-space velocity commands are executed by the robot’s actuators. Experiments show that \glspl{OSMP} enable accurate tracking of the biological oracle at moderate speeds. Because of joint-motor velocity and acceleration limits, the system cannot perfectly track shape or speed at higher $s_\omega$ values; yet even when motion diverges slightly, stability is preserved, the trajectory rapidly reconverges to the oracle, and the turtle robot successfully swims. 
+We observe that an \gls{OSMP} trained on the joint-space swimming oracle yields more effective propulsion than one based on the task-space oracle—likely because the latter omits the full 3-D pose of the flippers. In addition, the joint-space \gls{OSMP} avoids kinematic singularities that can destabilize task-space control.
+
+Next, we test \gls{OSMP} performance on kinesthetic-teaching demonstrations, which are typically jerkier and less smooth than the oracles above. In periodic demonstrations, the trajectory often fails to close exactly, leaving a spatial offset between start and end poses that complicates limit-cycle fitting. We investigate a whiteboard-erasure task on a UR5 manipulator and a brooming task on a KUKA cobot. For the UR5, we encode only the end-effector positions, whereas for the KUKA, we encode both position and orientation. On the UR5, we observe successful task completion (i.e., cleaning the writing from the whiteboard), rapid convergence to the limit cycle, and strong oracle tracking, with only minor errors where start and end points were fused. On the KUKA, tracking error is somewhat larger—likely due to the demanding six-DOF oracle and low feedback gains in the low-level controller—but the robot still completes the task reliably and repeats it with high consistency, even remaining robust to external disturbances and perturbations as seen in Movie~S2.
+
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=0.9\linewidth]{osmp/figures/robot_embodiments_extended_results/robot_embodiments_extended_results_v1_cropped.pdf}
+    \caption{\textbf{Supplementary results for stable tracking of oracles across robot embodiments in the real world.}
+    This figure shows the trajectories of various robot embodiments controlled with \glspl{OSMP} based on data recorded during real-world experiments.
+    The first row shows the behavior of a UR5 manipulator in task space where the \gls{OSMP} is trained on various geometric shape oracles, including an ellipse, a square, and a doge. The black dotted lines denote the oracle, the orange line is the actual trajectory of the UR5's end-effector, and the velocity field is based on the learned \gls{OSMP}.
+    The second row considers the same trained \glspl{OSMP}, but this time evaluates their behavior on a Helix soft robot.
+    The third row presents the behavior of classical trajectory tracking controllers on the Helix soft robot for the same oracles.
+    Finally, the fourth row contains measurements of the Crush turtle robot operated (in water) by \glspl{OSMP} trained on biological oracles, where the black dotted line denotes the oracle and the colored line the actual behavior of the right flipper arm. 
+    % In the first and third, the forward swimming (biological)~\citep{van2022new} and reverse swimming oracles, respectively, are directly defined in joint space~\citep{van2023soft}. The second row shows an \gls{OSMP} applied to a biological forward swimming oracle defined in task space, which, in this case, corresponds to the tip position and twist angle (not visible here) of the right flipper arm.
+    }
+    \label{fig:osmp:robot_embodiments_extended_results}
+\end{figure}
+
+\begin{table}
+    \centering
+    % Captions go above tables
+    \caption{
+    \textbf{Imitation and shape similarity evaluation metrics for real-world robot experiments.}
+    We report the imitation metrics that evaluate the similarity between the actual robot behavior and the oracle/demonstration. Furthermore, we report shape similarity metrics between the actual trajectory shape and the desired oracle. In order to compute the metrics, we first identify the alignment between the first oracle time step and the actual trajectory by identifying the time shift that minimizes the error between the two. Subsequently, we evaluate the similarity between the oracle and the system trajectory that was resampled to the same timings for the imitation metrics and to the same number of steps for the shape similarity metrics, respectively.
+    For the Helix soft robot experiments, we also compare the performance of \gls{OSMP} against a classical \gls{TT} controller.
+    }
+    \label{tab:osmp:robot_embodiments_quantitative_evaluation} % give each table a logical label name
+    \setlength{\tabcolsep}{1.0pt}   % tweak column padding (optional)
+    \begin{tiny}
+    \begin{tabular}{|c | ccc | cccc | cc |}
+        \toprule
+        \textbf{Robot} & \textbf{Task/Oracle} & \textbf{Speed-up} & \textbf{Motion Policy} & \multicolumn{4}{c|}{\textbf{Imitation Metrics}} & \multicolumn{2}{c|}{\textbf{Shape Similarity Metrics}}\\
+        & & \textbf{Factor $s_\omega$} & & \textbf{Traj. \gls{RMSE} $\downarrow$} & \textbf{Norm. Traj. \gls{DTW} $\downarrow$} & \textbf{Traj. Frechet Dist. $\downarrow$} & \textbf{Vel. \gls{RMSE} $\downarrow$} & \textbf{Hausdorff Dist.~$\downarrow$} & \textbf{\gls{ICP} \gls{MED}~$\downarrow$}\\
+        \midrule
+        % UR5 & Square & $2.0$ & TT & $0.0027$~m & $0.0007$ & $0.005$~m & $0.0141$~m/s & $0.0054$~m & $0.0008$~m \\
+        \multirow{6}{*}{UR5} & Square & $2.0$ & \gls{OSMP} & $0.0094$~m & $0.0014$ & $0.016$~m & $0.0225$~m/s & $0.0077$~m & $0.0012$~m \\
+        % UR5 & Star & $2.0$ & TT & $0.0044$~m & $0.0012$ & $0.005$~m & $0.0241$~m/s & $0.0051$~m & $0.0011$~m \\
+        & Star & $2.0$ & \gls{OSMP} & $0.0390$~m & $0.0083$ & $0.111$~m & $0.0802$~m/s & $0.0102$~m & $0.0019$~m \\
+        % UR5 & Doge & $2.0$ & TT & $0.0024$~m & $0.0006$ & $0.004$~m & $0.0094$~m/s & $0.0041$~m & $0.0006$~m \\
+        & Doge & $2.0$ & \gls{OSMP} & $0.0090$~m & $0.0018$ & $0.007$~m & $0.0230$~m/s & $0.0071$~m & $0.0016$~m \\
+        % UR5 & MIT-CSAIL & $2.0$ & TT & $0.0017$~m & $0.0009$ & $0.005$~m & $0.0197$~m/s & $0.0046$~m & $0.0009$~m \\
+        & MIT-CSAIL & $2.0$ & \gls{OSMP} & $0.0178$~m & $0.0027$ & $0.041$~m & $0.0426$~m/s & $0.0063$~m & $0.0015$~m \\
+        % UR5 & Dolphin & $0.5$ & TT & $0.0006$~m & $0.0003$ & $0.001$~m & $0.0014$~m/s & $0.0005$~m & $0.0002$~m \\
+        & Dolphin & $0.5$ & \gls{OSMP} & $0.0152$~m & $0.0016$ & $0.037$~m & $0.0166$~m/s & $0.0033$~m & $0.0007$~m \\
+        & Whiteboard Cleaning & $0.5$ & \gls{OSMP} & $0.0136$~m & $0.0024$ & $0.031$~m & $0.0240$~m/s & $0.0142$~m & $0.0016$~m \\
+        \midrule
+        \multirow{4}{*}{Turtle Robot} & Joint Space Forw. Swim. & $0.5$ & \gls{OSMP} & $0.2237$~rad & $0.0398$ & $0.536$~rad & $0.3673$~rad/s & $0.0854$~rad & $0.0215$~rad \\
+        & Joint Space Forw. Swim. & $1.0$ & \gls{OSMP} & $0.2544$~rad & $0.0660$ & $0.590$~rad & $0.8805$~rad/s & $0.1790$~rad & $0.0419$~rad \\
+        & Joint Space Rev. Swim. & $1.5$ & \gls{OSMP} & $0.6715$~rad & $0.3609$ & $1.835$~rad & $2.1995$~rad/s & $0.3815$~rad & $1.4600$~rad \\
+        & Task Space Forw. Swim. & $0.5$ & \gls{OSMP} & $0.0620$~m & $0.0244$ & $0.083$~m & $0.0609$~m/s & $0.0517$~m & $0.0125$~m \\
+        \midrule
+        \multirow{6}{*}{Helix Soft Robot} & Ellipse & $2.0$ & \gls{TT} & $0.0096$~m & $0.0126$ & $0.017$~m & $0.0119$~m/s & $0.0175$~m & $0.0122$~m \\
+        & Ellipse & $2.0$ & \gls{OSMP} & $0.0308$~m & $0.0066$ & $0.055$~m & $0.0195$~m/s & $0.0061$~m & $0.0020$~m \\
+        & Square & $2.0$ & \gls{TT} & $0.0166$~m & $0.0123$ & $0.039$~m & $0.0526$~m/s & $0.0388$~m & $0.0099$~m \\
+        & Square & $2.0$ & \gls{OSMP} & $0.0216$~m & $0.0073$ & $0.067$~m & $0.0302$~m/s & $0.0112$~m & $0.0026$~m \\
+        & Doge & $2.0$ & \gls{TT} & $0.0128$~m & $0.0141$ & $0.033$~m & $0.0514$~m/s & $0.0290$~m & $0.0101$~m \\
+        & Doge & $2.0$ & \gls{OSMP} & $0.0059$~m & $0.0039$ & $0.011$~m & $0.0182$~m/s & $0.0108$~m & $0.0033$~m \\
+        \bottomrule
+    \end{tabular}
+    \end{tiny}
+\end{table}
+
+
+\subsection{The Learned Policies Exhibit Compliant and Natural Motion Behavior}
+We aim for robots in human-centric environments to demonstrate robust, compliant, and predictable behavior. Specifically, \emph{robustness} means that if a robot deviates from its intended path—perhaps due to a disturbance—it will always converge back to the desired motion. \emph{Compliance} indicates that robots should exert only minimal forces when coming into contact with humans, and \emph{predictability} ensures that their motions are sufficiently consistent for humans to anticipate their behavior and respond appropriately.
+
+In this section, we compare the reaction upon disturbances and perturbations of \glspl{OSMP} against classical trajectory tracking controllers that rely on a time-parametrized trajectory, given in the form
+\begin{equation}
+    \dot{x}(t) = \dot{x}^\mathrm{d}(t) + k_\mathrm{p} \, (x^\mathrm{d}(t) - x(t)),
+\end{equation}
+where $k_\mathrm{p} \in \mathbb{R}$ is a proportional feedback gain that operates on the error between the current position $x(t)$ and the desired position $x^\mathrm{d}(t)$. We stress here the reliance on a time-parametrized trajectory provided in the form $(x^\mathrm{d}(t),\dot{x}^\mathrm{d}(t)) \: \forall \: t \in [t_0, t_\mathrm{f}]$. 
+We evaluate three motion controllers: a pure feedforward trajectory tracking controller, which we gather by setting $k_\mathrm{p} = 0$, an error-based feedback controller with $k_\mathrm{p} > 0$, and the learned \gls{OSMP}.
+In this setting, we are particularly interested in analyzing the behavior of the motion controllers upon encountering an external disturbance that perturbs the state of the system with respect to the time reference. For example, in simulation, we shift the time reference when initializing the system by half a period (i.e., a phase shift of $\pi$~rad) and in the real world experiments with the KUKA robot running a low level impedance controller we apply external perturbations to the system that prevents or disturbs the nominal motion.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.9\linewidth]{osmp/figures/compliance_results/compliance_results_v2_cropped.pdf}
+    \caption{{\textbf{\glspl{OSMP} exhibit compliant and natural motion behavior.}
+    In this figure, we analyze the motion behavior of \glspl{OSMP} upon perturbations and interaction with humans and the environment. We compare the behavior of \glspl{OSMP} against classical error-based trajectory tracking controllers $\dot{x}(t) = \dot{x}^\mathrm{d}(t) + k_\mathrm{p} \, (x^\mathrm{d}(t) - x(t))$ that operate on a time-parametrized reference $\dot{x}^\mathrm{d}(t)$, where $k_\mathrm{p} \in \mathbb{R}_{\geq 0}$ is the proportional control gain.
+    \textbf{(A)} Simulations with time perturbations where we compare the behavior of traditional, time-parametrized trajectory tracking controllers against the \gls{OSMP}. Here, the dashed black lines denote the oracles/demonstrations, the solid blue lines the behavior of a pure feedforward trajectory tracking controller with zero feedback gain $k_\mathrm{p} = 0$, the orange line the behavior of an error-based feedback trajectory tracking controller with $k_\mathrm{p} = 1$, and the green line the behavior of the learned \gls{OSMP}. Compared to nominal scenarios, we perturb the time reference - i.e., the time reference exhibits a $\pi$ offset in phase with respect to the initial position.
+    \textbf{(B)} Experiments on a Kuka cobot that runs a compliant low-level impedance controller where a human interacts with the robot and exerts disturbances on the robot, comparing the behavior of the trajectory tracking controller with a feedback gain $k_\mathrm{p} = 1$. We also plot the Cartesian distance with respect to the time reference (trajectory tracking controller only), the next low-level control setpoint $x*(t)$, and the closest point on the oracle over time.
+    Experiments on a Kuka cobot equipped with a compliant, low-level impedance controller while a human interacted with the robot and deliberately introduced disturbances/perturbations. The study compares the trajectory-tracking controller’s behavior with a feedback gain of $k_\mathrm{p}=1$ against that of the \gls{OSMP}. We also plot, over time, the Cartesian distance to the time-indexed reference (trajectory-tracking controller only), the next low-level control setpoint $x^*(t)$, and the distance to the nearest point on the Ellipse oracle.
+    In the snapshots, the red line represents the past trajectory, and the blue line the trajectory of past low-level control setpoints.
+    }}
+    \label{fig:osmp:compliance_results}
+\end{figure}
+
+The results in Fig.~\ref{fig:osmp:compliance_results} and Movie~S3 show that the pure feedforward trajectory tracking controller entirely drifts off the desired trajectory. When adding an error-based feedback term, the classical trajectory tracking controller is able to recover and rejoin the demonstrated trajectory after a bit. However, while doing so, the feedback term generates a very aggressive correction action, which could cause incompliant behavior and would not seem natural to humans. Instead, the \gls{OSMP}, which is solely conditioned on the system state and not time, is not affected by the perturbation of the time reference and perfectly tracks the demonstration, immediately returning to the closest point on the limit cycle after a perturbation, while exhibiting compliant and natural behavior.
+
+
+\subsection{Achieving Phase Synchronization Across Multiple Motion Primitives}
+In many practical applications, such as locomotion or bimanual manipulation, synchronizing multiple motion policies is critical. In this section, we illustrate how our approach can synchronize multiple learned \glspl{OSMP} by evaluating the polar phase of each and then aligning them via an error-based feedback controller~\citep{dorfler2014synchronization}. Crucially, we only adjust the velocity magnitude without altering the system’s spatial motion, thereby preserving the imitation and convergence properties of each learned motion policy.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=1.0\linewidth]{osmp/figures/phase_sync_results/phase_sync_results_v2_compressed.pdf}
+    \caption{\textbf{The error-based feedback controller successfully synchronizes multiple \glspl{OSMP} in their phase.}
+    % Results for the phase synchronization of multiple \gls{OSMP} systems. The first row shows the Cartesian-space evolution of each \gls{OSMP}, where the color of the markers communicates the time information. The second row shows the position vs. time, and the last row shows the polar phase $\varphi$ of the systems over time. 
+    % The first three columns show simulation results for \glspl{OSMP} trained on the ellipse and Dolphin demonstrations, respectively. In all rows, we synchronize the motion of two systems/\glspl{OSMP}, except for the third row, where we synchronize four systems.
+    Results for the phase synchronization of multiple motion policies.
+    \textbf{(A)} Simulation results for the phase synchronization of two and three \glspl{OSMP} on the Ellipse and Dolphin oracles, respectively. The first row shows the Cartesian-space evolution of each \gls{OSMP}, where the color of the markers communicates the time information. The second row shows the position vs. time, and the last row shows the polar phase $\varphi$ of the systems over time.
+    \textbf{(B)} Experimental results for phase synchronization of the robotic turtle flippers for turtle swimming based on the joint-space oracle. Naturally, the flippers are initialized at the start of the experiment at slightly different positions, causing a phase offset. If this phase offset is not corrected and the flippers remain unsynchronized (left side), the turtle robot doesn't swim or only very slowly. On the right side, the flippers rapidly synchronize, which leads to successful swimming.
+    \textbf{(C \& D)} Comparison of a ``\emph{large}'', joined \gls{OSMP} trained on two systems compared to ``\emph{small}'' \glspl{OSMP} trained on each system separately and then synchronized during inference. When one of the systems is initialized off the oracle/perturbed, this leads the other system controlled by the joined \gls{OSMP} to drift off its own limit cycle as well. Contrarily, the synchronized separate \glspl{OSMP} do not cause each other to drift off the limit cycle.
+    }
+    \label{fig:osmp:phase_sync_results}
+\end{figure}
+
+
+In Fig.~\ref{fig:osmp:phase_sync_results} and Movie~S4, we show simulation and experimental results for synchronizing between two and six \glspl{OSMP}. The simulation outcomes illustrate how the controller identifies the most efficient strategy to align the \glspl{OSMP}, achieving rapid polar phase synchronization. A proportional gain determines the aggressiveness of the synchronization process. The simulation results confirm that the phase synchronization approach is effective not only for two systems but also for three or more.
+In complex systems with many \glspl{DOF}, we have found it can be more effective to train separate \glspl{OSMP} and synchronize them during execution rather than relying on one large \gls{OSMP} that covers every DOF. With a joint \gls{OSMP}, a disturbance in even a few DOFs can pull the rest off the limit cycle—and away from the oracle—until the system reconverges. By contrast, synchronized but independent \glspl{OSMP} are insulated from such disturbances: if some \glspl{DOF} are perturbed, the remaining DOFs managed by their own \glspl{OSMP} can keep tracking the oracle accurately, and the phase synchronization ensures that all \glspl{OSMP} stay locked in their phase.
+
+Regarding experimental findings, we examined the swimming performance of the Crush turtle robot. Tests in a swimming pool revealed that the robot can swim effectively only when both front flippers—the primary means of locomotion in water~\citep{van2022new, van2023soft}—are fully synchronized. In practice, even aside from external disturbances and inherent differences between the flippers, desynchronization occurs already during initialization when the flipper arms start in slightly different configurations with varying polar phases. Our results show that using our method, the two flipper arms synchronize, even with flippers initialized far from the oracle, within $\SI{4.72}{s}$ to less than $\SI{1}{\degree}$ in phase error, and subsequently for the entire experiment exhibit a mean phase error of less than $\SI{0.2}{\degree}$, thereby enabling the turtle robot to swim effectively.
+
+\subsection{Smooth Interpolation Between Motion Behaviors via Encoder Conditioning}
+As robotics shifts toward generalist motion policies that choose among varied behaviors based on task, state, and perception, those policies must support multiple skills rather than one~\citep{o2024open, black2024pi0, gemini2025robotics}. Leveraging semantic cues—e.g., embeddings from vision–language models—could supply such conditioning, yet dynamic motion-primitive work seldom tackles it. Existing methods~\citep{rana2020euclideanizing, perez2023stable, perez2024puma, sochopoulos2024learning, zhi2024teaching} also lack smooth interpolation between trained behaviors.
+Examples include applications such as surface cleaning, where the robot must in the future seamlessly switch wiping motions as materials change. In locomotion, blending oracles for flat walking and stair climbing enables natural movement over moderately stepped terrain. Such cases underscore the need for motion policies that transfer to unseen tasks with few- or zero-shot generalization~\citep{jaquier2025transfer}.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1.0\linewidth]{osmp/figures/conditioning_results/conditioning_results_v2_compressed.pdf}
+    \caption{
+    \textbf{Smooth interpolation between distinct motion behaviors via encoder conditioning.}
+    Results demonstrating the conditioning of the encoder on multiple learned motion behaviors, including smooth interpolation between behaviors.
+    \textbf{(A)} Graphic explaining the formulation of the $\mathcal{L}_\mathrm{sci}$ loss.
+    \textbf{(B)} \glspl{OSMP} trained with $\mathcal{L}_\mathrm{sci}$ on multiple image contour transition datasets - horizontal ellipse to vertical ellipse (HE2VE), square to CSAIL logo (Square2CSAIL), and horizontal ellipse to square to - evaluated for various, both seen and unseen during training, task conditioning values. 
+    \textbf{(C)} Ablation study for \glspl{OSMP} trained without and with the smooth conditioning interpolation loss $\mathcal{L}_\mathrm{sci}$, where we smoothly vary the conditioning value over the duration of the trajectory (e.g., $z=0$ at $t=0$ to $z=1$ at $t=140$~s)
+    \textbf{(D)} Turtle swimming motion for various conditioning values, ranging from $z=-1$ (reverse swimming joint space oracle) to $z=1$ (forward swimming joint space oracle), with $z=-0.5$ and $z=0.5$ unseen during training.
+    }
+    \label{fig:osmp:conditioning_results}
+\end{figure}
+
+We introduce task conditioning in the bijective encoder through a scalar variable $z \in \mathbb{R}$, allowing the desired motion behavior to be selected online by simply setting $z$. To ensure the learned policy transitions smoothly across behaviors (e.g., for $z \in [-1, 1]$), we add a loss term $\mathcal{L}_\mathrm{sci}$ during training. As illustrated in Fig.~\ref{fig:osmp:conditioning_results} and Movie~S5, both simulation and hardware experiments with the turtle robot show that (a) a single \gls{OSMP} faithfully reproduces all behaviors encountered during training, and (b) $\mathcal{L}_\mathrm{sci}$ promotes smooth interpolation between oracles, enabling meaningful zero-shot performance on unseen tasks that fall within the training distribution. An ablation study—comparing against an \gls{OSMP} trained without $\mathcal{L}_\mathrm{sci}$—confirms this finding. Crucially, switching behaviors requires no elaborate sequence: once $z$ is updated, the \gls{OSMP}’s convergence guarantees rapidly steer the system to the new behavior, preserving EOS for constant or slowly varying conditioning values.
+
+\subsection{Inference Time Benchmarking}
+We benchmarked multiple inference modes and Jacobian‐estimation schemes for an \gls{OSMP} trained with the CorneliaTurtleRobotJointSpace oracle; the outcomes are listed in Tab.~\ref{tab:osmp:inference_time_benchmarking}. Here, “inference time” is the wall-clock duration—measured on an Apple MacBook M4 Max CPU—for a single forward pass (batch size = 1), averaged over $1000$ runs.
+
+Because numerical Jacobians reduce accuracy, we also computed the velocity RMSE with respect to the demonstrated velocities. In addition, starting from the oracle’s initial states, we determined the trajectory RMSE. Unlike Section~\ref{sub:osmp:osmp_benchmarking}, we did not enforce the demonstration’s fixed integration step; instead, each rollout used a step size equal to the model’s measured inference time. Consequently, faster models are integrated with finer temporal resolution, potentially achieving higher numerical accuracy.
+
+The results reveal an interesting trade-off: models with an exact Jacobian run more slowly, whereas those using approximate Jacobians support higher control rates and can sometimes track the trajectory more precisely thanks to the finer integration grid. Switching from analytical to numerical Jacobians increases the velocity RMSE by \SI{12.5}{\percent}, yet the lowest trajectory \gls{RMSE} is obtained with an \gls{AOT}-compiled model that employs numerical Jacobians — \SI{36}{\percent} lower than an eager-mode baseline with autograd Jacobians. This improvement stems from the roughly ninefold reduction in integration step size made possible by the compilation speed-up.
+
+We note that this Trajectory RMSE tradeoff highly depends on the specific trained model, the oracle, and the available inference hardware. For example, the advantages of a high control rate are particularly pronounced where fast velocities are needed, such as in the case of a turtle swimming. Therefore, we recommend a separate analysis for each use case if losing accuracy via numerical Jacobians can be outweighed by a faster inference time.
+
+\begin{table}
+    \centering
+    % Captions go above tables
+    \caption{\textbf{Numerical Jacobians allow for compilation of the motion policy and inference rates of up to \SI{15000}{Hz} on modern CPUs.}
+    We evaluated the \gls{OSMP} model trained on the \emph{CorneliaTurtleRobotJointSpace} dataset with $n=3$ and report the inference time, the Velocity RMSE, and the Trajectory \gls{RMSE} for various inference modes and methods for computing the Jacobian of the encoder $J_\Psi$.
+    It is crucial to describe the evaluation procedure of the Trajectory \gls{RMSE}. We begin by measuring the inference time for a single motion-policy step, from which we derive the control frequency at which the policy can run. We then execute the policy using a time step equal to this measured inference time, so a faster model, with its shorter step, can integrate the trajectory more finely and may, therefore, attain higher accuracy as long as it doesn't compromise the performance with a lowered velocity prediction accuracy.
+    }
+    \label{tab:osmp:inference_time_benchmarking} % give each table a logical label name
+
+    \begin{small}
+    \setlength{\tabcolsep}{2.0pt}   % tweak column padding (optional)
+    \begin{tabular}{cc ccc} % four columns, alignment for each
+        \\
+        \hline
+        \textbf{Inference Mode} & \textbf{Jacobian Method} & \textbf{Inference Time [ms] $\downarrow$} & \textbf{Vel. \gls{RMSE} $\downarrow$} & \textbf{Traj. \gls{RMSE} $\downarrow$}\\
+        \hline
+        Eager & Autograd & $0.563$ & $\mathbf{0.00841}$ & $0.0315$\\
+        Eager & VJP & $0.474$ & $\mathbf{0.00841}$ & $0.0326$\\
+        Compiled & VJP & $0.116$ & $\mathbf{0.00841}$ & $0.0270$\\
+        Eager & Numerical & $0.441$ & $0.00946$ & $0.0236$\\
+        Compiled & Numerical & $0.117$ & $0.00946$ & $0.0212$\\
+        Export & Numerical & $0.135$ & $0.00946$ & $0.0212$\\
+        AOTInductor & Numerical & $\mathbf{0.064}$ & $0.00946$ & $\mathbf{0.0202}$\\
+        \hline
+    \end{tabular}
+    \end{small}
+\end{table}
