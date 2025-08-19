@@ -139,10 +139,10 @@ First, we prove that the latent dynamics in polar coordinates $\dot{y}_\mathrm{p
         \mathcal{Y}_\mathrm{pol} = \left \{ y_\mathrm{pol} \in \mathbb{R}^n | r_\epsilon \in \mathbb{R}_{>0}, r \geq r_\epsilon, \varphi \in [-\pi, \pi) \right \}.
     \end{equation}
 \end{proposition}
-\begin{proof} The proof consists of three steps: proof of positive-definiteness of the contraction metric, and the fulfillment of the orthogonality and contraction conditions in order to meet the conditions for transverse contraction stated in Theorem~3 of \citep{manchester2014transverse}.\\
+\begin{proof} The proof consists of three steps: proof of positive-definiteness of the contraction metric, and the fulfillment of the orthogonality and contraction conditions in order to meet the conditions for transverse contraction stated in Theorem~3 of \citet{manchester2014transverse}.\\
     \textbf{Step 1: Positive definite contraction metric.} Positive definite contraction metric $M_\mathrm{pol}(y_\mathrm{pol})$. In order for $M_\mathrm{pol}(y_\mathrm{pol}) \in \mathbb{R}^{n \times n}$ to be a valid contraction metric, we need to ensure that it is positive definite (i.e., that the real part of its Eigenvalues is positive $\forall y_\mathrm{pol} \in \mathcal{Y}_\mathrm{pol}$). 
     For this to be the case, the following condition, derived from the smallest Eigenvalue of the contraction metric $\zeta_\mathrm{m}(M_\mathrm{pol}(y_\mathrm{pol}))$, must hold
-    \begin{equation}\small
+    \begin{equation}\footnotesize
         \frac{m_{\varphi \varphi}(r) \, r^2 + 1}{2 \, r^2} - \frac{\sqrt{\left ( R^4 f_\omega^2(\varphi) r^4 \right ) m_{\varphi \varphi}^2 + \left ( -2 R^4 f_\omega^2(\varphi) r^2 \right ) m_{\varphi \varphi}(r) + \left ( 4 \alpha^2 r^6 - 8 R^2 \alpha^2 r^4 + 4 R^2 \alpha^2 r^2 + R^4 f_\omega^2(\varphi) \right )}}{2 \, R^2 \, f_\omega(\varphi) \, r^2} \geq 0
     \end{equation}
     which can be ensured if the following two conditions hold
@@ -320,7 +320,7 @@ The list of image contours is: Ellipse, Square, Star, MIT‐CSAIL, TUD‐Flame, 
 \paragraph{Turtle Swimming}
 This category contains four datasets.
 \textbf{(i)} The first two comprise Cartesian trajectories of the flipper tip of wild green sea turtles (Chelonia mydas) captured by marine biologists~\citep{van2022new} and represented by Fourier series. We train on two variants: position only (3-D oracle) and position plus twist angle (4-D oracle), each with a period of \SI{4.2}{s}.
-\textbf{(ii)} A subsequent dataset from the same authors applies inverse kinematics to those trajectories, yielding a three-joint-space oracle for bioinspired robotic turtles\citep{van2023soft}. After smoothing with a 30th-degree polynomial, we compute velocities; this oracle has a \SI{4.3}{s} period.
+\textbf{(ii)} A subsequent dataset from the same authors applies inverse kinematics to those trajectories, yielding a three-joint-space oracle for bioinspired robotic turtles~\citep{van2023soft}. After smoothing with a 30th-degree polynomial, we compute velocities; this oracle has a \SI{4.3}{s} period.
 \textbf{(iii)} Finally, we include a reverse-swimming template defined in joint space by sinusoidal functions, with a \SI{4}{s} period. This template was designed by constructing waypoints to produce "reverse rowing" movement patterns, interpolating between them with a spline, and finally approximating the trajectory with a Fourier fit.
 
 % An important differentiating factor from existing periodic demonstration datasets is that the velocity profile is crucial and highly influential on the task behavior (i.e., the actual swimming): if the velocity is off, then, the cost of transport is increased, and in the worst case, the turtle robot doesn't swim or even swims in the wrong direction.
@@ -343,19 +343,19 @@ During training, we randomly sample at the start of each epoch $N_\mathrm{init} 
 \end{equation}
 
 \paragraph{Recurrent Neural Networks (RNNs, LSTM)}
-For the RNN-like networks (i.e., Elman \gls{RNN} \& \gls{LSTM}), we employ a five-layer recurrent neural network with a hidden dimension of $128$.
+For the \gls{RNN}-like networks (i.e., Elman \gls{RNN} \& \gls{LSTM}), we employ a five-layer recurrent neural network with a hidden dimension of $128$.
 For example, in the case of the Elman \gls{RNN}, the transition function of the hidden state $h_j \in \mathbb{R}^{128}$ of the $j$th layer is given by
 \begin{equation}
     h_j(k) = \tanh \left (W_\mathrm{xh} \, u_j(k) + W_\mathrm{hh} \, h_j(k-1) + b \right ).
 \end{equation}
 Here, $u_j(k)$ is the input to the $j$th layer such that $u_1(k) = x(k)$ and $u_j(k) = h_{j-1}(k) \: \forall \, j \in 2, \dots, 5$ and the output of the \gls{RNN} (i.e., the next state prediction) is given by $x(k+1) = W_\mathrm{o} \, h_5(k)$, where $W_\mathrm{o} \in \mathbb{R}^{n \times 128}$ is a learned matrix.
-For training, we use the same rollout procedure and loss $\mathcal{L}_\mathrm{ro}$ as in the case of the discrete MLP motion policy, with the difference that we initialize the RNN's concatenated hidden state $h = \begin{bmatrix}
+For training, we use the same rollout procedure and loss $\mathcal{L}_\mathrm{ro}$ as in the case of the discrete \gls{MLP} motion policy, with the difference that we initialize the \gls{RNN}'s concatenated hidden state $h = \begin{bmatrix}
     h_1^\top & \dots & h_5^\top
 \end{bmatrix}^\top$ as $h(1) = 0_{640}$ at the beginning of the trajectory and subsequently propagate through each of the $25$ transitions. 
 
 \paragraph{Neural ODE (NODE)}
-A \gls{NODE}-based motion policy can be defined as $\dot{x} = f_\mathrm{NODE}(x)$ where $f_\mathrm{NODE}(x): \mathbb{R}^n \to \mathbb{R}^n$ is parametrized by an MLP. Specifically, we choose a five-layer MLP with hidden dimensions of $128$ and LeakyReLU activation functions.
-In addition to supervising the predicted velocity via $\mathcal{L}_\mathrm{vi}$, we compute position-based losses based on rolled-out trajectories analogous to the MLP and RNNs obtained via forward Euler integration of $f_\mathrm{NODE}(x)$.
+A \gls{NODE}-based motion policy can be defined as $\dot{x} = f_\mathrm{NODE}(x)$ where $f_\mathrm{NODE}(x): \mathbb{R}^n \to \mathbb{R}^n$ is parametrized by an \gls{MLP}. Specifically, we choose a five-layer \gls{MLP} with hidden dimensions of $128$ and LeakyReLU activation functions.
+In addition to supervising the predicted velocity via $\mathcal{L}_\mathrm{vi}$, we compute position-based losses based on rolled-out trajectories analogous to the \gls{MLP} and \gls{RNN} obtained via forward Euler integration of $f_\mathrm{NODE}(x)$.
 
 \paragraph{Diffusion Policy (DP)}
 We use the official open-source implementation of \glspl{DP}~\citep{chi2023diffusion} and train them on the respective datasets for $250$ epochs while employing a batch size of $256$, an AdamW~\citep{kingma2014adam, loshchilov2018decoupled} optimizer configured with a learning rate of $10^{-4}$, a weight decay of $10^{-6}$, and $(\beta_1, \beta_2) = (0.95, 0.999)$ and a cosine learning rate scheduler with $10$ warmup steps. For this task, we define the observation as the current and last position of the system $o(k) = \begin{bmatrix}
@@ -438,7 +438,7 @@ The \emph{Velocity Root Mean Square Error (Vel. \gls{RMSE})} measures the deviat
 \begin{equation}
     \mathrm{RMSE}_\mathrm{\dot{x}}\left (\{\dot{x}(k)\}_{k\in\mathbb{N}_N},\{\dot{x}^{\mathrm d}(k)\}_{k\in\mathbb{N}_N} \right ) := \sum_{k=1}^{N}  \sum_{i=1}^{n} \frac{\left ( \dot{x}_i^\mathrm{d}(k) - \dot{x}_i(k) \right )^2}{N \, n},
 \end{equation}
-where $\dot{x}(k)$ is either directly given by the motion policy (e.g., \gls{DMP}, \gls{OSMP}, \gls{NODE}) or obtained via finite differences as $\dot{x}(k) = \frac{x(k) - x(k-1)}{\delta t}$ (e.g., \gls{DP}~\citep{chi2023diffusion}).
+where $\dot{x}(k)$ is either directly given by the motion policy (e.g., \gls{DMP}, \gls{OSMP}, \gls{NODE}) or obtained via finite differences as $\dot{x}(k) = \frac{x(k) - x(k-1)}{\delta t}$ (e.g., \gls{DP}).
 This metric is particularly relevant for tasks in which it is crucial that the demonstrated velocity, and not just trajectory, is accurately tracked, as in the case of turtle swimming.
 
 \subsubsection{Convergence Metrics}
@@ -632,7 +632,7 @@ Figure~\ref{fig:osmp:robot_embodiments_results} illustrates the effectiveness of
     \label{fig:osmp:robot_embodiments_results}
 \end{figure}
 
-First, we deploy the \glspl{OSMP} trained on image contours on both the UR5 arm and the Helix soft robot, achieving accurate and stable contour tracking. The deviations and oscillations seen on the Helix stem not from the \gls{OSMP} itself but from the low-level controller—particularly inverse-kinematics errors—as demonstrated in Fig.~\ref{fig:osmp:robot_embodiments_extended_results} and Movie~S1\footnote{The movies are included in the Supplementary Material available at {\tiny \url{https://doi.org/10.5061/dryad.4f4qrfjrd}}.}, where we benchmark against a classical trajectory-tracking controller.
+First, we deploy the \glspl{OSMP} trained on image contours on both the UR5 arm and the Helix soft robot, achieving accurate and stable contour tracking. The deviations and oscillations seen on the Helix stem not from the \gls{OSMP} itself but from the low-level controller—particularly inverse-kinematics errors—as demonstrated in Fig.~\ref{fig:osmp:robot_embodiments_extended_results} and Movie~S1\footnote{The movies are included in the Supplementary Material available at \url{https://doi.org/10.5061/dryad.4f4qrfjrd}.}, where we benchmark against a classical trajectory-tracking controller.
 Also, a quantitative evaluation of the imitation metrics and shape similarity between the actual system trajectory and the desired oracle shape is contained in Tab.~\ref{tab:osmp:robot_embodiments_quantitative_evaluation}.
 
 We then target swimming behavior on the Crush Turtle robot using biologically inspired oracles collected by marine biologists. Our goal is for the \gls{OSMP} to drive the two front flippers, the main propulsion surfaces. We use both a three-dimensional joint-space oracle~\citep{van2023soft} and a four-dimensional task-space oracle comprising flipper-tip position and twist~\citep{van2022new}, each derived from video recordings of green sea turtles (Chelonia mydas)~\citep{van2022new,van2023soft}. The resulting joint-space velocity commands are executed by the robot’s actuators. Experiments show that \glspl{OSMP} enable accurate tracking of the biological oracle at moderate speeds. Because of joint-motor velocity and acceleration limits, the system cannot perfectly track shape or speed at higher $s_\omega$ values; yet even when motion diverges slightly, stability is preserved, the trajectory rapidly reconverges to the oracle, and the turtle robot successfully swims. 

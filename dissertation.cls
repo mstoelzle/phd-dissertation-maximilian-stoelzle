@@ -128,7 +128,8 @@
     \setmainfont[Path = fonts/libertinus/, ItalicFont=libertinusserif-italic.otf, BoldFont=libertinusserif-bold.otf, BoldItalicFont=libertinusserif-bolditalic.otf]{libertinusserif-regular.otf}
     \setsansfont[Path = fonts/libertinus/, BoldFont=libertinussans-bold.otf, ItalicFont=libertinussans-italic.otf]{libertinussans-regular.otf}
     \setmathfont[Path = fonts/libertinus/]{libertinusmath-regular.otf}
-    \setmonofont[Scale=MatchLowercase, Path=fonts/inconsolata/]{Inconsolata-Regular.ttf}
+    % \setmonofont[Scale=MatchLowercase, Path=fonts/inconsolata/]{Inconsolata-Regular.ttf}
+    \setmonofont[Path=fonts/inconsolata/]{Inconsolata-Regular.ttf}
     %% The default style for text is Tahoma (sans-serif).
     %\renewcommand*\familydefault{\sfdefault}
     %% The default style for titles is Bookman Old Style (serif).
@@ -257,7 +258,8 @@
 \RequirePackage{booktabs}
 
 \RequirePackage{relsize}
-\renewcommand*{\UrlFont}{\ttfamily\small}
+% \renewcommand*{\UrlFont}{\ttfamily\small}
+\renewcommand*{\UrlFont}{\ttfamily}
 
 % number circles. They go well together with my favorite way of
 % labeling stuff in pictures.
@@ -285,11 +287,20 @@
 \RequirePackage{epstopdf}
 \RequirePackage[export]{adjustbox}
 
+% for dropping full-page pdfs
+\RequirePackage{pdfpages}  % for front and back cover pages
+\RequirePackage{wallpaper} % for parts and chapter pages background
+\RequirePackage{atbegshi} % for one-shot "next page" hook
+\RequirePackage{afterpage}  % <-- add this
+
 \RequirePackage[nomain,acronym,nonumberlist,style=list]{glossaries} % nomain, if you define glossaries in a file, and you use \include{INP-00-glossary}
 % https://tex.stackexchange.com/questions/441939/glossaries-acronyms-how-to-display-only-the-first-appearance-of-an-acronym-amo
 \usepackage[abbreviations, automake]{glossaries-extra}
 
 %% Stop importing packages
+
+%% Ensure texttt uses the current font size (no scaling)
+\DeclareTextFontCommand{\texttt}{\ttfamily}
 
 
 % Advanced Hyphenation
@@ -523,25 +534,146 @@
     \vspace*{2.6pt}%
 }
 
+% ===== Background helpers for part & chapter pages =====
+% --- Part: first page only ---
+\newif\if@usepartbg \@usepartbgfalse
+\def\@partbgscale{1}
+\def\@partbgfile{}
+\newcommand{\setpartbackground}[2][1]{%
+  \gdef\@partbgscale{#1}%
+  \gdef\@partbgfile{#2}%
+  \@usepartbgtrue}
+
+% --- Chapter: title page (first page) ---
+\newif\if@usechapterbg \@usechapterbgfalse
+\def\@chapterbgscale{1}
+\def\@chapterbgfile{}
+\newcommand{\setchapterbackground}[2][1]{%
+  \gdef\@chapterbgscale{#1}%
+  \gdef\@chapterbgfile{#2}%
+  \@usechapterbgtrue}
+
+% --- Chapter: immediately following page (second page) ---
+\newif\if@usechapterbgii \@usechapterbgiifalse
+\def\@chapterbgiiScale{1}
+\def\@chapterbgiiFile{}
+\newcommand{\setchapternextbackground}[2][1]{%
+  \gdef\@chapterbgiiScale{#1}%
+  \gdef\@chapterbgiiFile{#2}%
+  \@usechapterbgiitrue}
+
+% Clear both chapter backgrounds after use
+\newcommand{\clearchapterbackgrounds}{%
+  \global\@usechapterbgfalse
+  \global\@usechapterbgiifalse}
+
+% Internal: schedule the 2nd-page background safely
+\newcommand{\@scheduleChapNextBg}{%
+  \afterpage{%
+    \ThisCenterWallPaper{\@chapterbgiiScale}{\@chapterbgiiFile}%
+  }%
+  \global\@usechapterbgiifalse
+}
+% ===== end helpers =====
+
+% --- add helper macros (before the \titleformat{\part} block) ---
+% \newif\if@usepartbg \@usepartbgfalse
+% \def\@partbgscale{1}
+% \def\@partbgfile{}
+% \newcommand{\setpartbackground}[2][1]{%
+%   \def\@partbgscale{#1}%
+%   \def\@partbgfile{#2}%
+%   \@usepartbgtrue}
+
 %% A part title starts with a huge (96pt) bold black number, flushed to the
 %% right, followed by the part name on the next line in the title color.
 \titleformat{\part}[display]
     {\flushright\titlestyle}
     {\fontsize{96pt}{96pt}\selectfont\bfseries\thepart}
     {0pt}
-    {\Huge\color{title}}
+    % {\Huge\color{title}}
+    % {%
+    %     \if@usepartbg
+    %       \ThisCenterWallPaper{\@partbgscale}{\@partbgfile}%
+    %     \fi
+    %     \Huge\color{title}%
+    % }
+    {%
+    \if@usepartbg
+      \ThisCenterWallPaper{\@partbgscale}{\@partbgfile}%
+    \fi
+    \Huge\color{title}%
+  }
 %% Separate the title from the text by two empty lines.
 \titlespacing{\part}{0pt}{0pt}{2\baselineskip}
 %% In the table of contents, the part name is preceded by an empty line, printed
 %% in bold, and not followed by a line of dots.
 \dottedcontents{part}[0em]{\vspace{\baselineskip}\titlefont\bfseries}{1.5em}{0pc}
 
+% % --- reusable toggles for chapter background ---
+% \newif\if@usechapterbg \@usechapterbgfalse
+% \def\@chapterbgscale{1}
+% \def\@chapterbgfile{}
+
+% % --- First (chapter title) page background ---
+% \newif\if@usechapterbg \@usechapterbgfalse
+% \def\@chapterbgscale{1}
+% \def\@chapterbgfile{}
+
+% % --- Second (immediately following) page background ---
+% \newif\if@usechapterbgii \@usechapterbgiifalse
+% \def\@chapterbgiiScale{1}
+% \def\@chapterbgiiFile{}
+
+% % Public setter
+% \newcommand{\setchapterbackground}[2][1]{%
+%   \def\@chapterbgscale{#1}%
+%   \def\@chapterbgfile{#2}%
+%   \@usechapterbgtrue}
+% \newcommand{\setchapternextbackground}[2][1]{%
+%   \gdef\@chapterbgiiScale{#1}%
+%   \gdef\@chapterbgiiFile{#2}%
+%   \@usechapterbgiitrue}
+% \newcommand{\clearchapterbackgrounds}{%
+%   \@usechapterbgfalse
+%   \@usechapterbgiifalse}
+
+% % Internal scheduler: apply on the very next physical page (once)
+% \newcommand{\@scheduleChapNextBg}{%
+%   \afterpage{%
+%     \ThisCenterWallPaper{\@chapterbgiiScale}{\@chapterbgiiFile}%
+%   }%
+%   \global\@usechapterbgiifalse
+% }
+
 %% Chapter titles have the same layout as parts.
 \titleformat{\chapter}[display]
     {\flushright\titlestyle}
     {\fontsize{50pt}{50pt}\selectfont\bfseries\thechapter}
     {0pt}
-    {\Huge\color{title}}
+    % {\Huge\color{title}}
+    % {%
+    % % 1) Title-page background (unchanged)
+    % \if@usechapterbg
+    %   \ThisCenterWallPaper{\@chapterbgscale}{\@chapterbgfile}%
+    % \fi
+    % % 2) Schedule one-shot background for the next page (fixed)
+    % \if@usechapterbgii
+    %   \@scheduleChapNextBg
+    % \fi
+    % \Huge\color{title}%
+    % }
+    {%
+        % Title page (chapter page) background
+        \if@usechapterbg
+          \ThisCenterWallPaper{\@chapterbgscale}{\@chapterbgfile}%
+        \fi
+        % One-shot background for the immediately following page
+        \if@usechapterbgii
+          \@scheduleChapNextBg
+        \fi
+        \Huge\color{title}%
+    }
 \titlespacing{\chapter}{0pt}{0pt}{2\baselineskip}
 %% In the table of contents, a chapter is similar to a part, except that it is
 %% preceded by half an empty line.

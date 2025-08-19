@@ -1,11 +1,11 @@
-\section{Methodology}
+\section{Methodology}\label{sec:osmp:methodology}
 
 In this work, we introduce \glspl{OSMP}, which can be trained to capture complex periodic motions from demonstrations while ensuring convergence to a limit cycle that aligns with a predefined oracle. To accomplish this, we build on previous research~\citep{rana2020euclideanizing, zhi2024teaching} that combines learned bijective encoders with a prescribed motion behavior in latent space. These latent dynamics generate velocities or accelerations that are subsequently mapped back into the oracle space via a pullback operator~\citep{zhang2022learning}—in the case of a bijective encoder, this operator is the inverse of the encoder’s Jacobian. In this formulation, the motion in latent space exhibits key convergence properties, such as Global Asymptotic Stability (GAS)~\citep{rana2020euclideanizing, perez2023stable, sochopoulos2024learning} or Orbital Stability (OS)~\citep{zhi2024teaching}, while the learned encoder provides the necessary expressiveness to capture complex motions and transfers the convergence guarantees from latent to oracle space through the established diffeomorphism.
 
 However, compared to existing work~\citep{zhi2024teaching}, we introduce several crucial modifications that enhance both the performance and practical utility of the proposed method: (1) we develop a limit cycle matching loss to reduce the discrepancy between the learned limit cycle and the periodic oracle; (2) we design strategies to modulate the learned velocity field online without the need for retraining—for instance, to adjust the convergence behavior; (3) we establish a procedure to synchronize the phase of multiple \glspl{OSMP}; and (4) we condition the encoder on a task, enabling a single \gls{OSMP} to exhibit multiple distinct motion behaviors. Moreover, we introduce loss terms that allow the trained \gls{OSMP} to smoothly interpolate between the learned motion behaviors—something that has not been possible before.
 
 \subsection{Orbitally Stable Motion Primitives}
-The dynamical motion policy $\dot{x}=f(x; z)$ is typically defined in task space but can also be defined in other Cartesian or generalized coordinates (e.g., joint space). Therefore, we will in the following refer to these coordinates as \emph{Oracle space}.
+The dynamical motion policy $\dot{x}=f(x; z)$ is typically defined in task space but can also be defined in other Cartesian or generalized coordinates (e.g., joint space). Therefore, we will, in the following, refer to these coordinates as \emph{Oracle space}.
 In this work, we are specifically interested in cases where we train $f(x)$ to learn periodic motions.
 Then, the smooth diffeomorphism between the oracle and latent space is made via a bijective encoder $\Psi: \mathbb{R}^n \to \mathbb{R}^n$, which maps positional states $x \in \mathbb{R}^n$ into the latent states $y \in \mathbb{R}^n$.
 Optionally, this encoding is conditioned on a continuous variable $z \in \mathbb{R}$ as a homotopy such that $y = \Psi(x;z)$.
@@ -25,7 +25,7 @@ If a conditioning is used, $z$ is first lifted into an embedding $\Bar{z}$, whic
 More details on the encoder architecture can be found in the pioneering work~\citep{dinh2017density, rana2020euclideanizing} and Section~\ref{sub:osmp:methodology:training}.
 
 \subsubsection{Latent Dynamics}
-In latent space, we consider the 1st-order dynamics of a supercritical Hopf bifurcation~\citep{strogatz2018nonlinear, khadivar2021learning, zhi2024teaching, nah2025combining}
+In latent space, we consider the \nth{1}-order dynamics of a supercritical Hopf bifurcation~\citep{strogatz2018nonlinear, khadivar2021learning, zhi2024teaching, nah2025combining}
 \begin{equation}\label{eq:osmp:latent_dynamics}
     \dot{y} = \begin{bmatrix}
         \dot{y}_1\\
@@ -109,7 +109,7 @@ The number of encoder layers/blocks varies by the complexity of the task and ran
 At the start of the training, the encoder is initialized as an identity mapping.
 
 \subsubsection{(Angular) Velocity Scaling Network}
-The optional velocity scaling network $e^{\mathrm{MLP}(x)}$ is parametrized by a three-to-five-layer MLP (depending on the nonlinearities and discontinuities that the demonstration velocity profile exhibits) with a hidden dimension of $128$ and LeakyReLU activation functions.
+The optional velocity scaling network $f_\mathrm{s}(x)$ is parametrized by a three-to-five-layer $\mathrm{MLP}(x)$ (depending on the nonlinearities and discontinuities that the demonstration velocity profile exhibits) with a hidden dimension of $128$ and LeakyReLU activation functions.
 
 Similarly, the angular velocity network $\omega(y) = f_\omega(\Bar{y}_{1:2}) = e^{\mathrm{MLP}(\Bar{y}_{1:2})} + \epsilon_\omega$, where $\Bar{y}_{1:2} = \begin{bmatrix}
     \frac{y_1}{\sqrt{y_1^2+y_2^2}} &  \frac{y_2}{\sqrt{y_1^2+y_2^2}}
@@ -186,7 +186,7 @@ Subsequently, we define a positive alignment loss between the
 $m_\mathrm{tgd} \in \mathbb{R}_{>0}$ is the allowed margin between the time reference and the actual polar phase and the function $n_{e_\varphi}(e_\varphi) = \operatorname{mod} \bigl( e_\varphi(k) + \pi,\; 2\pi\bigr) - \pi$ normalizes the polar angle error $e_\varphi(k) = \varphi^\mathrm{d}(k) - \varphi(k) $ into the interval $[-\pi, \pi)$.
 
 \paragraph{Encoder Regularization}
-Similar to Zhi \textit{et al.}~\citep{zhi2024teaching}, we employ an encoder regularization loss $\mathcal{L}_{\Psi, \mathrm{reg}}$ that penalizes deviations from an identity encoder $y = \Psi(x) = x$.
+Similar to \citet{zhi2024teaching}, we employ an encoder regularization loss $\mathcal{L}_{\Psi, \mathrm{reg}}$ that penalizes deviations from an identity encoder $y = \Psi(x) = x$.
 We draw in each epoch $N$ random positions samples $x(k) ~\sim \mathcal{U}(x_\mathrm{min}, x_\mathrm{max}) \: \forall \, k \in \mathbb{N}_N$ from a uniform distribution within the workspace $[x_\mathrm{min}, x_\mathrm{max}]$ of the system. Then, the loss is computed as
 \begin{equation}
     \mathcal{L}_{\mathrm{er}} = \sum_{k=1}^{N} \frac{\lVert x - \Psi(x;z) \rVert}{N}.
@@ -245,7 +245,7 @@ Finally, the smooth conditioning interpolation loss can be formulated as
 % Moreover, we penalize the deformation of the diffeomorphism by regularizing the weights $\theta$ of the bijective encoder: $\mathcal{L}_\mathrm{wr} = \sum_{w=1}^{n_\theta} \frac{\theta_w}{n_\theta}$.
 
 \subsection{Inference}
-Maintaining discrete-time stability demands that the \gls{OSMP}—or any \gls{DMP}—runs at sufficiently high control rates. This requirement becomes even tougher when computational resources are limited, as in our turtle-swimming setup where the \glspl{OSMP} ran on a Raspberry Pi 5. To minimise latency, we sought to shorten the \gls{OSMP}’s inference time by exploiting PyTorch’s compilation and export utilities. Unfortunately, most current PyTorch compilers/exporters are incompatible with autograd, which we still need at inference to obtain the encoder Jacobian $J_\Psi = \frac{\partial}{\partial x} \Psi(x;z)$. Consequently, we explored modern options in the \texttt{torch.func} namespace—including combinations of \texttt{vmap} with the forward and reverse functional Jacobian operators (\texttt{jacfwd}, \texttt{jacrev}) and the vector-Jacobian product (\texttt{vjp}). Our analysis, presented in the Supplementary Text, shows that simple two-point finite-difference schemes for the Jacobian compile and export cleanly, run quickly, and yield Jacobians whose accuracy is very close to the analytic solution.
+Maintaining discrete-time stability demands that the \gls{OSMP}—or any \gls{DMP}—runs at sufficiently high control rates. This requirement becomes even tougher when computational resources are limited, as in our turtle-swimming setup where the \glspl{OSMP} runs on a Raspberry Pi 5. To minimise latency, we sought to shorten the \gls{OSMP}’s inference time by exploiting PyTorch’s compilation and export utilities. Unfortunately, most current PyTorch compilers/exporters are incompatible with autograd, which we still need at inference to obtain the encoder Jacobian $J_\Psi = \frac{\partial}{\partial x} \Psi(x;z)$. Consequently, we explored modern options in the \texttt{torch.func} namespace—including combinations of \texttt{vmap} with the forward and reverse functional Jacobian operators (\texttt{jacfwd}, \texttt{jacrev}) and the vector-Jacobian product (\texttt{vjp}). Our analysis, presented in the Supplementary Text, shows that simple two-point finite-difference schemes for the Jacobian compile and export cleanly, run quickly, and yield Jacobians whose accuracy is very close to the analytic solution.
 In practice, we use an (absolute) step size $\delta_x = 5 \, 10^{-4}$ such that
 \begin{equation}
     J(x;z) \approx \begin{bmatrix}

@@ -1,6 +1,6 @@
-% \documentclass{dissertation}
-\documentclass[print]{dissertation}
-%\documentclass[print,draft]{dissertation}
+\documentclass{dissertation}
+% \documentclass[print]{dissertation}
+% \documentclass[print,draft]{dissertation}
 
 % \hyphenation{TestRoots WatchDog proj-ect proj-ects Ec-lipse two-fold clie-nts Mo-cki-to wide-spread}
 \newcommand{\sparkline}[1]{$\vcenter{\hbox{\includegraphics[scale=0.04]{#1}}}$}
@@ -16,6 +16,18 @@
 
 \begin{document}
 
+% Front insert (full-page PDF)
+\includepdf[
+  pages=1,                 % or pages=- to include all pages of front.pdf
+  pagecommand={\thispagestyle{empty}},          % suppress headers/footers from your class
+  % fitpaper=true,            % scale to exactly fill the physical page
+  width=\paperwidth,      % match document width
+  pagebox=cropbox,         % use the source PDF's CropBox if present
+]{cover/183365_Stolzle_R_OMS_v04Front.pdf}
+
+% Start your real page numbering after the front insert (optional)
+%\pagenumbering{roman}      % or arabic, as you prefer
+
 %% Specify the title and author of the thesis. This information will be used on
 %% the title page (in title/title.tex) and in the metadata of the final PDF.
 % Discovering and Leveraging Minimalist Models for Continuum Soft Robots
@@ -24,8 +36,8 @@
 % \title[Bridging Physics and Learned Models]{Safe and Efficient Control of Soft Robots}
 % \title[Bridging Physics and Learned Models for Ensuring Precision and Safety]{Efficient Control of Soft Robots}
 % \title[Synergizing Physics and Learned Models for Ensuring Precision and Safety]{Efficient Control of Soft Robots}
-\title[Incorporating Physics into Learned Models for Control]{Safe yet Precise Soft Robots}
 % synonyms of combining: fusing, incorporating, blending
+\title[Incorporating Physics into Learned Models for Control]{Safe yet Precise Soft Robots}
 
 \author{Maximilian}{Stölzle}
 
@@ -41,8 +53,6 @@
 \dedication{\epigraph{If you can model it, you can control it.}{W. Morrow and G. Strickland\footnote{{ \scriptsize \url{https://edu.nl/u4ujn}}}}}  % https://www.iands.design/industry-news/article/10179706/object-oriented-lighting-control-design
 % \dedication{\epigraph{Prediction is very difficult—especially about the future.}{Niels Bohr}}
 
-
-
 \tableofcontents
 
 \include{summary/summary}
@@ -53,27 +63,48 @@
 %% Turn on thumb indices.
 \thumbtrue
 
+% set part background
+\setpartbackground[1.03]{parts_and_chapter_background/183365_Stolzle_R_OMS_Image_PARTS.pdf} 
+
+% set chapter background
+\setchapterbackground[1.03]{parts_and_chapter_background/183365_Stolzle_R_OMS_Image_CHPTRLeft.pdf}        % title page
+
 \include{introduction/introduction}
 \include{background/background}
+\setchapternextbackground[1.03]{parts_and_chapter_background/183365_Stolzle_R_OMS_Image_CHPTRRight.pdf} % immediately following page (optional scale)
 \include{safetymetric/safetymetric}
-
 
 \part{Shape Sensing and Control with Advanced Physics-Based Models}\label{part:physicsmodels}
 \include{srslam/srslam}
+
+\setchapternextbackground[1.03]{parts_and_chapter_background/183365_Stolzle_R_OMS_Image_CHPTRRight.pdf} % immediately following page (optional scale)
 \include{hsamodel/hsamodel}
+
+\setchapternextbackground[1.03]{parts_and_chapter_background/183365_Stolzle_R_OMS_Image_CHPTRRight.pdf} % immediately following page (optional scale)
 \include{hsacontrol/hsacontrol}
+
+\setchapternextbackground[1.03]{parts_and_chapter_background/183365_Stolzle_R_OMS_Image_CHPTRRight.pdf} % immediately following page (optional scale)
 \include{braincontrol/braincontrol}
+
+\setchapternextbackground[1.03]{parts_and_chapter_background/183365_Stolzle_R_OMS_Image_CHPTRRight.pdf} % immediately following page (optional scale)
 \include{backstepping/backstepping}
 
 \part{Incorporating Physical Structure and Stability Guarantees Into Learned Models and Controllers}\label{part:learning}
+
+\setchapternextbackground[1.03]{parts_and_chapter_background/183365_Stolzle_R_OMS_Image_CHPTRRight.pdf} % immediately following page (optional scale)
 \include{promasens/promasens}
+
+\setchapternextbackground[1.03]{parts_and_chapter_background/183365_Stolzle_R_OMS_Image_CHPTRRight.pdf} % immediately following page (optional scale)
 \include{pcsregression/pcsregression}
+
+\setchapternextbackground[1.03]{parts_and_chapter_background/183365_Stolzle_R_OMS_Image_CHPTRRight.pdf} % immediately following page (optional scale)
 \include{con/con}
+
+\setchapternextbackground[1.03]{parts_and_chapter_background/183365_Stolzle_R_OMS_Image_CHPTRRight.pdf} % immediately following page (optional scale)
 \include{osmp/osmp}
 
 % \part{Achieving a Symbiotic Partnership between and Body and Brain Through Co-Design}
 % other synonym: aligning, harmonizing, synergizing, mutualize
-
 
 \part{Conclusion \& Outlook}\label{part:conclusion}
 \include{conclusion/conclusion}
@@ -91,6 +122,9 @@
 
 %% Turn off thumb indices for unnumbered chapters.
 \thumbfalse
+
+% turn off chapter backgrounds
+\clearchapterbackgrounds   % so later chapters are clean
 
 \chapter*{References}
 \addcontentsline{toc}{chapter}{References}
@@ -117,6 +151,15 @@
 \include{acks/acks}
 \include{cv/cv}
 \include{publications/publications}
+
+% Front insert (full-page PDF)
+\includepdf[
+  pages=1,                 % or pages=- to include all pages of back.pdf
+  pagecommand={\thispagestyle{empty}},          % suppress headers/footers from your class
+  % fitpaper=true,            % scale to exactly fill the physical page
+  width=\paperwidth,      % match document width
+  pagebox=cropbox,         % use the source PDF's CropBox if present
+]{cover/183365_Stolzle_R_OMS_v04Back.pdf}
 
 \end{document}
 

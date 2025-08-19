@@ -55,10 +55,10 @@ We have implemented this mechanism as a plugin for Elastica~\citep{naughton2021e
 % This results in a compact dynamic model that we test experimentally.
 % Several SoA simulators simulators~\citep{naughton2021elastica, mathew2022sorosim} rely on this discretized Cosserat rod theory.
 
-We then use a combination of \gls{CS} and \glspl{PCS}~\citep{renda2018discrete} to describe the shape of \gls{HSA} rods, which we call a \gls{SPCS} model: while some strains, such as twist \& stretch, are mostly constant over the length of the entire \gls{HSA}, other strains such as bend \& shear significantly vary and are thus captured in a piecewise parametrization. 
+We then use a combination of \gls{CS} and \glspl{PCS}~\citep{renda2018discrete} to describe the shape of \gls{HSA} rods, which we call a \gls{SPCS} model: while some strains, such as twist \& stretch, are mostly constant over the length of the entire \gls{HSA}, other strains, such as bend \& shear, significantly vary and are thus captured in a piecewise parametrization. 
 Our results show that a kinematic parametrization with $11$ Degrees of Freedom (DoF) is sufficient to capture the shape of \glspl{HSA}.
 Compared to the \gls{DCM} strategy used for simulating \glspl{HSA}, we have, therefore, significantly reduced the DoF of the kinematics.
-We provide an open-source implementation of this kinematic model in JAX\footnote{\scriptsize \url{https://github.com/tud-phi/jax-spcs-kinematics}}.
+We provide an open-source implementation of this kinematic model in JAX\footnote{\url{https://github.com/tud-phi/jax-spcs-kinematics}}.
 % Furthermore, we propose a Selective Piecewise Constant Strain (SPCS) kinematic model to describe the full 3D deformation of a single \gls{HSA} rod with a dramatically reduced number of states (compared to the \gls{DCM} strategy).
 
 This kinematic model could then be used to parametrize the deformation of each limb in the parallel \gls{HSA} rod.
