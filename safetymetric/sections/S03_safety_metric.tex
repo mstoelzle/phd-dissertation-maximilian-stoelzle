@@ -7,12 +7,12 @@ The second flavor, (ii) the \glsxtrfull{SRDHC}, captures the inherent safety of 
 Apart from the procedure for formulating this safety metric, one of the key innovations here is that we identify a closed-form solution to the collision dynamics, which renders the computation of the \gls{SRISC} to be computationally tractable.
 
 \subsection{Background on Soft Robot Dynamics and Contact Model}
-Following the Cosserat rod theory, we can capture the kinematic behavior of slender structures such as continuum soft robots by considering the deformations of the robot's backbone. As the 1D spatial deformations of this backbone are still an infinite-dimensional problem, the field has developed many methods, such as \gls{PCC}~\citep{webster2010design}, \gls{PCS}~\citep{renda2018discrete}, and \gls{GVS}~\citep{renda2020geometric}, to describe such deformations with a finite number of finite vector of configuration variables $q \in \mathbb{R}^n$. The associated forward kinematic model then allows us to define the geometric positional Jacobian $J_\mathrm{p}(q, s) \in \mathbb{R}^{3 \times n}$, where $s \in (0,L]$ is the backbone abscissa/coordinate and $L$ is the length of the entire continuum structure.
+Following the Cosserat rod theory, we can capture the kinematic behavior of slender structures such as continuum soft robots by considering the deformations of the robot's backbone. As the 1D spatial deformations of this backbone are still an infinite-dimensional problem, the field has developed many methods, such as \gls{PCC}~\citep{webster2010design}, \gls{PCS}~\citep{renda2018discrete}, and \gls{GVS}~\citep{renda2020geometric}, to describe such deformations with a finite number of finite vectors of configuration variables $q \in \mathbb{R}^n$. The associated forward kinematic model then allows us to define the geometric positional Jacobian $J_\mathrm{p}(q, s) \in \mathbb{R}^{3 \times n}$, where $s \in (0,L]$ is the backbone abscissa/coordinate and $L$ is the length of the entire continuum structure.
 Independent of the specific chosen kinematic model, the \gls{EOM} of a continuum soft robot can often be stated as~\citep{armanini2023soft, della2023model}
 \begin{equation}\label{eq:safetymetric:soft_robot_configuration_space_dynamics}
     M(q) \, \ddot{q} + C(q, \dot{q}) \, \dot{q} + \partial_{q} \, \mathcal{U}(q) + D \, \dot{q} = A(q) \, \tau + \tau_\mathrm{c},
 \end{equation}
-$M(q) \in \mathbb{R}^{n \times n}$ and $C(q, \dot{q}) \in \mathbb{R}^{n \times n}$ considers the inertial and Coriolis effects of the soft robot system, respectively.
+$M(q) \in \mathbb{R}^{n \times n}$ and $C(q, \dot{q}) \in \mathbb{R}^{n \times n}$ consider the inertial and Coriolis effects of the soft robot system, respectively.
 $\partial_{q} \, \mathcal{U}(q) \in \mathbb{R}^n$ captures the forces stemming from the potential $\mathcal{U}(q): \mathbb{R}^n \to \mathbb{R}$.
 Often times, the potential forces simplify to $\partial_{q} \, \mathcal{U}(q) =  G(q) + K q$, where $G(q) \in \mathbb{R}^{n}$ describes the gravitational forces, and $K \succ 0 \in \mathbb{R}^{n \times n}$ is the stiffness matrix.
 Dissipation is integrated through the damping matrix $D \succ 0 \in \mathbb{R}^{n \times n}$.
@@ -33,7 +33,7 @@ While the formulation that we use in this chapter for formulating the safety met
     \end{cases}
 \end{equation}
 where $k_\mathrm{c} \in \mathbb{R}_{>0}$ is the contact stiffness and $d_\mathrm{c} \in \mathbb{R}_{\geq 0}$ is the contact damping coefficient.
-If we assume the soft robot surface material and the human soft tissue to have spring constants and damping coefficients of $k_\mathrm{R,surf}$, $k_\mathrm{H,st}$ and $d_\mathrm{R}$, $d_\mathrm{H}$, respectively, then we can connect the spring-dampers in series
+If we assume the soft robot surface material and the human soft tissue to have spring constants and damping coefficients of $k_\mathrm{R,surf}$, $k_\mathrm{H,st}$, and $d_\mathrm{R}$, $d_\mathrm{H}$, respectively, then we can connect the spring-dampers in series
 \begin{equation}
     k_\mathrm{c} = \left (\frac{1}{k_\mathrm{R,surf}} + \frac{1}{k_\mathrm{H,st}} \right )^{-1},
     \qquad
@@ -117,7 +117,7 @@ The closed-form solution to the collision dynamics of \eqref{eq:safetymetric:col
     \caption{
         Verification of closed-form solution to \eqref{eq:safetymetric:simplified_collision_dynamics}: The solid lines represent numerical integrations of the hybrid dynamics 
         $m_\mathrm{R} \, \Ddot{\delta}_\mathrm{c} + k_\mathrm{R} \, \delta_\mathrm{c} + d_\mathrm{R} \, \dot{\delta}_\mathrm{c} + f_\mathrm{c}(\delta_\mathrm{c}) = f_\tau - f_{\mathcal{U}}^{\mathrm{c}0}$ with $f_\mathrm{c}(\delta_\mathrm{c}) = k_\mathrm{c} \, \delta_\mathrm{c} + d_\mathrm{c} \, \dot{\delta}_\mathrm{c} \: \forall \, \delta_\mathrm{c} > 0$ and $f_\mathrm{c}(\delta_\mathrm{c}) = 0 \: \forall \; \delta_\mathrm{c} \leq 0$. 
-        The dotted lines represent the closed-form solution to the time evolution reported in \eqref{eq:safetymetric:collision_dynamics_cfs} based on the dynamics in \eqref{eq:safetymetric:simplified_collision_dynamics} that describe the behavior during the contact phase. The dashed lines represent the (conservative) maximum contact force that could be encountered during the collision as determined by closed-form expression \eqref{eq:safetymetric:maximum_contact_force_closed_form}. 
+        The dotted lines represent the closed-form solution to the time evolution reported in \eqref{eq:safetymetric:collision_dynamics_cfs} based on the dynamics in \eqref{eq:safetymetric:simplified_collision_dynamics} that describe the behavior during the contact phase. The dashed lines represent the (conservative) maximum contact force that could be encountered during the collision as determined by the closed-form expression \eqref{eq:safetymetric:maximum_contact_force_closed_form}. 
         As system parameters, we choose $m_\mathrm{R} = \SI{1}{kg}$, $k_\mathrm{R} = \SI{2}{kN \per m}$, $d_\mathrm{R} = \SI{4}{Ns \per m}$, $k_\mathrm{c} = \SI{25}{kN \per m}$, which represents the spring constant of the human chest according to ISO/TS 15066:2016~\citep{iso2016collaborative}, $d_\mathrm{c} = \SI{20}{Ns \per m}$, and $\delta_\mathrm{c}^0 = \SI{0}{m}$.
         Please note that in all case we assume $f_{\mathcal{U}}^{\mathrm{c}0} = 0$ and $v_\mathrm{H} = 0$.
     }

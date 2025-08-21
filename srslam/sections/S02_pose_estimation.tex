@@ -1,7 +1,7 @@
 \section{Proposed Methodology: Shape Estimation with Kinematics-Aware SLAM}
 \label{sec:srslam:pose_estimation}
 
-In this chapter, we propose to use \gls{SLAM} for the proprioception of continuum soft robots. Common kinematic parametrizations for soft robots such as \gls{PCC}~\citep{webster2010design} or \gls{PCS}~\citep{renda2018discrete} model the soft arm to consist of multiple segments with independent kinematic state variables. 
+In this chapter, we propose to use \gls{SLAM} for the proprioception of continuum soft robots. Common kinematic parametrizations for soft robots, such as \gls{PCC}~\citep{webster2010design} or \gls{PCS}~\citep{renda2018discrete}, model the soft arm to consist of multiple segments with independent kinematic state variables. 
 In the following, we assume that the robot's model consists of $n_{\mathrm{S}}$ segments and that a monocular camera is attached to each segment. We rely on a \gls{PCC} kinematic formulation. However, the proposed results can be directly generalized to the PCS case.
 %
 %We expect that there exists a constant coordinate transformation between the camera and one point along the center-line of the soft segment.
@@ -11,13 +11,13 @@ Our goal is to reconstruct the full shape (i.e., a configuration $q_i$ for each 
 Fig. \ref{fig:srslam:method_overview} shows an overview of the proposed architecture.
 %
 %Monocular \gls{SLAM} algorithms are able to estimate the pose of each camera as the robot arm follows a trajectory.
-We use \gls{SLAM} algorithms such as monocular ORB-SLAM~\citep{mur2017orb} to estimate the pose of cameras attached to the soft robotic arm.  The pose estimation consists of 3D translation and rotations describing the relative camera movement from initial calibration to the current state ($\hat{t}_0^{\mathrm{c}_i},\hat{R}_0^{\mathrm{c}_i}$ in the figure). Then, the kinematic model is simultaneously used to refine the outputs of the SLAM and transform it to the desired estimation of the configurations ($\hat{q}_1,\hat{q}_3,\hat{q}_3$ in the figure). Starting from the base segment and progressively iterating up until reaching the tip of the robot, we express translation and rotations in local coordinates, and we optimize the estimated configurations segment-by-segment starting at the proximal end by projecting the pose estimate into the 3D \gls{PCC} kinematics.
+We use \gls{SLAM} algorithms such as monocular ORB-SLAM~\citep{mur2017orb} to estimate the pose of cameras attached to the soft robotic arm.  The pose estimation consists of 3D translation and rotations describing the relative camera movement from initial calibration to the current state ($\hat{t}_0^{\mathrm{c}_i},\hat{R}_0^{\mathrm{c}_i}$ in the figure). Then, the kinematic model is simultaneously used to refine the outputs of the SLAM and transform them to the desired estimation of the configurations ($\hat{q}_1,\hat{q}_3,\hat{q}_3$ in the figure). Starting from the base segment and progressively iterating up until reaching the tip of the robot, we express translation and rotations in local coordinates, and we optimize the estimated configurations segment-by-segment starting at the proximal end by projecting the pose estimate into the 3D \gls{PCC} kinematics.
 % This approach leverages known characteristics of the continuum soft robot and reduces the pose estimation error.
 
 In the following subsections, we provide more details on the various components of this architecture.
 
 \subsection{Background: Monocular ORB-SLAM}
-We choose monocular ORB-SLAM~\citep{mur2017orb} for pose estimation of the camera locations. Although this technological solution has never been applied to soft robots, the algorithm itself is well established, and its applications to mobile robotics are widespread. As such, we briefly describe here only the major steps of the algorithm.%, based on the pipeline in \ref{fig:srslam:algorithmpipeline}. 
+We choose monocular ORB-SLAM~\citep{mur2017orb} for pose estimation of the camera locations. Although this technological solution has never been applied to soft robots, the algorithm itself is well established, and its applications to mobile robotics are widespread. As such, we briefly describe here only the major steps of the algorithm. %, based on the pipeline in \ref{fig:srslam:algorithmpipeline}. 
  \begin{enumerate}
      \item \textbf{Map Initialization}: ORB-SLAM initializes a map of 3D points based on two video frames. The 3D points and relative camera pose are computed using triangulation of 2D ORB feature correspondences.
      \item \textbf{Tracking}: Once the map is initialized, the camera pose is estimated for each new frame by matching features in the current frame to features in the last keyframe. The estimated camera pose is refined by tracking the local map.
@@ -117,7 +117,7 @@ Additionally, the pose estimates by the \gls{SLAM} algorithm need to be transfor
 \end{split}    
 \end{equation}
 
-Next, we define a cost function to optimize the pose estimate by projecting them into the \gls{PCC}-kinematics
+Next, we define a cost function to optimize the pose estimate by projecting it into the \gls{PCC}-kinematics
 % Please note, that we do not include the orientation estimate $\hat{R}_{0}^{\mathrm{c}_i}$ by the \gls{SLAM} algorithm in the cost function.
 %
 \begin{equation}\label{eq:srslam:cost_fun}

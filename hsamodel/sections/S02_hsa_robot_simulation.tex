@@ -21,7 +21,7 @@ When the rod is in a deformed state, $l$ describes the current edge length and
 the shear and axial strains are considered in the vector $\sigma = \begin{pmatrix} \sigma_x & \sigma_y & \sigma_z \end{pmatrix}^\top$. The curvature vector $\kappa_{\mathcal{L}} = \begin{pmatrix} \kappa_x & \kappa_y & \kappa_z \end{pmatrix}^\top$ captures the bending and twist strains.
 All strains are defined with respect to the rest length of the link $\hat{l}_i$, and the dilation factor $e_i = \frac{l_i}{\hat{l}_i}$ denotes the deviation from that rest length.
 The shear and stretch stiffness is specified through the diagonal matrix $S = \mathrm{diag}(E I_{xx}, E I_{yy}, G I_{zz}) \in \mathbb{R}^{3 \times 3}$, where $E$, $G$ are the elastic and shear modulus respectively, and $I \in \mathbb{R}^{3 \times 3}$ is the second area moment of inertia. Analogue, the bending and twist rigidity is stored in $B = \mathrm{diag}(B_x, B_y, B_z) \in \mathbb{R}^{3 \times 3}$.
-For conciseness, we include only the equation for the translational accelerations below. We refer the interested reader to \citep{gazzola2018forward} for the equation on rotational accelerations and more complimentary details about the \gls{DCM}.
+For conciseness, we include only the equation for the translational accelerations below. We refer the interested reader to \citep{gazzola2018forward} for the equation on rotational accelerations and more complementary details about the \gls{DCM}.
 % The translational and rotational accelerations are then given as part of the governing equations as
 \begin{align}
     m_i \frac{\partial v_i}{\partial t} =& \Delta^h \left ( \frac{Q_i^\top \hat{S}_i \sigma^i_{\mathcal{L}}}{e_i} \right ) + F_i, \quad i\in \{1,\dots,n_\mathrm{v}+1\},
@@ -65,7 +65,7 @@ To keep the twist strain constant across the entire auxetic trajectory, we defin
 
 \begin{table}[hbt]
 \centering
-\caption{Parameters of simulated HSA rods in Section~\ref{sub:hsamodel:hsa_robot_simulation:verification_good} for various number of HSA row tilings $n_\mathrm{rows}$. Row tilings represent the number of vertically stacked unit cells~\citep{good2022expanding}. The rest length $\hat{L}$ and the elastic modulus $E$ are a linear function of the twist strain $\kappa_z$. $B_z$ represents the twist rigidity.}
+\caption{Parameters of simulated HSA rods in Section~\ref{sub:hsamodel:hsa_robot_simulation:verification_good} for various number of HSA row tilings $n_\mathrm{rows}$. Row tilings represent the number of vertically stacked unit cells~\citep{good2022expanding}. The rest length $\hat{L}$ and the elastic modulus $E$ are linear functions of the twist strain $\kappa_z$. $B_z$ represents the twist rigidity.}
 \begin{tabular}{c ccc}\toprule
 $n_\mathrm{rows}$ & $\hat{L} \, [\si{mm}]$ & $E \, [\si{kPa}]$ & $B_z \, [\si{Nm^2 \per rad}]$\\
 \midrule
@@ -79,7 +79,7 @@ $12$ & $124 \, (1 + 3.53 \: \kappa_z)$ & $197.6 + 2.4 \: \kappa_z$ & $0.00124$\\
 \label{tab:hsamodel:hsa_rod_parameters_sim_verification}
 \end{table}
 
-Finally, recent work by \citet{good2022expanding} has shown that \glspl{HSA} exhibit special mechanical characteristics, such as that the spring constant increases with the twist angle. Therefore, we allow the shear/stretch and bend / twist rigidity matrices $S$ and $B$ to be modified dynamically during the simulation with the twist strain. For example, the axial stiffness of a closed \gls{HSA} can be modeled as a linear function of the twist strain~\citep{good2022expanding}
+Finally, recent work by \citet{good2022expanding} has shown that \glspl{HSA} exhibits special mechanical characteristics, such as the spring constant increasing with the twist angle. Therefore, we allow the shear/stretch and bend / twist rigidity matrices $S$ and $B$ to be modified dynamically during the simulation with the twist strain. For example, the axial stiffness of a closed \gls{HSA} can be modeled as a linear function of the twist strain~\citep{good2022expanding}
 \begin{equation}
     \hat{S}_{z}^i = \Bar{S}_{z}^i + C_{S_z} \mathcal{A}^h(\kappa_{\mathcal{L},z}^i),
 \end{equation}
@@ -87,7 +87,7 @@ where $C_{S_z}$ is a tunable constant.
 
 \subsection{Verification of HSA Rod Steady-State Behaviour}\label{sub:hsamodel:hsa_robot_simulation:verification_good}
 We verify that our simulator can represent the steady-state behavior of a real \gls{HSA} by re-producing the characterization results for closed \glspl{HSA} by \citet{good2022expanding}.
-More specifically, we let the simulator converge to steady-state and then identify several mechanical properties such as blocked force ($F_\mathrm{b}$), minimum energy length, holding torque ($\tau_\mathrm{h}$), and the spring constant ($k$).
+More specifically, we let the simulator converge to a steady state and then identify several mechanical properties such as blocked force ($F_\mathrm{b}$), minimum energy length, holding torque ($\tau_\mathrm{h}$), and the spring constant ($k$).
 Following the reporting in \citep{good2022expanding}, we tune the parameters of our simulation to match the behavior of closed Carbon FPU50 \glspl{HSA} with \SI{19}{mm} outside diameter, \SI{2}{mm} wall thickness, as good as possible. We report the chosen simulation parameters in Table~\ref{tab:hsamodel:hsa_rod_parameters_sim_verification}. 
 The \gls{HSA} rod is modelled to consist of $n_\mathrm{v} = 10$ nodes and $9$ links with a material density of $\rho = \SI{1050}{kg \per m^3}$. For all simulations, the proximal end of the rod is constrained, and only rotations around the z-axis are allowed to mirror the actuation with electric motors. Furthermore, twisting is constrained at the distal end, which allows twist strains to build up in the rod. Otherwise, the distal end is unconstrained.
 
@@ -102,7 +102,7 @@ Next, we will go into more detail about each mechanical characteristic.
 \textbf{Holding torque:} We apply a given torsional torque $\tau_\mathrm{h}$ at the proximal end of the \gls{HSA} and then record the twist angle of the base $\phi_0$ at steady-state.
 \textbf{Minimum energy length:} The proximal end of the \gls{HSA} is rotated to a given twist angle $\phi_0$. The minimum energy length is then identified as the steady-state length of the \gls{HSA}.
 \textbf{Spring constant:} For a given twist angle $\phi_0$ with the \gls{HSA} at rest, the spring constant is identified by applying a small pulling force to the distal end and then measuring the displacement of the tip at steady-state.
-\textbf{Blocked force:} Differently from the other simulations, the distal end is constrained at its initial position to prevent the rod from extending. The blocked force $F_\mathrm{b}$ is identified by evaluating the internal axial force for a given twist angle.
+\textbf{Blocked force:} Different from the other simulations, the distal end is constrained at its initial position to prevent the rod from extending. The blocked force $F_\mathrm{b}$ is identified by evaluating the internal axial force for a given twist angle.
 % We refer the interested reader to the paper by \citet{good2022expanding} for more details on the exact identification procedure of each characteristics.
 
 % Next, we will go into more detail about the identification procedure for each property.
@@ -130,7 +130,7 @@ We need boundary conditions for the proximal ends of the rods to generate the pa
 For the same purpose, the translational rates, e.g., $v_0$, are set to zero at each time step. 
 
 In our plug-in to Elastica, we provide the user with two options for actuating the \glspl{HSA}. (a) The orientation of the proximal link $Q_{0}$ is moved to a desired orientation $Q_{0}^\mathrm{d}$. In this case, the twist angle $\phi_0^\mathrm{d}$ of the proximal end is controlled. Again, the rotational rates $\omega_0$ are set to zero. 
-(b) Twist torques $\tau_{0,z}$ are applied to the proximal link of the \gls{HSA}. The two remaining rotational DoF (rolling and pitching) of the proximal link are constrained by setting their rotational rates $\omega_{0,x}$ and $\omega_{0,y}$ to zero.
+(b) Twist torques $\tau_{0,z}$ are applied to the proximal link of the \gls{HSA}. The two remaining rotational \glspl{DOF} (rolling and pitching) of the proximal link are constrained by setting their rotational rates $\omega_{0,x}$ and $\omega_{0,y}$ to zero.
 
 Additionally, rigid joints between the rods and the platform are necessary. These are achieved by simulating a spring-damper system between the distal end of each \gls{HSA} and the platform. For the translations, we compute the contact force $F_\mathrm{c}$ as 
 \begin{equation}
@@ -146,11 +146,11 @@ where the $\log(\cdot): \mathbb{R}^{3 \times 3} \rightarrow $ operator computes 
 
 \subsection{Qualitative Evaluation of Motions in Simulation}\label{sub:hsamodel:hsa_robot_simulation:motion_primitives}
 We reproduce the typical motion primitives of a \gls{HSA} robot consisting of four \glspl{HSA} (e.g., $n_\mathrm{HSA} = 4$) in simulation and show the final steady-states in Fig.~\ref{fig:hsamodel:motion_primitives}. Two of the \glspl{HSA} are left-handed and positioned diagonally from each other. 
-Each rod is discretized by $n_\mathrm{v} = 25$ links and $26$ point mass vertices. Furthermore, it has a printed length of $\Bar{L} = \SI{100}{mm}$, an outside radius of \SI{25.4}{mm} and a wall-thickness of \SI{2.43}{mm}. The rods are placed at a radial distance of $R_\mathrm{cHSA} = \SI{24}{mm}$ from the center of the robot and a material density of $\rho_\mathrm{HSA} = \SI{1050}{kg \per m^3}$ is assumed. Therefore, the chosen simulation parameters mirror the geometric characteristics of our experimental platform.
+Each rod is discretized by $n_\mathrm{v} = 25$ links and $26$ point mass vertices. Furthermore, it has a printed length of $\Bar{L} = \SI{100}{mm}$, an outside radius of \SI{25.4}{mm} and a wall-thickness of \SI{2.43}{mm}. The rods are placed at a radial distance of $R_\mathrm{cHSA} = \SI{24}{mm}$ from the center of the robot, and a material density of $\rho_\mathrm{HSA} = \SI{1050}{kg \per m^3}$ is assumed. Therefore, the chosen simulation parameters mirror the geometric characteristics of our experimental platform.
 Based on an elastic modulus $E=\SI{10}{MPa}$ and a shear modulus $G=\SI{0.6}{MPa}$, the shear and stretch stiffnesses amount to $S_{x,y} = \SI{101.5}{N \per m}$, and $S_z = \SI{1753.5}{N \per m}$.
 We set the bend and twist rigidities $B_{x}, B_y$, and $B_z$ to \SI{0.02}{Nm^2 \per rad} and \SI{0.014}{Nm^2 \per rad} respectively. When twist strains are present, we extend the rest length of the rod by \SI{0.01}{m \per rad} after taking into account the handedness of the \gls{HSA}.
 
-The cylindrical platform is of diameter \SI{95}{mm}, has a thickness of \SI{3}{mm} and is modelled to have a density of $\rho_\mathrm{p} = \SI{700}{kg / m^3}$.
+The cylindrical platform is of diameter \SI{95}{mm}, has a thickness of \SI{3}{mm} and is modeled to have a density of $\rho_\mathrm{p} = \SI{700}{kg / m^3}$.
 The joint stiffness parameters $k_F = 5\cdot 10^5 \: \si{N \per m}$ and $k_\tau = 20 \: \si{Nm \per rad}$ are chosen for the fixed joint between \glspl{HSA} and platform. The joint damping coefficients $\nu_F$, $\nu_\tau$ are set to zero.
 
 Our qualitative results in Fig.~\ref{fig:hsamodel:motion_primitives} demonstrate that we are able to generate all motion primitives in simulation. For the shown deformations, we apply maximum twist angles of $\phi_{0,\mathrm{max}} = \pi \, \si{rad}$. % It needs to be noted that the axial stiffness $S_x$ (e.g. $E$-modulus), the bend rigidites $B_x, B_y$, the twist stiffness $B_z$, and the shear rigidities $S_y, S_z$ need to be carefully tuned to produced the desired \gls{HSA} deformations, particularly during the twisting motion primitive.

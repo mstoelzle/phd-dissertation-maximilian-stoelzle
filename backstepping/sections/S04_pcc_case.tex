@@ -4,9 +4,9 @@ This section provides an example of the application of the proposed model augmen
 
 \subsection{Model}\label{sub:backstepping:pcc_model}
 \subsubsection{Background: PCC Dynamic Model}
-We consider a planar soft robotic arm consisting of three segments analog to \citep{della2020model} modeled using the \gls{PCC}~\citep{jones2006kinematics} assumption, but the formulation can be easily extended to the 3D case while neglecting the torsional deformations. Alternatively, a strain-based parameterization could be employed~\citep{boyer2020dynamics}. 
+We consider a planar soft robotic arm consisting of three segments, analogous to \citep{della2020model}, modeled using the \gls{PCC}~\citep{jones2006kinematics} assumption, but the formulation can be easily extended to the 3D case while neglecting the torsional deformations. Alternatively, a strain-based parameterization could be employed~\citep{boyer2020dynamics}. 
 % The \gls{PCC}~\citep{jones2006kinematics} assumption stitches together segments each with constant curvature.
-We assume a weight distribution of $m_i = \int_{0}^{l_i} \rho_i(s') ds'$ along the center line of the segment $i$. Gravity is acting along the vector $g \in \mathbb{R}^2$. We consider the following equations of motions with diagonal matrices $K$ and $D$:
+We assume a weight distribution of $m_i = \int_{0}^{l_i} \rho_i(s') ds'$ along the center line of the segment $i$. Gravity is acting along the vector $g \in \mathbb{R}^2$. We consider the following \gls{EOM} with diagonal matrices $K$ and $D$:
 \begin{equation}\label{eq:backstepping:dynamics_pcc_case}
 \begin{split}
 	M(q)\ddot{q} + C(q,\dot{q}) \, \dot{q} + G(q) + K \, q + D \, \dot{q} + G_{\mathrm{P}}^{\mathrm{q}}(q,\mu_\mathrm{p}) &= 0, \\
@@ -16,12 +16,12 @@ We assume a weight distribution of $m_i = \int_{0}^{l_i} \rho_i(s') ds'$ along t
 
 \subsubsection{Model for Fluid Volume in Chamber}
 A model of the fluid volume in the chambers as a function of the configuration of the segment is required to evaluate the conservative forces by the fluid as specified in \eqref{eq:backstepping:GPq} and \eqref{eq:backstepping:GPmu}. In this section, we derive a simple analytical model based on \gls{CC} kinematics.
-It is assumed that the volume of the chamber is only dependent on the curvature of the segment as we model the segment length $l_{0,i}$ to stay constant and the chambers to be inextensible in radial direction of the curvature. We visualize the model and its parameters in Figure~\ref{fig:backstepping:pcc_case_overview}. Thus, the volume of chamber $j$ part of segment $i$ is defined as:
+It is assumed that the volume of the chamber is only dependent on the curvature of the segment, as we model the segment length $l_{0,i}$ to stay constant and the chambers to be inextensible in the radial direction of the curvature. We visualize the model and its parameters in Figure~\ref{fig:backstepping:pcc_case_overview}. Thus, the volume of chamber $j$ part of segment $i$ is defined as:
 \begin{equation}
     V_{\mathrm{C},j}(q_i) = \int_{d_{\mathrm{C},\mathrm{a},j}}^{d_{\mathrm{C},\mathrm{b},j}} b_\mathrm{C} \, l_i(d_\mathrm{C}') \, \mathrm{d}d_\mathrm{C}',
 \end{equation}
 where $b_\mathrm{C}$ describes the constant planar thickness of the chamber and $l_i(d'_\mathrm{C})$ the length of segment $i$ at offset $d'_\mathrm{C}$ from the center-line. 
-The function $l_i(d'_\mathrm{C})$ is derived by the properties of constant curvature of the segment
+The function $l_i(d'_\mathrm{C})$ is derived from the properties of \gls{CC} of the segment
 \begin{equation}
     l_i(d'_\mathrm{C}) = l_{0,i} - q_i d'_\mathrm{C}.
 \end{equation}
@@ -81,7 +81,7 @@ The partial derivative $\partial_{q} V_{\mathrm{C}}$ is determined as
   \subfigure[Coupling-aware PID]{\includegraphics[width=0.49\textwidth, trim={0.75cm 0.0cm 0.75cm 0cm}]{backstepping/figures/time_series_plot_actuation_force_coupling_aware_PID_v2.eps}}\\
   % Backstepping
   \subfigure[Backstepping controller]{\includegraphics[width=0.49\textwidth, trim={0.75cm 0cm 0.75cm 0cm}]{backstepping/figures/time_series_plot_actuation_force_backstepping_v2.eps}}\\
-  \caption{Simulation of posture regulation under \gls{PCC} approximation comparing the control input (i.e., the piston actuation force $f_\mathrm{p}$]) of an end-to-end PID baseline controller of a coupling-aware PID controller and the nonlinear backstepping controller.}
+  \caption{Simulation of posture regulation under \gls{PCC} approximation comparing the control input (i.e., the piston actuation force $f_\mathrm{p}$) of an end-to-end PID baseline controller, a coupling-aware PID controller, and the nonlinear backstepping controller.}
   \label{fig:backstepping:time_series_plots_actuation_force}
 \end{figure}
 

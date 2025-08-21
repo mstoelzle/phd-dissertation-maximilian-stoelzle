@@ -1,5 +1,5 @@
 \section{Cartesian Space Impedance Control}\label{sec:hsacontrol:operational_space_impedance_control}
-We introduce below a novel control strategy that addresses some limitations of the configuration-space regulation controller presented in Sec.~\ref{sub:hsacontrol:configuration_space_regulation:control_strategy} that are critical for achieving both structural and computational compliance. Namely, we (i) avoid computationally demanding planning procedures, (ii) remove integral terms that are unsafe for environment interaction, and (iii) enable impedance shaping in operational space. This Cartesian-space impedance controller is inspired by \citep{ott2008cartesian} and \citep{della2020model}, but specifically designed for and tailored to \gls{HSA} robots. Crucially, we need to overcome the challenges of underactuation and the nonlinearity in the actuation - which were not present in that original work. %We, therefore, solve online a least-squares optimization problem, identifying the optimal actuation for generating the demanded operational space forces.
+We introduce below a novel control strategy that addresses some limitations of the configuration-space regulation controller presented in Sec.~\ref{sub:hsacontrol:configuration_space_regulation:control_strategy} that are critical for achieving both structural and computational compliance. Namely, we (i) avoid computationally demanding planning procedures, (ii) remove integral terms that are unsafe for environment interaction, and (iii) enable impedance shaping in operational space. This Cartesian-space impedance controller is inspired by \citep{ott2008cartesian} and \citep{della2020model}, but specifically designed for and tailored to \gls{HSA} robots. Crucially, we need to overcome the challenges of underactuation and the nonlinearity in the actuation, which were not present in that original work. %We, therefore, solve online a least-squares optimization problem, identifying the optimal actuation for generating the demanded operational space forces.
 
 \begin{figure}
     \centering
@@ -10,7 +10,7 @@ We introduce below a novel control strategy that addresses some limitations of t
 
 \subsection{Background: Operational Space Dynamics}\label{sub:hsacontrol:task_space_dynamics}
 %
-Although this has never been done in the context of HSA robots, it is immediate to see that their dynamics \eqref{eq:hsacontrol:dynamics} can be projected into operational space yielding the form~\citep{della2019exact, della2020model} % khatib1987unified
+Although this has never been done in the context of HSA robots, it is immediate to see that their dynamics \eqref{eq:hsacontrol:dynamics} can be projected into operational space, yielding the form~\citep{della2019exact, della2020model} % khatib1987unified
 \begin{equation}\label{eq:hsacontrol:operational_space_dynamics}
     \Lambda(q) \, \Ddot{x} + \mu(q,\dot{q}) \dot{q} + J_\mathrm{M}^{+\top} ( G(q) + K (q-q^0) + D \, \dot{q} ) = J_\mathrm{M}^{+\top} \alpha(q,\phi),
 \end{equation}
@@ -90,5 +90,5 @@ We evaluate the Cartesian impedance controller using the gains $K_\mathrm{p} = \
 
 \subsection{Results}
 In Fig.~\ref{fig:hsacontrol:experimental_results:task_space_impedance_control}, we present the results of the experimental evaluation of the Cartesian impedance controller. 
-The fast response time, a well-known characteristic of model-based control approaches is evident. However, the errors in the model (for example, caused by hysteresis or unmodelled nonlinearities)~\citep{stolzle2024experimental}, together with the lack of integral action, lead to steady-state errors, which is especially pronounced for the y-coordinate.
+The fast response time, a well-known characteristic of model-based control approaches, is evident. However, the errors in the model (for example, caused by hysteresis or unmodeled nonlinearities)~\citep{stolzle2024experimental}, together with the lack of integral action, lead to steady-state errors, which are especially pronounced for the y-coordinate.
 

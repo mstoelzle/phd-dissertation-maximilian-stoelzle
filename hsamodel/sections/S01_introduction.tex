@@ -16,7 +16,7 @@ Differential elongation of the rods enables complex motion primitives such as el
 \begin{figure}
     \centering
     \includegraphics[width=0.72\columnwidth]{hsamodel/figures/overview/overview_v2_cropped.pdf}
-    \caption{An HSA robot in a twisted state: simulation and schematic of kinematic model of single HSA rod.}
+    \caption{An HSA robot in a twisted state: simulation and schematic of the kinematic model of a single HSA rod.}
     \label{fig:hsamodel:overview}
 \end{figure}
 
@@ -30,8 +30,8 @@ Differential elongation of the rods enables complex motion primitives such as el
 3D-\gls{FEM} based approaches~\citep{farrell2020extension} have proven to be effective in simulating soft parallel structures \citep{vanneste2021enabling} and could be a good candidate for representing the complex behavior of \gls{HSA} robots. However, in this chapter, we strive for a less computationally expensive solution - towards applications in model-based control \citep{della2023model}. For this reason, we look at the framework of the \gls{DCM}. The Cosserat rod theory assumes the slenderness of the object, e.g., that the length is much larger than the radius, and allows for the rod to exhibit all six principal strains. The 1D discretization of the rod along its length dramatically reduces the computational demand compared to \gls{FEM}~\citep{gazzola2018forward}. 
 % The main modification compared to the SoA simulators~\citep{naughton2021elastica, mathew2022sorosim} is that we couple the twist strains to the rest length of the rod. 
 %
-Several works in recent literature have successfully applied this framework to soft robotics \citep{grazioso2019geometrically,sadati2021tmtdyn,armanini2023soft}. Among them, in \gls{PCS}~\citep{renda2018discrete}, the continuum dynamics of the Cosserat model is discretized in space by keeping a selection of strains constant along a segment of the continuum. %They all neglect volumetric deformations and focus on the behavior of the central axis~\citep{della2021model}. 
-The most popular \gls{PCS} is \gls{PCC}~\citep{webster2010design}, which assumes a sequence of arcs. Functional extensions of \gls{PCS} use continuous function to approximate the strain~\citep{della2019control,renda2020geometric}. %The functional subspace is split into basis functions and weights, which are taken as the configuration of the robot~\citep{della2021model}. 
+Several works in recent literature have successfully applied this framework to soft robotics \citep{grazioso2019geometrically,sadati2021tmtdyn,armanini2023soft}. Among them, in \gls{PCS}~\citep{renda2018discrete}, the continuum dynamics of the Cosserat model are discretized in space by keeping a selection of strains constant along a segment of the continuum. %They all neglect volumetric deformations and focus on the behavior of the central axis~\citep{della2021model}. 
+The most popular \gls{PCS} is \gls{PCC}~\citep{webster2010design}, which assumes a sequence of arcs. Functional extensions of \gls{PCS} use a continuous function to approximate the strain~\citep{della2019control,renda2020geometric}. %The functional subspace is split into basis functions and weights, which are taken as the configuration of the robot~\citep{della2021model}. 
 % Finally, \gls{FEM} models represent the shape of the continuum with a mesh~\citep{grazioso2019geometrically}, therefore not neglecting the volumetric deformations.
 
 \begin{figure*}[hbt]
@@ -39,7 +39,7 @@ The most popular \gls{PCS} is \gls{PCC}~\citep{webster2010design}, which assumes
     \includegraphics[width=1.0\textwidth]{hsamodel/figures/motion_primitives/motion_primitives_v2_compressed.pdf}
     
     \caption{Motion primitives of \gls{HSA} robots: elongation, bending in the four cardinal directions (e.g., north (N), south (S), west (W), east (E)), and clockwise (CW) and counter-clockwise (CCW) twisting.
-    \textbf{First row (a):} depicts the necessary actuation inputs to generate these motion primitives. Pure elongation is achieved by applying the motor torques of the same magnitude but in opposite directions to the left-handed (L) and right-handed (R) HSAs. For bending, a delta exists in the elongation of the rods, while the sum of torques is still zero. Last but not least, counter-clockwise twisting is achieved by applying more torque to the right-handed than to the left-handed HSA rods.
+    \textbf{First row (a):} depicts the necessary actuation inputs to generate these motion primitives. Pure elongation is achieved by applying the motor torques of the same magnitude but in opposite directions to the left-handed (L) and right-handed (R) \glspl{HSA}. For bending, a delta exists in the elongation of the rods, while the sum of torques is still zero. Last but not least, counter-clockwise twisting is achieved by applying more torque to the right-handed than to the left-handed HSA rods.
     \textbf{Second row (b):} Snapshots of the experimental platform when actuated according to the above-specified sequence.
     \textbf{Third row (c):} Renderings of simulated steady-states of an HSA robot. It consists of four HSA rods and a platform at the distal end. The red arrows point along the local x-axis, and the green arrows along the local y-axis, respectively. The blue arrow signifies the z-axis of the local frame of the platform.}\label{fig:hsamodel:motion_primitives}
 \end{figure*}

@@ -27,13 +27,13 @@ After measuring the ground-truth pose of the tip of the segment with a motion ca
 
 \begin{figure*}[hbt]
   \centering
-  \subfigure[\textbf{T0:} random setpoints]{\includegraphics[width=0.16\textwidth]{promasens/figures/trajectories/trajectory_visualizations/random_compressed.pdf}}
+  \subfigure[\textbf{T0:} random setpoints]{\includegraphics[width=0.3\textwidth]{promasens/figures/trajectories/trajectory_visualizations/random_compressed.pdf}}
   % \hfill% or \hspace{5mm} or \hspace{0.3\textwidth}
-  \subfigure[\textbf{T1:} 1D bending]{\includegraphics[width=0.16\textwidth]{promasens/figures/trajectories/trajectory_visualizations/1D_bending_compressed.pdf}}
-  \subfigure[\textbf{T2:} half lemniscate]{\includegraphics[width=0.16\textwidth]{promasens/figures/trajectories/trajectory_visualizations/half_lemniscate_compressed.pdf}}
-  \subfigure[\textbf{T3:} full lemniscate]{\includegraphics[width=0.16\textwidth]{promasens/figures/trajectories/trajectory_visualizations/full_lemniscate_compressed.pdf}\label{fig:promasens:t3_viz}}
-  \subfigure[\textbf{T4:} spiral]{\includegraphics[width=0.16\textwidth]{promasens/figures/trajectories/trajectory_visualizations/spiral_compressed.pdf}}
-  \subfigure[\textbf{T5:} flower]{\includegraphics[width=0.16\textwidth]{promasens/figures/trajectories/trajectory_visualizations/flower_compressed.pdf}}
+  \subfigure[\textbf{T1:} 1D bending]{\includegraphics[width=0.3\textwidth]{promasens/figures/trajectories/trajectory_visualizations/1D_bending_compressed.pdf}}
+  \subfigure[\textbf{T2:} half lemniscate]{\includegraphics[width=0.3\textwidth]{promasens/figures/trajectories/trajectory_visualizations/half_lemniscate_compressed.pdf}}\\
+  \subfigure[\textbf{T3:} full lemniscate]{\includegraphics[width=0.3\textwidth]{promasens/figures/trajectories/trajectory_visualizations/full_lemniscate_compressed.pdf}\label{fig:promasens:t3_viz}}
+  \subfigure[\textbf{T4:} spiral]{\includegraphics[width=0.3\textwidth]{promasens/figures/trajectories/trajectory_visualizations/spiral_compressed.pdf}}
+  \subfigure[\textbf{T5:} flower]{\includegraphics[width=0.3\textwidth]{promasens/figures/trajectories/trajectory_visualizations/flower_compressed.pdf}}
 %   \hfill
 %   \subfigure[Neural network architecture]{\includegraphics[width=0.33\textwidth]{promasens/figures/Experiments/NN_architecture_P.pdf}\label{fig:promasens:NNgradientdescent}}
   \caption{Trajectories used during the experiments. We plot the shape of the segment under \gls{PCC} approximation in light blue and the position of the tip of the segment in dark blue. 
@@ -97,7 +97,7 @@ We conducted our experiments in a lab environment with the base of the soft robo
 % Motion Capture System
 A 3D-printed ring with four reflective markers is mounted on the tip of the segment.
 % Prime X by Optitrack
-Eight motion capture cameras are attached to the cage tracking at \SI{40}{Hz} the 3D pose of the ring.
+Eight motion capture cameras are attached to the cage, tracking at \SI{40}{Hz} the 3D pose of the ring.
 We transform the pose measurements of the tip to the base frame of the robot and compute the closed-form inverse kinematics~\citep{della2020improved} to receive a ground-truth configuration estimate $q(t) \in \mathbb{R}^2$.
 % Pneumatic actuation
 Each of the three pneumatic chambers of the segment is connected via tubing to a separate valve of a proportional pressure regulator operated at \SI{100}{Hz}. % We send set-point pressure commands from the workstation to the pressure regulator via Modbus / TCP at \SI{100}{Hz}.
@@ -105,7 +105,7 @@ Each of the three pneumatic chambers of the segment is connected via tubing to a
 We read out the analog signals of the \glspl{MRS} with an Arduino Uno at \SI{40}{Hz} and save them for later offline processing. 
 We temporally align the motion capture and the magnetic sensor data by detecting the initial extension of the robot with a suitable threshold.
 %static distortion
-The sensor noise is determined for both an unelongated straight configuration and during fully inflated bending. Here the standard deviations of the white noise are \SI{0.24}{mV} and \SI{3.55}{mV}, which normalizes to \SI{0.03}{\percent} and \SI{2}{\percent} of the dynamic range respectively.
+The sensor noise is determined for both an unelongated straight configuration and during fully inflated bending. Here, the standard deviations of the white noise are \SI{0.24}{mV} and \SI{3.55}{mV}, which normalizes to \SI{0.03}{\percent} and \SI{2}{\percent} of the dynamic range, respectively.
 % earth's magnetic field
 % Furthermore, we measure the angle between the x-axis of the base frame and the magnetic north with a compass as $\varphi_\mathrm{e} = \SI{3.79}{\radian}$ and rely on the \gls{WMM}~\citep{chulliat2020us} to identify the vertical component of the earth's magnetic field. This results in a unit vector for the earth's magnetic field direction of $\{ \hat{n}_{\mathrm{e}} \}_{0} = (-0.311, -0.234, 0.921)^\top$ for the robot in tip-down configuration.
 Furthermore, we identify the earth's magnetic field direction in the base from as $\{ \hat{n}_{\mathrm{e}} \}_{0} = (-0.311, -0.234, 0.921)^\top$ using a compass and the World Magnetic Model (WMM)~\citep{chulliat2020us}.
@@ -365,7 +365,7 @@ As expected, the predictions are generally the most accurate when evaluated on a
 % 
 Next, we analyze the proprioception performance on the same trajectories.
 We report relative RMSEs between \SI{1.9}{\percent} and \SI{13.6}{\percent} for estimating the bending of the robot.
-% Similar to before, we notice again that the errors are smaller when training and evaluating on the same trajectory type (e.g. T5).
+% Similar to before, we notice again that the errors are smaller when training and evaluating on the same trajectory type (e.g., T5).
 Additionally, we visualize the configuration estimates for two trajectories: in the top-right of Fig.~\ref{fig:promasens:2022-05-02_results_merged}, we run inference for our trained model on T2. While the proprioception estimate tracks the general shape of the trajectory well, the optimization, particularly for $\Delta_y$, gets trapped in local minima, sometimes leading to periods of higher error.
 Next, we consider a model trained and evaluated on separated sets of the T5 trajectory. The configuration estimate tracks the ground truth very well, as can be seen at the bottom right.
 Finally, we present a sequence of stills based on camera views and renderings of the soft segment for inference on T3 in Fig.~\ref{fig:promasens:experiment_sequences}.

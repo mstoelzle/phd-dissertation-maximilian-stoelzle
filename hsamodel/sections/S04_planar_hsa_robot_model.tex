@@ -40,7 +40,7 @@ For a given vector of rod twist angles $\phi \in \mathbb{R}^2$ and after definin
 \subsection{Dynamic Model}\label{sub:hsamodel:planar_hsa_robot_model:dynamics}
 We aim to devise a dynamic model in the Euler-Lagrange form
 $M(q) \Ddot{q} + C(q,\dot{q})\dot{q} + G(q) + K (q - q^0) + D \dot{q} = \alpha(q,\phi),$
-where $M(q),C(q,\dot{q}),K,D \in \mathbb{R}^{3 \times 3}$ are the inertia, Coriolis (derived with Christoffel symbols), elastic and damping matrices respectively. $q^0 \in \mathbb{R}^3$ captures the rest configuration. The terms $G(q)$ and $\alpha(q,\phi) \in \mathbb{R}^3$ describe the gravitational and actuation forces acting on the generalized coordinates.
+where $M(q),C(q,\dot{q}),K,D \in \mathbb{R}^{3 \times 3}$ are the inertia, Coriolis (derived with Christoffel symbols), elastic, and damping matrices, respectively. $q^0 \in \mathbb{R}^3$ captures the rest configuration. The terms $G(q)$ and $\alpha(q,\phi) \in \mathbb{R}^3$ describe the gravitational and actuation forces acting on the generalized coordinates.
 The state of the robot at time $t$ can be therefore described by $x(t) = \begin{bmatrix}
     q^\top(t) & \dot{q}^\top
 \end{bmatrix}^\top \in \mathbb{R}^6$.
@@ -88,7 +88,7 @@ After modeling the dissipative forces in each \gls{HSA} as $\mathrm{diag}(\zeta_
 %     %     0 & 0 & \zeta_{\mathrm{ax}}
 %     % \end{bmatrix}.
 % \end{equation}
-We open-source the derivation of the Euler-Lagrangian dynamics and a JAX implementation of a simulator based on them on GitHub\footnote{\url{https://github.com/tud-phi/jax-soft-robot-modelling}}.
+We open-source the derivation of the Euler-Lagrangian dynamics and a JAX implementation of a simulator based on them on GitHub\footnote{\url{https://github.com/tud-phi/jax-soft-robot-modeling}}.
 
 \begin{figure}[ht]
     \centering
@@ -106,7 +106,7 @@ We evaluate the planar \gls{HSA} model experimentally.
 The material choice of the \gls{HSA} is crucial and has a significant influence on the resulting mechanical characteristics of the robot  (e.g., blocked force, holding torque, bending stiffness, etc.)~\citep{truby2021recipe}. Furthermore, specific material requirements are dictated by the nature of the design of the \gls{HSA} rod. The structure of the metamaterial is made of struts connected by living hinges. These living hinges must be thin, flexible, and accommodate high strains~\citep{truby2021recipe}.
 In order to ensure that the system model is effective and suitable for a range of different materials, we decided to conduct the experimental verification on \glspl{HSA} 3D-printed via digital projection lithography either using the photopolymer resin Carbon FPU 50~\citep{carbon:fpu50} (stiffer) or the elastomeric polyurethane EPU 40 resin~\citep{carbon:epu40} (softer).
 
-The Dynamixel MX-28 servo motor are set to use position control mode. % which runs a cascaded PID control loop on the motor current.
+The Dynamixel MX-28 servo motors are set to use position control mode. % which runs a cascaded PID control loop on the motor current.
 % The robot is mounted platform-down on a cage on which we have also attached eight Optitrack PrimeX 13 cameras. The motion capture system can track the SE(3) pose of both the base and the platform at a sampling rate of \SI{200}{Hz}. 
 The robot is mounted platform-down on a cage with an Optitrack motion capture system, which measures the SE(3) pose of the platform at \SI{200}{Hz}.
 Our algorithms run within a ROS2 framework\footnote{\url{https://github.com/tud-phi/ros2-hsa}}. % First, we project the pose measurements into the plane of actuation. Then, we evaluate the coordinate transformation between platform and base and run the closed-form inverse kinematics introduced in \eqref{eq:hsamodel:planar_hsa_robot_model:kinematics}. We store in memory the last \textcolor{orange}{ten} configuration measurements, fit a cubic spline to each configuration variable using the \emph{Derivative} package~\citep{kaptanoglu2022pysindy}, and then differentiate the spline function to gather $\dot{q}(t)$.

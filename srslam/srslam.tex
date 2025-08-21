@@ -3,14 +3,14 @@
 \label{chp:srslam}
 
 \begin{foreword}
-    Before we can develop advanced soft robot controllers, we require access to state information. Specifically, we need to know the configuration of the soft robot, which, as introduced in Chapter~\ref{chp:background}, is for soft robots usually defined as the parametrized shape of the backbone.
+    Before we can develop advanced soft robot controllers, we require access to state information. Specifically, we need to know the configuration of the soft robot, which, as introduced in Chapter~\ref{chp:background}, is usually defined for soft robots as the parametrized shape of the backbone.
     In this chapter, we demonstrate how we can augment in a plug-and-play fashion existing state-of-the-art \gls{SLAM} algorithms with kinematic knowledge to achieve shape sensing for soft robots.
 \end{foreword}
 
 \begin{abstract}
     % The nature of continuum soft robots calls for novel perception solutions, which can provide information on the robot's shape while not substantially modifying their bodies' softness. One way to achieve this goal is to develop innovative and completely deformable sensors. 
     One way to achieve proprioception of the soft robot's shape while not substantially modifying their bodies' softness is to develop innovative and completely deformable sensors. 
-    However, these solutions tend to be less reliable than classic sensors for rigid robots. As an alternative, we consider here the use of monocular cameras. By admitting a small rigid component in our design, we can leverage well-established solutions from mobile robotics. We propose a shape-sensing strategy that combines a SLAM algorithm with nonlinear optimization based on the robot's kinematic model. We prove the method's effectiveness in simulation and with experiments of a single-segment continuous soft robot with a camera mounted to the tip. We achieve mean relative translational errors below 9\% simulations and experiments alike and as low as 0.5\% on average for some simulation conditions.
+    However, these solutions tend to be less reliable than classic sensors for rigid robots. As an alternative, we consider here the use of monocular cameras. By admitting a small rigid component in our design, we can leverage well-established solutions from mobile robotics. We propose a shape-sensing strategy that combines an SLAM algorithm with nonlinear optimization based on the robot's kinematic model. We prove the method's effectiveness in simulation and with experiments of a single-segment continuous soft robot with a camera mounted to the tip. We achieve mean relative translational errors below 9\% in simulations and experiments alike, and as low as 0.5\% on average for some simulation conditions.
 \end{abstract}
 
 \blfootnote{
@@ -44,5 +44,5 @@ Sharing the same vision, recent work by \citet{caroleo2025soft} integrates comme
 However, the approach presented in this chapter also has some drawbacks: 
 i) Firstly, while cameras have been significantly miniaturized in recent years, the requirement for them to have a clear, unobstructed view of the environment necessitates the inclusion of a rigid component on the surface of the soft robot, which we generally prefer to avoid for safety reasons. 
 Secondly, ii), the performance of \gls{SLAM} algorithms is affected in environments with limited visually distinguishable features.
-Finally, iii) high-dimensional perceptive data such as images are generally computationally expensive to process, leading to higher computational requirements and/or relatively low sampling rates of the shape-sensing information.
-Therefore, we present in Chapter~\ref{chp:promasens} an alternative shape-sensing approach based on magnetic sensors. The necessary magnets and magnetic sensors can be deeply embedded into the soft robot body, thus allowing us to keep the robot surface entirely soft and compliant. Furthermore, the sensory data is several orders of magnitude lower dimensional, and thus, its processing is potentially much less computationally demanding.
+Finally, iii) high-dimensional perceptive data, such as images, are generally computationally expensive to process, leading to higher computational requirements and/or relatively low sampling rates of the shape-sensing information.
+Therefore, we present in Chapter~\ref{chp:promasens} an alternative shape-sensing approach based on magnetic sensors. The necessary magnets and magnetic sensors can be deeply embedded into the soft robot body, thus allowing us to keep the robot surface entirely soft and compliant. Furthermore, the sensory data is several orders of magnitude lower-dimensional, and thus, its processing is potentially much less computationally demanding.

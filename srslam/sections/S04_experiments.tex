@@ -60,7 +60,7 @@ The ground-truth poses of the tip of the segment are recorded at \SI{30}{Hz}. % 
 We also include the elongation of the segment $\delta L_1$ in the cost function \eqref{eq:srslam:cost_fun} of our optimization.
 %
 % Calibration sequence
-To resemble the calibration sequence from the simulation for the \gls{SLAM} map, we manually move the robot lateral into the x-coordinate direction before fixing it to the cage for the start of the experiments.
+To resemble the calibration sequence from the simulation for the \gls{SLAM} map, we manually move the robot laterally into the x-coordinate direction before fixing it to the cage for the start of the experiments.
 
 \subsection{Results}
 Our experimental results reported in Table~\ref{tab:srslam:results_lab_experiments} and visualized for trajectory 3 in Figure~\ref{fig:srslam:experiments_t3_over_time} show translational relative \gls{RMSE} of between \SI{9}{\percent} and \SI{20}{\percent} for the three trajectories before optimization. 
@@ -68,7 +68,7 @@ The orientation of the z-axis of the tip is estimated with a mean error of appro
 The translational error is improved to between \SI{5}{\percent} and \SI{9}{\percent} after projection into the \gls{PCC}-kinematics. 
 The optimization also slightly improves the rotational \gls{RMSE} by \SI{4}{\percent} to \SI{10}{\percent} relative to naive \gls{SLAM}.
 
-The experimental results of the \gls{SLAM} algorithm are coherent with the simulations as the small segment length (\SI{11}{cm}) used in the experiments increases the translational errors as shown similarly in the simulations for a robot of length \SI{15}{cm}.
+The experimental results of the \gls{SLAM} algorithm are coherent with the simulations, as the small segment length (\SI{11}{cm}) used in the experiments increases the translational errors, as shown similarly in the simulations for a robot of length \SI{15}{cm}.
 Even though the translational error is greatly reduced through optimization, it is still significantly higher than in simulation. Two reasons for this difference could be that a) the segment in the simulation was modeled as in-extensible, while the real robot segment is extended via pneumatic pressurization, which introduces additional errors by \gls{SLAM} not accurately estimating the elongation movement and b) the real robot does not perfectly behave according to the \gls{CC} approximation as the simulated robot does.
 
 % \begin{table}

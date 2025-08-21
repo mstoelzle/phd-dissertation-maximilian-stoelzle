@@ -14,7 +14,7 @@ Two ring magnets are positioned at a distance of \SI{50}{mm} and \SI{150}{mm} fr
 \begin{figure}[hbt]
   \centering
   \includegraphics[width=0.8\columnwidth]{promasens/figures/simulation_results/ac/affine_curvature_inference_v2_cropped.pdf}
-  \caption{Sensor measurement predictions (top) and configuration estimates (bottom) for an \gls{AC} segment with nine magnetic sensors. We plot the ground-truth values $u$ and $q$ in solid, the estimate $\hat{u}$ and $\hat{q}$ as a mean over three random seeds with dashed lines and the standard deviation as an error band. The random seed determines the initialization of the neural network weights at the start of the training.}
+  \caption{Sensor measurement predictions (top) and configuration estimates (bottom) for an \gls{AC} segment with nine magnetic sensors. We plot the ground-truth values $u$ and $q$ in solid, the estimate $\hat{u}$ and $\hat{q}$ as a mean over three random seeds with dashed lines, and the standard deviation as an error band. The random seed determines the initialization of the neural network weights at the start of the training.}
   \label{fig:promasens:ac_simulations:inference_plot}
 \end{figure}
 
@@ -32,7 +32,7 @@ Two ring magnets are positioned at a distance of \SI{50}{mm} and \SI{150}{mm} fr
   \hfill
   \subfigure[$t=\SI{10}{s}$]{\includegraphics[width=0.161\textwidth]{promasens/figures/simulation_sequences/ac_flower_trajectory/affine_curvature_flower_t=10s_cropped.png}}
   % 1504 x 1400px
-  \caption{Sequence of stills for a simulated \gls{AC} robot. We visualize the ground-truth shape of the soft robot with full opacity and the estimated configuration with slight transparency. The two magnets are rendered in green and the nine sensors in blue.}
+  \caption{Sequence of stills for a simulated \gls{AC} robot. We visualize the ground-truth shape of the soft robot with full opacity and the estimated configuration with slight transparency. The two magnets are rendered in green, and the nine sensors in blue.}
   \label{fig:promasens:ac_simulations:inference_sequences}
 \end{figure*}
 

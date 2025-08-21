@@ -1,6 +1,6 @@
 \section{Dynamic Model}\label{sec:backstepping:dynamic_model}
 
-We consider the robot made by a sequence of $n_{\mathrm{S}} \in \mathbb{N}_+$ segments. Each segment is described with $n_{\mathrm{D}} \in \mathbb{N}_+$ configuration variables by using one of the many modeling techniques being developed in the state-of the-art~\citep {faure2012sofa, grazioso2019geometrically, sadati2021tmtdyn, boyer2020dynamics}.
+We consider the robot made by a sequence of $n_{\mathrm{S}} \in \mathbb{N}_+$ segments. Each segment is described with $n_{\mathrm{D}} \in \mathbb{N}_+$ configuration variables by using one of the many modeling techniques being developed in the state-of-the-art~\citep {faure2012sofa, grazioso2019geometrically, sadati2021tmtdyn, boyer2020dynamics}.
 %
 We denote with $n_{\mathrm{q}} = n_{\mathrm{S}} n_{\mathrm{D}}  \in \mathbb{N}_+$ the total number of configuration variables, which also represents the approximated DoFs of the soft arm.
 %
@@ -18,7 +18,7 @@ where $q \in \mathbb{R}^{n_{\mathrm{q}}}$ describes the configuration of the rob
 %
 Each segment is actuated through a set of $n_{\mathrm{C}}$ dedicated chambers.
 %
-Adapting the pressure in a chamber will lead to a different chamber volume ultimately resulting in a changed configuration of the segment.
+Adapting the pressure in a chamber will lead to a different chamber volume, ultimately resulting in a changed configuration of the segment.
 %
 Each chamber is connected to a dedicated piston, as shown in Figure~\ref{fig:backstepping:pcc_case_overview}. If more than one chamber is connected to the same piston, it can be considered to be the same chamber for the sake of this chapter.
 %
@@ -35,7 +35,7 @@ M_\mathrm{p} \ddot{\mu}_\mathrm{p} + D_\mathrm{p} \dot{\mu}_\mathrm{p} + G_{\mat
 \end{equation}
 %
 where $\mu_\mathrm{p} \in \mathbb{R}^{n_{\mu_\mathrm{p}}}$ denoting the displacement of every piston from the zero-volume configuration, $M_\mathrm{p} \in \mathbb{R}^{n_{\mu_\mathrm{p}} \times n_{\mu_\mathrm{p}}}$ the mass matrix of the piston system, $G_{\mathrm{P}}^{\mu_p} \in \mathbb{R}^{n_{\mu_\mathrm{p}}}$ describing the conservative force caused by the compressed fluid acting on the pistons, and $D_\mathrm{p} \in \mathbb{R}^{n_{\mu_\mathrm{p}} \times n_{\mu_\mathrm{p}}}$ the damping matrix of the piston system. 
-As the piston system is fixed to the ground and connected via tubing to the robot chambers, note that the gravity force here is constant, so w.l.o.g. we consider it to be zero (or alternative as being compensated by a constant off\--set in $f_\mathrm{p}$).
+As the piston system is fixed to the ground and connected via tubing to the robot chambers, note that the gravity force here is constant, so w.l.o.g., we consider it to be zero (or alternatively as being compensated by a constant offset in $f_\mathrm{p}$).
 
 \begin{figure}[ht]
   \centering
@@ -46,11 +46,11 @@ As the piston system is fixed to the ground and connected via tubing to the robo
 \begin{figure}[ht]
   \centering
   \includegraphics[width=0.9\columnwidth]{backstepping/figures/backstepping_graphics_pcc_case_overview_v4_cropped.pdf}
-  \caption{Shape regulation under \gls{PCC} approximation - \textbf{Left:} A planar soft robot consisting of three segments each modeled to have constant curvature \textbf{Right:} Model parameters for fluidic volume in soft segment chambers. Each chamber is actuated independently by a fluidic drive cylinder connected through tubing.}\label{fig:backstepping:pcc_case_overview}
+  \caption{Shape regulation under \gls{PCC} approximation - \textbf{Left:} A planar soft robot consisting of three segments, each modeled to have constant curvature \textbf{Right:} Model parameters for fluidic volume in soft segment chambers. Each chamber is actuated independently by a fluidic drive cylinder connected through tubing.}\label{fig:backstepping:pcc_case_overview}
 \end{figure}
 
 
-In first approximation, we model the compressible fluid (typically air) as an ideal gas. Furthermore, we consider the process to be isothermal, and no fluid exchange with the external world is happening. We neglect the volume of fluid in any tubes connecting the pistons with the chambers.
+In the first approximation, we model the compressible fluid (typically air) as an ideal gas. Furthermore, we consider the process to be isothermal, and no fluid exchange with the external world is happening. We neglect the volume of fluid in any tubes connecting the pistons with the chambers.
 %
 The overall volume of the fluid can be evaluated as %the sum of the chamber volume $V_{\mathrm{q},i}(q)$
 %
@@ -100,7 +100,7 @@ The force exerted on the $i$th segment of the robot by the fluid is
     G_{\mathrm{P},i}^{\mathrm{q}}(q_i,\mu_{\mathrm{p},j}) &= \partial_{q_i} \mathcal{U}_\mathrm{fluid}(q,\mu_\mathrm{p}) = -\partial_{q_i} V_{C,j} \left ( p_{j}(q_i, \mu_{\mathrm{p},j}) - p_\mathrm{atm} \right ), 
 \end{split}
 \end{equation}
-Similarly, the force applied on $j$th piston by the fluid is
+Similarly, the force applied on the $j$th piston by the fluid is
 %
 \begin{equation}\label{eq:backstepping:GPmu}
 \begin{split}
