@@ -50,7 +50,7 @@ Finally, we demonstrate how the regressed methods can be used in a plug-and-play
 These cases consider one-segment, two-segment, and three-segment planar \gls{PCS} soft robots ($n_\mathrm{s} \in \{ 1, 2, 3 \}$), respectively, with configurations $q \in \mathbb{R}^{n_\mathrm{q}}$ where $n_\mathrm{q} \in \{3, 6, 9 \}$ and actuation  $\tau \in \mathbb{R}^3, \mathbb{R}^6, \mathbb{R}^9$, assuming full actuation.
 
 \paragraph{Case 4 (1S PCS H-SH)}
-This case is a one-segment \gls{PCS} robot with high shear stiffness three orders of magnitude larger than in \emph{Case 1}.
+This case is a one-segment \gls{PCS} robot with high shear stiffness, three orders of magnitude larger than in \emph{Case 1}.
 
 \paragraph{Case 5 (2S PCS H-AX/SH)}
 This case is a two-segment \gls{PCS} robot, where the \nth{1} segment has a significantly increased axial stiffness and \nth{2} segment an increased shear stiffness w.r.t \emph{Case 2}.
@@ -66,7 +66,7 @@ This case is a two-segment \gls{PCS} robot, where the \nth{1} segment has a sign
 \subsubsection{Dataset Generation}
 In order to illustrate the end-to-end nature of our proposed method, we generate the datasets as short video sequences of the soft robot's movement. 
 Therefore, we mimic a camera placed parallel to the robot's plane of motion to capture the soft robot's ground-truth dynamics.
-At each time step, we render an image of the soft robot that contains $N=21$ equally distant, visually salient features. In the real world, this could be achieved by attaching markers to the soft robot that allows tracking of points along the backbone across time~\citep{stella2022experimental}.
+At each time step, we render an image of the soft robot that contains $N=21$ equally distant, visually salient features. In the real world, this could be achieved by attaching markers to the soft robot that allow tracking of points along the backbone across time~\citep{stella2022experimental}.
 We simulate the robot's ground-truth dynamics using the planar \gls{PCS} simulator presented in \citep{stolzle2024experimental}.
 
 For Cases 1 to 4, we include eight trajectories with randomly sampled initial conditions in the training set. We consider stepwise actuation sequences for which we randomly sample a torque every \SI{10}{ms}. Each trajectory produces a \SI{0.5}{s} video captured at \SI{1000}{Hz}. For \emph{Case 6}, since the PAC simulator only accounts for kinematics, we generate an image sequence featuring the robot in $500$ randomly selected configurations.
@@ -143,14 +143,14 @@ This metric is particularly useful for assessing the obtained dynamic models wit
 % For the kinematic model, once the final number of segments $m$ and their locations are determined, we retrieve for the test trajectory the configurations $\mathbf{q}_i(k)$ at each of the segments. Then, knowing the coordinate $s$ of each of the $N$ tracked points along the robot, the estimated positions and orientations are found using the forward kinematics in \eqref{eq:pcsregression:forward_kin_pcs}. For the dynamic model, after obtaining the final coefficients for the Lagrangian and damping effects, we can get the robot's equations of motion. Those are integrated with the initial conditions of the test trajectory to obtain the estimated configurations. The estimated positions and orientations are again found as above through forward kinematics.
 
 \subsection{Kinematic Fusion Results}
-\subsubsection{Cases 1, 2 and 3}
+\subsubsection{Cases 1, 2, and 3}
 % The kinematic fusion procedure was first tested for three instances of the planar PCS simulator: a one-, two- and three-segment manipulators (Cases 1, 2 and 3). %The video processing step extracts the poses of the 20 cross-sections and a 20-segment kinematic model is initialized. 
 Figs. \ref{fig:pcsregression:results:kinematic_fusion:pcs_ns-2} \& \ref{fig:pcsregression:results:kinematic_fusion:pcs_ns-3} presents the average strain distances between the adjacent segment pairs for \emph{Cases 2-3}, as the result of the first and final iteration of the kinematic fusion algorithm. 
 The plots for Cases 2 and 3 reveal one and two peaks, respectively, revealing where we need to separate segments in the kinematic model.
 % In contrast, the smaller magnitude of the distance metric in Case 1, when compared to the other cases, indicates that the entire robot can be represented by a single segment with constant strain. 
-The strain distance threshold $h$ is a hyperparameter that trade-offs model complexity with model accuracy.
+The strain distance threshold $h$ is a hyperparameter that trades off model complexity with model accuracy.
 For common soft robots that exhibit a \gls{PCS}-like behavior, we recommend choosing $h$ such as that the segmented model exhibits isolated peaks in the strain distance metric, as visible in Fig.~\ref{fig:pcsregression:results:kinematic_fusion}.
-The number of segments and respective lengths for the resulting models obtained with a threshold of $h=0.2$ are presented in the third column of Table \ref{tab:pcsregression:results_kin_reg_pcs} and by comparing to the second column, it is easily visible that our algorithm almost perfectly identified the segment lengths. 
+The number of segments and respective lengths for the resulting models obtained with a threshold of $h=0.2$ are presented in the third column of Table \ref{tab:pcsregression:results_kin_reg_pcs}, and by comparing to the second column, it is easily visible that our algorithm almost perfectly identified the segment lengths. 
 % Note that these models are final because, for Cases 2 and 3, the updated strain trajectories for the newly defined segments are no longer sufficiently similar for further merging. Also, for Case 1 no additional merging is possible since we already reached one single segment.
 %
 % The distributed task-space errors between the resulting models and the ground truth is also evaluated. Knowing the final number of segments and their lengths, we determine the configurations $\mathbf{q}_i(k)$. Then, using the forward kinematics in \eqref{eq:pcsregression:forward_kin_pcs}, we obtain the estimated positions and orientations for the 20 tracked points along the robot. The results for these three cases are summarized in the first three rows of Table \ref{tab:pcsregression:results_kin_reg_pcs}.
@@ -161,7 +161,7 @@ We remark that the error can be further reduced by using a finer discretization 
 \begin{table}[htbp]
 \centering
 % \renewcommand{\arraystretch}{1.3} % Increase space between rows
-\caption{Kinematic fusion results: The second and third columns contain the actual and estimated segment lengths, respectively. The Cartesian pose error between the actual and estimated backbone shape is stated in the third and fourth column, respectively. \emph{Case 6} represents a one-segment \gls{PAC} soft robot of total length \SI{150}{mm} and can be, therefore, not be represented with a (one-segment) \gls{PCS} model.}
+\caption{Kinematic fusion results: The second and third columns contain the actual and estimated segment lengths, respectively. The Cartesian pose error between the actual and estimated backbone shape is stated in the third and fourth columns, respectively. \emph{Case 6} represents a one-segment \gls{PAC} soft robot of total length \SI{150}{mm} and can be, therefore, not be represented with a (one-segment) \gls{PCS} model.}
 \label{tab:pcsregression:results_kin_reg_pcs}
 \setlength\tabcolsep{3.0pt}
 \begin{small}
@@ -183,7 +183,7 @@ Even though the kinematics of many continuum soft robotic manipulators can be de
 This is particularly the case when external or gravitational forces dominate the elastic and actuation forces~\citep{della2023model}.
 In order to verify that our approach is also able to identify effective models in such situations, we test the kinematic fusion algorithm on the case of an affine curvature robot~\citep{stella2023piecewise} and plot the resulting average strain distances in Fig.~\ref{fig:pcsregression:distances_pac}.
 Indeed, the strain distance plot no longer exhibits clear, isolated peaks (i.e., a single solution). Therefore, we formulate a Pareto front in Fig.~\ref{fig:pcsregression:pareto_front_pac} (by varying the strain distance threshold $h$) that describes the tradeoff between the number of \gls{PCS} segments (i.e., the \gls{DOF} of the kinematic model) and the shape reconstruction accuracy. Analyzing and exploiting this tradeoff allows the user to choose their \emph{sweetspot} between model complexity and performance.
-In this case, we find that three segments represent a suitable compromise between model complexity and shape reconstruction accuracy as it exhibits a position error of only \SI{0.5}{\percent} of the robot's length.
+In this case, we find that three segments represent a suitable compromise between model complexity and shape reconstruction accuracy, as it exhibits a position error of only \SI{0.5}{\percent} of the robot's length.
 
 % We evaluate the robustness of the method with the PAC simulator, which no longer implements the constant bending assumption of the PCS model. The average strain distances for the initial 19 pairs of segments are presented in Fig. \ref{fig:pcsregression:distances_pac}.
 
@@ -208,7 +208,7 @@ In this case, we find that three segments represent a suitable compromise betwee
 \subsection{Dynamic Model Identification Results}
 
 \subsubsection{Verification of Dynamical Regression}
-We verify the dynamical regression algorithm on one and two-segment \gls{PCS} robots (i.e., Cases 1 \& 2) both with and without measurement noise.
+We verify the dynamical regression algorithm on one and two-segment \gls{PCS} robots (i.e., Cases 1 \& 2), both with and without measurement noise.
 After regressing the dynamic parameters on the training set, we perform a rollout on the test set and compare the resulting predicted trajectory with the ground truth.
 To confirm that the dynamic regression is also effective when applied to real-world data, we apply in some experiments Gaussian noise that mirrors measurement noise as we would encounter it for motion capture data, computer vision detection errors, etc. to the poses included in the training set (i.e., $\Tilde{\chi} = \chi + \mathcal{N}(0, \sigma_\mathrm{n}))$.
 For \emph{Case 1}, we sample the noise from a normal distribution with standard deviations \SI{0.5}{mm} and \SI{1}{\degree} for the position and orientation measurements, respectively.
@@ -216,7 +216,7 @@ Analog, we define the standard deviation of the noise for \emph{Case 2} as \SI{0
 
 The results are reported in Tab.~\ref{tab:pcsregression:dyn_results} (top four rows), and the rollouts of Cases 1 \& 2 are included in Figs.~\ref{fig:pcsregression:predict_ns-1}-\ref{fig:pcsregression:predict_ns-2}. We also present a sequence of stills of the rollout of \emph{Case 2} in Fig.~\ref{fig:pcsregression:still_seq}.
 We conclude that even though the dynamical parameters are regressed on only \SI{4}{s} of robot motion data, the dynamical predictions are extremely accurate on the long horizon of \SI{7}{s} (most control algorithms such as \gls{MPC} operate on a much smaller horizon). The position error for the experiments not involving noise stays below \SI{5}{\percent} in both cases.
-When noise is present in the training data, the position error is roughly tripled. Still, we observe that the error is mostly related to the transient terms and model converges during the slower sequences of the trajectory to the ground truth. Most importantly, the learned model, even when trained on noisy data, remains stable, as shown in Fig.~\ref{fig:pcsregression:predict_ns-2}.
+When noise is present in the training data, the position error is roughly tripled. Still, we observe that the error is mostly related to the transient terms and the model converges during the slower sequences of the trajectory to the ground truth. Most importantly, the learned model, even when trained on noisy data, remains stable, as shown in Fig.~\ref{fig:pcsregression:predict_ns-2}.
 
 \subsubsection{Verification of Strain Sparsification}
 Next, we verify that the strain sparsification algorithm can detect and eliminate strains that do not have a significant effect on the dynamics and can be, therefore, neglected to reduce the model complexity.
@@ -440,7 +440,7 @@ If we compare \emph{Case 2} and \emph{Case 5} (both two-segment \gls{PCS} robots
     \subfigure[Train: Marker $s=\SI{170}{mm}$ (EE)]{\includegraphics[width=0.49\textwidth]{pcsregression/figures/pcs_ns-2_with_baselines/rollout_train_marker_20.pdf}}
     \subfigure[Train: Actuation torques]{\includegraphics[width=0.49\textwidth]{pcsregression/figures/pcs_ns-2_with_baselines/torque_train.pdf}}
 
-    \caption{Benchmarking of the proposed method against various machine learning baselines on a PCS soft robot consisting of two segments (\emph{Case 2}) on the \textbf{train dataset}: We train the baseline methods on the dynamical evolution of the Cartesian SE(2) poses of three \emph{markers} distributed over the backbone of the soft robot with a total length of \SI{170}{mm}. The upper and lower rows visualize the rollout of all methods on the training and the test set, respectively. The first three columns show the evolution of each of the three markers, where the last markers represents the end-effector. The last column displays the actuation torques that were used to generate the datasets.}
+    \caption{Benchmarking of the proposed method against various machine learning baselines on a PCS soft robot consisting of two segments (\emph{Case 2}) on the \textbf{train dataset}: We train the baseline methods on the dynamical evolution of the Cartesian SE(2) poses of three \emph{markers} distributed over the backbone of the soft robot with a total length of \SI{170}{mm}. The upper and lower rows visualize the rollout of all methods on the training and the test set, respectively. The first three columns show the evolution of each of the three markers, where the last marker represents the end-effector. The last column displays the actuation torques that were used to generate the datasets.}
     \label{fig:pcsregression:dynamics_pcs_ns-2_with_baselines:training}
 \end{figure}
 \begin{figure}[ht]
@@ -450,7 +450,7 @@ If we compare \emph{Case 2} and \emph{Case 5} (both two-segment \gls{PCS} robots
     \subfigure[Test: Marker $s=\SI{170}{mm}$ (EE)]{\includegraphics[width=0.49\textwidth]{pcsregression/figures/pcs_ns-2_with_baselines/rollout_val_marker_20.pdf}}
     \subfigure[Test: Actuation torques]{\includegraphics[width=0.49\textwidth]{pcsregression/figures/pcs_ns-2_with_baselines/torque_val.pdf}}
 
-    \caption{Benchmarking of the proposed method against various machine learning baselines on a PCS soft robot consisting of two segments (\emph{Case 2}) on the \textbf{test dataset}: We train the baseline methods on the dynamical evolution of the Cartesian SE(2) poses of three \emph{markers} distributed over the backbone of the soft robot with a total length of \SI{170}{mm}. The upper and lower rows visualize the rollout of all methods on the training and the test set, respectively. The first three columns show the evolution of each of the three markers, where the last markers represents the end-effector. The last column displays the actuation torques that were used to generate the datasets.}
+    \caption{Benchmarking of the proposed method against various machine learning baselines on a PCS soft robot consisting of two segments (\emph{Case 2}) on the \textbf{test dataset}: We train the baseline methods on the dynamical evolution of the Cartesian SE(2) poses of three \emph{markers} distributed over the backbone of the soft robot with a total length of \SI{170}{mm}. The upper and lower rows visualize the rollout of all methods on the training and the test set, respectively. The first three columns show the evolution of each of the three markers, where the last marker represents the end-effector. The last column displays the actuation torques that were used to generate the datasets.}
     \label{fig:pcsregression:dynamics_pcs_ns-2_with_baselines:test}
 \end{figure}
 % \begin{figure}[hbt]
@@ -489,7 +489,7 @@ If we compare \emph{Case 2} and \emph{Case 5} (both two-segment \gls{PCS} robots
 We benchmark the derived dynamical model of \emph{Case 2} (i.e., a two-segment planar \gls{PCS} soft robot) against several models trained using machine learning approaches. Specifically, we consider various learning-based approaches that range from completely data-driven (e.g., \gls{NODE}) over approaches that take into account the structure of Lagrangian systems (e.g., \gls{LNN}, \gls{CON}).
 % To keep the comparison fair, we define the task as learning the dynamical evolution of the backbone without any access to prior information about the kinematics (e.g., no knowledge about number of segments, length of each segment, active strains, etc.).
 To keep the comparison fair, we define the inputs for all methods as the Cartesian poses $\chi_j \in \mathbb{R}^3$ and the corresponding time derivative $\dot{\chi}_j$ of $N$ discrete \emph{markers} along the backbone. Furthermore, we also provide the actuation torques $\tau \in \mathbb{R}^6$ as a dynamic model input. Therefore, the total model input exhibits a dimensionality of $\mathbb{R}^{6N + 6}$. The task of the dynamic model is to predict the acceleration $\ddot{\chi}(k) \in \mathbb{R}^{3N}$. % (\gls{NODE}, \gls{CON}, \gls{LNN}). % or next state $(\chi(k+1), \dot{\chi}(k+1)) \in \mathbb{R}^{18}$ (\gls{LSTM}) of all markers.
-We tried supplying all $21$ markers, which our method also has access to, to the baseline approaches. However, this proved to be infeasible as the problem would become too high-dimensional in terms of the numbers of inputs and outputs, and the baseline approaches would overfit the training set. Therefore, we settled to give the baseline methods access to the pose measurements of $N=3$ markers distributed along the backbone of the robot at $s_j \in \{ 68, 119, 170 \}$~\si{mm}, where $s=\SI{170}{mm}$ corresponds to the end-effector.
+We tried supplying all $21$ markers, which our method also has access to, to the baseline approaches. However, this proved to be infeasible as the problem would become too high-dimensional in terms of the number of inputs and outputs, and the baseline approaches would overfit the training set. Therefore, we settled to give the baseline methods access to the pose measurements of $N=3$ markers distributed along the backbone of the robot at $s_j \in \{ 68, 119, 170 \}$~\si{mm}, where $s=\SI{170}{mm}$ corresponds to the end-effector.
 
 \paragraph{Implementation of Baseline Methods}
 The \gls{NODE} is parametrized by a six-layer \gls{MLP} with hidden dimension $256$ and hyperbolic tangent activation function that predicts based on the input $(\chi(t), \dot{\chi}(t), \tau(t))$ the acceleration $\ddot{\chi}$. We remark that with this strategy, we already infuse the prior knowledge that the time derivative of the pose is the velocity, which would not be the case in a naive implementation of a \gls{NODE}.
@@ -524,7 +524,7 @@ As shown in panels (d) of Figs.~\ref{fig:pcsregression:dynamics_pcs_ns-2_with_ba
 \end{figure}
 
 \subsection{Demonstration of Model-based Control}\label{sub:pcsregression:validation:model_based_control}
-To demonstrate how the derived models can be used in a plug-and-play fashion for model-based control, we simulate the closed-loop dynamics of a simulated two segment \gls{PCS} soft robot (\emph{Case 2}) with configuration $q \in \mathbb{R}^7$ under a P-satI-D+FF~\citep{della2023model, stolzle2024experimental, stolzle2024input} setpoint control policy
+To demonstrate how the derived models can be used in a plug-and-play fashion for model-based control, we simulate the closed-loop dynamics of a simulated two-segment \gls{PCS} soft robot (\emph{Case 2}) with configuration $q \in \mathbb{R}^7$ under a P-satI-D+FF~\citep{della2023model, stolzle2024experimental, stolzle2024input} setpoint control policy
 \begin{equation}
 \begin{split}
     \tau(t, q) =& \: \underbrace{\hat{G}(q^\mathrm{d})+\hat{K}q^\mathrm{d}}_{\text{Learned feedforward term}} + \underbrace{K_\mathrm{p} \, (q^\mathrm{d} - q) - K_\mathrm{d} \, \dot{q} + K_\mathrm{i} \, e_\mathrm{int}(t) }_{\text{P-satI-D feedback term~\citep{pustina2022p}}},
@@ -541,6 +541,6 @@ Please note that we use the ground-truth dynamics as a state transition function
 % After manual tuning, we select the control gains $K_\mathrm{p} = \mathrm{diag}(0.01, 0.5, 6, 0.01, 0.5, 6)$, $K_\mathrm{i} = \mathrm{diag}(0.06, 3, 36, 0.06, 3, 36)$, $K_\mathrm{d} = \mathrm{diag}(0.002, 0.1, 0.8, 0.002, 0.1, 0.8)$, and $\Upsilon = \mathrm{diag}(40, 0.1, 0.2, 40, 0.1, 0.2)$.
 
 To verify that the learned model performs well within the model-based control policy, we create a sequence of $7$ randomly sampled setpoints $q^\mathrm{d}(k) \in \mathbb{R}^6$. % $} \in \mathcal{U}([-\SI{40}{rad \per m}, ], [])$.
-The results in Fig.~\ref{fig:pcsregression:results:control:pcs_ns-2} show that the controller is able to effectively regulate a two-segment planar soft robot.%  that exhibits bending, shear, and axial strains.
+The results in Fig.~\ref{fig:pcsregression:results:control:pcs_ns-2} show that the controller is able to effectively regulate a two-segment planar soft robot. %  that exhibits bending, shear, and axial strains.
 The tracking of the bending strain reference is perfect. For the linear strains, we notice small errors in the feedforward term, but the integral control is able to compensate for them and drive the system toward the reference.
 We stress that the structure and characteristics of the learned model enabled us to formulate the control policy in closed form easily, and we did not have to resort to techniques such as \gls{MPC} or \gls{RL} as it would be necessary for other model learning techniques (e.g., \glspl{LSTM}, \glspl{NODE}).

@@ -11,7 +11,7 @@ Then, the smooth diffeomorphism between the oracle and latent space is made via 
 Optionally, this encoding is conditioned on a continuous variable $z \in \mathbb{R}$ as a homotopy such that $y = \Psi(x;z)$.
 Furthermore, we construct $\Psi$ such that it is invertible and a closed-form inverse function $\Psi^{-1}: y \mapsto x$ allows us to map from latent space back into oracle space.
 In latent space, we apply dynamics $\dot{y} = f_\mathrm{y}(y)$ that exhibit a stable limit cycle behavior. In summary, the orbitally stable motion primitive is given as
-\begin{equation}\label{eq:dynamics}
+\begin{equation}\label{eq:osmp:dynamics}
     \dot{x} = f(x;z) = f_\mathrm{s}(x) \, J_\Psi^{-1}(x;z) \, f_\mathrm{y} \left (\Psi(x;z) \right ),
 \end{equation}\
 where $J_\Psi = \frac{\partial \Psi(x;z)}{\partial x}$ defines the Jacobian of the encoder. 
@@ -135,7 +135,7 @@ Analog to the literature on stable point-to-point motion primitives~\citep{rana2
 \begin{equation}
     % \mathcal{L}_\mathrm{vi} = \sum_{k = 1}^{N} \frac{\lVert \dot{x}^\mathrm{d}(k) - f(x^\mathrm{d}(k);z(k)) \rVert_2^2}{N}.
     \mathcal{L}_\mathrm{vi} = \frac{1}{N} \, \sum_{k = 1}^{N} \begin{cases}
-		\frac{\left ( f(x^\mathrm{d}(k);z(k)) - \dot{x}^\mathrm{d}(k) \right )^2}{2 \, \ell_1}, & \text{if} \: \left \lVert f(x^\mathrm{d}(k);z(k)) - \dot{x}^\mathrm{d}(k) \right \rVert_1 < \beta_{\ell_1} \\
+		\frac{\left ( f(x^\mathrm{d}(k);z(k)) - \dot{x}^\mathrm{d}(k) \right )^2}{2 \, \beta_{\ell_1}}, & \text{if} \: \left \lVert f(x^\mathrm{d}(k);z(k)) - \dot{x}^\mathrm{d}(k) \right \rVert_1 < \beta_{\ell_1} \\
         \left \lVert f(x^\mathrm{d}(k);z(k)) - \dot{x}^\mathrm{d}(k) \right \rVert_1 - \frac{\beta_{\ell_1}}{2} , & \text{otherwise}
     \end{cases},
 \end{equation}
@@ -183,7 +183,7 @@ Subsequently, we define a positive alignment loss between the
 \begin{equation}
     \mathcal{L}_\mathrm{tgd} = \sum_{k \in \mathcal{P}} \frac{\max \left ( \left | \operatorname{mod} \bigl( \varphi^\mathrm{d}(k) - \varphi(k) + \pi,\; 2\pi\bigr) - \pi \right | - m_\mathrm{tgd}, 0 \right )^2}{|\mathcal{P}|},
 \end{equation}
-$m_\mathrm{tgd} \in \mathbb{R}_{>0}$ is the allowed margin between the time reference and the actual polar phase and the function $n_{e_\varphi}(e_\varphi) = \operatorname{mod} \bigl( e_\varphi(k) + \pi,\; 2\pi\bigr) - \pi$ normalizes the polar angle error $e_\varphi(k) = \varphi^\mathrm{d}(k) - \varphi(k) $ into the interval $[-\pi, \pi)$.
+where $m_\mathrm{tgd} \in \mathbb{R}_{>0}$ is the allowed margin between the time reference and the actual polar phase and the function $n_{e_\varphi}(e_\varphi) = \operatorname{mod} \bigl( e_\varphi(k) + \pi,\; 2\pi\bigr) - \pi$ normalizes the polar angle error $e_\varphi(k) = \varphi^\mathrm{d}(k) - \varphi(k) $ into the interval $[-\pi, \pi)$.
 
 \paragraph{Encoder Regularization}
 Similar to \citet{zhi2024teaching}, we employ an encoder regularization loss $\mathcal{L}_{\Psi, \mathrm{reg}}$ that penalizes deviations from an identity encoder $y = \Psi(x) = x$.
@@ -210,7 +210,10 @@ where $m \in \mathbb{R}_{\geq0}$ is the margin. In practice, we choose $m_\mathr
 
 \paragraph{Smooth Conditioning Interpolation Loss}
 Next, optionally, we can add a loss term that encourages a smooth interpolation of the learned limit cycle between conditionings $z$. We assume that all conditionings in the dataset $z(k) \in \mathcal{Z}$, where $\mathcal{Z} = \{ z(1), \dots, z(k), \dots, z(N) \}$, are bounded in the interval $[z_\mathrm{min}, z_\mathrm{max}]$.
-Now, consider a convex hull $\operatorname{conv}(\mathcal{Z}) = [\min(\mathcal{Z}), \min(\mathcal{Z})] = [z_\mathrm{min}, z_\mathrm{max}]$.
+Now, consider a convex hull
+\begin{equation*}
+    \operatorname{conv}(\mathcal{Z}) = [\min(\mathcal{Z}), \min(\mathcal{Z})] = [z_\mathrm{min}, z_\mathrm{max}].
+\end{equation*}
 Next, we draw $N_\mathrm{sci}$ random conditionings from a uniform distribution: $\tilde{z}(j) \sim \mathcal{U}(\operatorname{conv}(\mathcal{Z})) \in \mathbb{R}$ with $j \in \mathbb{N}_{N_\mathrm{sci}}$.
 Additionally, we also generate $N_\mathrm{sci}$ samples on the latent limit cycle by uniformly sampling polar angles $\varphi(j) \sim [-\pi, \pi)$ and subsequently first map into Cartesian latent coordinates and then into oracle space using the inverse encoder
 \begin{equation}
@@ -245,7 +248,7 @@ Finally, the smooth conditioning interpolation loss can be formulated as
 % Moreover, we penalize the deformation of the diffeomorphism by regularizing the weights $\theta$ of the bijective encoder: $\mathcal{L}_\mathrm{wr} = \sum_{w=1}^{n_\theta} \frac{\theta_w}{n_\theta}$.
 
 \subsection{Inference}
-Maintaining discrete-time stability demands that the \gls{OSMP}—or any \gls{DMP}—runs at sufficiently high control rates. This requirement becomes even tougher when computational resources are limited, as in our turtle-swimming setup where the \glspl{OSMP} runs on a Raspberry Pi 5. To minimise latency, we sought to shorten the \gls{OSMP}’s inference time by exploiting PyTorch’s compilation and export utilities. Unfortunately, most current PyTorch compilers/exporters are incompatible with autograd, which we still need at inference to obtain the encoder Jacobian $J_\Psi = \frac{\partial}{\partial x} \Psi(x;z)$. Consequently, we explored modern options in the \texttt{torch.func} namespace—including combinations of \texttt{vmap} with the forward and reverse functional Jacobian operators (\texttt{jacfwd}, \texttt{jacrev}) and the vector-Jacobian product (\texttt{vjp}). Our analysis, presented in the Supplementary Text, shows that simple two-point finite-difference schemes for the Jacobian compile and export cleanly, run quickly, and yield Jacobians whose accuracy is very close to the analytic solution.
+Maintaining discrete-time stability demands that the \gls{OSMP}—or any \gls{DMP}—runs at sufficiently high control rates. This requirement becomes even tougher when computational resources are limited, as in our turtle-swimming setup where the \glspl{OSMP} runs on a Raspberry Pi 5. To minimise latency, we sought to shorten the \gls{OSMP}’s inference time by exploiting PyTorch’s compilation and export utilities. Unfortunately, most current PyTorch compilers/exporters are incompatible with autograd, which we still need at inference to obtain the encoder Jacobian $J_\Psi = \frac{\partial}{\partial x} \Psi(x;z)$. Consequently, we explored modern options in the \texttt{torch.func} namespace—including combinations of \texttt{vmap} with the forward and reverse functional Jacobian operators (\texttt{jacfwd}, \texttt{jacrev}) and the vector-Jacobian product (\texttt{vjp}). Our analysis, presented in the Sec.~\ref{sub:osmp:inference_time_benchmarking}, shows that simple two-point finite-difference schemes for the Jacobian compile and export cleanly, run quickly, and yield Jacobians whose accuracy is very close to the analytic solution.
 In practice, we use an (absolute) step size $\delta_x = 5 \, 10^{-4}$ such that
 \begin{equation}
     J(x;z) \approx \begin{bmatrix}

@@ -1,4 +1,4 @@
-\section{Experiments \& Results}\label{sec:osmp:results}
+\section{Experiments and Results}\label{sec:osmp:results}
 \subsection{OSMPs are Asymptotically Orbitally Stable and Transverse Contracting}
 In this section, we analyze the convergence characteristics of \glspl{OSMP} from a theoretical perspective. Specifically, we show that \glspl{OSMP} exhibit \gls{AOS} and under which conditions they are transverse contracting and lead to \gls{EOS}
 
@@ -114,12 +114,12 @@ This section is organized as follows: First, we provide formal definitions of (t
 \begin{definition}\label{def:osmp:exponential_orbital_stability}
     Let $\dot{x} = f(x)$ be an autonomous, transverse contracting system in the region $x \in \mathcal{X} \subseteq \mathbb{R}^n$ with contracting rate $\zeta \in \mathbb{R}_{>0}$. 
     Also, consider the non-trivial $T$-periodic solution $x_\mathrm{lc}(t) \in \mathcal{X}$ that defines the solution curve $X_\mathrm{lc} = \{ x \in \mathbb{R}^n : \exists t \in [0,T):x=x_\mathrm{lc} \}$.
-    Then, the solution $x_\mathrm{lc}(t)$ is said to be \emph{exponentially orbitally stable} as there exists a $k > 0$ such that for any $x_0 \in \mathcal{X}$
+    Then, the solution $x_\mathrm{lc}(t)$ is said to be exponentially orbitally stable as there exists a $k > 0$ such that for any $x_0 \in \mathcal{X}$
     \begin{equation}
         \inf_{x_\mathrm{lc} \in X_\mathrm{lc}} \lVert x(t) - x_\mathrm{lc} \rVert_2 \leq k \inf_{x_\mathrm{lc} \in X_\mathrm{lc}} \lVert x_0 - x_\mathrm{lc} \rVert_2 \, e^{-\zeta t}.
     \end{equation}
 \end{definition}
-Please note that the notion of \gls{EOS}, also referred to as transverse exponential stability, is stronger than the commonly used \emph{asymptotic orbital stability} as it guarantees \textbf{exponential} convergence to the orbit/limit cycle~\citep{manchester2011transverse}.
+Please note that the notion of \gls{EOS}, also referred to as transverse exponential stability, is stronger than the commonly used \gls{AOS} as it guarantees \textbf{exponential} convergence to the orbit/limit cycle~\citep{manchester2011transverse}.
 
 \paragraph{Proof of Transverse Contraction of Latent Dynamics in Polar Coordinates}
 First, we prove that the latent dynamics in polar coordinates $\dot{y}_\mathrm{pol} = f_\mathrm{pol}(y_\mathrm{pol})$ are transversely contracting: i.e., they are not contracting along the polar phase variable $\varphi$, but contracting orthogonal to the flow $f_\mathrm{pol}(y_\mathrm{pol})$~\citep{manchester2014transverse}. Inspired by a recent proof of transverse contraction for the Andronov-Hopf oscillator with state $(r, \varphi)$~\citep{nah2025combining}, we define the following Proposition.
@@ -289,7 +289,7 @@ Specifically, we evaluate the transverse contracting/exponentially stable varian
 The baselines include classical neural motion policies—\glspl{MLP}, \glspl{RNN}, and \glspl{LSTM}—that directly predict the next system position, plus \glspl{NODE} \citep{chen2018neural}, which instead predict the desired velocity. We also compare with state-of-the-art robotic imitation-learning methods such as \glspl{DP} that predict system trajectory over a horizon and existing \glspl{SMP} designed for periodic motion, namely Imitation Flows (iFlow) \citep{urain2020imitationflow} and \gls{SPDT}~\citep{zhi2024teaching}, predicting system velocities.
 
 \subsubsection{Training}
-The OSMP motion policy is trained by a AdamW optimizer~\citep{kingma2014adam, loshchilov2018decoupled} with $(\beta_1, \beta_2) = (0.9, 0.999)$ and a default weight decay of $\lambda = 1 0^{-10}$.
+The \gls{OSMP} motion policy is trained by a AdamW optimizer~\citep{kingma2014adam, loshchilov2018decoupled} with $(\beta_1, \beta_2) = (0.9, 0.999)$ and a default weight decay of $\lambda = 1 0^{-10}$.
 We employ a learning rate scheduler that sequences a linear warmup phase (usually $10$ epochs), with a relatively short constant learning rate period and subsequent long cosine annealing~\citep{loshchilov2016sgdr} period for the remaining epochs. 
 We remark that we don't use a minibatch-based training strategy but instead process all given demonstrations in a single batch.
 Please note that we also apply the described training procedure to the baseline methods if not explicitly mentioned otherwise.
@@ -321,7 +321,7 @@ The list of image contours is: Ellipse, Square, Star, MIT‐CSAIL, TUD‐Flame, 
 This category contains four datasets.
 \textbf{(i)} The first two comprise Cartesian trajectories of the flipper tip of wild green sea turtles (Chelonia mydas) captured by marine biologists~\citep{van2022new} and represented by Fourier series. We train on two variants: position only (3-D oracle) and position plus twist angle (4-D oracle), each with a period of \SI{4.2}{s}.
 \textbf{(ii)} A subsequent dataset from the same authors applies inverse kinematics to those trajectories, yielding a three-joint-space oracle for bioinspired robotic turtles~\citep{van2023soft}. After smoothing with a 30th-degree polynomial, we compute velocities; this oracle has a \SI{4.3}{s} period.
-\textbf{(iii)} Finally, we include a reverse-swimming template defined in joint space by sinusoidal functions, with a \SI{4}{s} period. This template was designed by constructing waypoints to produce "reverse rowing" movement patterns, interpolating between them with a spline, and finally approximating the trajectory with a Fourier fit.
+\textbf{(iii)} Finally, we include a reverse-swimming template defined in joint space by sinusoidal functions, with a \SI{4}{s} period. This template was designed by constructing waypoints to produce ``reverse rowing'' movement patterns, interpolating between them with a spline, and finally approximating the trajectory with a Fourier fit.
 
 % An important differentiating factor from existing periodic demonstration datasets is that the velocity profile is crucial and highly influential on the task behavior (i.e., the actual swimming): if the velocity is off, then, the cost of transport is increased, and in the worst case, the turtle robot doesn't swim or even swims in the wrong direction.
 A key distinction from previous periodic-motion datasets is the pivotal influence of the velocity profile on swimming performance: if the velocity profile with which the trajectory is executed is wrong, the cost of transport rises, and in extreme cases, the turtle robot either stalls or even moves in the opposite direction.
@@ -501,8 +501,8 @@ Therefore, it is crucial to also always evaluate other metrics, such as the dire
     \begin{tiny}
     \begin{tabular}{|l|l|ccc|cc|cc|c|}   % vertical rules match your sketch
     \toprule
-    & & \multicolumn{3}{c|}{\textbf{Imitation Metrics}} & \multicolumn{2}{c|}{\textbf{Local Convergence Metrics}} & \multicolumn{2}{c|}{\textbf{Global Convergence Metrics}} & \textbf{Eval. Time}\\
-    \textbf{Dataset Category} & \textbf{Method} & \textbf{Traj. RMSE~$\downarrow$} & \textbf{Norm. Traj. \gls{RMSE}~$\downarrow$} & \textbf{Vel. RMSE~$\downarrow$} & \textbf{Hausdorff Dist.~$\downarrow$} & \textbf{\gls{ICP} \gls{MED}~$\downarrow$} & \textbf{Hausdorff Dist.~$\downarrow$} & \textbf{\gls{ICP} \gls{MED}~$\downarrow$} & \textbf{per Step~$\downarrow$}\\
+    \textbf{Dataset} & & \multicolumn{3}{c|}{\textbf{Imitation Metrics}} & \multicolumn{2}{c|}{\textbf{Local Convergence Metrics}} & \multicolumn{2}{c|}{\textbf{Global Convergence Metrics}} & \textbf{Eval. Time}\\
+    \textbf{Category} & \textbf{Method} & \textbf{Traj. RMSE~$\downarrow$} & \textbf{Norm. Traj. \gls{RMSE}~$\downarrow$} & \textbf{Vel. RMSE~$\downarrow$} & \textbf{Hausdorff Dist.~$\downarrow$} & \textbf{\gls{ICP} \gls{MED}~$\downarrow$} & \textbf{Hausdorff Dist.~$\downarrow$} & \textbf{\gls{ICP} \gls{MED}~$\downarrow$} & \textbf{per Step~$\downarrow$}\\
     \midrule
     \multirow{8}{*}{IROS Letters} & MLP & $0.257 \pm 0.011$ & $0.0745 \pm 0.0042$ & $0.630 \pm 0.011$ & $0.049 \pm 0.003$ & $0.011 \pm 0.000$ & $0.039 \pm 0.003$ & $0.011 \pm 0.000$ & $0.0017$\\
     & Elman \gls{RNN} & $0.267 \pm 0.011$ & $0.0935 \pm 0.0286$ & $0.680 \pm 0.004$ & $0.092 \pm 0.011$ & $0.013 \pm 0.002$ & $0.048 \pm 0.014$ & $0.013 \pm 0.003$ & $0.0009$\\
@@ -627,7 +627,7 @@ Figure~\ref{fig:osmp:robot_embodiments_results} illustrates the effectiveness of
     We showcase the motion behavior generated by \glspl{OSMP} deployed on various robot embodiments.
     \textbf{(A \& B)} Tracking of image contours with the UR5 manipulator and the helix soft robot. The black line denotes the oracle shape and the red line the trajectory of the system over a horizon of the past $3$~s.
     \textbf{(C-E)} Forward and reverse turtle robot swimming with the biological oracles defined either in joint or task space.
-    \textbf{(F-G)} Demonstrations provided via kinesthetic teaching on whiteboard cleaning (UR5 manipulator) and brooming tasks (Kuka cobot) and subsequent execution of \glspl{OSMP} trained on these demonstrations.
+    \textbf{(F-G)} Demonstrations provided via kinesthetic teaching on whiteboard cleaning (UR5 manipulator) and brooming tasks (KUKA cobot) and subsequent execution of \glspl{OSMP} trained on these demonstrations.
     }
     \label{fig:osmp:robot_embodiments_results}
 \end{figure}
@@ -716,8 +716,8 @@ In this setting, we are particularly interested in analyzing the behavior of the
     \caption{{\textbf{\glspl{OSMP} exhibit compliant and natural motion behavior.}
     In this figure, we analyze the motion behavior of \glspl{OSMP} upon perturbations and interaction with humans and the environment. We compare the behavior of \glspl{OSMP} against classical error-based trajectory tracking controllers $\dot{x}(t) = \dot{x}^\mathrm{d}(t) + k_\mathrm{p} \, (x^\mathrm{d}(t) - x(t))$ that operate on a time-parametrized reference $\dot{x}^\mathrm{d}(t)$, where $k_\mathrm{p} \in \mathbb{R}_{\geq 0}$ is the proportional control gain.
     \textbf{(A)} Simulations with time perturbations where we compare the behavior of traditional, time-parametrized trajectory tracking controllers against the \gls{OSMP}. Here, the dashed black lines denote the oracles/demonstrations, the solid blue lines the behavior of a pure feedforward trajectory tracking controller with zero feedback gain $k_\mathrm{p} = 0$, the orange line the behavior of an error-based feedback trajectory tracking controller with $k_\mathrm{p} = 1$, and the green line the behavior of the learned \gls{OSMP}. Compared to nominal scenarios, we perturb the time reference - i.e., the time reference exhibits a $\pi$ offset in phase with respect to the initial position.
-    \textbf{(B)} Experiments on a Kuka cobot that runs a compliant low-level impedance controller where a human interacts with the robot and exerts disturbances on the robot, comparing the behavior of the trajectory tracking controller with a feedback gain $k_\mathrm{p} = 1$. We also plot the Cartesian distance with respect to the time reference (trajectory tracking controller only), the next low-level control setpoint $x*(t)$, and the closest point on the oracle over time.
-    Experiments on a Kuka cobot equipped with a compliant, low-level impedance controller while a human interacted with the robot and deliberately introduced disturbances/perturbations. The study compares the trajectory-tracking controller’s behavior with a feedback gain of $k_\mathrm{p}=1$ against that of the \gls{OSMP}. We also plot, over time, the Cartesian distance to the time-indexed reference (trajectory-tracking controller only), the next low-level control setpoint $x^*(t)$, and the distance to the nearest point on the Ellipse oracle.
+    \textbf{(B)} Experiments on a KUKA cobot that runs a compliant low-level impedance controller where a human interacts with the robot and exerts disturbances on the robot, comparing the behavior of the trajectory tracking controller with a feedback gain $k_\mathrm{p} = 1$. We also plot the Cartesian distance with respect to the time reference (trajectory tracking controller only), the next low-level control setpoint $x*(t)$, and the closest point on the oracle over time.
+    Experiments on a KUKA cobot equipped with a compliant, low-level impedance controller while a human interacted with the robot and deliberately introduced disturbances/perturbations. The study compares the trajectory-tracking controller’s behavior with a feedback gain of $k_\mathrm{p}=1$ against that of the \gls{OSMP}. We also plot, over time, the Cartesian distance to the time-indexed reference (trajectory-tracking controller only), the next low-level control setpoint $x^*(t)$, and the distance to the nearest point on the Ellipse oracle.
     In the snapshots, the red line represents the past trajectory, and the blue line the trajectory of past low-level control setpoints.
     }}
     \label{fig:osmp:compliance_results}
@@ -769,7 +769,7 @@ Examples include applications such as surface cleaning, where the robot must in 
 
 We introduce task conditioning in the bijective encoder through a scalar variable $z \in \mathbb{R}$, allowing the desired motion behavior to be selected online by simply setting $z$. To ensure the learned policy transitions smoothly across behaviors (e.g., for $z \in [-1, 1]$), we add a loss term $\mathcal{L}_\mathrm{sci}$ during training. As illustrated in Fig.~\ref{fig:osmp:conditioning_results} and Movie~S5, both simulation and hardware experiments with the turtle robot show that (a) a single \gls{OSMP} faithfully reproduces all behaviors encountered during training, and (b) $\mathcal{L}_\mathrm{sci}$ promotes smooth interpolation between oracles, enabling meaningful zero-shot performance on unseen tasks that fall within the training distribution. An ablation study—comparing against an \gls{OSMP} trained without $\mathcal{L}_\mathrm{sci}$—confirms this finding. Crucially, switching behaviors requires no elaborate sequence: once $z$ is updated, the \gls{OSMP}’s convergence guarantees rapidly steer the system to the new behavior, preserving EOS for constant or slowly varying conditioning values.
 
-\subsection{Inference Time Benchmarking}
+\subsection{Inference Time Benchmarking}\label{sub:osmp:inference_time_benchmarking}
 We benchmarked multiple inference modes and Jacobian‐estimation schemes for an \gls{OSMP} trained with the CorneliaTurtleRobotJointSpace oracle; the outcomes are listed in Tab.~\ref{tab:osmp:inference_time_benchmarking}. Here, “inference time” is the wall-clock duration—measured on an Apple MacBook M4 Max CPU—for a single forward pass (batch size = 1), averaged over $1000$ runs.
 
 Because numerical Jacobians reduce accuracy, we also computed the velocity RMSE with respect to the demonstrated velocities. In addition, starting from the oracle’s initial states, we determined the trajectory RMSE. Unlike Section~\ref{sub:osmp:osmp_benchmarking}, we did not enforce the demonstration’s fixed integration step; instead, each rollout used a step size equal to the model’s measured inference time. Consequently, faster models are integrated with finer temporal resolution, potentially achieving higher numerical accuracy.
