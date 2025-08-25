@@ -339,7 +339,8 @@
 %% Set the paper size to 17 by 24 cm, approximately halfway between A4 and A5.
 \if@print
     \geometry{
-        papersize = {173mm,246mm},
+        % papersize = {173mm,246mm},
+        papersize = {176mm,246mm},
         layoutsize = {167mm,240mm},
         layoutoffset = {3mm,11mm},
         bindingoffset = 3mm
