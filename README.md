@@ -1,84 +1,133 @@
-# Improved TU Delft PhD Thesis Template
+# 📘 Safe yet Precise Soft Robots: Incorporating Physics into Learned Models for Control
 
-This is an improved version of the [TU Delft PhD thesis
-template](https://www.tudelft.nl/en/tu-delft-corporate-design/downloads/). It
-features a large number of changes to increase both on- and off-screen
-readability and quality, as well as reduce printing costs. It is a
-double-sided, colored dissertation style with hyperlinks (although many of
-these parameters can be easily changed).
+<p align="center">
+  <img src="cover/183365_Stolzle_R_OMS_v04Front.png" alt="Thesis Cover" width="320"/>
+</p>
 
-## How to Pay Attribution
+[![DOI (Thesis)](https://img.shields.io/badge/DOI-10.4233%2Fuuid%3A24c1f667--8fd6--431a--bb78--11d22f8cb3da-blue)](https://doi.org/10.4233/uuid:24c1f667-8fd6-431a-bb78-11d22f8cb3da)
+[![Data DOI](https://img.shields.io/badge/Data%20DOI-10.4121%2FA9EE4280--4EF1--4C2B--BCEF--526CD50292A9-0a7bbb)](https://doi.org/10.4121/A9EE4280-4EF1-4C2B-BCEF-526CD50292A9)
 
-I did not create the original template. However, I would appreciate it
-if you did keep the note that you are using this adopted version of
-the template. Moreover, would you send me a message (moritzbeller -AT-
-gmx -DOT- de) or create an issue/PR that you are using this style,
-together with your expected defense date, university and research
-group?
+## 🔗 Online Access
 
-## Theses Using This Style
-* [Moritz Beller](https://repository.tudelft.nl/islandora/object/uuid:b2946104-2092-42bb-a1ee-3b085d110466/datastream/OBJ/download), 2018-11-23, Software Engineering Research Group, TU Delft
-* [Anand Sawant](https://doi.org/10.4233/uuid:3d7bc400-2447-4a88-8768-3025d7b54b7f), 2019-10-10, Software Engineering Research Group, TU Delft
-* Davide Spadini, Software Engineering Research Group, 2021, TU Delft
-* Vladimir Kovalenko, Software Engineering Research Group, 2021, TU Delft
-* Alex Salazar, Computer Science Intelligent Systems, TU Delft 
+- Thesis (DOI): <https://doi.org/10.4233/uuid:24c1f667-8fd6-431a-bb78-11d22f8cb3da>
+- TU Delft Repository Page: <https://research.tudelft.nl/en/publications/safe-yet-precise-soft-robots-incorporating-physics-into-learned-m>
+- Associated Data (DOI): <https://doi.org/10.4121/A9EE4280-4EF1-4C2B-BCEF-526CD50292A9>
 
-## Style
+## 🔍 Abstract
 
-Here is a side-by-side comparison of the two styles.
+This thesis tackles the long-standing safety–precision trade-off in continuum soft robots by coupling physically structured learned models with interpretable, closed-form, stability-guaranteed controllers that run at high rates without MPC. After motivating limits of first-principles models and direct policy learning, the work advances four technical fronts: (i) a quantitative safety metric for soft-robot interaction; (ii) shape sensing that fuses kinematic priors with commercial vision and magnetic sensors via nonlinear optimization, SLAM, and a learned measurement model; (iii) actuation modeling for auxetic-metamaterial (“HSA”) and piston-driven pneumatic robots, yielding provably stable controllers—an integral-saturated PID with potential shaping and Cartesian impedance for planar HSA systems, and a backstepping design for pneumatic actuation—and highlighting hysteresis effects that motivate learning; and (iv) learning methods that embed kinetic and potential energy structure into dynamics identification, including (a) extraction of low-dimensional strain models from backbone-shape evolution and (b) latent-space dynamics realized as coupled harmonic oscillator networks, enabling Lyapunov analysis and energy-shaping control. Beyond low-level control, the thesis demonstrates compliant behaviors via motor-imagery EEG guidance combined with operational-space impedance control, and a time-free, orbitally stable latent dynamical system for learning periodic motions from demonstration. The proposed models, sensing pipelines, and controllers are validated in simulation and on hardware, with code and data released, charting a path to soft robots that are both safe and precise in human-centric settings.
 
-| Old Style       |  New (this template) |
-:----------------:|:---------------------:
-![](readme-pics/prev_chapter.png) | ![](readme-pics/new_chapter.png)
-![](readme-pics/prev_page.png) | ![](readme-pics/new_page.png)
+## 📖 Citation
+
+If you use this work, please cite the thesis:
+
+```bibtex
+@phdthesis{stolzle2025phdthesis,
+  title = "Safe yet Precise Soft Robots: Incorporating Physics into Learned Models for Control",
+  keywords = "Soft Robotics, Nonlinear Control, Machine Learning, Artificial Intelligence",
+  author = "Maximilian St{\"o}lzle",
+  year = "2025",
+  month = "09",
+  day = "15",
+  language = "English",
+  type = "Dissertation (TU Delft)",
+  school = "Mechanical Engineering, Delft University of Technology",
+  doi = "10.4233/uuid:24c1f667-8fd6-431a-bb78-11d22f8cb3da",
+  isbn = "978-94-6384-836-7",
+}
+```
+
+## 🧭 Visual Overview
+
+| Main Concept | Thesis Outline | Experimental Platforms |
+|--------------|----------------|------------------------|
+| <img src="introduction/figures/model_based_control_with_learned_models_v3_cropped.png" alt="Model-based control with learned models" width="300"/> | <img src="introduction/figures/thesis_outline_house_v2.png" alt="Thesis outline" width="300"/> | <img src="introduction/figures/thesis_robots.png" alt="Robotic platforms" width="300"/> |
+
+## 🏗️ Key Contributions (Detailed Summary)
+
+Core Contribution:
+Safe and precise soft robot control via closed-form energy-shaping controllers that exploit physically structured learned models (kinetic + potential energy terms) to achieve interpretable, stable, and computationally efficient regulation.
+
+1. Quantitative Safety Metric for Soft Robots:
+  First metric (SRISC / SRDHC variants) capturing the safety of soft robots by accounting for continuum deformability, elasticity, and contact along the body; informs safe morphology and control design.
+2. Kinematics-Guided Shape Sensing:
+  Two approaches: (a) vision + vSLAM + projection onto kinematic model to curb drift; (b) magnetic proprioception combining a kinematic prior with a learned sensor model solved via optimization.
+3. Advanced Actuation Modeling & Control:
+  Physics-based kinematic, dynamic, and actuation models for auxetic HSA robots (incl. SPCS parameterization, planar model, inverse kinematics, Euler–Lagrange dynamics) and impedance + P-satI-D + potential shaping controllers; coupled piston–continuum pneumatic model with backstepping controller integrating actuator dynamics.
+4. Physically Structured Learned Models:
+  (a) Data-driven identification of PCS strain + dynamics (automatic segmentation, basis-function Euler–Lagrange representation, closed-form parameter identification, DOF pruning); (b) Coupled Oscillator Network (CON) latent dynamics for high-dimensional observations with mechanical interpretation, Lyapunov-proved GAS / ISS, and fast rollout approximation.
+5. Closed-Form Model-Based Control with Learned Models:
+  Integral-saturated PID (P-satI-D) feedback + potential compensation at target state; reshapes potential energy for setpoint regulation while retaining robustness to model mismatch; validated on physics-based HSA model, learned strain model, and latent CON dynamics.
+6. High-Level Compliant Motion Behaviors:
+  (a) Brain–machine interface (wearable 3-channel EEG) guiding planar HSA impedance controller via dual binary classifiers; (b) Time-free periodic motion learning using bijective encoder + Hopf bifurcation latent dynamics (stable motion policy) validated across multiple platforms.
+7. Experimental Validation & Open Science:
+  Extensive simulation + hardware experiments across multiple soft robot embodiments; release of code and datasets (see Data DOI) to foster reproducibility.
+
+## 📂 Repository Layout (Selected)
+
+| Path | Description |
+|------|-------------|
+| `dissertation.tex` | Main LaTeX driver file. |
+| `dissertation.cls` | Customized TU Delft thesis class. |
+| `propositions.tex` | Propositions document. |
+| `introduction/`, `background/`, ... | Chapter source directories with `figures/` and `sections/`. |
+| `appendix-*` | Appendices. |
+| `cover/` | Front & back cover PDFs. |
+| `fonts/` | Embedded font files (Libertinus, Inconsolata, etc.). |
+| `Makefile` | Convenience build targets (PDF & print versions). |
+
+## 🛠️ Build & Compilation
+
+Prerequisites: A TeX Live (or MiKTeX) distribution with XeLaTeX, `latexmk`, `bibtex`, `makeglossaries`, Ghostscript (for print PDF), and required packages (see original TU Delft list). Install fonts (Libertinus, Inconsolata) on macOS if not already present (they are also bundled under `fonts/`).
+
+### Quick Start (Recommended)
+
+```bash
+make            # builds dissertation.pdf, propositions.pdf, dissertation_print.pdf
+```
+
+### Manual Steps
+
+```bash
+latexmk -xelatex dissertation
+bibtex dissertation          # repeat per chapter if using per-chapter bibliographies
+makeglossaries dissertation
+latexmk -xelatex dissertation
+latexmk -xelatex dissertation
+```
+
+### Propositions Only
+
+```bash
+latexmk -xelatex propositions
+```
+
+### High-Quality Print Version (embeds all fonts)
+
+```bash
+make dissertation_print.pdf
+```
+
+### Cleaning
+
+```bash
+make clean
+```
 
 
-To get a full picture of how this style looks, have a look at [my PhD
-thesis](https://repository.tudelft.nl/islandora/object/uuid:b2946104-2092-42bb-a1ee-3b085d110466?collection=research),
-which is set using the defaults in this repository. Note that there
-are small differences between the online and print versions (such as
-cutter's marks to trim pages and page alignment on the print
-version). These are hard to get right, and I optimized them using two
-physical proof prints of my thesis.
+## 🧪 Reproducibility & Data
 
-The layout in this repository is very well-readable, but rather close
-to the low limits for font size and page utilization that I would use
-(i.e., if anything, I would recommend to increase font size, line
-height or page margins).
+Most chapter-specific code and datasets are released (see Data DOI). Each sub-project repository (referenced therein) includes instructions for reproducing experiments, simulations, learned models, and controllers.
 
-## Key Improvements
+## 🙏 Acknowledgements
 
-Specifically, the changes in this template make these key improvements
-over the TU Delft dissertation house style: It ...
+This repository builds upon an improved TU Delft thesis template. Please retain attribution where applicable.
 
-- actually compiles (see CI).
-- has been used successfully in my dissertation and been approved by the TU Delft Graduate School.
-- makes the page layout much better suited to printing, because of an increased binding offset width. Text does not go into the binding fold of the book. The writable part of the page is also centered better when printed.
-- uses much nicer fonts for on- and off-screen readability, namely [Libertinus](https://github.com/libertinus-fonts/libertinus) for regular text and [Inconsolata](https://fonts.google.com/specimen/Inconsolata) for mono-spaced elements such as source code listings.
-- comes with a large list of already included packages, placed in a compatible order (some LaTeX package orders cause hard-to-debug compile errors).
-- reduces the number of pages that need color, thus reducing printing costs, while pertaining TU Delft's signature blue for key elements such as chapter titles.
-- makes for more crisp printing, by converting 90% gray anthracite to a fully black tone. Gray scale values between 30% and 90% typically look blurry or faint in print because the printer simply uses less ink for them. To cater for this, I reduced the header text size to not interfere with the running text below.
-- keeps a consistent style of reporting page numbers on top of pages.
-- makes the screen and print versions of the PDF resemble each other more, while keeping the respective benefits of each format (for example, for on-screen PDFs, no offset binding adjustment is needed).
-- makes the propositions page now fit a bigger amount of text. Moreover, the format of the propositions page now fits inside the thesis, instead of being the same size (which would stand out!).
-- changes a couple of questionable defaults, such as the copyright notice by the author.
-- uses glyphs and symbols to refer to papers, and gives presets for the CV, list of publications and the IPA dissertation series.
-- includes commands to generate ready-to-be-printed PDFs with all fonts embedded, a typical requirement to publish PDFs.
-- is also highly recommend to use the [LaTeX URL Eternalizer](https://github.com/Inventitech/url-eternalizer).
-- comes with a useful set of predefined commands, such as `circled`, `ahref` and useful predefines for `lstlisting` and such. 
+## 📜 License
 
-## Setup and Installation
+This work is licensed under a Creative Commons Attribution (CC BY 4.0) License. You are free to share and adapt with proper attribution.
 
-See the original [README](README.txt).
+Badge: [![License: CC BY 4.0](https://img.shields.io/badge/License-CC_BY_4.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
 
-There are three document options to the provided dissertation.cls style -- be sure to use `print` when sending to the printer.
-
-Mac users will have to install the Libertinus and Inconsolata fonts on their systems.
-
-## Version
-
-This template is based on commit `ff9d073` of TU Delft's template
-(dissertation template from July 2nd, 2015, strangely referred to in
-the TeX document as '2013/07/08 v1.0 TU Delft dissertation class'),
-which was the latest available on 13-11-2018. Unfortunately, I did not
-have access to their repository.
+---
+✨ Enjoy exploring the thesis materials. Contributions via issues or pull requests (typos, minor improvements) are welcome.
