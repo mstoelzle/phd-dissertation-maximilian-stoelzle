@@ -27,7 +27,7 @@ If you use this work, please cite the thesis:
   keywords = "Soft Robotics, Nonlinear Control, Machine Learning, Artificial Intelligence",
   author = "Maximilian St{\"o}lzle",
   year = "2025",
-  month = "09",
+  month = "9",
   day = "15",
   language = "English",
   type = "Dissertation (TU Delft)",
@@ -39,9 +39,29 @@ If you use this work, please cite the thesis:
 
 ## 🧭 Visual Overview
 
-| Main Concept | Thesis Outline | Experimental Platforms |
-|--------------|----------------|------------------------|
-| <img src="introduction/figures/model_based_control_with_learned_models_v3_cropped.png" alt="Model-based control with learned models" width="300"/> | <img src="introduction/figures/thesis_outline_house_v2.png" alt="Thesis outline" width="300"/> | <img src="introduction/figures/thesis_robots.png" alt="Robotic platforms" width="300"/> |
+<p align="center">
+  <img src="introduction/figures/thesis_topics_venn_v2.png" alt="Topics covered in this thesis: leveraging learned models for the control of soft robots." width="680"/>
+  <br/>
+  <em>Topics covered in this thesis: leveraging learned models for the control of soft robots.</em>
+</p>
+
+<p align="center">
+  <img src="introduction/figures/thesis_outline_house_v2.png" alt="Outline highlighting physical priors and application areas (proprioception/shape sensing, control, motion policies, HRI)." width="780"/>
+  <br/>
+  <em>Thesis outline highlighting the models’ physical priors and their application areas: proprioception / shape sensing, control, motion generation / policies, and HRI.</em>
+</p>
+
+<p align="center">
+  <img src="introduction/figures/model_based_control_with_learned_models_v3_cropped.png" alt="Core contribution: closed-form control with physically structured learned models." width="780"/>
+  <br/>
+  <em><strong>Core Contribution of this Thesis.</strong> Learned dynamical models endowed with physical structure (kinetic + potential energies) enable closed-form energy-shaping + P-satI-D control: a potential-shaping feedforward for setpoint regulation plus an integral-saturated PID feedback term for disturbance rejection and robustness, while retaining interpretability for Lyapunov stability analysis.</em>
+</p>
+
+<p align="center">
+  <img src="introduction/figures/thesis_robots.png" alt="Soft robot prototypes used for experimental validation" width="880"/>
+  <br/>
+  <em>Soft robot prototypes used for experimental validation. (A) Three-segment pneumatic continuum soft robot (silicone, three air cavities/segment). (B) Tendon-driven helicoid multi-segment continuum robot (Helix Robot). (C) HSA soft robot: 3D-printed auxetic metamaterial rods driven by four servo motors. (D) Hybrid turtle robot with rigid body and soft-rigid flipper limbs.</em>
+</p>
 
 ## 🏗️ Key Contributions (Detailed Summary)
 
