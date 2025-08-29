@@ -15,7 +15,7 @@
 
 ## 🔍 Abstract
 
-This thesis tackles the long-standing safety–precision trade-off in continuum soft robots by coupling physically structured learned models with interpretable, closed-form, stability-guaranteed controllers that run at high rates without MPC. After motivating limits of first-principles models and direct policy learning, the work advances four technical fronts: (i) a quantitative safety metric for soft-robot interaction; (ii) shape sensing that fuses kinematic priors with commercial vision and magnetic sensors via nonlinear optimization, SLAM, and a learned measurement model; (iii) actuation modeling for auxetic-metamaterial (“HSA”) and piston-driven pneumatic robots, yielding provably stable controllers—an integral-saturated PID with potential shaping and Cartesian impedance for planar HSA systems, and a backstepping design for pneumatic actuation—and highlighting hysteresis effects that motivate learning; and (iv) learning methods that embed kinetic and potential energy structure into dynamics identification, including (a) extraction of low-dimensional strain models from backbone-shape evolution and (b) latent-space dynamics realized as coupled harmonic oscillator networks, enabling Lyapunov analysis and energy-shaping control. Beyond low-level control, the thesis demonstrates compliant behaviors via motor-imagery EEG guidance combined with operational-space impedance control, and a time-free, orbitally stable latent dynamical system for learning periodic motions from demonstration. The proposed models, sensing pipelines, and controllers are validated in simulation and on hardware, with code and data released, charting a path to soft robots that are both safe and precise in human-centric settings.
+Continuum soft robots, by virtue of passive compliance, promise safer interaction in close proximity to humans than rigid counterparts, but precision remains limited by modeling and control challenges. This thesis addresses the safety–precision trade‑off by coupling physics‑structured learned models with interpretable, closed‑form controllers that admit Lyapunov guarantees and run efficiently at high rates. We first introduce a quantitative safety metric for continuum soft robots, assessing both body compliance and the control policy. We then advance proprioception by fusing kinematic priors with commercial vision and magnetic sensors. On the actuation side, we derive kinematic and dynamic models for auxetic metamaterial ("HSA") and piston‑driven pneumatic robots and design provably stable regulators—integral‑saturated PID with potential shaping and Cartesian impedance (HSA) and a backstepping scheme (pneumatics)—revealing crucial insights into physical priors and model structures that enable efficient, stable control. However, such first‑principles models derived by domain experts often lack the expressiveness needed to capture the complex deformation behavior of soft robots. In the second part of the thesis, we therefore leverage advanced machine‑learning methods, embedding kinetic and potential‑energy structure into dynamics identification: (i) extracting low‑dimensional strain models from backbone‑shape evolution, and (ii) learning latent‑space dynamics as coupled oscillator networks with proven global asymptotic and input‑to‑state stability, enabling closed‑form energy‑shaping control. Beyond low‑level control, we demonstrate compliant behaviors via motor‑imagery EEG guidance combined with operational‑space impedance and a orbitally stable  dynamical system that learns periodic motions from demonstration. The resulting models, sensing pipelines, and controllers are validated in simulation and on hardware, with open‑source code and data, charting a path toward soft robots that are simultaneously safe and precise in human‑centric settings.
 
 ## 📖 Citation
 
@@ -42,7 +42,7 @@ If you use this work, please cite the thesis:
 <p align="center">
   <img src="introduction/figures/thesis_topics_venn_v2.png" alt="Topics covered in this thesis: leveraging learned models for the control of soft robots." width="680"/>
   <br/>
-  <em>Topics covered in this thesis: leveraging learned models for the control of soft robots.</em>
+  <em>Topics covered in this thesis: leveraging learned models with physical structure for model-based control of soft robots.</em>
 </p>
 
 <p align="center">
@@ -71,7 +71,7 @@ Safe and precise soft robot control via closed-form energy-shaping controllers t
 1. Quantitative Safety Metric for Soft Robots:
   First metric (SRISC / SRDHC variants) capturing the safety of soft robots by accounting for continuum deformability, elasticity, and contact along the body; informs safe morphology and control design.
 2. Kinematics-Guided Shape Sensing:
-  Two approaches: (a) vision + vSLAM + projection onto kinematic model to curb drift; (b) magnetic proprioception combining a kinematic prior with a learned sensor model solved via optimization.
+  Two approaches: (a) vision + vSLAM + projection onto kinematic model to curb drift; (b) magnetic proprioception combining kinematic priors with a learned sensor model solved via optimization.
 3. Advanced Actuation Modeling & Control:
   Physics-based kinematic, dynamic, and actuation models for auxetic HSA robots (incl. SPCS parameterization, planar model, inverse kinematics, Euler–Lagrange dynamics) and impedance + P-satI-D + potential shaping controllers; coupled piston–continuum pneumatic model with backstepping controller integrating actuator dynamics.
 4. Physically Structured Learned Models:
@@ -79,7 +79,7 @@ Safe and precise soft robot control via closed-form energy-shaping controllers t
 5. Closed-Form Model-Based Control with Learned Models:
   Integral-saturated PID (P-satI-D) feedback + potential compensation at target state; reshapes potential energy for setpoint regulation while retaining robustness to model mismatch; validated on physics-based HSA model, learned strain model, and latent CON dynamics.
 6. High-Level Compliant Motion Behaviors:
-  (a) Brain–machine interface (wearable 3-channel EEG) guiding planar HSA impedance controller via dual binary classifiers; (b) Time-free periodic motion learning using bijective encoder + Hopf bifurcation latent dynamics (stable motion policy) validated across multiple platforms.
+  (a) Brain–machine interface (wearable 3-channel EEG) guiding planar HSA impedance controller via dual binary classifiers; (b) Periodic motion learning using bijective encoder + Hopf bifurcation latent dynamics (orbitally stable motion policy) validated across several robotic platforms.
 7. Experimental Validation & Open Science:
   Extensive simulation + hardware experiments across multiple soft robot embodiments; release of code and datasets (see Data DOI) to foster reproducibility.
 
