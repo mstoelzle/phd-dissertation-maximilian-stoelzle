@@ -9,7 +9,7 @@ To motivate some of the unique advantages of our method, we use the same learned
 \begin{sidewaystable}[hbt]
 \centering
 \caption{
-Simulation results: First, we report the absolute Root Mean-Squared Error (RMSE) $e_{u}$ of sensor measurement predictions on the test set averaged across all sensors on the robot. Next, we state the relative RMSE [\%] of each robot configuration estimate. All results are trained on a trajectory with randomly sampled configurations and sensor kinematic parameters for each segment separately and evaluated on a lemniscate trajectory.
+Simulation results: First, we report the absolute \gls{RMSE} $e_{u}$ of sensor measurement predictions on the test set averaged across all sensors on the robot. Next, we state the relative RMSE [\%] of each robot configuration estimate. All results are trained on a trajectory with randomly sampled configurations and sensor kinematic parameters for each segment separately and evaluated on a lemniscate trajectory.
 The first section applies our methodology to robots consisting of a different number of segments $n_\mathrm{b}$ with three sensors attached to the tip of each segment.
 The number of sensors is varied in the second section for a three-segment robot with all sensors placed symmetrically. 
 The third set of trials then investigates how robust the method is to changes in the kinematic parameters of the sensors, such as the tilting angle of the sensors $\psi_\mathrm{s}$ and the radial distance of the sensors $d_{\mathrm{s},\mathrm{r}}$.
@@ -98,11 +98,10 @@ Finally, we also randomly sample the radial displacement of the sensors from the
 Before training, we randomly split off \SI{30}{\percent} of the training set for validation purposes.
 
 We conducted a selection study involving hyperparameters and feed-forward neural network architectures (number of layers, nodes, and nonlinear activation layer types) on the validation set. % to select our training procedure for the sensor measurement prediction network. 
-In particular, we aimed to generate a smooth loss landscape to improve the gradient descent convergence, leading us to employ a Stochastic Gradient Descent (SGD) % ~\citep{ruder2016overview} 
-optimizer in conjunction with the Stochastic Weight Averaging (SWA)~\citep{izmailov2018averaging} strategy.
+In particular, we aimed to generate a smooth loss landscape to improve the gradient descent convergence, leading us to employ a \gls{SGD}~\citep{ruder2016overview} optimizer in conjunction with the \gls{SWA}~\citep{izmailov2018averaging} strategy.
 The neural network itself %as depicted in Figure~\ref{fig:promasens:NNgradientdescent}
 has $18$ layers in total and contains, after an initial 1D batch norm layer, four blocks, and is concluded with a fully connected layer at the end. Each block consists of a dropout with a probability of \SI{1}{\percent}, a linear layer, a ReLU, and a 1D batch norm layer. The hidden state is first increased to $96$ nodes, then to $256$ nodes, and finally reduced again to $64$ and $24$ nodes.
-We minimize a Mean Squared Error (MSE) loss of the neural network prediction $\hat{u}_j(t)$ for $250$ epochs with batch size $650$ while setting an initial learning rate of $0.18$ for the cosine annealing learning rate scheduler~\citep{loshchilov2016sgdr}. The SWA~\citep{izmailov2018averaging} strategy is started after $125$ epochs.
+We minimize a \gls{MSE} loss of the neural network prediction $\hat{u}_j(t)$ for $250$ epochs with batch size $650$ while setting an initial learning rate of $0.18$ for the cosine annealing learning rate scheduler~\citep{loshchilov2016sgdr}. The \gls{SWA}~\citep{izmailov2018averaging} strategy is started after $125$ epochs.
 % We train a neural network $f_{\pi_i}(\xi_j)$ for all sensors in each segment $i$.
 We train the neural network such that all sensors in the $i^\mathrm{th}$ segment share the same weights $\pi_i$.
 % The reason for this is that the sensors in the distal segment measure much lower magnetic field magnitudes than the sensors in the other segments as they are only influenced by one magnet (e.g. the magnet in the distal segment) resulting in poor convergence behavior when trained jointly on all segments.
@@ -132,7 +131,7 @@ The optimization strategy solely relies on gradient descent and uses the best so
 We use a step size $\gamma = 3.5 \cdot 10^{-4}$, $3 \cdot 10^{-3}$, and $2 \cdot 10^{-3}$ during gradient descent for a one-segment, two-segment, and three-segment robot, respectively. For all robots with more than one segment, the step size is reduced by a factor of ten when optimizing the elongation. The momentum $\mu$ is $0.3$ for all trials and we perform $20$ gradient descent iterations for each time step.
 
 \subsection{Evaluation}\label{sub:promasens:pcc_simulations:evaluation}
-We evaluate the performance of our method at estimating the configuration of the segment by computing a relative Root Mean-Squared Error (RMSE) metric with respect to the ground-truth configuration $q(t)$ for each configuration variable separately
+We evaluate the performance of our method at estimating the configuration of the segment by computing a relative \gls{RMSE} metric with respect to the ground-truth configuration $q(t)$ for each configuration variable separately
 \begin{equation}\label{eq:promasens:relative_RMSE}
 \begin{split}
     e_{q_\star} = \frac{\sqrt{\sum_{t=0}^{n_\mathrm{t}} \left ( \hat{q}_\star(t) - q_\star(t) \right )^2}}{\sqrt{n_\mathrm{t}} \; D_{q_\star}},\\
@@ -150,7 +149,7 @@ In the first section, robots with one to three segments, which all exhibit a nom
 The results show that the method works well for robots with 1-3 segments. It can be observed that the estimation error is usually lower for the distal segment(s).
 
 Next, the number of sensors $n_\mathrm{s}$ is varied for a three-segment robot. We always apply a symmetrical placement of the sensors in the tip plane of each segment. In the first trial, two sensors are mounted in the tip plane of each segment opposite to each other (6 sensors in total). While the bending along $\Delta_{x,i}$ and the elongation of the segments $\delta L_i$ can still be estimated, the setup does not contain sufficient information to accurately determine the bending into $\Delta_{y,i}$.
-While the nominal case of nine sensors in total already achieves relative RMSEs in the range of \SI{1.6}{\percent} to \SI{6}{\percent}, the proprioception performance can be slightly improved by adding more sensors.
+While the nominal case of nine sensors in total already achieves relative \glspl{RMSE} in the range of \SI{1.6}{\percent} to \SI{6}{\percent}, the proprioception performance can be slightly improved by adding more sensors.
 % Recall that no re-training of the neural network is required when adding or removing sensors.
 We emphasize that the neural networks are not retrained when adding or removing sensors.
 In Figures~\ref{fig:promasens:simulated_sensor_failure} and \ref{fig:promasens:simulation_sequences}, we plot the proprioceptive performance of a three-segment robot with four sensors per segment. Then, we simulated a failure of the 4th, 8th, and 12th sensor at \SI{5}{s} by removing these sensor measurements from \eqref{eq:promasens:gradient_descent} (i.e., the gradient descent). Our method is able to adapt without re-training and leverage the nominal redundancy of sensor measurements, as three sensors per segment are sufficient for shape estimation.

@@ -31,7 +31,7 @@ This work positions itself in this new trend of research, specifically focusing 
 Indeed, deriving reduced-order kinematic representations remains the core challenge in physics-based modeling. 
 %
 Previous works have relied heavily on the modeling engineer's intuition and experience to make decisions on the number of \gls{PCS} segments, the length of each segment, and which strains to consider~\citep{toshimitsu2021sopra}. However, these decisions are not straightforward and could easily result in models that are higher-dimensional than necessary, or that important strains are ignored based on a wrong intuition~\citep{garg2022kinematic}.
-Very recently, \citet{alkayas2025soft} proposed a data-driven algorithm to identify the optimal discrete \gls{GVS}~\cite{boyer2020dynamics} strain basis of continuum soft robots via \gls{POD}. 
+Very recently, \citet{alkayas2025soft} proposed a data-driven algorithm to identify the optimal discrete \gls{GVS}~\citep{boyer2020dynamics} strain basis of continuum soft robots via \gls{POD}. 
 % However, as it is tailored towards regressing coefficients of continuous basis functions, it requires access to prior knowledge about the terminal points of actuators for accurately capturing strain discontinuities.
 However, the discrete strain basis requires careful numerical integration at runtime, and identifying the dynamical parameters (e.g., stiffness, damping coefficients) of the soft robot relies upon solving a nonlinear least-squares problem that is not always well behaved~\citep{stolzle2024experimental}.
 
