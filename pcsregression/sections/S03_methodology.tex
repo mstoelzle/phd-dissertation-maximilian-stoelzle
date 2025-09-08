@@ -144,66 +144,23 @@ In order to easily regress the dynamic parameters with linear least squares, we 
 \begin{equation}\label{eq:pcsregression:lagrangian_basis_functions}
     \mathcal{L}(q, \dot{q}) = \sum_{j=1}^{n_\mathrm{f}} \pi_j f_j(q, \dot{q}), 
     \quad
-    \tau = \sum_{j=1}^{n_\psi} \pi_j^{+}\Psi_j(q,\dot{q},\ddot{q}) \in \mathbb{R}^{n_q},
+    \tau = \sum_{j=1}^{n_\Psi} \pi_j^{+}\Psi_j(q,\dot{q},\ddot{q}) \in \mathbb{R}^{n_q},
 \end{equation}
 where $f_j: \mathbb{R}^{n_\mathrm{q}} \times \mathbb{R}^{n_\mathrm{q}} \to \mathbb{R}$ denotes each of the basis functions, and $\pi \in \mathbb{R}^{n_\mathrm{f}}$ the corresponding coefficients.
-Analog, we derive symbolically the \gls{EOM} using an Euler-Lagrangian approach (see Section~\ref{sub:pcsregression:lagr_dynamics}) and now state the corresponding basis functions as $\psi(q, \dot{q}, \ddot{q}) \in \mathbb{R}^{n_\Psi \times n_\mathrm{q}}$ with $\psi_j: \mathbb{R}^{n_\mathrm{q}} \times \mathbb{R}^{n_\mathrm{q}} \times \mathbb{R}^{n_\mathrm{q}} \to \mathbb{R}^{n_\mathrm{q}}$ such that
+Analog, we derive symbolically the \gls{EOM} using an Euler-Lagrangian approach (see Section~\ref{sub:pcsregression:lagr_dynamics}) and now state the corresponding basis functions as $\Psi(q, \dot{q}, \ddot{q}) \in \mathbb{R}^{n_\Psi \times n_\mathrm{q}}$ with $\Psi_j: \mathbb{R}^{n_\mathrm{q}} \times \mathbb{R}^{n_\mathrm{q}} \times \mathbb{R}^{n_\mathrm{q}} \to \mathbb{R}^{n_\mathrm{q}}$ such that
 \begin{equation}
     \tau = \sum_{j=1}^{n_{f}} \left[ \pi_j \left( \diffp[2]{f_j}{{\dot{q}}}\ddot{q} + \diffp{f_j}{{q}{\dot{q}}}\dot{q} - \diffp{f_j}{{q}} \right) \right] + D\dot{q},
 \end{equation}
 where
 $\pi^+ = \begin{bmatrix}
     \pi^\top & d^\top 
-\end{bmatrix}^\top \in \mathbb{R}^{n_{\psi}}$ contains the associated coefficients and consists of $\pi$ and the damping coefficients $d = \mathrm{diag}(D) \in \mathbb{R}^{n_\mathrm{q}}$.
-
-% The value $m$ denotes the number of segments determined during the kinematic fusion phase. The basis functions are obtained from the closed-form derivation of the kinetic and potential energies for the \gls{PCS} model. %Please see Appendix \ref{ap:dynamics_pcs} for details on the derivations. 
-% Note that we start with the Lagrangian basis functions of a \gls{PCS} model that assumes all possible strains are present (three per CS segment).%The selection of this library is an open question in literature \citep{brunton2016discovering}. However, it is common to use prior knowledge of the system to build the library \citep{chu_discovering_2020}. As such, taking advantage of the previously identified kinematic model, the library will consist of the Lagrangian basis functions from an $m$-segment planar \gls{PCS} model, where $m$ is the number of segments determined during the kinematic fusion part.  %In the end, we want to find a dynamic model that only contains the strains that are most active in the robot.
-
-% We draw here attention only to the elastic potential energy, 
-% \begin{align}
-%     V_K(q) = \frac{1}{2}q^\top S q \,,
-% \end{align}
-% where we assume the stiffness matrix $S \in \mathbb{R}^{n_q\times n_q}$ to be diagonal and constant. Each of the diagonal entries denote the corresponding strain stiffness.
-% One limitation of using the Lagrangian as the descriptor of a system's dynamics is that it does not inherently incorporate non-conservative forces, such as the intrinsic damping in the soft robot' structure. %such as dissipative forces (e.g., damping)% and external actuation forces (e.g., actuator inputs). 
-% Therefore, to include this in the dynamic model, we introduce the dissipative forces as
-% \begin{align}
-%     F_d = -D\dot{q}\,,
-% \end{align}
-% where $D \in \mathbb{R}^{n_q\times n_q}$ is a diagonal matrix that holds the damping coefficients to be identified.
+\end{bmatrix}^\top \in \mathbb{R}^{n_{\Psi}}$ contains the associated coefficients and consists of $\pi$ and the damping coefficients $d = \mathrm{diag}(D) \in \mathbb{R}^{n_\mathrm{q}}$.
 
 \subsubsection{Regression of Dynamic Parameters}\label{ssub:pcsregression:reg_dyn_params}
-% We leverage the Euler-Lagrange equations to establish a regression framework that allows a closed-form regression of the dynamical parameters. We recall that the Euler-Lagrange equations can be derived from the Lagrangian in \eqref{eq:pcsregression:lagrangian_basis_functions} as
-% \begin{equation}\label{eq:pcsregression:euler-lagrange_eqs}
-% \begin{split}
-%     \tau =& \: \diffp[2]{\mathcal{L}}{{\dot{q}}}\ddot{q} + \diffp{\mathcal{L}}{{q}{\dot{q}}}\dot{q} - \diffp{\mathcal{L}}{{q}} + D\dot{q}\\ 
-%     =& \: \sum_{j=1}^{n_{f}} \left[ \pi_j \left( \diffp[2]{f_j}{{\dot{q}}}\ddot{q} + \diffp{f_j}{{q}{\dot{q}}}\dot{q} - \diffp{f_j}{{q}} \right) \right] + D\dot{q}
-% \end{split}
-% \end{equation}
-% Without loss of generality, we assume damping matrix to be diagonal such that $D = \mathrm{diag}(d_1, \dots, d_{n_\mathrm{q}})$. Then, we can write
-% \begin{equation}
-%     \tau = \sum_{j=1}^{n_\psi} \pi_j^{+}\Psi_j(q,\dot{q},\ddot{q}) \in \mathbb{R}^{n_q}
-% \end{equation}
-% where we refer to $\psi_j: \mathbb{R}^{n_\mathrm{q}} \times \mathbb{R}^{n_\mathrm{q}} \times \mathbb{R}^{n_\mathrm{q}} \to \mathbb{R}^{n_\mathrm{q}}$ as the Euler-Lagrangian basis functions and $\pi_j^+$ the associated coefficients, which comprise the Lagrangian basis function coefficients $\pi_j$ along with the damping coefficients, $\mathrm{diag}(D)$. Therefore, $n_{\psi} = n_{f} + n_q$.
-
-%The next step is to normalize the basis functions across the dataset. Consider a dataset $\mathcal{D}=\{\mathcal{I}, \mathcal{T}\}$ containing the input tuples $\mathcal{I}=\{\left(q(k), \dot{q}(k), \ddot{q}(k)\right)\}$ and targets $\mathcal{T}=\{\tau(k)\}$, with $k\in\{1,...,T\}$. We can evaluate $\Psi_j(q, \dot{q}, \ddot{q})$ over the inputs and establish the following normalization
-% \begin{align}
-%     \pi_j^+ \Psi_j(q, \dot{q}, \ddot{q})=\tilde{\pi}_j^+ \frac{\Psi_j(q, \dot{q}, \ddot{q})}{\bar{\Psi}_j} = \tilde{\pi}_j^+ \hat{\Psi}_j (q, \dot{q}, \ddot{q}) \,,
-% \end{align}
-% with
-% \begin{align}
-%     \bar{\Psi}_j = \frac{1}{T\cdot n_q}\sum_{k=1}^T \sum_{i=1}^{n_q} |\Psi_j(q(k), \dot{q}(k), \ddot{q}(k))| 
-% \end{align}
-% being the mean absolute value of the $j$-th basis function, across the $T$ samples and $n_q$ strains.
-% We can then formulate the Euler-Lagrange equations \eqref{eq:pcsregression:euler-lagrange_eqs} in a matrix form as a linear combination
-% \begin{align}
-%     \tau = \Psi (q, \dot{q}, \ddot{q}) \pi^+ \,,
-% \end{align}
-% where $\Psi \in \mathbb{R}^{n_q \times n_{\psi}}$ and $\pi^+ \in \mathbb{R}^{n_{\psi} \times 1}$. 
-
 In order to estimate the dynamic coefficients, we formulate the linear regression problem as $\mathcal{T}=X \pi^+$, which accommodates the dataset of positions, velocities, and accelerations 
-$\mathcal{X} = [\Psi(q(1), \dot{q}(1), \ddot{q}(1))^{\top},...,\Psi(q(T), \dot{q}(T), \ddot{q}(T))^{\top}]^{\top} \in \mathbb{R}^{T n_\mathrm{q} \times n_{\psi}}$ 
+$\mathcal{X} = [\Psi(q(1), \dot{q}(1), \ddot{q}(1))^{\top},...,\Psi(q(T), \dot{q}(T), \ddot{q}(T))^{\top}]^{\top} \in \mathbb{R}^{T n_\mathrm{q} \times n_{\Psi}}$ 
 % \begin{equation}
-%     \mathcal{X} = [\Psi(q(1), \dot{q}(1), \ddot{q}(1))^{\top}, \dots, \Psi(q(T), \dot{q}(T), \ddot{q}(T))^{\top}]^\top \in \mathbb{R}^{T n_\mathrm{q} \times n_{\psi}}
+%     \mathcal{X} = [\Psi(q(1), \dot{q}(1), \ddot{q}(1))^{\top}, \dots, \Psi(q(T), \dot{q}(T), \ddot{q}(T))^{\top}]^\top \in \mathbb{R}^{T n_\mathrm{q} \times n_{\Psi}}
 % \end{equation}
 and the corresponding actuation inputs 
 % $\mathcal{T} = \begin{bmatrix}
