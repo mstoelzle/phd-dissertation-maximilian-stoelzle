@@ -72,8 +72,8 @@ Assuming a soft robot controller $\tau(q,\dot{q})$ that regulates the soft robot
 %	\end{equation}
 	\begin{equation}\label{eq:backstepping:pi_psi}
 		\begin{split}
-			f_\mathrm{p} &= \Psi = G_{\mathrm{P}}^{\mu_\mathrm{p}} + D_\mathrm{p} \Pi + M_\mathrm{p} \dot{\Pi} - K_2 (\dot{\mu}_\mathrm{p} - \Pi) - (\mu_\mathrm{p} - \Gamma),\\
-			\Pi &= \dot{\Gamma} - K_1 (\mu_\mathrm{p} - \Gamma) 
+			\bar{f}_\mathrm{p} &= \Psi(q,\dot{q},\mu_\mathrm{p},\dot{\mu}_\mathrm{p}) = G_{\mathrm{P}}^{\mu_\mathrm{p}} + D_\mathrm{p} \Pi + M_\mathrm{p} \dot{\Pi} - K_2 (\dot{\mu}_\mathrm{p} - \Pi) - (\mu_\mathrm{p} - \Gamma),\\
+			\bar{\dot{\mu}}_\mathrm{p} &= \Pi(q,\dot{q},\mu_\mathrm{p}) = \dot{\Gamma} - K_1 (\mu_\mathrm{p} - \Gamma) 
 			+ S^{\top}(q,\mu_\mathrm{p},\Gamma)B^{-1}(q)\partial_{\dot{q}} H^{\top},
 		\end{split}
 	\end{equation}
@@ -101,8 +101,9 @@ Assuming a soft robot controller $\tau(q,\dot{q})$ that regulates the soft robot
 	%
 	\begin{equation}
 		\begin{split}
-			\dot{W}(q,\dot{q},\mu_\mathrm{p}) =& \: \dot{H} + (\mu_\mathrm{p} - \Gamma)^{\top}(v_\mathrm{p} - \dot\Gamma)\\
-			=&  \: \partial_{q} H \dot{q} + \partial_{\dot{q}} H (f(q,\dot{q}) + g(q,\mu_\mathrm{p})) + (\mu_\mathrm{p} - \Gamma)^{\top}(v_\mathrm{p} - \dot\Gamma) \\
+			\dot{W}(q,\dot{q},\mu_\mathrm{p}) =& \: \partial_{q} W \dot{q} + \partial_{\dot{q}} W \ddot{q} + \partial_{\mu_\mathrm{p}} W \, \dot{\mu}_\mathrm{p},\\
+                =& \dot{H} + (\mu_\mathrm{p} - \Gamma)^{\top}(v_\mathrm{p} - \dot\Gamma),\\
+			=&  \: \partial_{q} H \dot{q} + \partial_{\dot{q}} H (f(q,\dot{q}) + g(q,\mu_\mathrm{p})) + (\mu_\mathrm{p} - \Gamma)^{\top}(v_\mathrm{p} - \dot\Gamma),\\
 			=& \: \partial_{q} H \dot{q} + \partial_{\dot{q}} H (f(q,\dot{q}) + g(q,\Gamma(q,\dot{q}))) \\
 			& \: + \partial_{\dot{q}} H (g(q,\mu_\mathrm{p}) - g(q,\Gamma(q,\dot{q}))) + (\mu_\mathrm{p} - \Gamma)^{\top} (v_\mathrm{p} - \dot\Gamma)\;,
 		\end{split}
@@ -132,8 +133,7 @@ Assuming a soft robot controller $\tau(q,\dot{q})$ that regulates the soft robot
 	%
 	\begin{equation}
 	\begin{split}
-	\dot{W}(q,\dot{q},\mu_\mathrm{p}) &=  \partial_{q} H \dot{q} + \partial_{\dot{q}} H (f(q,\dot{q}) + g(q,\Gamma(q,\dot{q}))) \\
-	&\quad - (\mu_\mathrm{p} - \Gamma)^{\top}K_1(\mu_\mathrm{p} - \Gamma).
+	\dot{W}(q,\dot{q},\mu_\mathrm{p}) &=  \underbrace{\partial_{q} H \dot{q} + \partial_{\dot{q}} H (f(q,\dot{q}) + g(q,\Gamma(q,\dot{q})))}_{\dot{H}} - (\mu_\mathrm{p} - \Gamma)^{\top}K_1(\mu_\mathrm{p} - \Gamma).
 	\end{split}
 	\end{equation}
 	%
@@ -178,8 +178,7 @@ Assuming a soft robot controller $\tau(q,\dot{q})$ that regulates the soft robot
 	%
 	\begin{equation}
 	    \begin{split}
-			\dot{Q} =& \partial_{q} W \dot{q} + \partial_{\dot{q}} W \ddot{q} + \partial_{\mu_\mathrm{p}} W \Pi \\
-			&\: - (\dot{\mu}_\mathrm{p} - \Pi)^{\top} (K_2 + D_\mathrm{p}) (\dot{\mu}_\mathrm{p} - \Pi)
+			\dot{Q} =& \underbrace{\partial_{q} W \dot{q} + \partial_{\dot{q}} W \ddot{q} + \partial_{\mu_\mathrm{p}} W \, \Pi}_{\dot{W}} - (\dot{\mu}_\mathrm{p} - \Pi)^{\top} (K_2 + D_\mathrm{p}) (\dot{\mu}_\mathrm{p} - \Pi)
 			%& \quad -\dot{\mu}_\mathrm{p}^\top M_\mathrm{p} D_\mathrm{p} \dot{\mu}_\mathrm{p}  
 			< 0,
 	    \end{split}

@@ -51,10 +51,10 @@ This allows us to cancel the term $\mu_\mathrm{N}(q,\dot{q}) \, \nu_\mathrm{N}$ 
 
 In summary, the closed-loop dynamics in operational space can be stated as
 \begin{equation}\label{eq:hsacontrol:task_space_impedance_control:closed_loop_dynamics}
-    \Lambda(q) \, \Ddot{x} + \mu(q,\dot{q}) \, J_\mathrm{M}^+ \, \dot{x} + K_x \, (x^\mathrm{d} - x) - D_x \, \dot{x} = 0,
+    \Lambda(q) \, \Ddot{x} + \mu(q,\dot{q}) \, J_\mathrm{M}^+ \, \dot{x} + K_x \, (x - x^\mathrm{d}) + D_x \, \dot{x} = 0,
 \end{equation}
-which results in $x^\mathrm{d}$ being the globally asymptotically stable equilibrium of the operational space dynamics.
-
+which results in $x^\mathrm{d}$ being the globally asymptotically stable equilibrium of the closed-loop operational space dynamics.
+\footnote{Please note that this only holds under the assumption that the desired operational-space control input can be perfectly tracked by the actuators, which is generally not the case in underactuated settings.}
 
 \subsubsection{Mapping to Actuation}
 %
@@ -77,7 +77,7 @@ The source code of the controller is available on GitHub\footnote{\url{https://g
     \subfigure[Control input $\phi$]{\includegraphics[width=0.47\textwidth, trim={5, 5, 5, 5}]{hsacontrol/figures/experimental_results/task_space_impedance_control/20231030_181558_phi.pdf}\label{fig:hsacontrol:experimental_results:task_space_impedance_control:phi}}
     \caption{Experimental results for tracking a reference trajectory of nine-step functions with the Cartesian impedance controller. \textbf{Panel (a) \& (b):} The x/y-coordinate of the end-effector position with the solid line denoting the actual position, the dotted line the attractor position, and the dashed line the reference (i.e., the setpoint).
     \textbf{Panel (c):} The evolution of the configuration.
-    \textbf{Panel(d):} The saturated planar control inputs. }\label{fig:hsacontrol:experimental_results:task_space_impedance_control}
+    \textbf{Panel (d):} The saturated planar control inputs. }\label{fig:hsacontrol:experimental_results:task_space_impedance_control}
 \end{figure}
 
 \subsection{Experimental Setup}

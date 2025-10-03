@@ -129,9 +129,9 @@ $\sigma(r): \mathbb{R}^m \to \mathbb{R}^m$ is a function that transforms the con
 % First, we consider common model-based terms for the fully actuated setting (i.e., $n = m$).
 % Please note that for all controllers we introduce below, we assume that (1) the model is (reasonably) accurate or alternatively sufficiently large feedback gains are chosen (see high-gain control~\citep{marino1985high}), and (2) the integrability condition~\citep{pustina2024input} and mapping into actuation coordinates can be identified.
 % Furthermore, (3) we assume here for the square matrix $A(q) \in \mathbb{R}^{n \times n}$ to be invertible for any $q \in \mathbb{R}^n$ or at locally in the relevant workspace.
-% For the setpoint regulators, we additionally assume that (4) the setpoint $q^\mathrm{q}/\varphi^\mathrm{q}$ is an attainable equilibrium of the underactuated system~\citep{pustina2022feedback} - which means that it fulfills the property
+% For the setpoint regulators, we additionally assume that (4) the setpoint $q^\mathrm{d}/\varphi^\mathrm{d}$ is an attainable equilibrium of the underactuated system~\citep{pustina2022feedback} - which means that it fulfills the property
 % \begin{equation}
-%     G(q^\mathrm{d}) + K(q^\mathrm{q}) = A(q^\mathrm{q}) \, \tau^\mathrm{ss},
+%     G(q^\mathrm{d}) + K(q^\mathrm{d}) = A(q^\mathrm{d}) \, \tau^\mathrm{ss},
 % \end{equation}
 % for a constant control action $\tau^\mathrm{ss}$, 
 % (4) The system must be initialized within the reference’s region of attraction. For controllers for which \gls{GAS} can be proven, this condition is always met as such controllers are globally attractive.
@@ -143,9 +143,9 @@ $\sigma(r): \mathbb{R}^m \to \mathbb{R}^m$ is a function that transforms the con
 
 First, we consider common model-based terms for the fully actuated setting (i.e., $n = m$). Please note that for all controllers introduced below, we assume that (1) the model is reasonably accurate—or that sufficiently high feedback gains are chosen, as it is the case in high-gain control~\citep{marino1985high},—and (2) the integrability condition~\citep{pustina2024input} along with the mapping into actuation coordinates can be identified. Furthermore, (3) we assume that the square matrix $A(q) \in \mathbb{R}^{n \times n}$ is invertible for any $q \in \mathbb{R}^n$, at least locally within the relevant workspace.
 
-For setpoint regulators, we additionally assume that (4) the setpoint $q^\mathrm{q}/\varphi^\mathrm{q}$ is an attainable equilibrium of the underactuated system~\citep{pustina2022feedback}—meaning it satisfies
+For setpoint regulators, we additionally assume that (4) the setpoint $q^\mathrm{d}/\varphi^\mathrm{d}$ is an attainable equilibrium of the underactuated system~\citep{pustina2022feedback}—meaning it satisfies
 \begin{equation}
-    G(q^\mathrm{d}) + K(q^\mathrm{q}) = A(q^\mathrm{q}) \, \tau^\mathrm{ss},
+    G(q^\mathrm{d}) + K(q^\mathrm{d}) = A(q^\mathrm{d}) \, \tau^\mathrm{ss},
 \end{equation}
 for a constant control action $\tau^\mathrm{ss}$—and that (5) the system is initialized within the reference’s region of attraction. For controllers where \gls{GAS} can be proven, this condition is inherently satisfied; however, many controllers only exhibit \gls{LAS}. In the latter case, the region of attraction can often be expanded by increasing the proportional feedback gains to enhance the system’s stiffness that comes with a loss of compliance~\citep{della2017controlling, della2023model} or by canceling some non-convex potential forces via nonlinear feedback. Additionally, (6) the actuator must be fast enough in tracking its reference $(\mu^\mathrm{d}, \mu^\mathrm{d})$ so that we can approximate $\tau^\mathrm{d} \approx \tau(\mu,\dot{\mu})$, where $\tau^\mathrm{d}$ denotes the desired actuation/control input and $\tau(\mu,\dot{\mu})$ represents the actual forces, torques, currents, or pneumatic pressure generated.
 
@@ -391,7 +391,7 @@ Subsequently, it can be shown that these zero dynamics are bounded and converge 
 
 \subsubsection{Setpoint Regulation with Feedforward Compensation}
 A setpoint regulator with feedforward compensation that shapes the potential of the actuated coordinates is given by~\citep{pustina2025analysis}
-\begin{equation}
+\begin{equation}\label{eq:background:underactuated_potential_shaping}
     \tau_\mathrm{mb} = \frac{\partial \mathcal{U}_\varphi(\varphi)}{\partial \varphi_\mathrm{a}} \bigg |_{\varphi=\varphi^\mathrm{d}} = A_\mathrm{a}^{-1}(q^\mathrm{d}) \, \left ( G_\mathrm{a}(q^\mathrm{d}) + K_\mathrm{a}(q^\mathrm{d}) \right ),
 \end{equation}
 leading to the closed-loop dynamics
@@ -456,6 +456,28 @@ If the robot is elastically dominated with
     \frac{\partial^2 \mathcal{U}_\varphi(\varphi)}{\partial \varphi_\mathrm{u}^2} = \frac{\partial}{\partial \varphi_\mathrm{u}} \left ( -A_\mathrm{u}(h^{-1}(\varphi)) \, A_\mathrm{a}^{-1}(h^{-1}(\varphi)) \left ( G_\mathrm{a}(h^{-1}(\varphi)) + K_\mathrm{a}(h^{-1}(\varphi)) \right ) + G_\mathrm{u}(h^{-1}(\varphi)) + K_\mathrm{u}(h^{-1}(\varphi)) \right ) \succ 0 \quad \forall \: \varphi \in \mathbb{R}^n,
 \end{equation}
 the regulator additionally achieves \gls{GAS} for a sufficiently large $K_\mathrm{p} \succ 0$~\citep{pustina2025analysis}.
+
+\begin{remark}
+    The controller in \eqref{eq:background:underactuated_potential_shaping} is equivalent to the energy-shaping controller $\tau_\mathrm{mb} = A^\mathrm{L}(q^\mathrm{d}) \left ( K(q^\mathrm{d}) + G(q^\mathrm{d}) \right )$ as proposed by \citet{della2023model} iff the left inverse is defined as $A^\mathrm{L} = A_\mathrm{a}^{-1} \begin{bmatrix}
+        \mathbb{I}_m & 0_{m \times (n-m)}
+    \end{bmatrix}$.
+\end{remark}
+\begin{proof}
+    We can substitute $A^\mathrm{L}(q^\mathrm{d})$ until we obtain \eqref{eq:background:underactuated_potential_shaping}
+    \begin{equation}
+    \begin{split}
+        \tau_\mathrm{mb} =& \: A^\mathrm{L}(q^\mathrm{d}) \left ( K(q^\mathrm{d}) + G(q^\mathrm{d}) \right ),\\
+    =& \: A_\mathrm{a}^{-1}(q^\mathrm{d}) \begin{bmatrix}
+        \mathbb{I}_m & 0_{m \times (n-m)}
+    \end{bmatrix} \begin{bmatrix}
+        K_\mathrm{a}(q^\mathrm{d}) + G_\mathrm{a}(q^\mathrm{d})\\
+        K_\mathrm{u}(q^\mathrm{d}) + G_\mathrm{u}(q^\mathrm{d})
+    \end{bmatrix},\\
+    =& \: A_\mathrm{a}^{-1}(q^\mathrm{d}) \, \left ( G_\mathrm{a}(q^\mathrm{d}) + K_\mathrm{a}(q^\mathrm{d}) \right ).
+    \end{split}
+    \end{equation}
+    Please note, though, that this statement generally does not hold if the pseudo-inverse is chosen as the left inverse such that $A^\mathrm{L} = A^+ = (A^\top A)^{-1} A^\top$.
+\end{proof}
 
 \subsubsection{Setpoint Regulation with Gravity Cancellation and Compensation of Elastic Forces for Elastically Decoupled Soft Robots}
 Elastically decoupled soft robots are defined as the generalized elastic force taking the form~\citep{pustina2025analysis}
@@ -630,7 +652,7 @@ that cancels the existing operational space dynamics, decouples the remaining nu
 \begin{split}
     f_{\eta_\mathrm{xn}} =& \: \eta_\mathrm{xn}(q,\dot{q}) \, \nu_\mathrm{n} = \eta_\mathrm{x}(q,\dot{q}) \, \dot{q} - \eta_\mathrm{xx}(q,\dot{q}) \, \dot{q},\\
     =& \: \eta_\mathrm{x}(q,\dot{q}) \, \dot{q} - \eta_\mathrm{x}(q,\dot{q}) \, J_\mathrm{M}^+(q) \, \dot{x} = \eta_\mathrm{x}(q,\dot{q}) \, \dot{q} - \eta_\mathrm{x}(q,\dot{q}) \, J_\mathrm{M}^+(q) \, J(q) \, \dot{q}\\
-    =& \: \eta_\mathrm{x}(q,\dot{q}) \left ( \mathbb{I}_n - J_\mathrm{M}^{+}(q) \, J(q)  \right ) \, \dot{q},
+    =& \: \eta_\mathrm{x}(q,\dot{q}) \left ( \mathbb{I}_n - J_\mathrm{M}^{+}(q) \, J(q)  \right ) \dot{q},
 \end{split}
 \end{equation}
 as $\dot{x} = J(q) \, \dot{q}$ and $\eta_\mathrm{xx}(q,\dot{q}) = \eta_\mathrm{x}(q,\dot{q}) \, J_\mathrm{M}^+(q)$.
@@ -655,12 +677,12 @@ This forcing $f_\mathrm{x}$ results in the closed-loop task and null space dynam
 \end{equation}
 We can extract several interesting observations by analyzing these closed-loop dynamics in more detail. First, the operational space dynamics
 \begin{equation}
-    \Lambda_\mathrm{x}(q) \, \ddot{x} + K_\mathrm{x} \, (x - x^\mathrm{d}) - D_\mathrm{x} \, \dot{x} = 0_{o},
+    \Lambda_\mathrm{x}(q) \, \ddot{x} + \eta_\mathrm{xx}(q,\dot{q}) \, \dot{x} + K_\mathrm{x} \, (x - x^\mathrm{d}) + D_\mathrm{x} \, \dot{x} = 0_{o},
 \end{equation}
 now mirror the ones of coupled damped harmonic oscillators.
 % Furthermore, we can easily prove, analog to the computed torque controller, that they converge exponentially fast to the global asymptotic equilibrium $x^\mathrm{d}$.
 % In the spirit of the previously introduced setpoint regulation controllers with gravity cancellation and compensation of elastic forces, we don't fully eliminate the null space dynamics but instead increase robustness against disturbances and modeling errors by preserving the natural elasticity and dissipation of the system while only removing the gravitational forces. This results in closed-loop null-space dynamics that converge in steady-state to the minimum of the operational space potential field.
-Furthermore, similar to the computed torque controller, we can readily demonstrate that they converge exponentially fast to the global asymptotic equilibrium $x^\mathrm{d}$. In line with the previously introduced setpoint regulation controllers that cancel gravitational forces while compensating for elastic forces, we do not entirely eliminate the null space dynamics. Instead, we enhance robustness against disturbances and modeling errors by preserving the system’s natural elasticity and dissipation while only removing the gravitational forces. This approach yields closed-loop null-space dynamics that settle in steady-state at the (local) minimum of their potential field.
+Furthermore, similar to the computed torque controller, we can readily demonstrate that the closed-loop operational-space dynamics converge exponentially fast to the global asymptotic equilibrium $x^\mathrm{d}$\footnote{Please note that this does not automatically prove the stability of the null-space dynamics.}. In line with the previously introduced setpoint regulation controllers that cancel gravitational forces while compensating for elastic forces, we do not entirely eliminate the null space dynamics. Instead, we enhance robustness against disturbances and modeling errors by preserving the system’s natural elasticity and dissipation while only removing the gravitational forces. This approach yields closed-loop null-space dynamics that settle in steady-state at the (local) minimum of their potential field.
 
 % After designing the desired forces in operational space $f_\mathrm{x}$, we can easily derive the control input via configuration space. First, $f_\mathrm{x}$ is projected into configuration space, resulting in a sum between the projected operational space forces and the gravity cancellation: $\tau_\mathrm{q} = J^\top(q) \, f + G(q)$ 
 % Finally, the inverse of the actuation matrix can be used to devise the control input based on the desired configuration space torques $\tau = A^{-1}(q) \, \tau_\mathrm{q}$.

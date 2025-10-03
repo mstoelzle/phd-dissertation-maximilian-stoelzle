@@ -10,13 +10,13 @@ Apart from the procedure for formulating this safety metric, one of the key inno
 Following the Cosserat rod theory, we can capture the kinematic behavior of slender structures such as continuum soft robots by considering the deformations of the robot's backbone. As the 1D spatial deformations of this backbone are still an infinite-dimensional problem, the field has developed many methods, such as \gls{PCC}~\citep{webster2010design}, \gls{PCS}~\citep{renda2018discrete}, and \gls{GVS}~\citep{renda2020geometric}, to describe such deformations with a finite number of finite vectors of configuration variables $q \in \mathbb{R}^n$. The associated forward kinematic model then allows us to define the geometric positional Jacobian $J_\mathrm{p}(q, s) \in \mathbb{R}^{3 \times n}$, where $s \in (0,L]$ is the backbone abscissa/coordinate and $L$ is the length of the entire continuum structure.
 Independent of the specific chosen kinematic model, the \gls{EOM} of a continuum soft robot can often be stated as~\citep{armanini2023soft, della2023model}
 \begin{equation}\label{eq:safetymetric:soft_robot_configuration_space_dynamics}
-    M(q) \, \ddot{q} + C(q, \dot{q}) \, \dot{q} + \partial_{q} \, \mathcal{U}(q) + D \, \dot{q} = A(q) \, \tau + \tau_\mathrm{c},
+    M(q) \, \ddot{q} + C(q, \dot{q}) \, \dot{q} + \partial_{q} \, \mathcal{U}(q) + D \, \dot{q} = A_\tau(q) \, \tau + \tau_\mathrm{c},
 \end{equation}
 $M(q) \in \mathbb{R}^{n \times n}$ and $C(q, \dot{q}) \in \mathbb{R}^{n \times n}$ consider the inertial and Coriolis effects of the soft robot system, respectively.
 $\partial_{q} \, \mathcal{U}(q) \in \mathbb{R}^n$ captures the forces stemming from the potential $\mathcal{U}(q): \mathbb{R}^n \to \mathbb{R}$.
 Often times, the potential forces simplify to $\partial_{q} \, \mathcal{U}(q) =  G(q) + K q$, where $G(q) \in \mathbb{R}^{n}$ describes the gravitational forces, and $K \succ 0 \in \mathbb{R}^{n \times n}$ is the stiffness matrix.
 Dissipation is integrated through the damping matrix $D \succ 0 \in \mathbb{R}^{n \times n}$.
-$\tau(t,q,\dot{q}) \in \mathbb{R}^{m}$ contributes the actuation (determined by a control policy) that acts through the linear map $A(q) \in \mathbb{R}^{n \times m}$ on the generalized coordinates.
+$\tau(t,q,\dot{q}) \in \mathbb{R}^{m}$ contributes the actuation (determined by a control policy) that acts through the linear map $A_\tau(q) \in \mathbb{R}^{n \times m}$ on the generalized coordinates.
 
 The term $\tau_\mathrm{c} \in \mathbb{R}^n$ collects all contributions by external contact forces on the generalized coordinates.
 In the following, we will assume that the soft robot is only in contact with the human at one discrete point and that only pure forces are reflected between the bodies during the contact (i.e., no Cartesian torques).
@@ -47,7 +47,7 @@ We now progress towards a formulation of the collision dynamics as motions of th
 First, we describe the motion of the contact point of the soft robot with position and velocity $x_\mathrm{R}, \dot{x}_\mathrm{R} \in \mathbb{R}$.
 We can project the dynamics of \eqref{eq:safetymetric:soft_robot_configuration_space_dynamics} into this 1D motion through the expression $\dot{x}_\mathrm{R} = J_\mathrm{c} \, \dot{q}$ yielding the form~\citep{khatib1987unified, della2019exact, della2020model, stolzle2024guiding}
 \begin{equation}
-    \Lambda_\mathrm{c}(q) \, \Ddot{x}_\mathrm{R} + \eta_\mathrm{c}(q,\dot{q}) \, \dot{x}_\mathrm{R} + J_\mathrm{c,M}^{+\top}(q) ( \partial_{q} \, \mathcal{U}(q) + D \dot{q} ) = J_\mathrm{c,M}^{+\top}(q) \, A(q) \, \tau - f_{\mathrm{c}}(\delta_\mathrm{c}, \dot{\delta}_\mathrm{c}),
+    \Lambda_\mathrm{c}(q) \, \Ddot{x}_\mathrm{R} + \eta_\mathrm{c}(q,\dot{q}) \, \dot{x}_\mathrm{R} + J_\mathrm{c,M}^{+\top}(q) ( \partial_{q} \, \mathcal{U}(q) + D \dot{q} ) = J_\mathrm{c,M}^{+\top}(q) \, A_\tau(q) \, \tau - f_{\mathrm{c}}(\delta_\mathrm{c}, \dot{\delta}_\mathrm{c}),
 \end{equation}
 where $J_\mathrm{c,M}^{+\top}(q, s_\mathrm{c},n_\mathrm{c}) = M^{-1}J_\mathrm{c}^\top(J_\mathrm{c} M^{-1} J_\mathrm{c}^\top)^{-1} \in \mathbb{R}^{n \times 1}$ is the dynamically consistent pseudo-inverse, $\Lambda_\mathrm{c}(q, s_\mathrm{c},n_\mathrm{c}) = (J_\mathrm{c} \, M^{-1} J_\mathrm{c}^\top)^{-1} \in \mathbb{R}^{1 \times 1}$ is the reflected inertia of the soft robot at the contact point~\citep{haddadin2009requirements, iso2016collaborative}, and $\eta_\mathrm{c}(q,\dot{q},s_\mathrm{c},n_\mathrm{c}) = \Lambda_\mathrm{c}(q) \, (J_\mathrm{c} M^{-1} C - \dot{J}_\mathrm{c}) \in \mathbb{R}^{1 \times n}$ collects the Cartesian Coriolis and centrifugal terms~\citep{khatib1987unified}.
 As mentioned already previously, if not explicitly stated otherwise, we will in the following, to simplify the notation, drop the specific dependency on the contact geometry $(s_\mathrm{c}, n_\mathrm{c})$: $J_\mathrm{c,M}^{+\top}(q) = J_\mathrm{c,M}^{+\top}(q,s_\mathrm{c},n_\mathrm{c})$, $\Lambda_\mathrm{c}(q) = \Lambda_\mathrm{c}(q,s_\mathrm{c},n_\mathrm{c})$, etc.
@@ -56,7 +56,7 @@ Next, we move towards modeling the behavior of the human body part. In literatur
 After the coordinate change $\delta_\mathrm{c}(t) = x_\mathrm{R}(t) - x_\mathrm{H}$, $\dot{\delta}_\mathrm{c} = \dot{x}_\mathrm{R}(t) + v_\mathrm{H}$, % where $x^{\mathrm{c}0} \in \mathbb{R}$ is the position of the initial contact, 
 where $x_\mathrm{H} \in \mathbb{R}$ is the position of the soft tissue surface, and while only considering the case of contact (i.e., $\delta_\mathrm{c} \geq 0$), the collision dynamics are given by
 \begin{equation}
-    \Lambda_\mathrm{c}(q) \, \Ddot{\delta}_\mathrm{c} + \eta_\mathrm{c}(q,\dot{q}) \, \dot{\delta}_\mathrm{c} + J_\mathrm{c,M}^{+\top}(q) ( \partial_{q} \, \mathcal{U}(q) + D \dot{q} ) = J_\mathrm{c,M}^{+\top}(q) \, A(q) \, \tau - k_\mathrm{c} \, \delta_\mathrm{c} - d_\mathrm{c} \, \dot{\delta}_\mathrm{c}.
+    \Lambda_\mathrm{c}(q) \, \Ddot{\delta}_\mathrm{c} + \eta_\mathrm{c}(q,\dot{q}) \, \dot{\delta}_\mathrm{c} + J_\mathrm{c,M}^{+\top}(q) ( \partial_{q} \, \mathcal{U}(q) + D \dot{q} ) = J_\mathrm{c,M}^{+\top}(q) \, A_\tau(q) \, \tau - k_\mathrm{c} \, \delta_\mathrm{c} - d_\mathrm{c} \, \dot{\delta}_\mathrm{c}.
 \end{equation}
 We are now interested in identifying the maximum force $f_\mathrm{c}(t)$ that occurs during the entire time of the contact.
 Therefore, we can neglect any damping forces, such as $d_\mathrm{c} \, \dot{\delta}_\mathrm{c}$ and $D \, \dot{q}$, as they dissipate energy, and, therefore, reduce the maximum contact force.
@@ -65,7 +65,7 @@ Finally, we assume that the change of configuration during the collision is suff
 \begin{equation}\label{eq:safetymetric:constant_reflected_inertia_and_actuation_matrix_definition}
     m_\mathrm{R} = \Lambda_\mathrm{c}(q_{\mathrm{c}}^0) \approx \Lambda_\mathrm{c}(q),
     \qquad
-    A_\mathrm{c} = J_\mathrm{c,M}^{+\top}(q_{\mathrm{c}}^0) \, A(q_{\mathrm{c}}^0) \approx J_\mathrm{c,M}^{+\top}(q) \, A(q),
+    A_{\tau,\mathrm{c}} = J_\mathrm{c,M}^{+\top}(q_{\mathrm{c}}^0) \, A_\tau(q_{\mathrm{c}}^0) \approx J_\mathrm{c,M}^{+\top}(q) \, A_\tau(q),
     \quad
     \forall \: t \geq t_\mathrm{c}^0,
 \end{equation}
@@ -75,7 +75,7 @@ The same assumption also allows us to linearize the potential forces of the soft
     f_{\mathcal{U}} = J_\mathrm{c,M}^{+\top}(q) \, \partial_{q} \, \mathcal{U}(q) \approx \underbrace{J_\mathrm{c,M}^{+\top}(q_{\mathrm{c}}^0) \, \partial_{q} \, \mathcal{U}(q_{\mathrm{c}}^0)}_{f_{\mathcal{U}}^{\mathrm{c}0}} + \underbrace{\frac{\partial}{\partial q} J_\mathrm{c,M}^{+\top}(q) \, \partial_{q} \, \mathcal{U}(q) \Big |_{q=q_{\mathrm{c}}^0} \,  J_\mathrm{c,M}^{+}(q_{\mathrm{c}}^0)}_{k_\mathrm{R}}  \, \delta_\mathrm{c},
 \end{equation}
 where $k_\mathrm{R} \in \mathbb{R}$ is the local stiffness of the system against small perturbations and $f_{\mathcal{U}}^{\mathrm{c}0}$ are the potential forces present at the start of the contact.
-Furthermore, we assume the actuation force to be constant, which can be easily accomplished by conservatively considering the maximum actuation force $f_\tau = \max_t \left | A_\mathrm{c} \, \tau(t) \right |$ that the robot experiences during the collision.
+Furthermore, we assume the actuation force to be constant, which can be easily accomplished by conservatively considering the maximum actuation force $f_\tau = \max_t \left | A_{\tau,\mathrm{c}} \, \tau(t) \right |$ that the robot experiences during the collision.
 Integrating the stated assumptions into the \gls{EOM} results in the approximated collision dynamics (during contact)
 \begin{equation}\label{eq:safetymetric:simplified_collision_dynamics}
     m_\mathrm{R} \, \Ddot{\delta}_\mathrm{c} + (k_\mathrm{R} + k_\mathrm{c}) \, \delta_\mathrm{c} = f_\tau - f_{\mathcal{U}}^{\mathrm{c}0}.
@@ -204,7 +204,7 @@ We now consider a planar $N$ segment \gls{PCS} robot, as introduced in Chapter~\
 \end{bmatrix}^\top$, where $\kappa_{\mathrm{be},i}$ is the bending, $\sigma_{\mathrm{sh},i}$ the shear, and $\sigma_{\mathrm{ax},i}$ the axial/elongation strain~\citep{renda2018discrete}.
 The collision dynamics are then given as
 \begin{equation}
-    \Lambda_\mathrm{c}(q) \, \Ddot{\delta}_\mathrm{c} + \eta_\mathrm{c}(q,\dot{q}) \, \dot{\delta}_\mathrm{c} + J_\mathrm{c,M}^{+\top}(q) ( G(q) + S \, q + D \dot{q} ) = J_\mathrm{c,M}^{+\top}(q) \, A(q) \, \tau - k_\mathrm{c} \, \delta_\mathrm{c} - d_\mathrm{c} \, \dot{\delta}_\mathrm{c},
+    \Lambda_\mathrm{c}(q) \, \Ddot{\delta}_\mathrm{c} + \eta_\mathrm{c}(q,\dot{q}) \, \dot{\delta}_\mathrm{c} + J_\mathrm{c,M}^{+\top}(q) ( G(q) + S \, q + D \dot{q} ) = J_\mathrm{c,M}^{+\top}(q) \, A_\tau(q) \, \tau - k_\mathrm{c} \, \delta_\mathrm{c} - d_\mathrm{c} \, \dot{\delta}_\mathrm{c},
 \end{equation}
 where $S \in \mathbb{R}^{3N \times 3N}$ is the linear stiffness of the robot, $G(q) \in \mathbb{R}^{3N}$ captures the gravitational forces, and $\tau \in \mathbb{R}^m$ represents the actuator forces.
 We build the JAX~\citep{jax2018github} implementation of these dynamics on the \emph{JSRM}\footnote{\url{https://github.com/tud-phi/jax-soft-robot-modelling}} package~\citep{stolzle2024experimental}.
@@ -249,7 +249,7 @@ First, we consider a case where the behavior of the control policy $\tau(q,\dot{
 In this case, access to actuation bounds $[\tau_\mathrm{min}, \tau_\mathrm{max}]$ provides us with the injury risk in the \emph{worst case scenario}.
 
 Next, we consider the example of a \emph{PD+Feedforward}-like control structure that is relevant for many control policies that involve feedforward and/or feedback terms.
-Specifically, we consider a fully-actuated setting (i.e., $n=m$) with an identity actuation matrix $A(q) = \mathbb{I}^n$.
+Specifically, we consider a fully-actuated setting (i.e., $n=m$) with an identity actuation matrix $A_\tau(q) = \mathbb{I}^n$.
 Then, a regulator $\tau(q,\dot{q}) = \partial_{q} \, \mathcal{U}( q^\mathrm{d}) + K_\mathrm{p} \, (q^\mathrm{d}-q) - K_\mathrm{d} \, \dot{q}$ drives the system towards the setpoint $q^\mathrm{d}$~\citep{della2023model} and establishes the closed-loop dynamics
 \begin{equation}
     M(q) \, \ddot{q} + C(q, \dot{q}) \, \dot{q} + \partial_{q} \, \mathcal{U}(q) + K_\mathrm{p} \, q + (D+K_\mathrm{d}) \, \dot{q} = \partial_{q} \, \mathcal{U}( q^\mathrm{d}) + K_\mathrm{p} \, q^\mathrm{d} + \tau_\mathrm{c},
@@ -274,7 +274,7 @@ Therefore, we define the \gls{SRDHC} as the maximum injury severity that can be 
 \end{equation}
 where $\mathcal{Q}$ is the set of feasible soft robot configurations.
 To make this optimization more tractable, we can leverage the stated upper bound with $\dot{\delta}_\mathrm{c}^\mathrm{max} = \lVert J_\mathrm{c} \rVert_2 \, \lVert \dot{q}_\mathrm{max} \rVert_2 + v_\mathrm{H}$
-and $f_\tau^\mathrm{max} = \lVert A_\mathrm{c} \rVert_2 \, \lVert \max(|\tau_\mathrm{min}|,|\tau_\mathrm{max}|) \rVert_2$.
+and $f_\tau^\mathrm{max} = \lVert A_{\tau,\mathrm{c}} \rVert_2 \, \lVert \max(|\tau_\mathrm{min}|,|\tau_\mathrm{max}|) \rVert_2$.
 We note that the maximum value of $\dot{q}_\mathrm{max}$ that the robot can achieve autonomously is, in practice, often given by certain actuator characteristics (e.g., maximum servo velocity for tendon-driven actuation).
 
 % We performed a preliminary investigation on the effect of the discretization on the estimated safety - and, in particular, the \gls{SRDHC}.

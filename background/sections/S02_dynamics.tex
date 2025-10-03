@@ -167,18 +167,17 @@ Furthermore, the null space inertia $\Lambda_\mathrm{n}(q)$ is defined as~\citep
 
 
 \subsection{Actuation Space Dynamics}\label{sub:background:dynamics:actuation_space}
-% \citet{pustina2024input} showed that it is often possible to directly formulate the dynamics in actuation coordinates $\varphi \in \mathbb{R}^n$ where the actuation force $\tau$ directly acts on the first $m$ actuation coordinates through an identity matrix. This is particularly interesting for control applications as it allows us to very easily map a control input devised in the generalized (collocated) coordinates into an actuation $\tau$, but it can, in the future, also find use in other applications such as inverse kinematics~\citep{della2025pushing} or workspace estimation. As this mapping into collocated form is particularly useful in the underactuated setting, as later demonstrated in Chapter~\ref{chp:hsacontrol}, we will in the following focus on the setting $m \leq n$.
-\citet{pustina2024input} demonstrated that it is often feasible to directly formulate the dynamics in actuation coordinates $\varphi \in \mathbb{R}^n$, where the actuation force $\tau$ acts directly on the first $m$ actuation coordinates via an identity matrix. This feature is especially appealing for control applications because it enables a straightforward mapping of a control input devised in the generalized (collocated) coordinates into an actuation $\tau$. Moreover, this approach may also be in the future useful in other applications such as inverse kinematics~\citep{della2025pushing} or workspace estimation. Since this collocated mapping is particularly beneficial in underactuated settings, as later demonstrated in Chapter~\ref{chp:hsacontrol}, we focus on the case $m \leq n$, which includes both fully actuated and underactuated systems.
+\citet{pustina2024input} demonstrated that it is often feasible to directly formulate the dynamics in actuation coordinates $\varphi \in \mathbb{R}^n$, where the actuation force $\tau$ acts directly on the first $m$ actuation coordinates via an identity matrix. This feature is especially appealing for control applications because it enables a straightforward mapping of a control input devised in the generalized (collocated) coordinates into an actuation $\tau$. Moreover, this approach may also be useful in the future in other applications such as inverse kinematics~\citep{della2025pushing} or workspace estimation. Since this collocated mapping is particularly beneficial in underactuated settings, as later demonstrated in Chapter~\ref{chp:hsacontrol}, we focus on the case $m \leq n$, which includes both fully actuated and underactuated systems.
 In the following, we will assume for the actuation matrix $A(q)$ to be full-rank (i.e., $\mathrm{rank}(A) = m$).
 
 According to \citet{pustina2024input}, there exists a transformation into collocated form when there is a function $g(q): \mathbb{R}^n \mapsto \mathbb{R}^m$ such that $\frac{\partial g}{\partial q} = A^\top (q),$
 which is referred to as \emph{integrability assumption}. In practice, as shown in Sec.~\ref{sec:hsacontrol:configuration_space_regulation}), this mapping $g(q)$ is found by solving the integral $g(q) = \int_0^t \dot{q}(t')^\top \, A(q') \, \mathrm{d} t'$.
 If $A(q)$ is constant, the mapping is given by $g(q) = A^\top q$~\citep{pustina2024input}.
-If $m < n$, we stress that the coordinates given by $g(q)$ would not be sufficient to fully describe the dynamics of the system as there would exist a null space of dimensionality $n - m$. Therefore, we can choose which  $n-m$ coordinates from the original configuration space to keep. For example, the following transformation into actuation coordinates would be valid for a given $g(q)$~\citep{pustina2024input}
+If $m < n$, we stress that the coordinates given by $g(q)$ would not be sufficient to fully describe the dynamics of the system, as there would exist a null space of dimensionality $n-m$. Therefore, we can choose which  $n-m$ coordinates from the original configuration space to keep. For example, the following transformation into actuation coordinates would be valid for a given $g(q)$~\citep{pustina2024input}
 \begin{equation}
     \varphi = \begin{bmatrix}
         \varphi_\mathrm{a}\\ \varphi_\mathrm{u}
-    \end{bmatrix} = h(q) \begin{bmatrix}
+    \end{bmatrix} = h(q) = \begin{bmatrix}
         g(q)\\ 0_{n-m}
     \end{bmatrix} + \begin{bmatrix}
         0_{m \times m} & 0_{m \times (n-m)}\\
@@ -192,7 +191,7 @@ where $\varphi_\mathrm{a} \in \mathbb{R}^m$ and $\varphi_\mathrm{u} \in \mathbb{
         0_{(n-m) \times m} & \mathbb{I}_{n-m}
     \end{bmatrix},
     \quad
-    J_\mathrm{h}^{-1}(q) = \frac{\partial h^{-1}(q)}{\partial q} = \begin{bmatrix}
+    J_\mathrm{h}^{-1}(q) = \left ( \frac{\partial h(q)}{\partial q} \right )^{-1} = \begin{bmatrix}
         A_\mathrm{a}^{-\top}(q) & -A_\mathrm{a}^{-\top}(q) \, A_\mathrm{u}^\top(q)\\
         0_{(n-m) \times m} & \mathbb{I}_{n-m}
     \end{bmatrix},

@@ -1,6 +1,6 @@
 \section{Dynamic Simulation of HSA Robots}\label{sec:hsamodel:hsa_robot_simulation}
-We introduce a new concept to enable the simulation of \gls{HSA} robots with the discretized Cosserat rod theory, which is used by many of the SoA simulators of soft continuum robots~\citep{naughton2021elastica, mathew2022sorosim}.
-While we provide an implementation of the proposed concept as a plugin to Elastica~\citep{naughton2021elastica}, the same strategy could be used to adapt other simulators such as SoRoSim~\citep{mathew2022sorosim} to \gls{HSA} robots.
+We introduce a new concept to enable the simulation of \gls{HSA} robots with the discretized Cosserat rod theory, which is used by many of the \gls{SOTA} simulators of soft continuum robots~\citep{naughton2021elastica, mathew2022sorosim}.
+While we provide an implementation of the proposed concept as a plugin to Elastica~\citep{naughton2021elastica}, the same strategy could be used to adapt other simulators, such as SoRoSim~\citep{mathew2022sorosim}, to \gls{HSA} robots.
 % The proposed mechanism couples the rest length of the rods with their twist strains to mirror the auxetic trajectory and modifies the stiffness of the rod as a function to the twist strain to match the known mechanical characteristics of \glspl{HSA}. %~\citep{good2022expanding}.
 % We provide an implementation of this strategy through a plugin for the Elastica simulator~\citep{naughton2021elastica}.
 % Our simulator is based on a discretized version of the Cosserat rod theory~\citep{renda2018discrete, gazzola2018forward, naughton2021elastica, mathew2022sorosim} and allows the user to simulate the behaviour of a system consisting of $n_\mathrm{HSA}$ rods, each with a handedness $h_j \in \{-1, 1 \}$, and a rigid cylindrical platform constraining all of the \glspl{HSA} at their tips.
@@ -142,7 +142,7 @@ Similarly to the contact force, a contact torque $\tau_\mathrm{c}$ is computed t
 \begin{equation}
     \tau_\mathrm{c} = k_\tau \, (Q_\mathrm{p}^\top \log(Q_\mathrm{p} \, Q_{n_\mathrm{v}}^\top)) + \nu_\tau \, (Q_\mathrm{p}^\top \omega_\mathrm{p}^j - Q_{n_\mathrm{v}}^\top \omega_{n_\mathrm{v}})
 \end{equation}
-where the $\log(\cdot): \mathbb{R}^{3 \times 3} \rightarrow $ operator computes the rotation vector from the rotation matrix~\citep{gazzola2018forward}, and $Q_\mathrm{p}$ is the material frame of the platform.
+where the $\log(\cdot): \mathbb{R}^{3 \times 3} \rightarrow \mathbb{R}^3$ operator computes the rotation vector from the rotation matrix~\citep{gazzola2018forward}, and $Q_\mathrm{p}$ is the material frame of the platform.
 
 \subsection{Qualitative Evaluation of Motions in Simulation}\label{sub:hsamodel:hsa_robot_simulation:motion_primitives}
 We reproduce the typical motion primitives of a \gls{HSA} robot consisting of four \glspl{HSA} (e.g., $n_\mathrm{HSA} = 4$) in simulation and show the final steady-states in Fig.~\ref{fig:hsamodel:motion_primitives}. Two of the \glspl{HSA} are left-handed and positioned diagonally from each other. 

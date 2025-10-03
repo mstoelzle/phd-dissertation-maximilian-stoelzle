@@ -147,16 +147,16 @@ results for the chosen setpoint controller $\Bar{\tau}$ and a diagonal elastic m
     % = \pm G_{\mathrm{P},\mathrm{t}0,i}^{q} - 0.5 \Bar{\tau}_i 
     = \pm G_{\mathrm{P},\mathrm{t}0,i}^{q} - 0.5 \left ( k_i \Bar{q}_i + G_i(q) \right ).
 \end{equation}
-\eqref{eq:backstepping:GPq} is inversed to compute the desired piston position $\Bar{\mu}_{\mathrm{p}} = \Gamma(q, \Bar{q})$:
+Eq.~\eqref{eq:backstepping:GPmu} is inversed to compute the desired piston position $\Bar{\mu}_{\mathrm{p}} = \Gamma(q, \Bar{q})$:
 \begin{equation}\label{eq:backstepping:gamma}
     \Gamma_j(q, \Bar{q}) = \frac{1}{A_{\mathrm{p},j}} \left ( \frac{\alpha_{\mathrm{air},j} \, \partial_{q_i} V_{\mathrm{C},j}}{p_\mathrm{atm} \, \partial_{q_i} V_{\mathrm{C},j} - \Bar{G}_{\mathrm{P},j}^{\Bar{q}}(q, \Bar{q})} - V_{\mathrm{C},j}(q) \right ).
 \end{equation}
 \textbf{Backstepping:}
-The system is now in the form of \eqref{eq:backstepping:reduced_sys}, so Theorem~1 can be invoked and a specialized version of \eqref{eq:backstepping:pi_psi} can be derived for the \gls{PCC}-case and our chosen set-point controller of \eqref{eq:backstepping:high_level_regulation}. The partial derivative of the Lyapunov function of the soft system controller evaluates to $ \partial_{\dot{q}} H(q, \dot{q}) = \dot{q}^\top M(q)$, which allows to re-formulate \eqref{eq:backstepping:pi_psi} into:
-\begin{equation}
+The system is now in the form of Eq.~\eqref{eq:backstepping:reduced_sys}, so Theorem~1 can be invoked and a specialized version of Eq.~\eqref{eq:backstepping:pi_psi} can be derived for the \gls{PCC}-case and our chosen set-point controller of Eq.~\eqref{eq:backstepping:high_level_regulation}. The partial derivative of the Lyapunov function of the soft system controller evaluates to $ \partial_{\dot{q}} H(q, \dot{q}) = \dot{q}^\top M(q)$, which allows to re-formulate \eqref{eq:backstepping:pi_psi} into:
+\begin{equation}\small
 \begin{split}
-    \Pi &= \dot{\Gamma} - K_1 (\mu_p - \Gamma) + S^\top \dot{q},\\
-    \Psi &= G_{\mathrm{P}}^{\mu_\mathrm{p}} + D_\mathrm{p} \, \Pi + M_\mathrm{p} \, \dot{\Pi} - K_2 \, (\dot{\mu}_\mathrm{p} - \Pi) - (\mu_\mathrm{p} - \Gamma).
+    \bar{\dot{\mu}}_\mathrm{p} = \Pi(q,\dot{q},\mu_\mathrm{p}) &= \dot{\Gamma}(q,\dot{q}) - K_1 (\mu_p - \Gamma(q)) + S^\top(q,\mu_\mathrm{p},\Gamma(q)) \, \dot{q},\\
+    \bar{f}_\mathrm{p} = \Psi(q,\dot{q},\mu_\mathrm{p}, \dot{\mu}_\mathrm{p}) &= G_{\mathrm{P}}^{\mu_\mathrm{p}} + D_\mathrm{p} \, \Pi(q,\dot{q},\mu_\mathrm{p}) + M_\mathrm{p} \, \dot{\Pi} - K_2 \, (\dot{\mu}_\mathrm{p} - \Pi(q,\dot{q},\mu_\mathrm{p})) - (\mu_\mathrm{p} - \Gamma(q)).
 \end{split}
 \end{equation}
 
