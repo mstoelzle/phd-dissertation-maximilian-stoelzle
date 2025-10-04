@@ -155,7 +155,15 @@
 \include{cv/cv}
 \include{publications/publications}
 
-% Front insert (full-page PDF)
+% propositions insert (full-page PDF)
+\includepdf[
+  pages=-,
+  pagecommand={\thispagestyle{empty}},
+  width=\paperwidth,
+  pagebox=cropbox
+]{propositions.pdf}
+
+% back insert (full-page PDF)
 \includepdf[
   pages=1,                 % or pages=- to include all pages of back.pdf
   pagecommand={\thispagestyle{empty}},          % suppress headers/footers from your class
@@ -165,4 +173,3 @@
 ]{cover/183365_Stolzle_R_OMS_v04Back.pdf}
 
 \end{document}
-
